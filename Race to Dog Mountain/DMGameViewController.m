@@ -66,7 +66,7 @@
 }
 
 - (void)updateViews {
-    float animationTime = 0.005f/self.numberOfRows;
+    float animationTime = 1.5f/self.numberOfRows;
     [UIView animateWithDuration:animationTime animations:^{
         [_gridView setFrame:CGRectMake(0.0f, kStatusBarHeight, self.numberOfRows * SQUARE_SIZE + BUFFER, self.numberOfRows * SQUARE_SIZE + BUFFER)];
         
@@ -132,7 +132,7 @@
 
                 NSLog(@"End Game! %f %d", (float)[player1Wins intValue]/(float)[player2Wins intValue], [player1Wins intValue] + [player2Wins intValue]);
                 
-                [self backButtonTouched];
+//                [self backButtonTouched];
             }
             
             if (self.player1Score > self.player2Score) {
@@ -564,120 +564,22 @@
 
 // player's 
 - (void)player2AIMove {
-    /*
-     First possible squares -   Proponent
-     Second -                    Opponent
-     Third -                    Proponent
-     Fourth -                    Opponent - find the highest value and subtract it from
-     Fifth -                    Proponent - find the highest value and subtract the 6th from it
-     Sixth -                     Opponent - find the highest value and subtract it
-     
-     */
-    
-    
-    NSMutableSet *possibleFirstSquares = [NSMutableSet setWithSet:[self squaresInColumn:self.currentColumn]];
-    
-    int keepingTrack = 0, highestValue = -10000, practicalLimit = 65536;
-    
     DMSquare *bestOption;
     
-    for (DMSquare *firstSquare in possibleFirstSquares) {
-        if (keepingTrack > practicalLimit && bestOption) {
-            
-            NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
-            for (NSMutableArray *array in self.grid) {
-                for (DMSquare *square in array) {
-                    if (square.column == self.currentColumn) {
-                        [possibleSquares addObject:square];
-                    }
-                }
+    NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
+    for (NSMutableArray *array in self.grid) {
+        for (DMSquare *square in array) {
+            if (square.column == self.currentColumn) {
+                [possibleSquares addObject:square];
             }
-            
-            for (DMSquare *square in possibleSquares) {
-                if ([[square squareValue] intValue] + self.numberOfRows * 2 > [[bestOption squareValue] intValue]) {
-                    bestOption = square;
-                }
-            }
-            
-            [self squareTouched:bestOption];
-            
-            return;
-        }
-        
-        if (!bestOption && [[firstSquare squareValue] intValue] > 0) {
-            bestOption = firstSquare;
-        }
-        
-        NSSet *firstExclusionSet = [NSSet setWithArray:@[firstSquare]];
-        NSMutableSet *possibleSecondSquares = [NSMutableSet setWithSet:[self squaresInRow:firstSquare.row excluding:firstExclusionSet]];
-        
-        int worstSecondSquare = 0;
-        for (DMSquare *secondSquare in possibleSecondSquares) {
-            NSSet *secondExclusionSet = [NSSet setWithArray:@[firstSquare, secondSquare]];
-            NSMutableSet *possibleThirdSquares = [NSMutableSet setWithSet:[self squaresInColumn:secondSquare.column excluding:secondExclusionSet]];
-            
-            int bestThirdSquare = 0;
-            for (DMSquare *thirdSquare in possibleThirdSquares) {
-                NSSet *thirdExclusionSet = [NSSet setWithArray:@[firstSquare, secondSquare, thirdSquare]];
-                NSMutableSet *possibleFourthSquares = [NSMutableSet setWithSet:[self squaresInRow:thirdSquare.row excluding:thirdExclusionSet]];
-                
-                int worstFourthSquare = 0;
-                for (DMSquare *fourthSquare in possibleFourthSquares) {
-                    NSSet *fourthExclusionSet = [NSSet setWithArray:@[firstSquare, secondSquare, thirdSquare, fourthSquare]];
-                    NSMutableSet *possibleFifthSquares = [NSMutableSet setWithSet:[self squaresInColumn:fourthSquare.column excluding:fourthExclusionSet]];
-                    
-                    int bestFifthSquare = 0;
-                    for (DMSquare *fifthSquare in possibleFifthSquares) {
-                        NSSet  *fifthExclusionSet = [NSSet setWithArray:@[firstSquare, secondSquare, thirdSquare, fourthSquare, fifthSquare]];
-                        NSMutableSet *possibleSixthSquares = [NSMutableSet setWithSet:[self squaresInRow:fifthSquare.row excluding:fifthExclusionSet]];
-                        
-                        int worstSixthSquare = 0;
-                        for (DMSquare *sixthSquare in possibleSixthSquares) {
-                            if ([[sixthSquare squareValue] intValue] > worstSixthSquare) {
-                                worstSixthSquare = [[sixthSquare squareValue] intValue];
-                            }
-                            
-                            keepingTrack++;
-                        }
-                        
-//                        NSLog(@"worstSixthSquare: %d", worstSixthSquare);
-                        
-                        // the fifth square minus it's best opponent's move
-                        if ([[fifthSquare squareValue] intValue] - worstSixthSquare > bestFifthSquare) {
-                            bestFifthSquare = [[fifthSquare squareValue] intValue] - worstSixthSquare;
-                        }
-                    }
-                    
-//                    NSLog(@"bestFifthSquare: %d", bestFifthSquare);
-                    
-                    if (bestFifthSquare - [[fourthSquare squareValue] intValue] < worstFourthSquare) {
-                        worstFourthSquare = bestFifthSquare - [[fourthSquare squareValue] intValue];
-                    }
-                }
-                
-//                NSLog(@"worstFourthSquare: %d", worstFourthSquare);
-                
-                if ([[thirdSquare squareValue] intValue] - worstFourthSquare > bestThirdSquare) {
-                    bestThirdSquare = [[thirdSquare squareValue] intValue] - worstFourthSquare;
-                }
-            }
-            
-//            NSLog(@"bestThirdSquare: %d", bestThirdSquare);
-            
-            if (bestThirdSquare - [[secondSquare squareValue] intValue] < worstSecondSquare) {
-                worstSecondSquare = bestThirdSquare - [[secondSquare squareValue] intValue];
-            }
-        }
-        
-//        NSLog(@"worstSecondSquare: %d", worstSecondSquare);
-        
-        if ([[firstSquare squareValue] intValue] - worstSecondSquare > highestValue) {
-            highestValue = [[firstSquare squareValue] intValue] - worstSecondSquare;
-            bestOption = firstSquare;
         }
     }
     
-    NSLog(@"keepingTrack: %d\t\t%d", keepingTrack, highestValue);
+    for (DMSquare *square in possibleSquares) {
+        if ([[square squareValue] intValue] + self.numberOfRows * 2 > [[bestOption squareValue] intValue]) {
+            bestOption = square;
+        }
+    }
     
     [self squareTouched:bestOption];
 }

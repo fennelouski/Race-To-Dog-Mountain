@@ -58,7 +58,7 @@
         [_player2AISwitch setOn:[player2AI boolValue] animated:YES];
     }
     
-    [self playGame];
+//    [self playGame];
 }
 
 - (void)updateViews {
