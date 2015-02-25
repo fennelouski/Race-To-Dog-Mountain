@@ -76,7 +76,7 @@
     return _isPlusGame;
 }
 
-- (void)makeIsPlusGame:(BOOL)isPlusGame {
+- (void)setIsPlusGame:(BOOL)isPlusGame {
     _isPlusGame = isPlusGame;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -93,10 +93,16 @@
 
 - (void)setPlayer1AI:(BOOL)player1AI {
     _player1AI = player1AI;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSNumber numberWithBool:player1AI] forKey:@"player1AI"];
 }
 
 - (void)setPlayer2AI:(BOOL)player2AI {
     _player2AI = player2AI;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSNumber numberWithBool:player2AI] forKey:@"player2AI"];
 }
 
 @end

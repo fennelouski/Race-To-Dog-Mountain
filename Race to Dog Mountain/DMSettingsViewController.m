@@ -62,7 +62,10 @@
     [self layoutAISwitches];
     [self gameModeSwitchTouched];
     
-    [self.doneButton setFrame:CGRectMake(0.0f, kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f, kScreenWidth, (kScreenHeight + kScreenWidth)/20.0f)];
+    [self.doneButton setFrame:CGRectMake(0.0f,
+                                         kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f,
+                                         kScreenWidth,
+                                         (kScreenHeight + kScreenWidth)/20.0f)];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSNumber *player1AI = [defaults objectForKey:@"player1AI"];
@@ -85,7 +88,10 @@
         [self layoutTextFields];
         [self layoutAISwitches];
         
-        [self.doneButton setFrame:CGRectMake(0.0f, kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f, kScreenWidth, (kScreenHeight + kScreenWidth)/20.0f)];
+        [self.doneButton setFrame:CGRectMake(0.0f,
+                                             kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f,
+                                             kScreenWidth,
+                                             (kScreenHeight + kScreenWidth)/20.0f)];
     }];
 }
 
@@ -95,35 +101,77 @@
     
     // portrait
     if (kScreenHeight > kScreenWidth) {
-        [self.player1TextField setFrame:CGRectMake(leftSideOffset, kScreenHeight/8.0f, kScreenWidth - leftSideOffset, 40.0f)];
-        [self.player2TextField setFrame:CGRectMake(leftSideOffset, kScreenHeight/4.0f, kScreenWidth - leftSideOffset, 40.0f)];
-        [self.complexityLabel setFrame:CGRectMake(0.0f, kScreenHeight / 2.5f, kScreenWidth, 44.0f)];
-        [self.complexitySlider setFrame:CGRectMake(leftSideOffset, kScreenHeight/2.5f + 44.0f, kScreenWidth - 2.0f*leftSideOffset, 30.0f)];
-        [self.gameModeLabel setFrame:CGRectMake(leftSideOffset, kScreenHeight/1.5f - 5.0f, kScreenWidth - leftSideOffset, 40.0f)];
+        [self.player1TextField setFrame:CGRectMake(leftSideOffset,
+                                                   kScreenHeight/8.0f,
+                                                   kScreenWidth - leftSideOffset,
+                                                   40.0f)];
+        [self.player2TextField setFrame:CGRectMake(leftSideOffset,
+                                                   kScreenHeight/4.0f,
+                                                   kScreenWidth - leftSideOffset,
+                                                   40.0f)];
+        [self.complexityLabel setFrame:CGRectMake(0.0f,
+                                                  kScreenHeight / 2.5f,
+                                                  kScreenWidth,
+                                                  44.0f)];
+        [self.complexitySlider setFrame:CGRectMake(leftSideOffset,
+                                                   kScreenHeight/2.5f + 44.0f,
+                                                   kScreenWidth - 2.0f*leftSideOffset,
+                                                   30.0f)];
+        [self.gameModeLabel setFrame:CGRectMake(leftSideOffset,
+                                                kScreenHeight/1.5f - 5.0f,
+                                                kScreenWidth - leftSideOffset,
+                                                40.0f)];
     }
     
     // landscape
     else {
-        [self.player1TextField setFrame:CGRectMake(leftSideOffset, kStatusBarHeight  + 5.0f, kScreenWidth/2.0f - leftSideOffset, kScreenHeight/4.0f)];
-        [self.player2TextField setFrame:CGRectMake(kScreenWidth/2.0f + leftSideOffset, kStatusBarHeight + 5.0f, kScreenWidth/2.0f - leftSideOffset, kScreenHeight/4.0f)];
-        [self.gameModeLabel setFrame:CGRectMake(0.0f, kScreenHeight/1.5f - 5.0f, kScreenWidth, 40.0f)];
+        [self.player1TextField setFrame:CGRectMake(leftSideOffset,
+                                                   kStatusBarHeight  + 5.0f,
+                                                   kScreenWidth/2.0f - leftSideOffset,
+                                                   kScreenHeight/4.0f)];
+        [self.player2TextField setFrame:CGRectMake(kScreenWidth/2.0f + leftSideOffset,
+                                                   kStatusBarHeight + 5.0f,
+                                                   kScreenWidth/2.0f - leftSideOffset,
+                                                   kScreenHeight/4.0f)];
+        [self.gameModeLabel setFrame:CGRectMake(0.0f,
+                                                kScreenHeight/1.5f - 5.0f,
+                                                kScreenWidth,
+                                                40.0f)];
         
         // if the screen is tall in enough in landscape for the keyboard, slider, and name textfields then move the slider to above the input accessory view on the keyboard
         if (kScreenHeight > 400.0f) {
-            [self.complexityLabel setFrame:CGRectMake(0.0f, kScreenHeight / 2.2f, kScreenWidth, 44.0f)];
-            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.2f + 44.0f, kScreenWidth/2.0f, 40.0f)];
+            [self.complexityLabel setFrame:CGRectMake(0.0f,
+                                                      kScreenHeight / 2.2f,
+                                                      kScreenWidth,
+                                                      44.0f)];
+            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                       kScreenHeight/2.2f + 44.0f,
+                                                       kScreenWidth/2.0f,
+                                                       40.0f)];
         }
         
         // this is (probably) an iPhone 6 and there is enough room for the slider between the keyboard and name textfields, so position the slider a little more precisely to make it look good
         if (kScreenHeight > 340.0f) {
-            [self.complexityLabel setFrame:CGRectMake(0.0f, kScreenHeight / 2.5f, kScreenWidth, 44.0f)];
-            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.5f + 44.0f, kScreenWidth/2.0f, 40.0f)];
+            [self.complexityLabel setFrame:CGRectMake(0.0f,
+                                                      kScreenHeight / 2.5f,
+                                                      kScreenWidth,
+                                                      44.0f)];
+            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                       kScreenHeight/2.5f + 44.0f,
+                                                       kScreenWidth/2.0f,
+                                                       40.0f)];
         }
         
         // the screen isn't tall enough to show the slider in between the keyboard and name textfields so hide it behind the keyboard (this is only a problem on iphone 4s/5/5s/6)
         else {
-            [self.complexityLabel setFrame:CGRectMake(0.0f, kScreenHeight / 2.8f, kScreenWidth, 44.0f)];
-            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.8f + 44.0f, kScreenWidth/2.0f, 40.0f)];
+            [self.complexityLabel setFrame:CGRectMake(0.0f,
+                                                      kScreenHeight / 2.8f,
+                                                      kScreenWidth,
+                                                      44.0f)];
+            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                       kScreenHeight/2.8f + 44.0f,
+                                                       kScreenWidth/2.0f,
+                                                       40.0f)];
         }
     }
 }
@@ -131,26 +179,52 @@
 - (void)layoutAISwitches {
     // portrait
     if (kScreenHeight > kScreenWidth) {
-        [self.player1AISwitch setFrame:CGRectMake(20.0f, kScreenHeight/8.0f, kScreenWidth, 40.0f)];
-        [self.player1AISwitch setCenter:CGPointMake(self.player1AISwitch.center.x, self.player1TextField.center.y)];
-        [self.player2AISwitch setFrame:CGRectMake(20.0f, kScreenHeight/4.0f, kScreenWidth, 40.0f)];
-        [self.player2AISwitch setCenter:CGPointMake(self.player2AISwitch.center.x, self.player2TextField.center.y)];
-        [self.gameModeSwitch setFrame:CGRectMake(20.0f, kScreenHeight/1.5f, kScreenWidth, 40.0f)];
-        [self.gameModeSwitch setCenter:CGPointMake(self.gameModeSwitch.center.x, self.gameModeSwitch.center.y)];
+        [self.player1AISwitch setFrame:CGRectMake(20.0f,
+                                                  kScreenHeight/8.0f,
+                                                  kScreenWidth,
+                                                  40.0f)];
+        [self.player1AISwitch setCenter:CGPointMake(self.player1AISwitch.center.x,
+                                                    self.player1TextField.center.y)];
+        [self.player2AISwitch setFrame:CGRectMake(20.0f,
+                                                  kScreenHeight/4.0f,
+                                                  kScreenWidth,
+                                                  40.0f)];
+        [self.player2AISwitch setCenter:CGPointMake(self.player2AISwitch.center.x,
+                                                    self.player2TextField.center.y)];
+        [self.gameModeSwitch setFrame:CGRectMake(20.0f,
+                                                 kScreenHeight/1.5f,
+                                                 kScreenWidth,
+                                                 40.0f)];
+        [self.gameModeSwitch setCenter:CGPointMake(self.gameModeSwitch.center.x,
+                                                   self.gameModeSwitch.center.y)];
     }
     
     // landscape
     else {
-        [self.player1AISwitch setFrame:CGRectMake(20.0f, kScreenHeight/8.0f, kScreenWidth/2.0f, kScreenHeight/4.0f)];
-        [self.player1AISwitch setCenter:CGPointMake(self.player1AISwitch.center.x, self.player1TextField.center.y)];
-        [self.player2AISwitch setFrame:CGRectMake(kScreenWidth/2.0f + 20.0f, kScreenHeight/8.0f, kScreenWidth/2.0f, kScreenHeight/4.0f)];
-        [self.player2AISwitch setCenter:CGPointMake(self.player2AISwitch.center.x, self.player2TextField.center.y)];
-        [self.gameModeSwitch setFrame:CGRectMake(20.0f, kScreenHeight/1.5f, kScreenWidth, 40.0f)];
-        [self.gameModeSwitch setCenter:CGPointMake(self.gameModeSwitch.center.x, self.gameModeSwitch.center.y)];
+        [self.player1AISwitch setFrame:CGRectMake(20.0f,
+                                                  kScreenHeight/8.0f,
+                                                  kScreenWidth/2.0f,
+                                                  kScreenHeight/4.0f)];
+        [self.player1AISwitch setCenter:CGPointMake(self.player1AISwitch.center.x,
+self.player1TextField.center.y)];
+        [self.player2AISwitch setFrame:CGRectMake(kScreenWidth/2.0f + 20.0f,
+                                                  kScreenHeight/8.0f,
+                                                  kScreenWidth/2.0f,
+                                                  kScreenHeight/4.0f)];
+        [self.player2AISwitch setCenter:CGPointMake(self.player2AISwitch.center.x,
+                                                    self.player2TextField.center.y)];
+        [self.gameModeSwitch setFrame:CGRectMake(20.0f,
+                                                 kScreenHeight/1.5f,
+                                                 kScreenWidth,
+                                                 40.0f)];
+        [self.gameModeSwitch setCenter:CGPointMake(self.gameModeSwitch.center.x,
+                                                   self.gameModeSwitch.center.y)];
     }
     
-    [self.computerLabel1 setCenter:CGPointMake(self.player1AISwitch.center.x, self.player1AISwitch.center.y - 30.0f)];
-    [self.computerLabel2 setCenter:CGPointMake(self.player2AISwitch.center.x, self.player2AISwitch.center.y - 30.0f)];
+    [self.computerLabel1 setCenter:CGPointMake(self.player1AISwitch.center.x,
+                                               self.player1AISwitch.center.y - 30.0f)];
+    [self.computerLabel2 setCenter:CGPointMake(self.player2AISwitch.center.x,
+                                               self.player2AISwitch.center.y - 30.0f)];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -333,7 +407,10 @@
 
 - (UIButton *)doneButton2 {
     if (!_doneButton2) {
-        _doneButton2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, (kScreenHeight + kScreenWidth)/20.0f)];
+        _doneButton2 = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
+                                                                  0.0f,
+                                                                  kScreenWidth,
+                                                                  (kScreenHeight + kScreenWidth)/20.0f)];
         [_doneButton2 setTitle:@"Done" forState:UIControlStateNormal];
         [_doneButton2.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_doneButton2 setBackgroundColor:[UIColor colorWithWhite:0.1f alpha:1.0f]];
@@ -347,7 +424,10 @@
 
 - (UILabel *)computerLabel1 {
     if (!_computerLabel1) {
-        _computerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 20.0f)];
+        _computerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                    0.0f,
+                                                                    80.0f,
+                                                                    20.0f)];
         [_computerLabel1 setText:@"Computer"];
         [_computerLabel1 setTextAlignment:NSTextAlignmentCenter];
         [_computerLabel1 setFont:[UIFont systemFontOfSize:14.0f]];
@@ -358,7 +438,10 @@
 
 - (UILabel *)computerLabel2 {
     if (!_computerLabel2) {
-        _computerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 20.0f)];
+        _computerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                    0.0f,
+                                                                    80.0f,
+                                                                    20.0f)];
         [_computerLabel2 setText:@"Computer"];
         [_computerLabel2 setTextAlignment:NSTextAlignmentCenter];
         [_computerLabel2 setFont:[UIFont systemFontOfSize:14.0f]];
@@ -369,7 +452,10 @@
 
 - (UILabel *)complexityLabel {
     if (!_complexityLabel) {
-        _complexityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/2.0f, kScreenWidth, 40.0f)];
+        _complexityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     kScreenHeight/2.0f,
+                                                                     kScreenWidth,
+                                                                     40.0f)];
         [_complexityLabel setText:@"Game Board Size"];
         [_complexityLabel setTextAlignment:NSTextAlignmentCenter];
         [_complexityLabel setFont:[UIFont systemFontOfSize:(kScreenHeight + kScreenWidth)/(FONT_SCALE)]];
@@ -412,7 +498,10 @@
 
 - (UILabel *)gameModeLabel {
     if (!_gameModeLabel) {
-        _gameModeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/1.5f, kScreenWidth, 44.0f)];
+        _gameModeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                   kScreenHeight/1.5f,
+                                                                   kScreenWidth,
+                                                                   44.0f)];
         [_gameModeLabel setTextAlignment:NSTextAlignmentCenter];
         [_gameModeLabel setFont:[UIFont systemFontOfSize:(kScreenHeight + kScreenWidth)/(FONT_SCALE)]];
         
@@ -428,7 +517,10 @@
 
 - (UISwitch *)gameModeSwitch {
     if (!_gameModeSwitch) {
-        _gameModeSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/2.5f, 80.0f, 44.0f)];
+        _gameModeSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     kScreenHeight/2.5f,
+                                                                     80.0f,
+                                                                     44.0f)];
         [_gameModeSwitch addTarget:self action:@selector(gameModeSwitchTouched) forControlEvents:UIControlEventTouchUpInside];
         [_gameModeSwitch setOn:[[DMProjectManager sharedProjectManager] isPlusGame] animated:YES];
     }
@@ -439,7 +531,7 @@
 #pragma mark - Game Mode
 
 - (void)gameModeSwitchTouched {
-    [[DMProjectManager sharedProjectManager] makeIsPlusGame:self.gameModeSwitch.on];
+    [[DMProjectManager sharedProjectManager] setIsPlusGame:self.gameModeSwitch.on];
     
     [_gameModeLabel setText:@"Rows & Columns"];
     

@@ -111,7 +111,8 @@
     NSInteger hour = [dateComps hour];
     
     if (hour < 6 || hour > 22) {
-        colors = @[(id)[UIColor colorWithRed:0.03f green:0.0f blue:0.53f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:0.0f green:0.0f blue:0.3f alpha:1.0f].CGColor];
+        colors = @[(id)[UIColor colorWithRed:0.03f green:0.0f blue:0.53f alpha:1.0f].CGColor,
+                   (id)[UIColor colorWithRed:0.0f green:0.0f blue:0.3f alpha:1.0f].CGColor];
     }
     
     NSNumber *stopOne = [NSNumber numberWithFloat:0.0f];

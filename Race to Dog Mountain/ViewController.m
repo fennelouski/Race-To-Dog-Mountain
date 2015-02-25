@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
     [self setUpColors];
     
     [self.view addSubview:self.backgroundView];
@@ -75,16 +75,25 @@
     
     [self textFieldShouldReturn:self.player1TextField];
     
-//    [self playGame];
+//    [self playGame]; // 
 }
 
 - (void)updateViews {
     [UIView animateWithDuration:0.35f animations:^{
         [self layoutTextFields];
         
-        [self.playGameButton setFrame:CGRectMake(0.0f, kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f, kScreenWidth, (kScreenHeight + kScreenWidth)/20.0f)];
-        [self.settingsButton setFrame:CGRectMake(kScreenWidth - BUTTON_SIZE - BUFFER, kStatusBarHeight + BUFFER, BUTTON_SIZE, BUTTON_SIZE)];
-        [self.backgroundView setFrame:CGRectMake(0.0f, 0.0f, LONGER_SIDE, LONGER_SIDE)];
+        [self.playGameButton setFrame:CGRectMake(0.0f,
+                                                 kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f,
+                                                 kScreenWidth,
+                                                 (kScreenHeight + kScreenWidth)/20.0f)];
+        [self.settingsButton setFrame:CGRectMake(kScreenWidth - BUTTON_SIZE - BUFFER,
+                                                 kStatusBarHeight + BUFFER,
+                                                 BUTTON_SIZE,
+                                                 BUTTON_SIZE)];
+        [self.backgroundView setFrame:CGRectMake(0.0f,
+                                                 0.0f,
+                                                 LONGER_SIDE,
+                                                 LONGER_SIDE)];
     }];
 }
 
@@ -92,32 +101,57 @@
     float leftSideOffset = 00.0f;
     // portrait
     if (kScreenHeight > kScreenWidth) {
-        [self.player1TextField setFrame:CGRectMake(-50.0f, kScreenHeight/5.5f - 120.0f, kScreenWidth - leftSideOffset, kScreenHeight/FONT_SCALE*20.0f)];
-        [self.player2TextField setFrame:CGRectMake(20.0f, kScreenHeight/3.5f - 70.0f, kScreenWidth - leftSideOffset, kScreenHeight/FONT_SCALE*20.0f)];
-        [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/10.0f)];
+        [self.player1TextField setFrame:CGRectMake(-50.0f,
+                                                   kScreenHeight/5.5f - 120.0f,
+                                                   kScreenWidth - leftSideOffset,
+                                                   kScreenHeight/FONT_SCALE*20.0f)];
+        [self.player2TextField setFrame:CGRectMake(20.0f,
+                                                   kScreenHeight/3.5f - 70.0f,
+                                                   kScreenWidth - leftSideOffset,
+                                                   kScreenHeight/FONT_SCALE*20.0f)];
+        [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f,
+                                                 self.winLossLabel.center.y + kScreenHeight/10.0f)];
     }
     
     // landscape
     else {
-        [self.player1TextField setFrame:CGRectMake(-20.0f, kStatusBarHeight  - kScreenHeight / 5.0f, kScreenWidth/1.5f - leftSideOffset, kScreenHeight/FONT_SCALE*40.0f)];
-        [self.player2TextField setFrame:CGRectMake(kScreenWidth/4.0f, kStatusBarHeight - kScreenHeight / 5.0f, kScreenWidth/1.5f - leftSideOffset, kScreenHeight/FONT_SCALE*40.0f)];
+        [self.player1TextField setFrame:CGRectMake(-20.0f,
+                                                   kStatusBarHeight  - kScreenHeight / 5.0f,
+                                                   kScreenWidth/1.5f - leftSideOffset,
+                                                   kScreenHeight/FONT_SCALE*40.0f)];
+        [self.player2TextField setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                   kStatusBarHeight - kScreenHeight / 5.0f,
+                                                   kScreenWidth/1.5f - leftSideOffset,
+                                                   kScreenHeight/FONT_SCALE*40.0f)];
         
         // if the screen is tall in enough in landscape for the keyboard, slider, and name textfields then move the slider to above the input accessory view on the keyboard
         if (kScreenHeight > 400.0f) {
-            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/1.5f, kScreenWidth/2.0f, 40.0f)];
-            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/3.0f)];
+            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                   kScreenHeight/1.5f,
+                                                   kScreenWidth/2.0f,
+                                                   40.0f)];
+            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f,
+                                                     self.winLossLabel.center.y + kScreenHeight/3.0f)];
         }
         
         // this is (probably) an iPhone 6 and there is enough room for the slider between the keyboard and name textfields, so position the slider a little more precisely to make it look good
         if (kScreenHeight > 340.0f) {
-            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.5f, kScreenWidth/2.0f, 40.0f)];
-            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/3.0f)];
+            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                   kScreenHeight/2.5f,
+                                                   kScreenWidth/2.0f,
+                                                   40.0f)];
+            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f,
+                                                     self.winLossLabel.center.y + kScreenHeight/3.0f)];
         }
         
         // the screen isn't tall enough to show the slider in between the keyboard and name textfields so hide it behind the keyboard (this is only a problem on iphone 4s/5/5s/6)
         else {
-            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.0f, kScreenWidth/2.0f, 40.0f)];
-            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/6.0f)];
+            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f,
+                                                   kScreenHeight/2.0f,
+                                                   kScreenWidth/2.0f,
+                                                   40.0f)];
+            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f,
+                                                     self.winLossLabel.center.y + kScreenHeight/6.0f)];
         }
     }
     
@@ -216,7 +250,10 @@
 
 - (UITextField *)player1TextField {
     if (!_player1TextField) {
-        _player1TextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/2.0f, kScreenWidth, kScreenHeight/4.0f)];
+        _player1TextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f,
+                                                                          kScreenHeight/2.0f,
+                                                                          kScreenWidth,
+                                                                          kScreenHeight/4.0f)];
         [_player1TextField setFont:[UIFont boldSystemFontOfSize:kScreenHeight/FONT_SCALE*2.5f]];
         [_player1TextField setPlaceholder:@"Player 1"];
         [_player1TextField setTextAlignment:NSTextAlignmentCenter];
@@ -240,7 +277,10 @@
 
 - (UITextField *)player2TextField {
     if (!_player2TextField) {
-        _player2TextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/1.5f, kScreenWidth, kScreenHeight/4.0f)];
+        _player2TextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f,
+                                                                          kScreenHeight/1.5f,
+                                                                          kScreenWidth,
+                                                                          kScreenHeight/4.0f)];
         [_player2TextField setFont:[UIFont boldSystemFontOfSize:kScreenHeight/FONT_SCALE*2.5f]];
         [_player2TextField setPlaceholder:@"Player 2"];
         [_player2TextField setTextAlignment:NSTextAlignmentCenter];
@@ -264,7 +304,10 @@
 
 - (UIButton *)playGameButton {
     if (!_playGameButton) {
-        _playGameButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight, kScreenWidth, 40.0f)];
+        _playGameButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     kScreenHeight,
+                                                                     kScreenWidth,
+                                                                     40.0f)];
         [_playGameButton setTitle:@"Play" forState:UIControlStateNormal];
         [_playGameButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_playGameButton setBackgroundColor:[UIColor colorWithWhite:0.1f alpha:0.3f]];
@@ -278,7 +321,10 @@
 
 - (UIButton *)playGameButton2 {
     if (!_playGameButton2) {
-        _playGameButton2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, (kScreenHeight + kScreenWidth)/20.0f)];
+        _playGameButton2 = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
+                                                                      0.0f,
+                                                                      kScreenWidth,
+                                                                      (kScreenHeight + kScreenWidth)/20.0f)];
         [_playGameButton2 setTitle:@"Play" forState:UIControlStateNormal];
         [_playGameButton2.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_playGameButton2 setBackgroundColor:[UIColor colorWithWhite:0.1f alpha:0.3f]];
@@ -321,7 +367,10 @@
 
 - (UIButton *)settingsButton {
     if (!_settingsButton) {
-        _settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, kStatusBarHeight, 44.0f, 44.0f)];
+        _settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     kStatusBarHeight,
+                                                                     44.0f,
+                                                                     44.0f)];
         [_settingsButton setImage:[UIImage imageNamed:@"Gear Icon"] forState:UIControlStateNormal];
         [_settingsButton addTarget:self action:@selector(settingsButtonTouched) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -331,7 +380,10 @@
 
 - (DMMainScreenBackgroundView *)backgroundView {
     if (!_backgroundView) {
-        _backgroundView = [[DMMainScreenBackgroundView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kScreenWidth, kScreenHeight)];
+        _backgroundView = [[DMMainScreenBackgroundView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                                       0.0f,
+                                                                                       kScreenWidth,
+                                                                                       kScreenHeight)];
     }
     
     return _backgroundView;
@@ -523,7 +575,8 @@
     if (textField.tag == 0) {
         [UIView animateWithDuration:3.35f delay:1.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
             if (kScreenHeight > kScreenWidth || textField.center.y > kScreenHeight * 0.75f) {
-                [textField setCenter:CGPointMake(textField.center.x, textField.center.y / variance + textField.frame.origin.x/4.0f)];
+                [textField setCenter:CGPointMake(textField.center.x,
+                                                 textField.center.y / variance + textField.frame.origin.x/4.0f)];
             }
         } completion:^(BOOL finished) {
             textField.tag = 1;
@@ -534,7 +587,8 @@
     else {
         [UIView animateWithDuration:3.35f delay:1.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
             if (kScreenHeight > kScreenWidth) {
-                [textField setCenter:CGPointMake(textField.center.x, (textField.center.y - textField.frame.origin.x/4.0f) * variance)];
+                [textField setCenter:CGPointMake(textField.center.x,
+                                                 (textField.center.y - textField.frame.origin.x/4.0f) * variance)];
             }
         } completion:^(BOOL finished) {
             textField.tag = 0;

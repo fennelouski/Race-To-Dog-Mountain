@@ -91,6 +91,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		906EFBAF1A9E245200D4E03A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				908AFC761A6718AE0050EC0B /* ViewController.h */,
+				908AFC771A6718AE0050EC0B /* ViewController.m */,
+				9068E4DC1A9CD4A400A4142A /* DMSettingsViewController.h */,
+				9068E4DD1A9CD4A400A4142A /* DMSettingsViewController.m */,
+				9017A1421A671AE500361817 /* DMGameViewController.h */,
+				9017A1431A671AE500361817 /* DMGameViewController.m */,
+				9068E4D91A9BF94A00A4142A /* DMPlusGameViewController.h */,
+				9068E4DA1A9BF94A00A4142A /* DMPlusGameViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		906EFBB01A9E245E00D4E03A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9068E4E11A9CEC1E00A4142A /* DMMainScreenBackgroundView.h */,
+				9068E4E21A9CEC1E00A4142A /* DMMainScreenBackgroundView.m */,
+				9017A14E1A67352700361817 /* DMScoreLabel.h */,
+				9017A14F1A67352700361817 /* DMScoreLabel.m */,
+				9017A1451A671B3300361817 /* DMSquare.h */,
+				9017A1461A671B3300361817 /* DMSquare.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		906EFBB11A9E246E00D4E03A /* Helper Categories */ = {
+			isa = PBXGroup;
+			children = (
+				9017A14B1A672B7000361817 /* UIColor+AppColors.h */,
+				9017A14C1A672B7000361817 /* UIColor+AppColors.m */,
+				900C5C5A1A7302B100B2BBA7 /* NSString+AppFunctions.h */,
+				900C5C5B1A7302B100B2BBA7 /* NSString+AppFunctions.m */,
+			);
+			name = "Helper Categories";
+			sourceTree = "<group>";
+		};
+		906EFBB21A9E248400D4E03A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9017A13F1A67197200361817 /* DMProjectManager.h */,
+				9017A1401A67197200361817 /* DMProjectManager.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
 			children = (
@@ -114,26 +162,10 @@
 			children = (
 				908AFC701A6718AE0050EC0B /* AppDelegate.h */,
 				908AFC711A6718AE0050EC0B /* AppDelegate.m */,
-				908AFC761A6718AE0050EC0B /* ViewController.h */,
-				908AFC771A6718AE0050EC0B /* ViewController.m */,
-				9068E4E11A9CEC1E00A4142A /* DMMainScreenBackgroundView.h */,
-				9068E4E21A9CEC1E00A4142A /* DMMainScreenBackgroundView.m */,
-				9068E4DC1A9CD4A400A4142A /* DMSettingsViewController.h */,
-				9068E4DD1A9CD4A400A4142A /* DMSettingsViewController.m */,
-				9017A1421A671AE500361817 /* DMGameViewController.h */,
-				9017A1431A671AE500361817 /* DMGameViewController.m */,
-				9068E4D91A9BF94A00A4142A /* DMPlusGameViewController.h */,
-				9068E4DA1A9BF94A00A4142A /* DMPlusGameViewController.m */,
-				9017A14E1A67352700361817 /* DMScoreLabel.h */,
-				9017A14F1A67352700361817 /* DMScoreLabel.m */,
-				9017A1451A671B3300361817 /* DMSquare.h */,
-				9017A1461A671B3300361817 /* DMSquare.m */,
-				9017A13F1A67197200361817 /* DMProjectManager.h */,
-				9017A1401A67197200361817 /* DMProjectManager.m */,
-				9017A14B1A672B7000361817 /* UIColor+AppColors.h */,
-				9017A14C1A672B7000361817 /* UIColor+AppColors.m */,
-				900C5C5A1A7302B100B2BBA7 /* NSString+AppFunctions.h */,
-				900C5C5B1A7302B100B2BBA7 /* NSString+AppFunctions.m */,
+				906EFBAF1A9E245200D4E03A /* Controllers */,
+				906EFBB01A9E245E00D4E03A /* Views */,
+				906EFBB21A9E248400D4E03A /* Model */,
+				906EFBB11A9E246E00D4E03A /* Helper Categories */,
 				9068E4DF1A9CD9ED00A4142A /* Gear Icon.png */,
 				908AFC791A6718AE0050EC0B /* Main.storyboard */,
 				908AFC7C1A6718AE0050EC0B /* Images.xcassets */,

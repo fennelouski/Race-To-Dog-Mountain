@@ -15,7 +15,7 @@
 
 + (instancetype)sharedProjectManager;
 - (BOOL)isPlusGame;
-- (void)makeIsPlusGame:(BOOL)isPlusGame;
+- (void)setIsPlusGame:(BOOL)isPlusGame;
 - (BOOL)player1AI;
 - (BOOL)player2AI;
 - (void)setPlayer1AI:(BOOL)player1AI;

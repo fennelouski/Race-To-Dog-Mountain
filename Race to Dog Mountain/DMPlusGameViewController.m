@@ -61,7 +61,8 @@
                                                   [UIColor sealBrown],
                                                   [UIColor spaceCadet],
                                                   [UIColor yankeesBlue],
-                                                  [UIColor zinnwalditeBrown]]];
+                                                  [UIColor zinnwalditeBrown]]
+         ];
         [self.player2Colors addObjectsFromArray:@[[UIColor crimsonRed],
                                                   [UIColor darkGreen],
                                                   [UIColor mediumJungleGreen],
@@ -88,7 +89,8 @@
                                                   [UIColor darkTerraCotta],
                                                   [UIColor darkViolet],
                                                   [UIColor charlestonGreen],
-                                                  [UIColor dartmouthGreen]]];
+                                                  [UIColor dartmouthGreen]]
+         ];
         
         self.finalAnimationTime = 0.35f;
     }
@@ -162,16 +164,34 @@
     float animationTime = 1.5f/self.numberOfRows;
     if (animationTime > 0.35f) animationTime = 0.35f;
     [UIView animateWithDuration:animationTime animations:^{
-        [_gridView setFrame:CGRectMake(0.0f, kStatusBarHeight, self.numberOfRows * SQUARE_SIZE, self.numberOfRows * SQUARE_SIZE)];
+        [_gridView setFrame:CGRectMake(0.0f,
+                                       kStatusBarHeight,
+                                       self.numberOfRows * SQUARE_SIZE,
+                                       self.numberOfRows * SQUARE_SIZE)];
         
         [self layoutScoreLabels];
         
-        [_popOver setFrame:CGRectMake(50.0f, 50.0f, kScreenWidth - 100.0f, kScreenHeight - 100.0f)];
-        [_popOverBackButton setFrame:CGRectMake(_popOver.frame.size.width/4, _popOver.frame.size.height*4/5, _popOver.frame.size.width/2, 30.0f)];
-        [_popOverGameOverLabel setFrame:CGRectMake(0.0f, 0.0f, _popOver.frame.size.width, _popOver.frame.size.height * 0.4f)];
-        [_userNameLabel setFrame:CGRectMake(0, _popOver.frame.size.height * 0.4f, _popOver.frame.size.width, kScreenHeight/20.0f)];
+        [_popOver setFrame:CGRectMake(50.0f,
+                                      50.0f,
+                                      kScreenWidth - 100.0f,
+                                      kScreenHeight - 100.0f)];
+        [_popOverBackButton setFrame:CGRectMake(_popOver.frame.size.width/4,
+                                                _popOver.frame.size.height*4/5,
+                                                _popOver.frame.size.width/2,
+                                                30.0f)];
+        [_popOverGameOverLabel setFrame:CGRectMake(0.0f,
+                                                   0.0f,
+                                                   _popOver.frame.size.width,
+                                                   _popOver.frame.size.height * 0.4f)];
+        [_userNameLabel setFrame:CGRectMake(0.0f,
+                                            _popOver.frame.size.height * 0.4f,
+                                            _popOver.frame.size.width,
+                                            kScreenHeight/20.0f)];
         int finalScoreLabelHeight = abs((_userNameLabel.frame.origin.y + _userNameLabel.frame.size.height) - _popOverBackButton.frame.origin.y);
-        [_finalScoreLabel setFrame:CGRectMake(0, _userNameLabel.frame.origin.y + _userNameLabel.frame.size.height, _popOver.frame.size.width, finalScoreLabelHeight)];
+        [_finalScoreLabel setFrame:CGRectMake(0,
+                                              _userNameLabel.frame.origin.y + _userNameLabel.frame.size.height,
+                                              _popOver.frame.size.width,
+                                              finalScoreLabelHeight)];
         float fontSize = finalScoreLabelHeight;
         CGSize size = [self.finalScoreLabel.text sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:fontSize]}];
         // find the right font that's still readable but fits on the popover
@@ -183,7 +203,10 @@
         [_finalScoreLabel setFont:[UIFont boldSystemFontOfSize:fontSize]];
         [_userNameLabel setFont:[UIFont boldSystemFontOfSize:kScreenHeight/22.0f]];
         [_popOverGameOverLabel setFont:[UIFont boldSystemFontOfSize:kScreenWidth/FONT_SCALE]];
-        [_headerToolbar setFrame:CGRectMake(0.0f, 0.0f, kScreenWidth, kStatusBarHeight)];
+        [_headerToolbar setFrame:CGRectMake(0.0f,
+                                            0.0f,
+                                            kScreenWidth,
+                                            kStatusBarHeight)];
     } completion:^(BOOL finished){
         if ([self checkForEndGame]) {
             if (!self.storedWin) {
@@ -224,7 +247,7 @@
                 
                 NSLog(@"End Game! %f %d", (float)[player1Wins intValue]/(float)[player2Wins intValue], [player1Wins intValue] + [player2Wins intValue]);
                 
-                //                [self backButtonTouched];
+//                [self backButtonTouched]; // used for AI testing
             }
             
             if (self.player1Score > self.player2Score) {
@@ -244,14 +267,6 @@
             if (!self.isGameOver) {
                 [self performSelector:@selector(gameOver) withObject:self afterDelay:0.35f];
             }
-        }
-        
-        else if (self.playerTurn == 0 && self.player1AI) {
-//            [self performSelector:@selector(player1AIMove) withObject:self afterDelay:animationTime];
-        }
-        
-        else if (self.playerTurn == 1 && self.player2AI) {
-//            [self performSelector:@selector(player2AIMove) withObject:self afterDelay:animationTime];
         }
     }];
     
@@ -299,7 +314,10 @@
 
 - (UIView *)gridView {
     if (!_gridView) {
-        _gridView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, kStatusBarHeight, self.numberOfRows * SQUARE_SIZE, self.numberOfRows * SQUARE_SIZE)];
+        _gridView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,
+                                                             kStatusBarHeight,
+                                                             self.numberOfRows * SQUARE_SIZE,
+                                                             self.numberOfRows * SQUARE_SIZE)];
         [_gridView setClipsToBounds:NO];
     }
     
@@ -308,7 +326,10 @@
 
 - (DMScoreLabel *)player1ScoreLabel {
     if (!_player1ScoreLabel) {
-        _player1ScoreLabel = [[DMScoreLabel alloc] initWithFrame:CGRectMake(0.0f, self.gridView.frame.size.height + kStatusBarHeight, kScreenWidth/2.0f, kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
+        _player1ScoreLabel = [[DMScoreLabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                            self.gridView.frame.size.height + kStatusBarHeight,
+                                                                            kScreenWidth/2.0f,
+                                                                            kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
         [_player1ScoreLabel setName:self.player1Name];
         [_player1ScoreLabel setBackgroundColor:self.player1Color];
         [_player1ScoreLabel setDelegate:self];
@@ -321,7 +342,10 @@
 
 - (DMScoreLabel *)player2ScoreLabel {
     if (!_player2ScoreLabel) {
-        _player2ScoreLabel = [[DMScoreLabel alloc] initWithFrame:CGRectMake(kScreenWidth/2.0f, self.gridView.frame.size.height + kStatusBarHeight, kScreenWidth/2.0f, kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
+        _player2ScoreLabel = [[DMScoreLabel alloc] initWithFrame:CGRectMake(kScreenWidth/2.0f,
+                                                                            self.gridView.frame.size.height + kStatusBarHeight,
+                                                                            kScreenWidth/2.0f,
+                                                                            kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
         [_player2ScoreLabel setName:self.player2Name];
         [_player2ScoreLabel setBackgroundColor:self.player2Color];
         [_player2ScoreLabel setDelegate:self];
@@ -334,7 +358,10 @@
 
 - (UIToolbar *)headerToolbar {
     if (!_headerToolbar) {
-        _headerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kScreenWidth, kStatusBarHeight)];
+        _headerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     0.0f,
+                                                                     kScreenWidth,
+                                                                     kStatusBarHeight)];
         [_headerToolbar setAlpha:0.0f];
     }
     
@@ -345,7 +372,10 @@
 
 - (UIToolbar *)popOver {
     if (!_popOver) {
-        _popOver = [[UIToolbar alloc] initWithFrame:CGRectMake(BUFFER, BUFFER, kScreenWidth - BUFFER*2, kScreenHeight - BUFFER*2)];
+        _popOver = [[UIToolbar alloc] initWithFrame:CGRectMake(BUFFER,
+                                                               BUFFER,
+                                                               kScreenWidth - BUFFER*2,
+                                                               kScreenHeight - BUFFER*2)];
         [_popOver setBarStyle:UIBarStyleBlackTranslucent];
         [_popOver.layer setCornerRadius:5.0f];
         
@@ -361,7 +391,10 @@
 
 - (UILabel *)popOverGameOverLabel {
     if (!_popOverGameOverLabel) {
-        _popOverGameOverLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, _popOver.frame.size.height/5, _popOver.frame.size.width, kScreenWidth/FONT_SCALE)];
+        _popOverGameOverLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                          _popOver.frame.size.height/5,
+                                                                          _popOver.frame.size.width,
+                                                                          kScreenWidth/FONT_SCALE)];
         [_popOverGameOverLabel setText:@"Game Over"];
         [_popOverGameOverLabel setTextAlignment:NSTextAlignmentCenter];
         [_popOverGameOverLabel setTextColor:[UIColor colorWithRed:0.98f green:0.99f blue:1.0f alpha:1.0f]];
@@ -373,7 +406,10 @@
 
 - (UIButton *)popOverBackButton {
     if (!_popOverBackButton) {
-        _popOverBackButton = [[UIButton alloc] initWithFrame:CGRectMake(_popOver.frame.size.width/4, _popOver.frame.size.height*4/5, _popOver.frame.size.width/2, 30.0f)];
+        _popOverBackButton = [[UIButton alloc] initWithFrame:CGRectMake(_popOver.frame.size.width/4.0f,
+                                                                        _popOver.frame.size.height*0.8f,
+                                                                        _popOver.frame.size.width/2.0f,
+                                                                        30.0f)];
         [_popOverBackButton setTitle:@"Back" forState:UIControlStateNormal];
         [_popOverBackButton setTitleColor:[UIColor colorWithRed:0.98f green:0.99f blue:1.0f alpha:1.0f] forState:UIControlStateNormal];
         [_popOverBackButton addTarget:self action:@selector(backButtonTouched) forControlEvents:UIControlEventTouchUpInside];
@@ -389,7 +425,10 @@
 
 - (UILabel *)userNameLabel {
     if (!_userNameLabel) {
-        _userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _popOver.frame.size.height * 0.4f, _popOver.frame.size.width, 20.0f)];
+        _userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                   _popOver.frame.size.height * 0.4f,
+                                                                   _popOver.frame.size.width,
+                                                                   20.0f)];
         [_userNameLabel setFont:[UIFont systemFontOfSize:20.0f]];
         [_userNameLabel setTextAlignment:NSTextAlignmentCenter];
         [_userNameLabel setTextColor:[UIColor lightGray]];
@@ -400,7 +439,10 @@
 
 - (UILabel *)finalScoreLabel {
     if (!_finalScoreLabel) {
-        _finalScoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _userNameLabel.frame.origin.y + _userNameLabel.frame.size.height + 20.0f, _popOver.frame.size.width, (kScreenHeight + kScreenWidth)/10.0f)];
+        _finalScoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     _userNameLabel.frame.origin.y + _userNameLabel.frame.size.height + 20.0f,
+                                                                     _popOver.frame.size.width,
+                                                                     (kScreenHeight + kScreenWidth)/10.0f)];
         [_finalScoreLabel setFont:[UIFont boldSystemFontOfSize:50.0f]];
         [_finalScoreLabel setTextAlignment:NSTextAlignmentCenter];
         [_finalScoreLabel setTextColor:[UIColor colorWithRed:0.98f green:0.99f blue:1.0f alpha:1.0f]];
@@ -416,7 +458,7 @@
 }
 
 - (void)animateFinalScore {
-    if (self.popOver.superview && self.popOver.alpha > 0) {
+    if (self.popOver.superview && self.popOver.alpha > 0.0f) {
         if (!self.finalColorsLightened) {
             NSMutableArray *darkColors = [[NSMutableArray alloc] init];
             NSMutableArray *tempColors = [[NSMutableArray alloc] init];
@@ -491,7 +533,7 @@
     }
     
     else {
-        NSLog(@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nError with colors\n\n\n\n\n- (void)changeLabelColor:(UILabel *)label toColor:(UIColor *)finalColor startingColor:(UIColor *)startingColor step:(int)step colors:(NSArray *)colors {\n\n\n\n\nI'm on step #%d and there are only %d colors in the array\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", step, (int)[colors count]);
+        NSLog(@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nError with colors\n\n\n\n\n- (void)changeLabelColor:(UILabel *)label toColor:(UIColor *)finalColor startingColor:(UIColor *)startingColor step:(int)step colors:(NSArray *)colors {\n\n\n\n\nI'm on step #%d and there are only %d colors in the array\n\n\n\n\n\n\n\n\n\n\n\n", step, (int)[colors count]);
     }
     
     NSMutableDictionary *arguments = [[NSMutableDictionary alloc] init];
@@ -526,7 +568,10 @@
             NSNumber *randomNumber = [numbers objectAtIndex:arc4random()%[numbers count]];
             [numbers removeObject:randomNumber];
             
-            DMSquare *square = [[DMSquare alloc] initWithFrame:CGRectMake(SQUARE_SIZE * row, SQUARE_SIZE * column, SQUARE_SIZE, SQUARE_SIZE)];
+            DMSquare *square = [[DMSquare alloc] initWithFrame:CGRectMake(SQUARE_SIZE * row,
+                                                                          SQUARE_SIZE * column,
+                                                                          SQUARE_SIZE,
+                                                                          SQUARE_SIZE)];
             [square setSquareValue:randomNumber];
             [square setDelegate:self];
             [square setRow:column];
@@ -589,14 +634,26 @@
 - (void)layoutScoreLabels {
     // portrait
     if (kScreenWidth < kScreenHeight) {
-        [_player1ScoreLabel setFrame:CGRectMake(0.0f, self.gridView.frame.size.height + kStatusBarHeight, kScreenWidth/2.0f, kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
-        [_player2ScoreLabel setFrame:CGRectMake(kScreenWidth/2.0f, self.gridView.frame.size.height + kStatusBarHeight, kScreenWidth/2.0f, kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
+        [_player1ScoreLabel setFrame:CGRectMake(0.0f,
+                                                self.gridView.frame.size.height + kStatusBarHeight,
+                                                kScreenWidth/2.0f,
+                                                kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
+        [_player2ScoreLabel setFrame:CGRectMake(kScreenWidth/2.0f,
+                                                self.gridView.frame.size.height + kStatusBarHeight,
+                                                kScreenWidth/2.0f,
+                                                kScreenHeight - (self.gridView.frame.size.height + kStatusBarHeight))];
     }
     
     // landscape
     else {
-        [_player1ScoreLabel setFrame:CGRectMake(self.gridView.frame.size.width, kStatusBarHeight, kScreenWidth - self.gridView.frame.size.width, kScreenHeight/2.0f)];
-        [_player2ScoreLabel setFrame:CGRectMake(self.gridView.frame.size.width, kStatusBarHeight + kScreenHeight/2.0f, kScreenWidth - self.gridView.frame.size.width, kScreenHeight/2.0f)];
+        [_player1ScoreLabel setFrame:CGRectMake(self.gridView.frame.size.width,
+                                                kStatusBarHeight,
+                                                kScreenWidth - self.gridView.frame.size.width,
+                                                kScreenHeight/2.0f)];
+        [_player2ScoreLabel setFrame:CGRectMake(self.gridView.frame.size.width,
+                                                kStatusBarHeight + kScreenHeight/2.0f,
+                                                kScreenWidth - self.gridView.frame.size.width,
+                                                kScreenHeight/2.0f)];
     }
 }
 
@@ -673,7 +730,11 @@
         if (self.player1AI) {
             otherButtonTitle = @"Turn AI Off";
         }
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%@", self.player1Name] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Forfeit" otherButtonTitles:otherButtonTitle, nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%@", self.player1Name]
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:@"Forfeit"
+                                                        otherButtonTitles:otherButtonTitle, nil];
         [actionSheet setTag:PLAYER_1_TAG];
         [actionSheet showInView:self.view];
     }
@@ -683,7 +744,11 @@
         if (self.player2AI) {
             otherButtonTitle = @"Turn AI Off";
         }
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%@", self.player2Name] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Forfeit" otherButtonTitles:otherButtonTitle, nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:self.player2Name
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:@"Forfeit"
+                                                        otherButtonTitles:otherButtonTitle, nil];
         [actionSheet setTag:PLAYER_2_TAG];
         [actionSheet showInView:self.view];
     }
@@ -692,7 +757,6 @@
 #pragma mark - Action Sheet Delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([actionSheet tag] == PLAYER_1_TAG) {
         switch (buttonIndex) {
                 // forfeit
@@ -706,7 +770,6 @@
             case 1:
                 self.player1AI = !self.player1AI;
                 [[DMProjectManager sharedProjectManager] setPlayer1AI:self.player1AI];
-                [defaults setObject:[NSNumber numberWithBool:self.player1AI] forKey:@"player1AI"];
                 [self updateViews];
                 break;
                 
@@ -733,7 +796,6 @@
             case 1:
                 self.player2AI = !self.player2AI;
                 [[DMProjectManager sharedProjectManager] setPlayer2AI:self.player2AI];
-                [defaults setObject:[NSNumber numberWithBool:self.player2AI] forKey:@"player2AI"];
                 [self updateViews];
                 break;
                 
@@ -902,7 +964,7 @@
         DMSquare *rightSquare = [[self.grid objectAtIndex:square.column + 1] objectAtIndex:square.row];
         [neighbors addObject:rightSquare];
     }
-
+    
     return neighbors;
 }
 
