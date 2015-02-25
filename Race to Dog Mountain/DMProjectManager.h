@@ -10,6 +10,15 @@
 
 @interface DMProjectManager : NSObject
 
+@property (nonatomic, strong) NSString *player1Name, *player2Name;
+@property int complexity;
+
 + (instancetype)sharedProjectManager;
+- (BOOL)isPlusGame;
+- (void)makeIsPlusGame:(BOOL)isPlusGame;
+- (BOOL)player1AI;
+- (BOOL)player2AI;
+- (void)setPlayer1AI:(BOOL)player1AI;
+- (void)setPlayer2AI:(BOOL)player2AI;
 
 @end

@@ -10,6 +10,8 @@
 #import "NSString+AppFunctions.h"
 
 #define SHOW_LOGS NO
+#define DESELECTED_BRIGHTNESS 0.4f
+#define SELECTED_BRIGHTNESS 0.75f
 
 @implementation UIColor (AppColors)
 
@@ -37,13 +39,177 @@
     return @[[self appColor1], [self appColor2], [self appColor3], [self appColor4], [self acidGreen], [self aero], [self africanViolet], [self airForceBlueRAF], [self alabamaCrimson], [self alloyOrange], [self almond], [self airSuperiorityBlue], [self aeroBlue]];
 }
 
+// modify colors
+
+- (UIColor *)lightenColor {
+    return [self lightenColorBy:0.5f];
+}
+
+- (UIColor *)lightenColorBy:(float)lightenAmount {
+    float redValue = [[self valueForKey:@"redComponent"] floatValue];
+    float greenValue = [[self valueForKey:@"greenComponent"] floatValue];
+    float blueValue = [[self valueForKey:@"blueComponent"] floatValue];
+    
+    float difference = 1.0f - redValue;
+    difference *= (1.0f - lightenAmount);
+    redValue += difference;
+    
+    difference = 1.0f - greenValue;
+    difference *= (1.0f - lightenAmount);
+    greenValue += difference;
+    
+    difference = 1.0f - blueValue;
+    difference *= (1.0f - lightenAmount);
+    blueValue += difference;
+    
+    UIColor *tempColor = [UIColor colorWithRed:redValue green:greenValue blue:blueValue alpha:1.0f];
+    
+    return tempColor;
+}
+
+- (UIColor *)darkenColor {
+    return [self darkenColorBy:0.5f];
+}
+
+- (UIColor *)darkenColorBy:(float)darkenAmount {
+    float redValue = [[self valueForKey:@"redComponent"] floatValue];
+    float greenValue = [[self valueForKey:@"greenComponent"] floatValue];
+    float blueValue = [[self valueForKey:@"blueComponent"] floatValue];
+    
+    redValue *= darkenAmount;
+    greenValue *= darkenAmount;
+    blueValue *= darkenAmount;
+    
+    UIColor *tempColor = [UIColor colorWithRed:redValue green:greenValue blue:blueValue alpha:1.0f];
+    
+    return tempColor;
+}
+
+- (UIColor *)makeBrightnessOf:(float)brightness {
+    float redValue = [[self valueForKey:@"redComponent"] floatValue];
+    float greenValue = [[self valueForKey:@"greenComponent"] floatValue];
+    float blueValue = [[self valueForKey:@"blueComponent"] floatValue];
+    
+    float overallBrightness = (redValue + greenValue + blueValue) / 3.0f;
+    
+    if (overallBrightness == brightness) {
+        return self;
+    }
+    
+    if (overallBrightness > brightness) {
+        if (brightness < 0.01f) {
+            return [UIColor colorWithRed:redValue * 0.03f green:greenValue * 0.03f blue:blueValue * 0.03f alpha:1.0f];
+        }
+        
+        while (overallBrightness > brightness) {
+            redValue *= 0.99f;
+            greenValue *= 0.99f;
+            blueValue *= 0.99f;
+            overallBrightness = (redValue + greenValue + blueValue) / 3.0f;
+        }
+    }
+    
+    else if (overallBrightness < brightness) {
+        if (brightness > 0.99f) {
+            return [UIColor colorWithRed:brightness green:brightness blue:brightness alpha:1.0f];
+        }
+        
+        while (overallBrightness < brightness) {
+            if (redValue <= 0.0f) redValue = 0.1f;
+            if (greenValue <= 0.0f) greenValue = 0.1f;
+            if (blueValue <= 0.0f) blueValue = 0.1f;
+            
+            redValue *= 1.01f;
+            greenValue *= 1.01f;
+            blueValue *= 1.01f;
+            
+            if (redValue > 1.0f || greenValue > 1.0f || blueValue > 1.0f) {
+                if (redValue > 1.0f) {
+                    float redOverflow = (float)((int)(redValue * 1000)%1000)/1000.0f;
+                    redValue = 1.0f;
+                    
+                    if (greenValue < 0.01f && blueValue > 0.01f && blueValue < 1.0f) {
+                        blueValue += redOverflow;
+                    }
+                    
+                    else if (greenValue > 0.01f && greenValue < 1.0f && blueValue < 0.01f) {
+                        greenValue += redOverflow;
+                    }
+                    
+                    else if (greenValue > 0.01f && blueValue > 0.01f) {
+                        greenValue += redOverflow * (greenValue / (greenValue + blueValue));
+                        blueValue += redOverflow * (blueValue / (greenValue + blueValue));
+                    }
+                    
+                    else {
+                        greenValue += redOverflow / 2.0f;
+                        blueValue += redOverflow / 2.0f;
+                    }
+                }
+                
+                if (greenValue > 1.0f) {
+                    float greenOverflow = (float)((int)(greenValue * 1000)%1000)/1000.0f;
+                    greenValue = 1.0f;
+                    
+                    if (redValue < 0.01f && blueValue > 0.01f && blueValue < 1.0f) {
+                        blueValue += greenOverflow;
+                    }
+                    
+                    else if (redValue > 0.01f && redValue < 1.0f && blueValue < 0.01f) {
+                        redValue += greenOverflow;
+                    }
+                    
+                    else if (redValue > 0.01f && blueValue > 0.01f) {
+                        redValue += greenOverflow * (redValue / (redValue + blueValue));
+                        blueValue += greenOverflow * (blueValue / (redValue + blueValue));
+                    }
+                    
+                    else {
+                        redValue += greenOverflow / 2.0f;
+                        blueValue += greenOverflow / 2.0f;
+                    }
+                }
+                
+                if (blueValue > 1.0f) {
+                    float blueOverflow = (float)((int)(blueValue * 1000)%1000)/1000.0f;
+                    blueValue = 1.0f;
+                    
+                    if (redValue < 0.01f && greenValue > 0.01f && greenValue < 1.0f) {
+                        greenValue += blueOverflow;
+                    }
+                    
+                    else if (redValue > 0.01f && redValue < 1.0f && greenValue < 0.01f) {
+                        redValue += blueOverflow;
+                    }
+                    
+                    else if (redValue > 0.01f && greenValue > 0.01f) {
+                        redValue += blueOverflow * (redValue / (redValue + greenValue));
+                        greenValue += blueOverflow * (greenValue / (redValue + greenValue));
+                    }
+                    
+                    else {
+                        redValue += blueOverflow/2.0f;
+                        greenValue += blueOverflow/2.0f;
+                    }
+                }
+            }
+            
+            overallBrightness = (redValue + greenValue + blueValue) / 3.0f;
+        }
+    }
+    
+    return [UIColor colorWithRed:redValue green:greenValue blue:blueValue alpha:1.0f];
+}
+
 // random colors
 
 + (UIColor *)randomPastelColor {
-    return [UIColor colorWithHue:arc4random()%255/255.0f saturation:(arc4random()%200 + 55)/255.0f brightness:((arc4random()%100) + 155.0f)/255.0f alpha:1.0f];
+    float randomBrightness = (9500.0f - (arc4random()%1000)) / 10000.0f;
+    return [[UIColor randomDarkColor] makeBrightnessOf:randomBrightness];
 }
 
 + (UIColor *)randomDarkColor {
+    [UIColor colorWithRed:arc4random()%50/255.0f + 10.0f green:arc4random()%50/255.0f + 10.0f blue:arc4random()%50/255.0f + 10.0f alpha:1.0f];
     return [UIColor colorWithHue:arc4random()%255/255.0f saturation:(arc4random()%200 + 55)/255.0f brightness:((arc4random()%200) + 55.0f)/555.0f alpha:1.0f];
 }
 
@@ -85,6 +251,79 @@
 
 + (NSString *)randomColorNameWithColor:(UIColor *)color {
     return [color randomColorName];
+}
+
++ (UIColor *)randomDarkColorFromString:(NSString *)string {
+    if (string.length == 0) {
+        return [UIColor black];
+    }
+    
+    NSDictionary *whiteList = @{@"Player 1" : [UIColor blue],
+                                @"Player 2" : [UIColor darkRed],
+                                @"Player 3" : [UIColor darkGreen],
+                                @"Player 4" : [UIColor gray],
+                                @"Player 5" : [UIColor purpleNavy],
+                                @"Player 6" : [UIColor orangeCrayola],
+                                @"Player 7" : [UIColor lightCoral],
+                                @"Player 8" : [UIColor seashell],
+                                @"Player 9" : [UIColor darkBlue],
+                                @"Girl" : [UIColor carmine],
+                                @"Boy" : [UIColor denim],
+                                @"Women" : [UIColor carmine],
+                                @"Men" : [UIColor denim],
+                                @"Nathan" : [UIColor royalBlue],
+                                @"Paul" : [UIColor darkGreenX11],
+                                @"Katie" : [UIColor calPolyGreen],
+                                @"Ryan" : [UIColor orangePeel]
+                                };
+    for (NSString *key in [whiteList allKeys]) {
+        if ([[string lowercaseString] isEqualToString:[key lowercaseString]]) {
+            return [[[whiteList objectForKey:key] makeBrightnessOf:SELECTED_BRIGHTNESS] makeBrightnessOf:DESELECTED_BRIGHTNESS];
+        }
+    }
+
+    for (NSString *key in [whiteList allKeys]) {
+        if ([[string lowercaseString] rangeOfString:[key lowercaseString]].location != NSNotFound) {
+            return [[whiteList objectForKey:key] makeBrightnessOf:DESELECTED_BRIGHTNESS];
+        }
+    }
+    
+    NSString *subString1 = [string substringToIndex:string.length/3];
+    NSString *subString2 = [string substringWithRange:NSMakeRange(string.length/3, string.length/3)];
+    NSString *subString3 = [string substringFromIndex:string.length * 0.667f];
+    
+    
+    int blueValueInt = [subString1 intValue];
+    for (int i = 0; i < subString1.length && subString1.length > 0; i++) {
+        char character = [subString1 characterAtIndex:i];
+        blueValueInt += (((int)character%2) + 1) * ((((int)character%12) + 1) * (((int)character%7) + 1)) * ((((int)character%12) + 1) * (((int)character%7) + 1));
+    }
+    
+    int redValueInt = [subString2 intValue];
+    for (int i = 0; i < subString2.length && subString2.length > 0; i++) {
+        char character = [subString2 characterAtIndex:i];
+        redValueInt *= (((int)character%2) + 1) * (((int)character%17) + 1) * (((int)character%8) + 1) * ((int)character%19);
+    }
+
+    int greenValueInt = [subString3 intValue];
+    for (int i = 0; i < subString3.length && subString3.length > 0; i++) {
+        char character = [subString3 characterAtIndex:i];
+        greenValueInt += (((int)character%2) + 1) * (((int)character%13) + 1) * (((int)character%11) + 1);
+    }
+    
+    redValueInt %= 30;
+    greenValueInt %= 40;
+    blueValueInt %= 50;
+    
+    redValueInt += 30;
+    greenValueInt += 45;
+    blueValueInt += 40;
+    
+    float redValue = (float)redValueInt/180.0f;
+    float greenValue = (float)greenValueInt/255.0f;
+    float blueValue = (float)blueValueInt/270.0f;
+    
+    return [UIColor colorWithRed:redValue green:greenValue blue:blueValue alpha:1.0f];
 }
 
 - (NSString *)randomColorName {
@@ -1084,7 +1323,224 @@
 }
 
 
+// Holiday Colors for Today
+// the first color in the returned array is the darkest color, the second is the lightest and each color after the second gets progressively lighter
++ (NSArray *)holidayColorsForToday {
+    NSDate *now = [NSDate date];
+    
+    return [UIColor holidayColorsForDate:now];
+}
 
++ (NSArray *)holidayColorsForDate:(NSDate *)date {
+    NSCalendar *gregorianCal = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [gregorianCal components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                                  fromDate: date];
+    
+    NSMutableArray *colors = [[NSMutableArray alloc] init];
+    
+    // all of this is just for calculating Easter...which might be a bit excessive
+    BOOL isEaster = NO;
+    if ([dateComps month] == 3 || [dateComps month] == 4) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        NSNumber *month = [defaults objectForKey:[NSString stringWithFormat:@"Month Of Easter In Year %ld", (long)[dateComps year]]];
+        NSNumber *day = [defaults objectForKey:[NSString stringWithFormat:@"Day Of Easter In Year %ld", (long)[dateComps year]]];
+        
+        if (month && day) {
+            NSLog(@"found the date of Easter in that year!");
+            if ([month intValue] == [dateComps month] && [day intValue] == [dateComps day]) {
+                isEaster = YES;
+            }
+        }
+        
+        else {
+            NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+            NSUInteger unitFlags = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
+            NSDateComponents *gregorianComps = [gregorian components:unitFlags fromDate:date];
+            [gregorianComps  setDay:21];
+            [gregorianComps setMonth:3];
+            NSDate *easterStartDate = [gregorianCal dateFromComponents:gregorianComps]; //March 21 for the year
+            
+            NSCalendar *chinese = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
+            // convert from gregorian calendar to chinese calendar
+            NSDateComponents *chineseComps = [chinese components:unitFlags fromDate:easterStartDate];
+            NSDate *easterStartDateChineseDate = [chinese dateFromComponents:chineseComps];
+            
+            NSDate *easterStartDateChineseDateTemp = easterStartDateChineseDate;
+            if ([chineseComps day] >=15) {            // 15 is the full month day in Chinese Calendar
+                NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+                [offsetComponents setMonth:1];                   // set the next month
+                easterStartDateChineseDateTemp = [chinese dateByAddingComponents:offsetComponents toDate:easterStartDateChineseDate options:0];
+            }
+            NSDateComponents *dayComponents = [chinese components:NSCalendarUnitDay fromDate:easterStartDateChineseDateTemp];
+            NSDateComponents *componentsToAdd = [[NSDateComponents alloc] init];
+            [componentsToAdd setDay: (15 - [dayComponents day])];
+            // find the next full month date
+            NSDate *springEquinoChineseDate = [chinese dateByAddingComponents:componentsToAdd toDate:easterStartDateChineseDateTemp options:0];
+            
+            NSDateComponents *diffComps = [chinese components:NSCalendarUnitDay fromDate:easterStartDateChineseDate toDate:springEquinoChineseDate options:0];
+            NSInteger diffDays = [diffComps day];
+            
+            // calculate the days difference from the March 21 to the next full month day
+            NSDateComponents *daysToAdd = [[NSDateComponents alloc] init];
+            [daysToAdd setDay:diffDays];
+            NSDate *springEquinoGregorianDate = [gregorian dateByAddingComponents:daysToAdd toDate:easterStartDate options:0];
+            
+            // convert the next full month date from ChineseDate to GregorianComps
+            NSDateComponents *springEquinoGregorianComps = [gregorian components:unitFlags fromDate:springEquinoGregorianDate];
+            
+            NSLog(@"springEquinoGregorian is %ld %ld %ld",(long)[springEquinoGregorianComps year], (long)[springEquinoGregorianComps month], (long)[springEquinoGregorianComps day]);
+            
+            NSInteger weekday = [springEquinoGregorianComps weekday];
+            NSDate *easterSundayGregorianDateTemp = springEquinoGregorianDate;
+            NSDateComponents *offsetGregorianComponents = [[NSDateComponents alloc] init];
+            if (weekday == 7) {
+                [offsetGregorianComponents setWeekOfMonth:2]; // If the full moon falls on a Sunday, Easter Day if the Sunday following
+            }
+            else {
+                [offsetGregorianComponents setWeekOfMonth:1];
+            }
+            easterSundayGregorianDateTemp = [gregorian dateByAddingComponents:offsetGregorianComponents toDate:springEquinoGregorianDate options:0];
+            NSDateComponents *weekdayComponents = [gregorian components:NSCalendarUnitWeekday fromDate:easterSundayGregorianDateTemp];
+            NSDateComponents *componentsToSubtract = [[NSDateComponents alloc] init];
+            [componentsToSubtract setDay: 0 - ([weekdayComponents weekday] - 1)];
+            NSDate *easterDate = [gregorian dateByAddingComponents:componentsToSubtract toDate:easterSundayGregorianDateTemp options:0];
+            
+            NSDateComponents *easterComps = [gregorian components:unitFlags fromDate:easterDate];
+            NSLog(@"Easter Date is %ld %ld %ld",(long)[easterComps year], (long)[easterComps month], (long)[easterComps day]);
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            
+            [defaults setObject:[NSNumber numberWithInt:(int)[easterComps month]] forKey:[NSString stringWithFormat:@"Month Of Easter In Year %ld", (long)[easterComps year]]];
+            [defaults setObject:[NSNumber numberWithInt:(int)[easterComps day]] forKey:[NSString stringWithFormat:@"Day Of Easter In Year %ld", (long)[easterComps year]]];
+            
+            if ([dateComps day] == [easterComps day] && [dateComps month] == [easterComps month]) {
+                isEaster = YES;
+            }
+        }
+    }
+    
+    if ([dateComps month] == 1) {
+        if (colors.count == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:16.0f/255.0f green:21.0f/255.0f blue:43.0f/255.0f alpha:1.0f], [UIColor colorWithRed:1.0f green:0.97f blue:206.0f/255.0f alpha:1.0f], [UIColor colorWithRed:45.0f/255.0f green:159.0f/255.0f blue:169.0f/255.0f alpha:1.0f], [UIColor colorWithRed:26.0f/255.0f green:81.0f/255.0f blue:86.0f/255.0f alpha:1.0f], [UIColor colorWithRed:15.0f/255.0f green:20.0f/255.0f blue:42.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 2) {
+        // Valentine's Day
+        if ([dateComps day] == 14) {
+            [colors addObjectsFromArray:@[[UIColor barnRed], [UIColor lavenderBlush], [UIColor cerise], [UIColor cardinal], [UIColor burgundy]]];
+        }
+        
+        else if ([dateComps day] == 13) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:89.0f/255.0f green:60.0f/255.0f blue:79.0f/255.0f alpha:1.0f], [UIColor colorWithRed:220.0f/255.0f green:72.0f/255.0f blue:105.0f/255.0f alpha:1.0f], [UIColor colorWithRed:186.0f/255.0f green:71.0f/255.0f blue:98.0f/255.0f alpha:1.0f], [UIColor colorWithRed:122.0f/255.0f green:63.0f/255.0f blue:85.0f/255.0f alpha:1.0f], [UIColor colorWithRed:154.0f/255.0f green:67.0f/255.0f blue:92.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 3) {
+        // St Patrick's Day
+        if ([dateComps day] == 17) {
+            [colors addObjectsFromArray:@[[UIColor darkGreen], [UIColor beige], [UIColor cadmiumGreen], [UIColor islamicGreen], [UIColor brunswickGreen]]];
+        }
+        
+        else if ([dateComps day] < 17) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:58.0f/255.0f green:53.0f/255.0f blue:59.0f/255.0f alpha:1.0f], [UIColor colorWithRed:244.0f/255.0f green:241.0f/255.0f blue:236.0f/255.0f alpha:1.0f], [UIColor colorWithRed:115.0f/255.0f green:168.0f/255.0f blue:114.0f/255.0f alpha:1.05], [UIColor colorWithRed:28.0f/255.0f green:139.0f/255.0f blue:56.0f/255.0f alpha:1.0f], [UIColor colorWithRed:71.0f/255.0f green:66.0f/255.0f blue:73.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 4) {
+        if (isEaster) {
+            [colors addObjectsFromArray:@[[UIColor deepCarmine], [UIColor colorWithRed:224.0f/255.0f green:201.0f/255.0f blue:230.0f/255.0f alpha:1.0f], [UIColor colorWithRed:240.0f/255.0f green:219.0f/255.0f blue:125.0f/255.0f alpha:1.0f], [UIColor colorWithRed:215.0f/255.0f green:130.0f/255.0f blue:177.0f/255.0f alpha:1.0f], [UIColor colorWithRed:246.0f/255.0f green:164.0f/255.0f blue:50.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 5) {
+        if (colors.count == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:27.0f/255.0f green:50.0f/255.0f blue:90.0f/255.0f alpha:1.0f], [UIColor colorWithRed:233.0f/255.0f green:242.0f/255.0f blue:249.0f alpha:1.0f], [UIColor colorWithRed:155.0f/255.0f green:197.0f/255.0f blue:230.0f/255.0f alpha:1.0f], [UIColor colorWithRed:61.0f/255.0f green:138.0f/255.0f blue:199.0f/255.0f alpha:1.0f], [UIColor colorWithRed:240.0f/255.0f green:108.0f/255.0f blue:83.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 6) {
+        if ([dateComps day] % 3 == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:63.0f/255.0f green:80.0f/255.0f blue:87.0f/255.0f alpha:1.0f], [UIColor colorWithRed:235.0f/255.0f green:214.0f/255.0f blue:99.0f/255.0f alpha:1.0f], [UIColor colorWithRed:253.0f/255.0f green:173.0f/255.0f blue:9.0f/255.0f alpha:1.0f], [UIColor colorWithRed:115.0f/255.0f green:176.0f/255.0f blue:113.0f/255.0f alpha:1.0f], [UIColor colorWithRed:26.0f/255.0f green:143.0f/255.0f blue:143.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 7) {
+        // 4th of July
+        if ([dateComps day] == 4) {
+            [colors addObjectsFromArray:@[[UIColor navy], [UIColor white], [UIColor skyBlue], [UIColor redColor], [UIColor darkRed]]];
+        }
+        
+        else if ([dateComps day] % 4 == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:16.0f/255.0f green:21.0f/255.0f blue:43.0f/255.0f alpha:1.0f], [UIColor colorWithRed:1.0f green:0.97f blue:206.0f/255.0f alpha:1.0f], [UIColor colorWithRed:45.0f/255.0f green:159.0f/255.0f blue:169.0f/255.0f alpha:1.0f], [UIColor colorWithRed:26.0f/255.0f green:81.0f/255.0f blue:86.0f/255.0f alpha:1.0f], [UIColor colorWithRed:15.0f/255.0f green:20.0f/255.0f blue:42.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 8) {
+        if ([dateComps day] % 5 == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:79.0f/255.0f green:64.0f/255.0f blue:35.0f/255.0f alpha:1.0f], [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f], [UIColor colorWithRed:207.0f/255.0f green:216.0f/255.0f blue:151.0f/255.0f alpha:1.0f], [UIColor colorWithRed:143.0f/255.0f green:206.0f/255.0f blue:203.0f/255.0f alpha:1.0f], [UIColor colorWithRed:132.0f/255.0f green:126.0f/255.0f blue:110.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 9) {
+        // special colors for my birthday, my parents' anniversary, last day of summer, and my cousin's anniversary
+        if ([dateComps day] % 7 == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:100.0f/255.0f green:118.0f/255.0f blue:99.0f/255.0f alpha:1.0f], [UIColor colorWithRed:233.0f/255.0f green:233.0f/255.0f blue:191.0f/255.0f alpha:1.0f], [UIColor colorWithRed:173.0f/255.0f green:180.0f/255.0f blue:132.0f/255.0f alpha:1.0f], [UIColor colorWithRed:218.0f/255.0f green:155.0f/255.0f blue:58.0f/255.0f alpha:1.0f], [UIColor colorWithRed:202.0f/255.0f green:102.0f/255.0f blue:1.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 10) {
+        // Halloween
+        if ([dateComps day] == 31) {
+            
+        }
+        
+        // special colors for my mom's birthday and Dave Price's Birthday
+        if ([dateComps day] == 5 || [dateComps day] == 12) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:116.0f/255.0f green:32.0f/255.0f blue:31.0f/255.0f alpha:1.0f], [UIColor colorWithRed:239.0f/255.0f green:231.0f/255.0f blue:166.0f/255.0f alpha:1.0f], [UIColor colorWithRed:206.0f/255.0f green:197.0f/255.0f blue:132.0f/255.0f alpha:1.0f], [UIColor colorWithRed:155.0f/255.0f green:132.0f/255.0f blue:84.0f/255.0f alpha:1.0f], [UIColor colorWithRed:79.0f/255.0f green:75.0f/255.0f blue:44.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 11) {
+        // special colors for Katie's birthday / veteran's day
+        if ([dateComps day] == 11) {
+            
+        }
+        
+        else if ([dateComps day] % 12 == 0) {
+            [colors addObjectsFromArray:@[[UIColor colorWithRed:40.0f/255.0f green:39.0f/255.0f blue:41.0f/255.0f alpha:1.0f], [UIColor colorWithRed:245.0f/255.0f green:152.0f/255.0f blue:31.0f/255.0f alpha:1.0f], [UIColor colorWithRed:219.0f/255.0f green:84.0f/255.0f blue:80.0f/255.0f alpha:1.0f], [UIColor colorWithRed:176.0f/255.0f green:13.0f/255.0f blue:34.0f/255.0f alpha:1.0f], [UIColor colorWithRed:65.0f/255.0f green:11.0f/255.0f blue:26.0f/255.0f alpha:1.0f]]];
+        }
+    }
+    
+    else if ([dateComps month] == 12) {
+        // Christmas colors for the 25 days leading up to and including Christmas
+        if ([dateComps day] <= 25) {
+            [colors addObjectsFromArray:@[[UIColor deepRed], [UIColor white], [UIColor greenPantone], [UIColor uPForestGreen], [UIColor rubyRed]]];
+        }
+        
+        // new year's eve colors!
+        else {
+            [colors addObjectsFromArray:@[[UIColor jet], [UIColor champagne], [UIColor silver], [UIColor darkGrayColor], [UIColor goldenrod]]];
+        }
+    }
+    
+    // add a default set of colors that I think look nice
+    if (colors.count == 0) {
+        [colors addObjectsFromArray:@[[UIColor colorWithRed:16.0f/255.0f green:21.0f/255.0f blue:43.0f/255.0f alpha:1.0f], [UIColor colorWithRed:1.0f green:0.97f blue:206.0f/255.0f alpha:1.0f], [UIColor colorWithRed:45.0f/255.0f green:159.0f/255.0f blue:169.0f/255.0f alpha:1.0f], [UIColor colorWithRed:26.0f/255.0f green:81.0f/255.0f blue:86.0f/255.0f alpha:1.0f], [UIColor colorWithRed:15.0f/255.0f green:20.0f/255.0f blue:42.0f/255.0f alpha:1.0f]]];
+    }
+    
+    if (colors.count > 0) {
+        // make sure that there are five colors
+        while (colors.count < 5) {
+            [colors addObject:[colors objectAtIndex:arc4random()%colors.count]];
+        }
+        
+        return colors;
+    }
+    
+    return nil;
+}
 
 
 // different sets of colors for 2 different players

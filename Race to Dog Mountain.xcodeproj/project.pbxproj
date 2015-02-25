@@ -13,6 +13,10 @@
 		9017A1471A671B3300361817 /* DMSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 9017A1461A671B3300361817 /* DMSquare.m */; };
 		9017A14D1A672B7000361817 /* UIColor+AppColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 9017A14C1A672B7000361817 /* UIColor+AppColors.m */; };
 		9017A1501A67352700361817 /* DMScoreLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9017A14F1A67352700361817 /* DMScoreLabel.m */; };
+		9068E4DB1A9BF94A00A4142A /* DMPlusGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9068E4DA1A9BF94A00A4142A /* DMPlusGameViewController.m */; };
+		9068E4DE1A9CD4A400A4142A /* DMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9068E4DD1A9CD4A400A4142A /* DMSettingsViewController.m */; };
+		9068E4E01A9CD9ED00A4142A /* Gear Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9068E4DF1A9CD9ED00A4142A /* Gear Icon.png */; };
+		9068E4E31A9CEC1E00A4142A /* DMMainScreenBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9068E4E21A9CEC1E00A4142A /* DMMainScreenBackgroundView.m */; };
 		908AFC6F1A6718AE0050EC0B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 908AFC6E1A6718AE0050EC0B /* main.m */; };
 		908AFC721A6718AE0050EC0B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 908AFC711A6718AE0050EC0B /* AppDelegate.m */; };
 		908AFC751A6718AE0050EC0B /* Race_to_Dog_Mountain.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 908AFC731A6718AE0050EC0B /* Race_to_Dog_Mountain.xcdatamodeld */; };
@@ -21,7 +25,6 @@
 		908AFC7D1A6718AE0050EC0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 908AFC7C1A6718AE0050EC0B /* Images.xcassets */; };
 		908AFC801A6718AE0050EC0B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 908AFC7E1A6718AE0050EC0B /* LaunchScreen.xib */; };
 		908AFC8C1A6718AE0050EC0B /* Race_to_Dog_MountainTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 908AFC8B1A6718AE0050EC0B /* Race_to_Dog_MountainTests.m */; };
-		90CE69161A77428800329658 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90CE69151A77428800329658 /* GameKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,13 @@
 		9017A14C1A672B7000361817 /* UIColor+AppColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+AppColors.m"; sourceTree = "<group>"; };
 		9017A14E1A67352700361817 /* DMScoreLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMScoreLabel.h; sourceTree = "<group>"; };
 		9017A14F1A67352700361817 /* DMScoreLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMScoreLabel.m; sourceTree = "<group>"; };
+		9068E4D91A9BF94A00A4142A /* DMPlusGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMPlusGameViewController.h; sourceTree = "<group>"; };
+		9068E4DA1A9BF94A00A4142A /* DMPlusGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMPlusGameViewController.m; sourceTree = "<group>"; };
+		9068E4DC1A9CD4A400A4142A /* DMSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMSettingsViewController.h; sourceTree = "<group>"; };
+		9068E4DD1A9CD4A400A4142A /* DMSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMSettingsViewController.m; sourceTree = "<group>"; };
+		9068E4DF1A9CD9ED00A4142A /* Gear Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Gear Icon.png"; path = "Icons/Gear Icon.png"; sourceTree = "<group>"; };
+		9068E4E11A9CEC1E00A4142A /* DMMainScreenBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMMainScreenBackgroundView.h; sourceTree = "<group>"; };
+		9068E4E21A9CEC1E00A4142A /* DMMainScreenBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMMainScreenBackgroundView.m; sourceTree = "<group>"; };
 		908AFC691A6718AE0050EC0B /* Race to Dog Mountain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Race to Dog Mountain.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		908AFC6D1A6718AE0050EC0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		908AFC6E1A6718AE0050EC0B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -61,7 +71,6 @@
 		908AFC851A6718AE0050EC0B /* Race to Dog MountainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Race to Dog MountainTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		908AFC8A1A6718AE0050EC0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		908AFC8B1A6718AE0050EC0B /* Race_to_Dog_MountainTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Race_to_Dog_MountainTests.m; sourceTree = "<group>"; };
-		90CE69151A77428800329658 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +78,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90CE69161A77428800329658 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +94,6 @@
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
 			children = (
-				90CE69151A77428800329658 /* GameKit.framework */,
 				908AFC6B1A6718AE0050EC0B /* Race to Dog Mountain */,
 				908AFC881A6718AE0050EC0B /* Race to Dog MountainTests */,
 				908AFC6A1A6718AE0050EC0B /* Products */,
@@ -109,8 +116,14 @@
 				908AFC711A6718AE0050EC0B /* AppDelegate.m */,
 				908AFC761A6718AE0050EC0B /* ViewController.h */,
 				908AFC771A6718AE0050EC0B /* ViewController.m */,
+				9068E4E11A9CEC1E00A4142A /* DMMainScreenBackgroundView.h */,
+				9068E4E21A9CEC1E00A4142A /* DMMainScreenBackgroundView.m */,
+				9068E4DC1A9CD4A400A4142A /* DMSettingsViewController.h */,
+				9068E4DD1A9CD4A400A4142A /* DMSettingsViewController.m */,
 				9017A1421A671AE500361817 /* DMGameViewController.h */,
 				9017A1431A671AE500361817 /* DMGameViewController.m */,
+				9068E4D91A9BF94A00A4142A /* DMPlusGameViewController.h */,
+				9068E4DA1A9BF94A00A4142A /* DMPlusGameViewController.m */,
 				9017A14E1A67352700361817 /* DMScoreLabel.h */,
 				9017A14F1A67352700361817 /* DMScoreLabel.m */,
 				9017A1451A671B3300361817 /* DMSquare.h */,
@@ -121,6 +134,7 @@
 				9017A14C1A672B7000361817 /* UIColor+AppColors.m */,
 				900C5C5A1A7302B100B2BBA7 /* NSString+AppFunctions.h */,
 				900C5C5B1A7302B100B2BBA7 /* NSString+AppFunctions.m */,
+				9068E4DF1A9CD9ED00A4142A /* Gear Icon.png */,
 				908AFC791A6718AE0050EC0B /* Main.storyboard */,
 				908AFC7C1A6718AE0050EC0B /* Images.xcassets */,
 				908AFC7E1A6718AE0050EC0B /* LaunchScreen.xib */,
@@ -208,7 +222,7 @@
 						DevelopmentTeam = 94E25AA8V5;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -242,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9068E4E01A9CD9ED00A4142A /* Gear Icon.png in Resources */,
 				908AFC7B1A6718AE0050EC0B /* Main.storyboard in Resources */,
 				908AFC801A6718AE0050EC0B /* LaunchScreen.xib in Resources */,
 				908AFC7D1A6718AE0050EC0B /* Images.xcassets in Resources */,
@@ -265,10 +280,13 @@
 				9017A1411A67197200361817 /* DMProjectManager.m in Sources */,
 				9017A14D1A672B7000361817 /* UIColor+AppColors.m in Sources */,
 				9017A1441A671AE500361817 /* DMGameViewController.m in Sources */,
+				9068E4DB1A9BF94A00A4142A /* DMPlusGameViewController.m in Sources */,
 				900C5C5C1A7302B100B2BBA7 /* NSString+AppFunctions.m in Sources */,
 				908AFC751A6718AE0050EC0B /* Race_to_Dog_Mountain.xcdatamodeld in Sources */,
+				9068E4DE1A9CD4A400A4142A /* DMSettingsViewController.m in Sources */,
 				908AFC721A6718AE0050EC0B /* AppDelegate.m in Sources */,
 				9017A1501A67352700361817 /* DMScoreLabel.m in Sources */,
+				9068E4E31A9CEC1E00A4142A /* DMMainScreenBackgroundView.m in Sources */,
 				9017A1471A671B3300361817 /* DMSquare.m in Sources */,
 				908AFC781A6718AE0050EC0B /* ViewController.m in Sources */,
 				908AFC6F1A6718AE0050EC0B /* main.m in Sources */,
@@ -395,6 +413,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Race to Dog Mountain/Info.plist";
@@ -409,6 +428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Race to Dog Mountain/Info.plist";

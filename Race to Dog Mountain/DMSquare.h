@@ -22,5 +22,10 @@
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property int row, column;
 @property (assign) id <DMSquareDelegate> delegate;
+@property (nonatomic, strong) UIColor *whiteColor;
+@property BOOL selected, isPlusGame;
+
+- (void)makeSquareSelected:(BOOL)selected;
+- (void)printSquareDetails;
 
 @end

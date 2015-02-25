@@ -23,6 +23,12 @@
 
 + (NSArray *)appColors;
 
+// modify colors
+- (UIColor *)lightenColor;
+- (UIColor *)lightenColorBy:(float)lightenAmount;
+- (UIColor *)darkenColor;
+- (UIColor *)darkenColorBy:(float)darkenAmount;
+- (UIColor *)makeBrightnessOf:(float)brightness;
 
 // random colors
 + (UIColor *)randomPastelColor;
@@ -31,6 +37,7 @@
 + (NSString *)randomColorName;
 - (NSString *)randomColorName;
 + (NSString *)randomColorNameWithColor:(UIColor *)color;
++ (UIColor *)randomDarkColorFromString:(NSString *)string;
 
 // shades of colors
 + (NSDictionary *)whiteShades;
@@ -45,6 +52,10 @@
 + (NSDictionary *)cyanShades;
 + (NSDictionary *)blueShades;
 + (NSDictionary *)violetShades;
+
+// Holiday Colors
++ (NSArray *)holidayColorsForToday;
++ (NSArray *)holidayColorsForDate:(NSDate *)date;
 
 // sets of colors that are different for two players
 + (NSArray *)player1Colors;

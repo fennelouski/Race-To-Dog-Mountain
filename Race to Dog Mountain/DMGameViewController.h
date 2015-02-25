@@ -25,6 +25,8 @@
 @property (nonatomic, strong) DMScoreLabel *player1ScoreLabel, *player2ScoreLabel;
 @property BOOL player1AI, player2AI, storedWin;
 @property int numberOfRows;
+@property BOOL nightMode;
+@property (nonatomic, strong) UIColor *whiteColor;
 
 @property (nonatomic, strong) UIToolbar *headerToolbar;
 
@@ -34,7 +36,8 @@
 @property (nonatomic, strong) UIButton *popOverBackButton;
 @property (nonatomic, strong) UILabel *userNameLabel, *finalScoreLabel;
 @property (nonatomic, strong) NSArray *colors;
-@property BOOL isGameOver;
+@property BOOL isGameOver, finalColorsLightened;
+@property float finalAnimationTime;
 
 
 @end

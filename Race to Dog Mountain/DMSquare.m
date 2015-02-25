@@ -15,31 +15,41 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-        [self.layer setBorderColor:[UIColor randomPastelColor].CGColor];
-        [self.layer setBorderWidth:0.0f];
         [self addGestureRecognizer:self.tap];
         [self addSubview:self.label];
+        self.whiteColor = [UIColor whiteColor];
     }
     
     return self;
 }
 
 - (void)layoutSubviews {
+    [self.label setTextColor:self.whiteColor];
+    
     if (self.label.superview && self.squareValue && [self.squareValue intValue] > 0) {
         [self.label setText:[NSString stringWithFormat:@"%d", [self.squareValue intValue]]];
     }
     
     else if (self.label.superview) {
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionAutoreverse animations:^{
-            [self setBackgroundColor:[UIColor whiteColor]];
+            [self setBackgroundColor:self.whiteColor];
         }completion:^(BOOL finished){
             [UIView animateWithDuration:0.2f animations:^{
-                [self setBackgroundColor:[UIColor clearColor]];
+                if (self.isPlusGame) [self setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.7f]];
+                else [self setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.0f]];
                 [self.label setAlpha:0.0f];
             }completion:^(BOOL finished){
                 [self.label removeFromSuperview];
             }];
         }];
+    }
+}
+
+- (void)makeSquareSelected:(BOOL)selected {
+    self.selected = selected;
+    
+    if ([self.squareValue intValue] == 0) {
+        return;
     }
 }
 
@@ -62,7 +72,7 @@
         
         [_label setFont:[UIFont boldSystemFontOfSize:fontSize]];
         [_label setTextAlignment:NSTextAlignmentCenter];
-        [_label setTextColor:[UIColor lightTextColor]];
+        [_label setTextColor:self.whiteColor];
     }
     
     return _label;
@@ -82,6 +92,15 @@
     else {
         NSLog(@"A selected square does not have its delegate set!");
     }
+}
+
+#pragma mark - Print Square
+
+- (void)printSquareDetails {
+    NSMutableString *squareDetailsString = [[NSMutableString alloc] init];
+    [squareDetailsString appendFormat:@"\nRow: %d\t\tColumn: %d", self.row, self.column];
+    [squareDetailsString appendFormat:@"\n%@", self.squareValue];
+    NSLog(@"%@", squareDetailsString);
 }
 
 @end

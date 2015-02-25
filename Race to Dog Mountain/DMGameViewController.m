@@ -8,6 +8,7 @@
 
 #import "DMGameViewController.h"
 #import "UIColor+AppColors.h"
+#import "DMProjectManager.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kStatusBarHeight (([[UIApplication sharedApplication] statusBarFrame].size.height == 20.0f) ? 20.0f : (([[UIApplication sharedApplication] statusBarFrame].size.height == 40.0f) ? 20.0f : 0.0f))
@@ -29,15 +30,89 @@
         self.player1Colors = [[NSMutableArray alloc] init];
         self.player2Colors = [[NSMutableArray alloc] init];
         
-        [self.player1Colors addObjectsFromArray:@[[UIColor darkBlue], [UIColor darkBrown], [UIColor darkBrownTangelo], [UIColor darkByzantium], [UIColor darkCandyAppleRed], [UIColor darkCerulean], [UIColor darkChestnut], [UIColor darkCoral], [UIColor darkCyan], [UIColor darkElectricBlue], [UIColor darkGoldenrod], [UIColor darkSkyBlue], [UIColor darkSlateBlue], [UIColor darkImperialBlue], [UIColor darkImperialBlue2], [UIColor darkMidnightBlue], [UIColor frenchPuce], [UIColor darkPowderBlue], [UIColor oxfordBlue], [UIColor persianIndigo], [UIColor royalBlue], [UIColor sealBrown], [UIColor spaceCadet], [UIColor yankeesBlue], [UIColor zinnwalditeBrown]]];
-        [self.player2Colors addObjectsFromArray:@[[UIColor darkGrayColor], [UIColor crimsonRed], [UIColor darkGreen], [UIColor mediumJungleGreen], [UIColor darkJungleGreen], [UIColor darkLava], [UIColor darkLavender], [UIColor darkLiver], [UIColor darkLiverHorses], [UIColor darkMagenta], [UIColor deepRed], [UIColor darkMossGreen], [UIColor darkOliveGreen], [UIColor darkOrange], [UIColor darkOrchid], [UIColor darkPastelGreen], [UIColor darkPastelPurple], [UIColor darkPastelRed], [UIColor darkPink], [UIColor darkPuce], [UIColor darkPurple], [UIColor darkRaspberry], [UIColor darkRed], [UIColor darkScarlet], [UIColor eerieBlack], [UIColor darkSienna], [UIColor darkSlateGray], [UIColor darkSpringGreen], [UIColor charcoal], [UIColor forestGreenTraditional], [UIColor darkTaupe], [UIColor darkTerraCotta], [UIColor darkTextColor], [UIColor darkViolet], [UIColor charlestonGreen], [UIColor dartmouthGreen]]];
+        [self.player1Colors addObjectsFromArray:@[[UIColor darkBlue],
+                                                  [UIColor darkBrown],
+                                                  [UIColor darkBrownTangelo],
+                                                  [UIColor darkByzantium],
+                                                  [UIColor darkCandyAppleRed],
+                                                  [UIColor darkCerulean],
+                                                  [UIColor darkChestnut],
+                                                  [UIColor darkCoral],
+                                                  [UIColor darkCyan],
+                                                  [UIColor darkElectricBlue],
+                                                  [UIColor darkGoldenrod],
+                                                  [UIColor darkOrange],
+                                                  [UIColor darkSkyBlue],
+                                                  [UIColor darkSlateBlue],
+                                                  [UIColor darkImperialBlue],
+                                                  [UIColor darkImperialBlue2],
+                                                  [UIColor darkMidnightBlue],
+                                                  [UIColor frenchPuce],
+                                                  [UIColor oxfordBlue],
+                                                  [UIColor persianIndigo],
+                                                  [UIColor royalBlue],
+                                                  [UIColor sealBrown],
+                                                  [UIColor spaceCadet],
+                                                  [UIColor yankeesBlue],
+                                                  [UIColor zinnwalditeBrown]]];
+        [self.player2Colors addObjectsFromArray:@[[UIColor crimsonRed],
+                                                  [UIColor darkGreen],
+                                                  [UIColor mediumJungleGreen],
+                                                  [UIColor darkJungleGreen],
+                                                  [UIColor darkLava],
+                                                  [UIColor darkLavender],
+                                                  [UIColor darkLiver],
+                                                  [UIColor darkLiverHorses],
+                                                  [UIColor darkMagenta],
+                                                  [UIColor deepRed],
+                                                  [UIColor darkMossGreen],
+                                                  [UIColor darkOliveGreen],
+                                                  [UIColor darkOrchid],
+                                                  [UIColor darkPuce],
+                                                  [UIColor darkPurple],
+                                                  [UIColor darkRed],
+                                                  [UIColor darkScarlet],
+                                                  [UIColor eerieBlack],
+                                                  [UIColor darkSienna],
+                                                  [UIColor darkSlateGray],
+                                                  [UIColor darkSpringGreen],
+                                                  [UIColor charcoal],
+                                                  [UIColor forestGreenTraditional],
+                                                  [UIColor darkTerraCotta],
+                                                  [UIColor darkViolet],
+                                                  [UIColor charlestonGreen],
+                                                  [UIColor dartmouthGreen]]];
+        
+        self.finalAnimationTime = 0.35f;
     }
     
     return self;
 }
 
 - (void)viewDidLoad {
-    self.numberOfRows = (self.numberOfRows/2) * 2;
+    if (self.player1Colors.count > 0) {
+        [self setPlayer1Color:[self.player1Colors objectAtIndex:arc4random()%self.player1Colors.count]];
+    }
+    
+    else {
+        NSLog(@"no colors for player 1");
+        [self setPlayer1Color:[UIColor randomDarkColor]];
+    }
+    
+    if (self.player2Colors.count > 0) {
+        [self setPlayer2Color:[self.player2Colors objectAtIndex:arc4random()%self.player2Colors.count]];
+    }
+    
+    else {
+        NSLog(@"no colors for player 2");
+        [self setPlayer2Color:[UIColor randomDarkColor]];
+    }
+    
+    [self setUpColors];
+
+    if (self.numberOfRows < 6) {
+        self.numberOfRows = ((self.numberOfRows + 1)/2) * 2;
+    }
     
     if (self.player1Name.length == 0) {
         self.player1Name = @"Player 1";
@@ -52,8 +127,7 @@
     [self.view setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:self.gridView];
     [self setupGrid];
-    [self setPlayer1Color:[self.player1Colors objectAtIndex:arc4random()%self.player1Colors.count]];
-    [self setPlayer2Color:[self.player2Colors objectAtIndex:arc4random()%self.player2Colors.count]];
+    
     [self.gridView insertSubview:self.selectedView atIndex:0];
     [self.view addSubview:self.player1ScoreLabel];
     [self.view addSubview:self.player2ScoreLabel];
@@ -61,12 +135,14 @@
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self  selector:@selector(updateViews)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+    [nc addObserver:self selector:@selector(updateViews) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
     
     [self updateViews];
 }
 
 - (void)updateViews {
     float animationTime = 1.5f/self.numberOfRows;
+    if (animationTime > 0.35f) animationTime = 0.35f;
     [UIView animateWithDuration:animationTime animations:^{
         [_gridView setFrame:CGRectMake(0.0f, kStatusBarHeight, self.numberOfRows * SQUARE_SIZE + BUFFER, self.numberOfRows * SQUARE_SIZE + BUFFER)];
         
@@ -91,8 +167,7 @@
         [_userNameLabel setFont:[UIFont boldSystemFontOfSize:kScreenHeight/22.0f]];
         [_popOverGameOverLabel setFont:[UIFont boldSystemFontOfSize:kScreenWidth/FONT_SCALE]];
         [_headerToolbar setFrame:CGRectMake(0.0f, 0.0f, kScreenWidth, kStatusBarHeight)];
-    }completion:^(BOOL finished){
-
+    } completion:^(BOOL finished){
         if ([self checkForEndGame]) {
             if (!self.storedWin) {
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -162,6 +237,48 @@
             [self performSelector:@selector(player2AIMove) withObject:self afterDelay:animationTime];
         }
     }];
+    
+    if ((self.player1ScoreLabel.fontSize > 0 && !self.player1ScoreLabel.fontSizeOverwritten) || (self.player2ScoreLabel.fontSize > 0 && !self.player2ScoreLabel.fontSizeOverwritten)) {
+        float fontSize = self.player1ScoreLabel.fontSize;
+        if (self.player2ScoreLabel.fontSize < fontSize) {
+            fontSize = self.player2ScoreLabel.fontSize;
+        }
+        
+        [self.player1ScoreLabel setFontSize:fontSize];
+        [self.player1ScoreLabel setFontSizeOverwritten:YES];
+        [self.player1ScoreLabel layoutSubviews];
+        [self.player2ScoreLabel setFontSize:fontSize];
+        [self.player2ScoreLabel setFontSizeOverwritten:YES];
+        [self.player2ScoreLabel layoutSubviews];
+    }
+}
+
+- (void)setUpColors {
+    float darkValue = 0.05f;
+    float mediumValue = 0.35f;
+    if (self.nightMode) {
+        if (self.player1Colors.count > 0) {
+            self.player1Color = [self.player1Color makeBrightnessOf:darkValue];
+        }
+        
+        if (self.player2Colors.count > 0) {
+            self.player2Color = [self.player2Color makeBrightnessOf:darkValue];
+        }
+        
+        self.whiteColor = [[UIColor isabelline] makeBrightnessOf:0.55f];
+    }
+    
+    else {
+        if (self.player1Colors.count > 0) {
+            self.player1Color = [self.player1Color makeBrightnessOf:mediumValue];
+        }
+        
+        if (self.player2Colors.count > 0) {
+            self.player2Color = [self.player2Color makeBrightnessOf:mediumValue];
+        }
+        
+        self.whiteColor = [UIColor white];
+    }
 }
 
 #pragma mark - Subviews
@@ -179,7 +296,7 @@
     if (!_selectedView) {
         _selectedView = [[UIView alloc] initWithFrame:CGRectZero];
         [_selectedView.layer setBorderWidth:BUFFER*2.0f];
-        [_selectedView.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [_selectedView.layer setBorderColor:self.whiteColor.CGColor];
     }
     
     return _selectedView;
@@ -192,6 +309,7 @@
         [_player1ScoreLabel setBackgroundColor:self.player1Color];
         [_player1ScoreLabel setDelegate:self];
         [_player1ScoreLabel setPlayer:0];
+        [_player1ScoreLabel setWhiteColor:self.whiteColor];
     }
     
     return _player1ScoreLabel;
@@ -204,6 +322,7 @@
         [_player2ScoreLabel setBackgroundColor:self.player2Color];
         [_player2ScoreLabel setDelegate:self];
         [_player2ScoreLabel setPlayer:1];
+        [_player2ScoreLabel setWhiteColor:self.whiteColor];
     }
     
     return _player2ScoreLabel;
@@ -212,6 +331,8 @@
 - (UIToolbar *)headerToolbar {
     if (!_headerToolbar) {
         _headerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kScreenWidth, kStatusBarHeight)];
+        [_headerToolbar setBarTintColor:[UIColor clearColor]];
+        [_headerToolbar setAlpha:0.0f];
     }
     
     return _headerToolbar;
@@ -240,7 +361,7 @@
         _popOverGameOverLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, _popOver.frame.size.height/5, _popOver.frame.size.width, kScreenWidth/FONT_SCALE)];
         [_popOverGameOverLabel setText:@"Game Over"];
         [_popOverGameOverLabel setTextAlignment:NSTextAlignmentCenter];
-        [_popOverGameOverLabel setTextColor:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+        [_popOverGameOverLabel setTextColor:[UIColor colorWithRed:0.98f green:0.99f blue:1.0f alpha:1.0f]];
         [_popOverGameOverLabel setFont:[UIFont boldSystemFontOfSize:kScreenWidth/FONT_SCALE]];
     }
     
@@ -251,7 +372,7 @@
     if (!_popOverBackButton) {
         _popOverBackButton = [[UIButton alloc] initWithFrame:CGRectMake(_popOver.frame.size.width/4, _popOver.frame.size.height*4/5, _popOver.frame.size.width/2, 30.0f)];
         [_popOverBackButton setTitle:@"Back" forState:UIControlStateNormal];
-        [_popOverBackButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_popOverBackButton setTitleColor:[UIColor colorWithRed:0.98f green:0.99f blue:1.0f alpha:1.0f] forState:UIControlStateNormal];
         [_popOverBackButton addTarget:self action:@selector(backButtonTouched) forControlEvents:UIControlEventTouchUpInside];
         float fontSize = (kScreenWidth + kScreenHeight)/40.0f;
         if (fontSize > 40.0f) {
@@ -268,7 +389,7 @@
         _userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _popOver.frame.size.height * 0.4f, _popOver.frame.size.width, 20.0f)];
         [_userNameLabel setFont:[UIFont systemFontOfSize:20.0f]];
         [_userNameLabel setTextAlignment:NSTextAlignmentCenter];
-        [_userNameLabel setTextColor:[UIColor whiteColor]];
+        [_userNameLabel setTextColor:[UIColor lightGray]];
     }
     
     return _userNameLabel;
@@ -279,7 +400,7 @@
         _finalScoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _userNameLabel.frame.origin.y + _userNameLabel.frame.size.height + 20.0f, _popOver.frame.size.width, (kScreenHeight + kScreenWidth)/10.0f)];
         [_finalScoreLabel setFont:[UIFont boldSystemFontOfSize:50.0f]];
         [_finalScoreLabel setTextAlignment:NSTextAlignmentCenter];
-        [_finalScoreLabel setTextColor:[UIColor whiteColor]];
+        [_finalScoreLabel setTextColor:[UIColor colorWithRed:0.98f green:0.99f blue:1.0f alpha:1.0f]];
     }
     
     return _finalScoreLabel;
@@ -293,13 +414,95 @@
 
 - (void)animateFinalScore {
     if (self.popOver.superview && self.popOver.alpha > 0) {
-        int randomIndex = arc4random() % self.colors.count;
-        [UIView animateWithDuration:1.0f animations:^{
-            [self.finalScoreLabel setTextColor:[self.colors objectAtIndex:randomIndex]];
-        }];
+        if (!self.finalColorsLightened) {
+            NSMutableArray *darkColors = [[NSMutableArray alloc] init];
+            NSMutableArray *tempColors = [[NSMutableArray alloc] init];
+            
+            if (self.player1Score > self.player2Score) {
+                [darkColors addObjectsFromArray:self.player1Colors];
+            }
+            
+            else if (self.player1Score < self.player2Score) {
+                [darkColors addObjectsFromArray:self.player2Colors];
+            }
+            
+            else {
+                [darkColors addObjectsFromArray:self.player1Colors];
+                [darkColors addObjectsFromArray:self.player2Colors];
+            }
+            
+            for (UIColor *darkColor in darkColors) {
+                [tempColors addObject:[darkColor lightenColorBy:0.5f]];
+            }
+            
+            self.colors = tempColors;
+            
+            self.finalColorsLightened = YES;
+        }
         
-        [self performSelector:@selector(animateFinalScore) withObject:self afterDelay:1.1f];
+        if (self.colors.count > 0) {
+            int randomIndex = arc4random() % self.colors.count;
+            
+            if (self.colors.count > 0 && self.colors.count > randomIndex) {
+                [self changeLabelColor:self.finalScoreLabel toColor:[self.colors objectAtIndex:randomIndex] startingColor:self.finalScoreLabel.textColor step:0 colors:nil];
+            }
+            
+            [self performSelector:@selector(animateFinalScore) withObject:self afterDelay:self.finalAnimationTime + 0.1f];
+        }
     }
+}
+
+- (void)changeLabelColor:(UILabel *)label toColor:(UIColor *)finalColor startingColor:(UIColor *)startingColor step:(int)step colors:(NSArray *)colors {
+    int numberOfSteps = 50;
+    if (self.finalAnimationTime * 30.0f > numberOfSteps) numberOfSteps = self.finalAnimationTime * 30.0f;
+    
+    if (!colors || [colors count] + 1 < numberOfSteps) {
+        NSMutableArray *tempColors = [[NSMutableArray alloc] initWithCapacity:numberOfSteps];
+        
+        float startingRedValue = [[startingColor valueForKey:@"redComponent"] floatValue];
+        float startingGreenValue = [[startingColor valueForKey:@"greenComponent"] floatValue];
+        float startingBlueValue = [[startingColor valueForKey:@"blueComponent"] floatValue];
+        float finalRedValue = [[finalColor valueForKey:@"redComponent"] floatValue];
+        float finalGreenValue = [[finalColor valueForKey:@"greenComponent"] floatValue];
+        float finalBlueValue = [[finalColor valueForKey:@"blueComponent"] floatValue];
+        
+        for (int i = 0; i < numberOfSteps; i++) {
+            float finalTrueRedValue = (startingRedValue * (numberOfSteps - i) + finalRedValue * i) / numberOfSteps;
+            float finalTrueGreenValue = (startingGreenValue * (numberOfSteps - i) + finalGreenValue * i) / numberOfSteps;
+            float finalTrueBlueValue = (startingBlueValue * (numberOfSteps - i) + finalBlueValue * i) / numberOfSteps;
+            
+            [tempColors addObject:[UIColor colorWithRed:finalTrueRedValue green:finalTrueGreenValue blue:finalTrueBlueValue alpha:1.0f]];
+        }
+        
+        colors = tempColors;
+    }
+    
+    if (step >= numberOfSteps || step > [colors count]) {
+        [label setTextColor:finalColor];
+        self.finalAnimationTime += 0.01f;
+        return;
+    }
+    
+    if (step < [colors count]) {
+        [label setTextColor:[colors objectAtIndex:step]];
+    }
+    
+    else {
+        NSLog(@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nI'm on step #%d and there are only %d colors in the array\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", step, (int)[colors count]);
+    }
+    
+    NSMutableDictionary *arguments = [[NSMutableDictionary alloc] init];
+    [arguments setObject:label forKey:@"label"];
+    [arguments setObject:finalColor forKey:@"finalColor"];
+    [arguments setObject:startingColor forKey:@"startingColor"];
+    [arguments setObject:[NSNumber numberWithInt:step + 1] forKey:@"step"];
+    [arguments setObject:colors forKey:@"colors"];
+    
+    [self performSelector:@selector(delayedLabelAnimation:) withObject:arguments afterDelay:self.finalAnimationTime/numberOfSteps];
+}
+
+- (void)delayedLabelAnimation:(NSDictionary *)arguments {
+    [self changeLabelColor:[arguments objectForKey:@"label"] toColor:[arguments objectForKey:@"finalColor"] startingColor:[arguments objectForKey:@"startingColor"] step:[[arguments objectForKey:@"step"] intValue] colors:[arguments objectForKey:@"colors"]];
 }
 
 #pragma mark - Setup
@@ -315,7 +518,7 @@
 
     for (int row = 0; row < self.numberOfRows; row++) {
         NSMutableArray *rowArray = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
-        for (int column = 0; column < self.numberOfRows; column++) {
+        for (int column = 0; column < self.numberOfRows && numbers.count > 0; column++) {
             NSNumber *randomNumber = [numbers objectAtIndex:arc4random()%[numbers count]];
             [numbers removeObject:randomNumber];
             
@@ -324,6 +527,7 @@
             [square setDelegate:self];
             [square setRow:column];
             [square setColumn:row];
+            [square setWhiteColor:self.whiteColor];
             [rowArray addObject:square];
         }
         
@@ -336,12 +540,18 @@
     
     if (self.playerTurn == 1) {
         self.currentColumn = arc4random()%self.numberOfRows;
-        [self.selectedView setFrame:CGRectMake(SQUARE_SIZE * self.currentColumn - BUFFER, - BUFFER, SQUARE_SIZE + BUFFER, SQUARE_SIZE * self.numberOfRows + BUFFER)];
+        [self.selectedView setFrame:CGRectMake(SQUARE_SIZE * self.currentColumn + BUFFER*2.0f,
+                                               BUFFER/2.0f,
+                                               SQUARE_SIZE + BUFFER*2.0f,
+                                               SQUARE_SIZE * self.numberOfRows + BUFFER)];
     }
     
     else {
         self.currentRow = arc4random()%self.numberOfRows;
-        [self.selectedView setFrame:CGRectMake(-BUFFER, SQUARE_SIZE * self.currentRow - BUFFER, SQUARE_SIZE * self.numberOfRows + BUFFER, SQUARE_SIZE + BUFFER)];
+        [self.selectedView setFrame:CGRectMake(BUFFER*2.0f,
+                                               SQUARE_SIZE * self.currentRow + BUFFER/2.0f,
+                                               SQUARE_SIZE * self.numberOfRows - BUFFER,
+                                               SQUARE_SIZE + BUFFER)];
     }
     
     
@@ -359,15 +569,47 @@
 }
 
 - (void)layoutTurnSelector {
+    // player 1
     if (self.playerTurn == 0) {
         [self.gridView setBackgroundColor:self.player1Color];
-        [self.selectedView setFrame:CGRectMake(0.0f - BUFFER, SQUARE_SIZE * self.currentRow - BUFFER, self.gridView.frame.size.width, SQUARE_SIZE + BUFFER*2)];
+        
+        // portrait
+        if (kScreenHeight > kScreenWidth) {
+            [self.selectedView setFrame:CGRectMake(0.0f,
+                                                   SQUARE_SIZE * self.currentRow,
+                                                   self.gridView.frame.size.width - BUFFER,
+                                                   SQUARE_SIZE + BUFFER)];
+        }
+        
+        // landscape
+        else {
+            [self.selectedView setFrame:CGRectMake(0.0f,
+                                                   SQUARE_SIZE * self.currentRow,
+                                                   self.gridView.frame.size.width,
+                                                   SQUARE_SIZE)];
+        }
         [self.view setBackgroundColor:self.player1Color];
     }
     
+    // player 2
     else if (self.playerTurn == 1) {
         [self.gridView setBackgroundColor:self.player2Color];
-        [self.selectedView setFrame:CGRectMake(SQUARE_SIZE * self.currentColumn - BUFFER, 0.0f - BUFFER, SQUARE_SIZE + BUFFER*2, self.gridView.frame.size.height)];
+        
+        // portrait
+        if (kScreenHeight > kScreenWidth) {
+            [self.selectedView setFrame:CGRectMake(SQUARE_SIZE * self.currentColumn,
+                                                   0.0f,
+                                                   SQUARE_SIZE,
+                                                   self.gridView.frame.size.height)];
+        }
+        
+        // landscape
+        else {
+            [self.selectedView setFrame:CGRectMake(SQUARE_SIZE * self.currentColumn,
+                                                   0.0f,
+                                                   SQUARE_SIZE + BUFFER,
+                                                   self.gridView.frame.size.height - BUFFER)];
+        }
         [self.view setBackgroundColor:self.player2Color];
     }
 }
@@ -389,21 +631,35 @@
 #pragma mark - Square delegate
 
 - (void)squareTouched:(NSObject *)squareTouched {
-    DMSquare *square = (DMSquare *)squareTouched;
+    if (self.player1AI && self.playerTurn == 0) {
+        return;
+    }
+    
+    if (self.player2AI && self.playerTurn == 1) {
+        return;
+    }
+    
+    [self playSquare:(DMSquare *)squareTouched];
+}
+
+- (void)playSquare:(DMSquare *)square {
+    if (self.isGameOver) {
+        return;
+    }
     
     if ((self.playerTurn == 1 && self.currentColumn != square.column)) {
-        NSLog(@"Player 1 columns aren't the same");
+        NSLog(@"Player 1 columns aren't the same, can't play square");
         return;
     }
     
     else if ((self.playerTurn == 0 && self.currentRow != square.row)) {
-        NSLog(@"Player 2 rows aren't the same");
+        NSLog(@"Player 2 rows aren't the same, can't play square");
         return;
     }
     
     if (self.playerTurn == 0) {
         self.player1Score += [[square squareValue] intValue];
-        [self.player1ScoreLabel setScore:self.player1Score];
+        [self.player1ScoreLabel updateScore:self.player1Score];
         [self.player1ScoreLabel layoutSubviews];
         self.playerTurn = 1;
         self.lastRow = self.lastRow;
@@ -412,7 +668,7 @@
     
     else if (self.playerTurn == 1) {
         self.player2Score += [[square squareValue] intValue];
-        [self.player2ScoreLabel setScore:self.player2Score];
+        [self.player2ScoreLabel updateScore:self.player2Score];
         [self.player2ScoreLabel layoutSubviews];
         self.playerTurn = 0;
         self.lastColumn = self.currentColumn;
@@ -470,6 +726,7 @@
                 // finish game with AI
             case 1:
                 self.player1AI = !self.player1AI;
+                [[DMProjectManager sharedProjectManager] setPlayer1AI:self.player1AI];
                 [defaults setObject:[NSNumber numberWithBool:self.player1AI] forKey:@"player1AI"];
                 [self updateViews];
                 break;
@@ -496,6 +753,7 @@
                 // finish game with AI
             case 1:
                 self.player2AI = !self.player2AI;
+                [[DMProjectManager sharedProjectManager] setPlayer2AI:self.player2AI];
                 [defaults setObject:[NSNumber numberWithBool:self.player2AI] forKey:@"player2AI"];
                 [self updateViews];
                 break;
@@ -523,7 +781,16 @@
         }
     }
     
-    DMSquare *bestOption = [possibleSquares objectAtIndex:0];
+    DMSquare *bestOption = [[DMSquare alloc] initWithFrame:CGRectZero];
+    
+    if ([possibleSquares count] > 0) {
+        bestOption = [possibleSquares objectAtIndex:0];
+    }
+    
+    else {
+        NSLog(@"No possible squares!");
+    }
+    
     int highestValue = -300;
     for (DMSquare *square in possibleSquares) {
         NSMutableSet *possibleSecondSquares = [[NSMutableSet alloc] init];
@@ -538,9 +805,12 @@
         int lowestValue = 100000;
         for (DMSquare *secondSquare in possibleSecondSquares) {
             int highestThirdValue = 0;
-            for (DMSquare *possibleThirdSquare in [self.grid objectAtIndex:secondSquare.row]) {
-                if (![possibleThirdSquare isEqual:secondSquare] && [[possibleThirdSquare squareValue] intValue] < highestThirdValue) {
-                    highestThirdValue = [[possibleThirdSquare squareValue] intValue];
+            
+            if ([self.grid count] > secondSquare.row) {
+                for (DMSquare *possibleThirdSquare in [self.grid objectAtIndex:secondSquare.row]) {
+                    if (![possibleThirdSquare isEqual:secondSquare] && [[possibleThirdSquare squareValue] intValue] < highestThirdValue) {
+                        highestThirdValue = [[possibleThirdSquare squareValue] intValue];
+                    }
                 }
             }
             
@@ -559,7 +829,7 @@
         }
     }
 
-    [self squareTouched:bestOption];
+    [self playSquare:bestOption];
 }
 
 // player's 
@@ -569,19 +839,19 @@
     NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
     for (NSMutableArray *array in self.grid) {
         for (DMSquare *square in array) {
-            if (square.column == self.currentColumn) {
+            if (square.column == self.currentColumn && [[square squareValue] intValue] > 0) {
                 [possibleSquares addObject:square];
             }
         }
     }
     
     for (DMSquare *square in possibleSquares) {
-        if ([[square squareValue] intValue] + self.numberOfRows * 2 > [[bestOption squareValue] intValue]) {
+        if ([[square squareValue] intValue] > [[bestOption squareValue] intValue]) {
             bestOption = square;
         }
     }
     
-    [self squareTouched:bestOption];
+    [self playSquare:bestOption];
 }
 
 - (DMSquare *)highestSquareInSet:(NSSet *)possibleSquares {
@@ -636,7 +906,7 @@
         }
     }
     
-    else {
+    else if ([self.grid count] > row) {
         for (DMSquare *square in [self.grid objectAtIndex:row]) {
             if (![ignoreSet containsObject:square] && [[square squareValue] intValue] > 0) {
                 [rowSquares addObject:square];
@@ -742,11 +1012,10 @@
 - (void)gameOver {
     [self.popOver setAlpha:0.0f];
     [self.view addSubview:self.popOver];
+    self.isGameOver = YES;
     
     [UIView animateWithDuration:0.5f animations:^{
         [self.popOver setAlpha:1.0f];
-        
-        self.isGameOver = YES;
         [self updateViews];
     } completion:^(BOOL finished){
         [self performSelector:@selector(animateFinalScore) withObject:self afterDelay:1.1f];

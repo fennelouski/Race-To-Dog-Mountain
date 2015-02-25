@@ -7,14 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DMMainScreenBackgroundView.h"
 
 @interface ViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *player1TextField, *player2TextField;
-@property (nonatomic, strong) UISwitch *player1AISwitch, *player2AISwitch;
 @property (nonatomic, strong) UIButton *playGameButton, *playGameButton2;
-@property (nonatomic, strong) UILabel *computerLabel1, *computerLabel2;
-@property (nonatomic, strong) UISlider *complexitySlider;
+@property (nonatomic, strong) UILabel *winLossLabel;
+@property (nonatomic, strong) UIColor *textColor, *backgroundColor, *tintColor;
+@property (nonatomic, strong) UIButton *settingsButton;
+@property (nonatomic, strong) DMMainScreenBackgroundView *backgroundView;
+@property BOOL keyboardShowing, nightModeSet, nightMode;
 
 @end
 

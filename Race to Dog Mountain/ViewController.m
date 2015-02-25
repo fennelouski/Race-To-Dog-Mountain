@@ -7,14 +7,21 @@
 //
 
 #import "ViewController.h"
+#import "DMSettingsViewController.h"
 #import "DMGameViewController.h"
+#import "DMPlusGameViewController.h"
+#import "DMProjectManager.h"
 #import "UIColor+AppColors.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kStatusBarHeight (([[UIApplication sharedApplication] statusBarFrame].size.height == 20.0f) ? 20.0f : (([[UIApplication sharedApplication] statusBarFrame].size.height == 40.0f) ? 20.0f : 0.0f))
 #define kScreenHeight (([[UIApplication sharedApplication] statusBarFrame].size.height > 20.0f) ? [UIScreen mainScreen].bounds.size.height - 20.0f : [UIScreen mainScreen].bounds.size.height)
 #define FONT_SCALE 30.0f
 #define SHORTER_SIDE ((kScreenWidth < kScreenHeight) ? kScreenWidth : kScreenHeight)
+#define LONGER_SIDE ((kScreenWidth > kScreenHeight) ? kScreenWidth : kScreenHeight)
+#define BUFFER 5.0f
+#define BUTTON_SIZE 44.0f
 
 @interface ViewController ()
 
@@ -25,38 +32,48 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self.view setBackgroundColor:[UIColor blueMunsell]];
+    [self setUpColors];
     
+    [self.view addSubview:self.backgroundView];
+    [self.view addSubview:self.backgroundView.mountainView];
     [self.view addSubview:self.player1TextField];
+    [self.view addSubview:self.backgroundView.mountainView2];
     [self.view addSubview:self.player2TextField];
+    [self.view addSubview:self.backgroundView.mountainView3];
     
-    [self.view addSubview:self.player1AISwitch];
-    [self.view addSubview:self.player2AISwitch];
-    
-    [self.view addSubview:self.computerLabel1];
-    [self.view addSubview:self.computerLabel2];
+    [self animateTextField:self.player1TextField];
+    [self animateTextField:self.player2TextField];
     
     [self.view addSubview:self.playGameButton];
     
-    [self.view addSubview:self.complexitySlider];
+    [self.view addSubview:self.winLossLabel];
+    
+    [self.view addSubview:self.settingsButton];
+    
+    [self setUpColors];
+    [self changeColors];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self  selector:@selector(updateViews)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+    [nc addObserver:self selector:@selector(updateViews) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:self];
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:self];
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.player1TextField setText:[[DMProjectManager sharedProjectManager] player1Name]];
+    [self.player2TextField setText:[[DMProjectManager sharedProjectManager] player2Name]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     [self updateViews];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *player1AI = [defaults objectForKey:@"player1AI"];
-    if (player1AI) {
-        [_player1AISwitch setOn:[player1AI boolValue] animated:YES];
-    }
-    
-    NSNumber *player2AI = [defaults objectForKey:@"player2AI"];
-    if (player2AI) {
-        [_player2AISwitch setOn:[player2AI boolValue] animated:YES];
-    }
+    [self textFieldShouldReturn:self.player1TextField];
     
 //    [self playGame];
 }
@@ -64,87 +81,158 @@
 - (void)updateViews {
     [UIView animateWithDuration:0.35f animations:^{
         [self layoutTextFields];
-        [self layoutAISwitches];
         
         [self.playGameButton setFrame:CGRectMake(0.0f, kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f, kScreenWidth, (kScreenHeight + kScreenWidth)/20.0f)];
+        [self.settingsButton setFrame:CGRectMake(kScreenWidth - BUTTON_SIZE - BUFFER, kStatusBarHeight + BUFFER, BUTTON_SIZE, BUTTON_SIZE)];
+        [self.backgroundView setFrame:CGRectMake(0.0f, 0.0f, LONGER_SIDE, LONGER_SIDE)];
     }];
 }
 
 - (void)layoutTextFields {
-    float leftSideOffset = 80.0f;
+    float leftSideOffset = 00.0f;
     // portrait
     if (kScreenHeight > kScreenWidth) {
-        [self.player1TextField setFrame:CGRectMake(leftSideOffset, kScreenHeight/8.0f, kScreenWidth - leftSideOffset, 40.0f)];
-        [self.player2TextField setFrame:CGRectMake(leftSideOffset, kScreenHeight/4.0f, kScreenWidth - leftSideOffset, 40.0f)];
-        [self.complexitySlider setFrame:CGRectMake(leftSideOffset, kScreenHeight/3.0f + kStatusBarHeight, kScreenWidth - 2.0f*leftSideOffset, 30.0f)];
+        [self.player1TextField setFrame:CGRectMake(-50.0f, kScreenHeight/5.5f - 120.0f, kScreenWidth - leftSideOffset, kScreenHeight/FONT_SCALE*20.0f)];
+        [self.player2TextField setFrame:CGRectMake(20.0f, kScreenHeight/3.5f - 70.0f, kScreenWidth - leftSideOffset, kScreenHeight/FONT_SCALE*20.0f)];
+        [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/10.0f)];
     }
     
     // landscape
     else {
-        [self.player1TextField setFrame:CGRectMake(leftSideOffset, kStatusBarHeight  + 5.0f, kScreenWidth/2.0f - leftSideOffset, kScreenHeight/4.0f)];
-        [self.player2TextField setFrame:CGRectMake(kScreenWidth/2.0f + leftSideOffset, kStatusBarHeight + 5.0f, kScreenWidth/2.0f - leftSideOffset, kScreenHeight/4.0f)];
+        [self.player1TextField setFrame:CGRectMake(-20.0f, kStatusBarHeight  - kScreenHeight / 5.0f, kScreenWidth/1.5f - leftSideOffset, kScreenHeight/FONT_SCALE*40.0f)];
+        [self.player2TextField setFrame:CGRectMake(kScreenWidth/4.0f, kStatusBarHeight - kScreenHeight / 5.0f, kScreenWidth/1.5f - leftSideOffset, kScreenHeight/FONT_SCALE*40.0f)];
         
         // if the screen is tall in enough in landscape for the keyboard, slider, and name textfields then move the slider to above the input accessory view on the keyboard
         if (kScreenHeight > 400.0f) {
-            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/3.0f, kScreenWidth/2.0f, 40.0f)];
+            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/1.5f, kScreenWidth/2.0f, 40.0f)];
+            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/3.0f)];
         }
         
         // this is (probably) an iPhone 6 and there is enough room for the slider between the keyboard and name textfields, so position the slider a little more precisely to make it look good
         if (kScreenHeight > 340.0f) {
-            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/3.5f, kScreenWidth/2.0f, 40.0f)];
+            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.5f, kScreenWidth/2.0f, 40.0f)];
+            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/3.0f)];
         }
         
         // the screen isn't tall enough to show the slider in between the keyboard and name textfields so hide it behind the keyboard (this is only a problem on iphone 4s/5/5s/6)
         else {
-            [self.complexitySlider setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.0f, kScreenWidth/2.0f, 40.0f)];
+            [self.winLossLabel setFrame:CGRectMake(kScreenWidth/4.0f, kScreenHeight/2.0f, kScreenWidth/2.0f, 40.0f)];
+            [self.winLossLabel setCenter:CGPointMake(kScreenWidth/2.0f, self.winLossLabel.center.y + kScreenHeight/6.0f)];
         }
+    }
+    
+    // 4s Screen
+    if (kScreenHeight < 500.0f && kScreenWidth < 500.0f) {
+        [self.winLossLabel removeFromSuperview];
+    }
+    
+    [self.winLossLabel setAlpha:0.0f]; // just remove this until a better layout is determined
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSLog(@"keyboardWillShow");
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    NSLog(@"keyboardWillHide");
+}
+
+- (void)setUpColors {
+    NSDate *now = [NSDate dateWithTimeIntervalSinceNow:86400 * 29 * 0 + 31536000 * (arc4random() % 1) + 0 * 43000];
+    
+    NSArray *colors = [UIColor holidayColorsForDate:now];
+    
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [gregorianCalendar components:(NSCalendarUnitHour) fromDate: now];
+    NSInteger hour = [dateComps hour];
+    
+    if (!self.nightModeSet) {
+        if (hour > 6 && hour < 22) {
+            self.nightMode = NO;
+        }
+        
+        else {
+            self.nightMode = YES;
+        }
+        
+        self.nightModeSet = YES;
+    }
+    
+    if (colors.count > 0) {
+        // daytime so use lighter colors
+        if (!self.nightMode) {
+            self.backgroundColor = [colors objectAtIndex:3];
+            self.textColor = [colors objectAtIndex:1];
+            self.tintColor = [colors objectAtIndex:2];
+            [self.player1TextField setKeyboardAppearance:UIKeyboardAppearanceLight];
+            [self.player2TextField setKeyboardAppearance:UIKeyboardAppearanceLight];
+            [self.player1TextField reloadInputViews];
+            [self.player2TextField reloadInputViews];
+        }
+        
+        else {
+            self.backgroundColor = [colors objectAtIndex:0];
+            self.textColor = [colors objectAtIndex:1];
+            self.tintColor = [colors objectAtIndex:2];
+            [self.player1TextField setKeyboardAppearance:UIKeyboardAppearanceDark];
+            [self.player2TextField setKeyboardAppearance:UIKeyboardAppearanceDark];
+            [self.player1TextField reloadInputViews];
+            [self.player2TextField reloadInputViews];
+        }
+    }
+    
+    // just as a backup
+    else if (!self.nightMode) {
+        self.backgroundColor = [UIColor colorWithRed:45.0f/255.0f green:159.0f/255.0f blue:169.0f/255.0f alpha:1.0f];
+        self.textColor = [UIColor colorWithRed:1.0f green:0.97f blue:206.0f/255.0f alpha:1.0f];
+        self.tintColor = [UIColor colorWithRed:16.0f/255.0f green:21.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
+    }
+    
+    // second backup...just in case
+    else {
+        self.backgroundColor = [UIColor colorWithRed:16.0f/255.0f green:21.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
+        self.textColor = [UIColor colorWithRed:1.0f green:0.97f blue:206.0f/255.0f alpha:1.0f];
+        self.tintColor = [UIColor colorWithRed:45.0f/255.0f green:159.0f/255.0f blue:169.0f/255.0f alpha:1.0f];
     }
 }
 
-- (void)layoutAISwitches {
-    // portrait
-    if (kScreenHeight > kScreenWidth) {
-        [self.player1AISwitch setFrame:CGRectMake(20.0f, kScreenHeight/8.0f, kScreenWidth, 40.0f)];
-        [self.player1AISwitch setCenter:CGPointMake(self.player1AISwitch.center.x, self.player1TextField.center.y)];
-        [self.player2AISwitch setFrame:CGRectMake(20.0f, kScreenHeight/4.0f, kScreenWidth, 40.0f)];
-        [self.player2AISwitch setCenter:CGPointMake(self.player2AISwitch.center.x, self.player2TextField.center.y)];
-    }
+- (void)changeColors {
+    [_player1TextField setTintColor:self.tintColor];
+    [_player2TextField setTintColor:self.tintColor];
     
-    // landscape
-    else {
-        [self.player1AISwitch setFrame:CGRectMake(20.0f, kScreenHeight/8.0f, kScreenWidth/2.0f, kScreenHeight/4.0f)];
-        [self.player1AISwitch setCenter:CGPointMake(self.player1AISwitch.center.x, self.player1TextField.center.y)];
-        [self.player2AISwitch setFrame:CGRectMake(kScreenWidth/2.0f + 20.0f, kScreenHeight/8.0f, kScreenWidth/2.0f, kScreenHeight/4.0f)];
-        [self.player2AISwitch setCenter:CGPointMake(self.player2AISwitch.center.x, self.player2TextField.center.y)];
-    }
+    UIColor *placeholderColor = [self.backgroundColor lightenColorBy:0.5f];
+    [placeholderColor setValue:[NSNumber numberWithFloat:0.95f] forKey:@"alphaComponent"];
+    [_player1TextField setValue:placeholderColor forKeyPath:@"_placeholderLabel.textColor"];
+    [_player2TextField setValue:placeholderColor forKeyPath:@"_placeholderLabel.textColor"];
     
-    [self.computerLabel1 setCenter:CGPointMake(self.player1AISwitch.center.x, self.player1AISwitch.center.y - 30.0f)];
-    [self.computerLabel2 setCenter:CGPointMake(self.player2AISwitch.center.x, self.player2AISwitch.center.y - 30.0f)];
+    [_player1TextField setTextColor:[UIColor white]];
+    [_player2TextField setTextColor:[UIColor white]];
+    [_winLossLabel setTextColor:self.textColor];
+    
+    [self.view setBackgroundColor:[UIColor white]];
 }
 
 #pragma mark - Subviews
 
 - (UITextField *)player1TextField {
     if (!_player1TextField) {
-        _player1TextField = [[UITextField alloc] initWithFrame:CGRectZero];
-        [_player1TextField setFont:[UIFont systemFontOfSize:kScreenHeight/FONT_SCALE]];
-        [_player1TextField setPlaceholder:@"Player 1 Name"];
+        _player1TextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/2.0f, kScreenWidth, kScreenHeight/4.0f)];
+        [_player1TextField setFont:[UIFont boldSystemFontOfSize:kScreenHeight/FONT_SCALE*2.5f]];
+        [_player1TextField setPlaceholder:@"Player 1"];
         [_player1TextField setTextAlignment:NSTextAlignmentCenter];
         [_player1TextField.layer setCornerRadius:5.0f];
-        [_player1TextField setTextColor:[UIColor darkTextColor]];
         [_player1TextField setInputAccessoryView:self.playGameButton2];
         [_player1TextField setDelegate:self];
         [_player1TextField setKeyboardType:UIKeyboardTypeAlphabet];
         [_player1TextField setReturnKeyType:UIReturnKeyDone];
-        [_player1TextField setTintColor:[UIColor uiSwitchGreen]];
         [_player1TextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         [_player1TextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+        [_player1TextField setUserInteractionEnabled:NO];
+        [_player1TextField setTransform:CGAffineTransformMakeRotation(M_PI/8.0f)];
+        [_player1TextField setTag:1];
+        [_player1TextField setTextColor:[UIColor white]];
         
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *player1String = [defaults objectForKey:@"player1Name"];
-        if (player1String) {
-            [_player1TextField setText:player1String];
-        }
+        [_player1TextField setText:[[DMProjectManager sharedProjectManager] player1Name]];
     }
     
     return _player1TextField;
@@ -152,72 +240,36 @@
 
 - (UITextField *)player2TextField {
     if (!_player2TextField) {
-        _player2TextField = [[UITextField alloc] initWithFrame:CGRectZero];
-        [_player2TextField setFont:[UIFont systemFontOfSize:kScreenHeight/FONT_SCALE]];
-        [_player2TextField setPlaceholder:@"Player 2 Name"];
+        _player2TextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight/1.5f, kScreenWidth, kScreenHeight/4.0f)];
+        [_player2TextField setFont:[UIFont boldSystemFontOfSize:kScreenHeight/FONT_SCALE*2.5f]];
+        [_player2TextField setPlaceholder:@"Player 2"];
         [_player2TextField setTextAlignment:NSTextAlignmentCenter];
         [_player2TextField.layer setCornerRadius:5.0f];
-        [_player2TextField setTextColor:[UIColor darkTextColor]];
         [_player2TextField setInputAccessoryView:self.playGameButton2];
         [_player2TextField setDelegate:self];
         [_player2TextField setKeyboardType:UIKeyboardTypeAlphabet];
         [_player2TextField setReturnKeyType:UIReturnKeyDone];
-        [_player2TextField setTintColor:[UIColor uiSwitchGreen]];
         [_player2TextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         [_player2TextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+        [_player2TextField setUserInteractionEnabled:NO];
+        [_player2TextField setTransform:CGAffineTransformMakeRotation(M_PI/8.0f)];
+        [_player2TextField setTag:1];
+        [_player2TextField setTextColor:[UIColor white]];
         
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *player2String = [defaults objectForKey:@"player2Name"];
-        if (player2String) {
-            [_player2TextField setText:player2String];
-        }
+        [_player2TextField setText:[[DMProjectManager sharedProjectManager] player2Name]];
     }
     
     return _player2TextField;
 }
 
-- (UISwitch *)player1AISwitch {
-    if (!_player1AISwitch) {
-        _player1AISwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [_player1AISwitch setTintColor:[UIColor uiSwitchGreen]];
-        [_player1AISwitch setTintAdjustmentMode:UIViewTintAdjustmentModeDimmed];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSNumber *player1AI = [defaults objectForKey:@"player1AI"];
-        if (player1AI) {
-            [_player1AISwitch setOn:[player1AI boolValue]];
-        }
-    }
-    
-    return _player1AISwitch;
-}
-
-- (UISwitch *)player2AISwitch {
-    if (!_player2AISwitch) {
-        _player2AISwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [_player2AISwitch setTintColor:[UIColor uiSwitchGreen]];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSNumber *player2AI = [defaults objectForKey:@"player2AI"];
-        if (player2AI) {
-            [_player2AISwitch setOn:[player2AI boolValue]];
-        }
-        
-        else {
-            [_player2AISwitch setOn:YES animated:YES];
-        }
-    }
-    
-    return _player2AISwitch;
-}
-
 - (UIButton *)playGameButton {
     if (!_playGameButton) {
-        _playGameButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        _playGameButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, kScreenHeight, kScreenWidth, 40.0f)];
         [_playGameButton setTitle:@"Play" forState:UIControlStateNormal];
         [_playGameButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_playGameButton setBackgroundColor:[UIColor colorWithWhite:0.1f alpha:0.3f]];
         [_playGameButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_playGameButton.titleLabel setFont:[UIFont systemFontOfSize:(kScreenHeight + kScreenWidth)/(1.5f * FONT_SCALE)]];
         [_playGameButton addTarget:self action:@selector(playGame) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -231,68 +283,72 @@
         [_playGameButton2.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_playGameButton2 setBackgroundColor:[UIColor colorWithWhite:0.1f alpha:0.3f]];
         [_playGameButton2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_playGameButton2.titleLabel setFont:[UIFont systemFontOfSize:(kScreenHeight + kScreenWidth)/(1.5f * FONT_SCALE)]];
         [_playGameButton2 addTarget:self action:@selector(playGame) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _playGameButton2;
 }
 
-- (UILabel *)computerLabel1 {
-    if (!_computerLabel1) {
-        _computerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 20.0f)];
-        [_computerLabel1 setText:@"Computer"];
-        [_computerLabel1 setTextAlignment:NSTextAlignmentCenter];
-        [_computerLabel1 setTextColor:[UIColor blackOlive]];
-        [_computerLabel1 setFont:[UIFont boldSystemFontOfSize:14.0f]];
+- (UILabel *)winLossLabel {
+    if (!_winLossLabel) {
+        _winLossLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_winLossLabel setTextAlignment:NSTextAlignmentCenter];
+        [_winLossLabel setFont:[UIFont systemFontOfSize:kScreenHeight/FONT_SCALE]];
     }
     
-    return _computerLabel1;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *player1Name = @"Player 1";
+    if (self.player1TextField.text.length > 0) {
+        player1Name = self.player1TextField.text;
+    }
+    
+    NSString *player2Name = @"Player 2";
+    if (self.player2TextField.text.length > 0) {
+        player2Name = self.player2TextField.text;
+    }
+    
+    NSNumber *player1Score = [defaults objectForKey:[NSString stringWithFormat:@"%@vvv%@", player1Name, player2Name]];
+    NSNumber *player2Score = [defaults objectForKey:[NSString stringWithFormat:@"%@vvv%@", player2Name, player1Name]];
+    
+    if (player1Score && player2Score) {
+        [_winLossLabel setText:[NSString stringWithFormat:@"%d - %d", [player1Score intValue], [player2Score intValue]]];
+    }
+    
+    return _winLossLabel;
 }
 
-- (UILabel *)computerLabel2 {
-    if (!_computerLabel2) {
-        _computerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, 20.0f)];
-        [_computerLabel2 setText:@"Computer"];
-        [_computerLabel2 setTextAlignment:NSTextAlignmentCenter];
-        [_computerLabel2 setTextColor:[UIColor blackOlive]];
-        [_computerLabel2 setFont:[UIFont boldSystemFontOfSize:14.0f]];
+- (UIButton *)settingsButton {
+    if (!_settingsButton) {
+        _settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, kStatusBarHeight, 44.0f, 44.0f)];
+        [_settingsButton setImage:[UIImage imageNamed:@"Gear Icon"] forState:UIControlStateNormal];
+        [_settingsButton addTarget:self action:@selector(settingsButtonTouched) forControlEvents:UIControlEventTouchUpInside];
     }
     
-    return _computerLabel2;
+    return _settingsButton;
 }
 
-- (UISlider *)complexitySlider {
-    if (!_complexitySlider) {
-        _complexitySlider = [[UISlider alloc] initWithFrame:CGRectZero];
-        [_complexitySlider setMinimumValue:2.0f];
-        [_complexitySlider setMaximumValue:11.0f];
-        
-        if (SHORTER_SIDE / 14.0f > 35.0f) {
-            [_complexitySlider setMaximumValue:14.0f];
-        }
-        
-        else if (SHORTER_SIDE / 13.0f > 30.0f) {
-            [_complexitySlider setMaximumValue:13.0f];
-        }
-        
-        else if (SHORTER_SIDE / 12.0f > 30.0f) {
-            [_complexitySlider setMaximumValue:12.0f];
-        }
-        
-        [_complexitySlider setTintColor:[UIColor uiSwitchGreen]];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSNumber *complexity = [defaults objectForKey:@"complexity"];
-        if (complexity) {
-            [_complexitySlider setValue:[complexity floatValue]];
-        }
-        
-        else {
-            [_complexitySlider setValue:6.0f];
-        }
+- (DMMainScreenBackgroundView *)backgroundView {
+    if (!_backgroundView) {
+        _backgroundView = [[DMMainScreenBackgroundView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kScreenWidth, kScreenHeight)];
     }
     
-    return _complexitySlider;
+    return _backgroundView;
+}
+
+#pragma mark - Show Settings
+
+- (void)settingsButtonTouched {
+    [self showSettings];
+}
+
+- (void)showSettings {
+    DMSettingsViewController *settingsViewController = [[DMSettingsViewController alloc] init];
+    
+    [self presentViewController:settingsViewController animated:YES completion:^{
+        
+    }];
 }
 
 #pragma mark - Play Game
@@ -301,8 +357,9 @@
     DMGameViewController *gameViewController = [[DMGameViewController alloc] init];
     [gameViewController setPlayer1Name:self.player1TextField.text];
     [gameViewController setPlayer2Name:self.player2TextField.text];
-    [gameViewController setPlayer1AI:self.player1AISwitch.on];
-    [gameViewController setPlayer2AI:self.player2AISwitch.on];
+    [gameViewController setPlayer1AI:[[DMProjectManager sharedProjectManager] player1AI]];
+    [gameViewController setPlayer2AI:[[DMProjectManager sharedProjectManager] player2AI]];
+    [gameViewController setNightMode:self.nightMode];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -314,16 +371,35 @@
         [defaults setObject:self.player2TextField.text forKey:@"player2Name"];
     }
     
-    [gameViewController setNumberOfRows:self.complexitySlider.value];
+    [gameViewController setNumberOfRows:[[DMProjectManager sharedProjectManager] complexity]];
     
-    [defaults setObject:[NSNumber numberWithBool:self.player1AISwitch.on] forKey:@"player1AI"];
-    [defaults setObject:[NSNumber numberWithBool:self.player2AISwitch.on] forKey:@"player2AI"];
+    DMPlusGameViewController *plusGameViewController = [[DMPlusGameViewController alloc] init];
+    [plusGameViewController setPlayer1Name:[[DMProjectManager sharedProjectManager] player1Name]];
+    [plusGameViewController setPlayer2Name:[[DMProjectManager sharedProjectManager] player2Name]];
+    [plusGameViewController setPlayer1AI:[[DMProjectManager sharedProjectManager] player1AI]];
+    [plusGameViewController setPlayer2AI:[[DMProjectManager sharedProjectManager] player2AI]];
+    [plusGameViewController setNightMode:self.nightMode];
+    [plusGameViewController setNumberOfRows:[[DMProjectManager sharedProjectManager] complexity]];
     
-    [defaults setObject:[NSNumber numberWithFloat:self.complexitySlider.value] forKey:@"complexity"];
+    if ([[DMProjectManager sharedProjectManager] player1AI]) {
+        NSLog(@"Player1 is a computer");
+    }
     
-    [self presentViewController:gameViewController animated:YES completion:^{
-        
-    }];
+    if ([[DMProjectManager sharedProjectManager] player2AI]) {
+        NSLog(@"Player2 is a computer");
+    }
+
+    if ([[DMProjectManager sharedProjectManager] isPlusGame]) {
+        [self presentViewController:plusGameViewController animated:YES completion:^{
+            
+        }];
+    }
+    
+    else {
+        [self presentViewController:gameViewController animated:YES completion:^{
+            
+        }];
+    }
 }
 
 #pragma mark - Text Field delegate
@@ -350,6 +426,121 @@
     }
     
     return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *player1Name = @"Player 1";
+    if (self.player1TextField.text.length > 0) {
+        player1Name = self.player1TextField.text;
+    }
+    
+    NSString *player2Name = @"Player 2";
+    if (self.player2TextField.text.length > 0) {
+        player2Name = self.player2TextField.text;
+    }
+    
+    NSNumber *player1Score = [defaults objectForKey:[NSString stringWithFormat:@"%@vvv%@", player1Name, player2Name]];
+    NSNumber *player2Score = [defaults objectForKey:[NSString stringWithFormat:@"%@vvv%@", player1Name, player2Name]];
+    
+    if (player1Score && player2Score) {
+        if (!self.winLossLabel.superview) {
+            [self.winLossLabel setAlpha:0.0f];
+            [self.view addSubview:self.winLossLabel];
+            [UIView animateWithDuration:0.35f animations:^{
+                [self.winLossLabel setAlpha:1.0f];
+            }];
+        }
+        
+        [self.winLossLabel setText:[NSString stringWithFormat:@"%d - %d", [player1Score intValue], [player2Score intValue]]];
+    }
+    
+    else {
+        [UIView animateWithDuration:0.35f animations:^{
+            [self.winLossLabel setAlpha:0.0f];
+        } completion:^(BOOL finished){
+            [self.winLossLabel removeFromSuperview];
+            [self.winLossLabel setAlpha:1.0f];
+        }];
+    }
+    
+    [self performSelector:@selector(updateViews) withObject:self afterDelay:0.001f];
+    
+    return YES;
+}
+
+#pragma mark Motion Gesture Methods
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if (motion == UIEventSubtypeMotionShake ) {
+        self.nightMode = !self.nightMode;
+        [self setUpColors];
+        
+        float screenBrightness = [[UIScreen mainScreen] brightness];
+        if (self.nightMode) {
+            screenBrightness *= 0.6666667f;
+        }
+        
+        else {
+            screenBrightness *= 1.5f;
+        }
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults objectForKey:@"originalScreenBrightness"]) {
+            float originalScreenBrightness = [[defaults objectForKey:@"originalScreenBrightness"] floatValue];
+            if (originalScreenBrightness < screenBrightness) {
+                screenBrightness = originalScreenBrightness;
+            }
+        }
+        
+        [UIView animateWithDuration:0.15f animations:^{
+            [[UIScreen mainScreen] setBrightness:screenBrightness];
+            [_player1TextField setAlpha:0.0f];
+            [_player2TextField setAlpha:0.0f];
+            [self setUpColors];
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.15f animations:^{
+                [self changeColors];
+                [_player1TextField setAlpha:1.0f];
+                [_player2TextField setAlpha:1.0f];
+            } completion:^(BOOL finished){
+                [self updateViews];
+            }];
+        }];
+    }
+}
+
+#pragma mark - Animate Text Field
+
+- (void)animateTextField:(UITextField *)textField {
+    float variance = 1.35f;
+    if (textField.tag == 0) {
+        [UIView animateWithDuration:3.35f delay:1.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            if (kScreenHeight > kScreenWidth || textField.center.y > kScreenHeight * 0.75f) {
+                [textField setCenter:CGPointMake(textField.center.x, textField.center.y / variance + textField.frame.origin.x/4.0f)];
+            }
+        } completion:^(BOOL finished) {
+            textField.tag = 1;
+            [self animateTextField:textField];
+        }];
+    }
+    
+    else {
+        [UIView animateWithDuration:3.35f delay:1.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            if (kScreenHeight > kScreenWidth) {
+                [textField setCenter:CGPointMake(textField.center.x, (textField.center.y - textField.frame.origin.x/4.0f) * variance)];
+            }
+        } completion:^(BOOL finished) {
+            textField.tag = 0;
+            [self animateTextField:textField];
+        }];
+    }
 }
 
 #pragma mark - Memory Warning

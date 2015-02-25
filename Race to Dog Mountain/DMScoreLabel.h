@@ -18,10 +18,15 @@
 @interface DMScoreLabel : UIView
 
 @property (nonatomic, strong) NSString *name;
-@property int score;
+@property int score, oldScore;
 @property (nonatomic, strong) UILabel *nameLabel, *scoreLabel;
 @property int player;
 @property (assign) id <DMScoreLabelDelegate> delegate;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
+@property BOOL fontSizeOverwritten;
+@property float fontSize;
+@property (nonatomic, strong) UIColor *whiteColor;
+
+- (void)updateScore:(int)newScore;
 
 @end
