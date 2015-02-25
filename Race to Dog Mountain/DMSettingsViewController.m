@@ -16,6 +16,7 @@
 #define kStatusBarHeight (([[UIApplication sharedApplication] statusBarFrame].size.height == 20.0f) ? 20.0f : (([[UIApplication sharedApplication] statusBarFrame].size.height == 40.0f) ? 20.0f : 0.0f))
 #define kScreenHeight (([[UIApplication sharedApplication] statusBarFrame].size.height > 20.0f) ? [UIScreen mainScreen].bounds.size.height - 20.0f : [UIScreen mainScreen].bounds.size.height)
 #define FONT_SCALE 55.0f
+#define ANIMATION_DURATION 0.35f
 #define SHORTER_SIDE ((kScreenWidth < kScreenHeight) ? kScreenWidth : kScreenHeight)
 
 @interface DMSettingsViewController ()
@@ -84,7 +85,7 @@
 }
 
 - (void)updateViews {
-    [UIView animateWithDuration:0.35f animations:^{
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         [self layoutTextFields];
         [self layoutAISwitches];
         

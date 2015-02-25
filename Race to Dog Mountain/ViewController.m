@@ -18,6 +18,7 @@
 #define kStatusBarHeight (([[UIApplication sharedApplication] statusBarFrame].size.height == 20.0f) ? 20.0f : (([[UIApplication sharedApplication] statusBarFrame].size.height == 40.0f) ? 20.0f : 0.0f))
 #define kScreenHeight (([[UIApplication sharedApplication] statusBarFrame].size.height > 20.0f) ? [UIScreen mainScreen].bounds.size.height - 20.0f : [UIScreen mainScreen].bounds.size.height)
 #define FONT_SCALE 30.0f
+#define ANIMATION_DURATION 0.35f
 #define SHORTER_SIDE ((kScreenWidth < kScreenHeight) ? kScreenWidth : kScreenHeight)
 #define LONGER_SIDE ((kScreenWidth > kScreenHeight) ? kScreenWidth : kScreenHeight)
 #define BUFFER 5.0f
@@ -79,7 +80,7 @@
 }
 
 - (void)updateViews {
-    [UIView animateWithDuration:0.35f animations:^{
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         [self layoutTextFields];
         
         [self.playGameButton setFrame:CGRectMake(0.0f,
@@ -500,7 +501,7 @@
         if (!self.winLossLabel.superview) {
             [self.winLossLabel setAlpha:0.0f];
             [self.view addSubview:self.winLossLabel];
-            [UIView animateWithDuration:0.35f animations:^{
+            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
                 [self.winLossLabel setAlpha:1.0f];
             }];
         }
@@ -509,7 +510,7 @@
     }
     
     else {
-        [UIView animateWithDuration:0.35f animations:^{
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             [self.winLossLabel setAlpha:0.0f];
         } completion:^(BOOL finished){
             [self.winLossLabel removeFromSuperview];

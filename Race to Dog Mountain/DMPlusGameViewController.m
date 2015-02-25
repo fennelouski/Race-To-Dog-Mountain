@@ -16,6 +16,7 @@
 #define BUFFER 2.0f
 #define SQUARE_SIZE (((kScreenWidth < kScreenHeight) ? kScreenWidth : kScreenHeight - kStatusBarHeight) / self.numberOfRows)
 #define FONT_SCALE 12.0f
+#define ANIMATION_DURATION 0.35f
 
 #define PLAYER_1_TAG 123479
 #define PLAYER_2_TAG 523458
@@ -92,7 +93,7 @@
                                                   [UIColor dartmouthGreen]]
          ];
         
-        self.finalAnimationTime = 0.35f;
+        self.finalAnimationTime = ANIMATION_DURATION;
     }
     
     return self;
@@ -162,7 +163,7 @@
 
 - (void)updateViews {
     float animationTime = 1.5f/self.numberOfRows;
-    if (animationTime > 0.35f) animationTime = 0.35f;
+    if (animationTime > ANIMATION_DURATION) animationTime = ANIMATION_DURATION;
     [UIView animateWithDuration:animationTime animations:^{
         [_gridView setFrame:CGRectMake(0.0f,
                                        kStatusBarHeight,
@@ -265,7 +266,7 @@
             [self.finalScoreLabel setText:[NSString stringWithFormat:@"%d - %d", self.player1Score, self.player2Score]];
             
             if (!self.isGameOver) {
-                [self performSelector:@selector(gameOver) withObject:self afterDelay:0.35f];
+                [self performSelector:@selector(gameOver) withObject:self afterDelay:ANIMATION_DURATION];
             }
         }
     }];
