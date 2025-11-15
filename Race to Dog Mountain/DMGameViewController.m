@@ -11,8 +11,8 @@
 #import "DMProjectManager.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kStatusBarHeight (([[UIApplication sharedApplication] statusBarFrame].size.height == 20.0f) ? 20.0f : (([[UIApplication sharedApplication] statusBarFrame].size.height == 40.0f) ? 20.0f : 0.0f))
-#define kScreenHeight (([[UIApplication sharedApplication] statusBarFrame].size.height > 20.0f) ? [UIScreen mainScreen].bounds.size.height - 20.0f : [UIScreen mainScreen].bounds.size.height)
+#define kStatusBarHeight (self.view.window.safeAreaInsets.top > 0 ? self.view.window.safeAreaInsets.top : 20.0f)
+#define kScreenHeight ([UIScreen mainScreen].bounds.size.height - self.view.window.safeAreaInsets.top - self.view.window.safeAreaInsets.bottom)
 #define BUFFER 2.0f
 #define SQUARE_SIZE (((kScreenWidth < kScreenHeight) ? kScreenWidth : kScreenHeight - kStatusBarHeight) / self.numberOfRows)
 #define FONT_SCALE 12.0f
@@ -90,6 +90,10 @@
     }
     
     return self;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewDidLoad {
@@ -754,92 +758,94 @@
     if (self.isGameOver) {
         return;
     }
-    
+
     if (player == 0) {
         NSString *otherButtonTitle = @"Finish Game with AI on";
         if (self.player1AI) {
             otherButtonTitle = @"Turn AI Off";
         }
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%@",
-                                                                           self.player1Name]
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Forfeit"
-                                                        otherButtonTitles:otherButtonTitle, nil];
-        [actionSheet setTag:PLAYER_1_TAG];
-        [actionSheet showInView:self.view];
+
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", self.player1Name]
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+
+        UIAlertAction *forfeitAction = [UIAlertAction actionWithTitle:@"Forfeit"
+                                                               style:UIAlertActionStyleDestructive
+                                                             handler:^(UIAlertAction *action) {
+                                                                 self.player1Score = 0;
+                                                                 [self gameOver];
+                                                                 [self updateViews];
+                                                             }];
+
+        UIAlertAction *aiAction = [UIAlertAction actionWithTitle:otherButtonTitle
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+                                                            self.player1AI = !self.player1AI;
+                                                            [[DMProjectManager sharedProjectManager] setPlayer1AI:self.player1AI];
+                                                            [self updateViews];
+                                                        }];
+
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                              style:UIAlertActionStyleCancel
+                                                            handler:nil];
+
+        [alertController addAction:forfeitAction];
+        [alertController addAction:aiAction];
+        [alertController addAction:cancelAction];
+
+        // For iPad support
+        if (alertController.popoverPresentationController) {
+            alertController.popoverPresentationController.sourceView = self.player1ScoreLabel;
+            alertController.popoverPresentationController.sourceRect = self.player1ScoreLabel.bounds;
+        }
+
+        [self presentViewController:alertController animated:YES completion:nil];
     }
-    
+
     else if (player == 1) {
         NSString *otherButtonTitle = @"Finish Game with AI on";
         if (self.player2AI) {
             otherButtonTitle = @"Turn AI Off";
         }
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:self.player2Name
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Forfeit"
-                                                        otherButtonTitles:otherButtonTitle, nil];
-        [actionSheet setTag:PLAYER_2_TAG];
-        [actionSheet showInView:self.view];
+
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.player2Name
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+
+        UIAlertAction *forfeitAction = [UIAlertAction actionWithTitle:@"Forfeit"
+                                                               style:UIAlertActionStyleDestructive
+                                                             handler:^(UIAlertAction *action) {
+                                                                 self.player2Score = 0;
+                                                                 [self gameOver];
+                                                                 [self updateViews];
+                                                             }];
+
+        UIAlertAction *aiAction = [UIAlertAction actionWithTitle:otherButtonTitle
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+                                                            self.player2AI = !self.player2AI;
+                                                            [[DMProjectManager sharedProjectManager] setPlayer2AI:self.player2AI];
+                                                            [self updateViews];
+                                                        }];
+
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                              style:UIAlertActionStyleCancel
+                                                            handler:nil];
+
+        [alertController addAction:forfeitAction];
+        [alertController addAction:aiAction];
+        [alertController addAction:cancelAction];
+
+        // For iPad support
+        if (alertController.popoverPresentationController) {
+            alertController.popoverPresentationController.sourceView = self.player2ScoreLabel;
+            alertController.popoverPresentationController.sourceRect = self.player2ScoreLabel.bounds;
+        }
+
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
-#pragma mark - Action Sheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == PLAYER_1_TAG) {
-        switch (buttonIndex) {
-                // forfeit
-            case 0:
-                self.player1Score = 0;
-                [self gameOver];
-                [self updateViews];
-                break;
-                
-                // finish game with AI
-            case 1:
-                self.player1AI = !self.player1AI;
-                [[DMProjectManager sharedProjectManager] setPlayer1AI:self.player1AI];
-                [self updateViews];
-                break;
-                
-                // cancel
-            case 2:
-                
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    else if ([actionSheet tag] == PLAYER_2_TAG) {
-        switch (buttonIndex) {
-                // forfeit
-            case 0:
-                self.player2Score = 0;
-                [self gameOver];
-                [self updateViews];
-                break;
-                
-                // finish game with AI
-            case 1:
-                self.player2AI = !self.player2AI;
-                [[DMProjectManager sharedProjectManager] setPlayer2AI:self.player2AI];
-                [self updateViews];
-                break;
-                
-                // cancel
-            case 2:
-                
-                break;
-                
-            default:
-                break;
-        }
-    }
-}
 
 #pragma mark - AI
 
