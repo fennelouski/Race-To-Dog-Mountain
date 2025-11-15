@@ -13,8 +13,8 @@
 #import "DMProjectManager.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kStatusBarHeight (([[UIApplication sharedApplication] statusBarFrame].size.height == 20.0f) ? 20.0f : (([[UIApplication sharedApplication] statusBarFrame].size.height == 40.0f) ? 20.0f : 0.0f))
-#define kScreenHeight (([[UIApplication sharedApplication] statusBarFrame].size.height > 20.0f) ? [UIScreen mainScreen].bounds.size.height - 20.0f : [UIScreen mainScreen].bounds.size.height)
+#define kStatusBarHeight (self.view.window.safeAreaInsets.top > 0 ? self.view.window.safeAreaInsets.top : 20.0f)
+#define kScreenHeight ([UIScreen mainScreen].bounds.size.height - self.view.window.safeAreaInsets.top - self.view.window.safeAreaInsets.bottom)
 #define FONT_SCALE 55.0f
 #define ANIMATION_DURATION 0.35f
 #define SHORTER_SIDE ((kScreenWidth < kScreenHeight) ? kScreenWidth : kScreenHeight)
@@ -24,6 +24,10 @@
 @end
 
 @implementation DMSettingsViewController
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
