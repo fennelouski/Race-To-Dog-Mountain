@@ -140,11 +140,16 @@
     [self.view addSubview:self.player2ScoreLabel];
     [self.view addSubview:self.headerToolbar];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self  selector:@selector(updateViews)    name:UIDeviceOrientationDidChangeNotification  object:nil];
-    [nc addObserver:self selector:@selector(updateViews) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
-    
     [self updateViews];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    // Use modern transition coordinator for size changes instead of UIDeviceOrientationDidChangeNotification
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateViews];
+    } completion:nil];
 }
 
 - (void)updateViews {
@@ -1088,10 +1093,15 @@
 }
 
 - (void)gameOver {
+    // Provide success haptic feedback for game completion
+    UINotificationFeedbackGenerator *feedbackGenerator = [[UINotificationFeedbackGenerator alloc] init];
+    [feedbackGenerator prepare];
+    [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+
     [self.popOver setAlpha:0.0f];
     [self.view addSubview:self.popOver];
     self.isGameOver = YES;
-    
+
     [UIView animateWithDuration:0.5f animations:^{
         [self.popOver setAlpha:1.0f];
         [self updateViews];

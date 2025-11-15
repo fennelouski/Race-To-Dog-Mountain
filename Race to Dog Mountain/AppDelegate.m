@@ -24,6 +24,20 @@
     return YES;
 }
 
+#pragma mark - UISceneSession Lifecycle
+
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
+    // Called when a new scene session is being created.
+    // Use this method to select a configuration to create the new scene with.
+    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+}
+
+- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
+    // Called when the user discards a scene session.
+    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"closingScreenBrightness"];
@@ -58,20 +72,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"originalScreenBrightness"];
-    
-    // restore screen brightness to the way it was the last time the app was opened
-//    NSDate *lastClosedDate = [defaults objectForKey:@"lastClosedDate"];
-//    NSLog(@"lastClosedDate: %@", lastClosedDate);
-//    if (lastClosedDate) {
-//        // app was closed in the last eight hours, so restore the screen brightness to what it was the last time it was opened
-//        if (abs((int)([lastClosedDate timeIntervalSinceNow])) < 30000) {
-//            if ([defaults objectForKey:@"closingScreenBrightness"]) {
-//                float originalScreenBrightness = [[defaults objectForKey:@"closingScreenBrightness"] floatValue];
-//                [[UIScreen mainScreen] setBrightness:originalScreenBrightness];
-//            }
-//        }
-//    }
-    
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

@@ -13,23 +13,31 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    
+
     if (self) {
         [self addGestureRecognizer:self.tap];
         [self addSubview:self.label];
         self.whiteColor = [UIColor whiteColor];
+
+        // Enable accessibility
+        self.isAccessibilityElement = YES;
+        self.accessibilityTraits = UIAccessibilityTraitButton;
     }
-    
+
     return self;
 }
 
 - (void)layoutSubviews {
     [self.label setTextColor:self.whiteColor];
-    
+
     if (self.label.superview && self.squareValue && [self.squareValue intValue] > 0) {
         [self.label setText:[NSString stringWithFormat:@"%d", [self.squareValue intValue]]];
+
+        // Update accessibility label with square position and value
+        self.accessibilityLabel = [NSString stringWithFormat:@"Square at row %d, column %d, value %d", self.row, self.column, [self.squareValue intValue]];
+        self.accessibilityHint = @"Double tap to select this square";
     }
-    
+
     else if (self.label.superview) {
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionAutoreverse animations:^{
             [self setBackgroundColor:self.whiteColor];
@@ -42,6 +50,13 @@
                 [self.label removeFromSuperview];
             }];
         }];
+    }
+
+    // Mark empty squares as not accessible
+    if (!self.squareValue || [self.squareValue intValue] <= 0) {
+        self.isAccessibilityElement = NO;
+    } else {
+        self.isAccessibilityElement = YES;
     }
 }
 
@@ -81,14 +96,24 @@
 - (void)tapped {
     if ([self.delegate respondsToSelector:@selector(squareTouched:)]) {
         if ([self.squareValue intValue] > 0) {
+            // Provide haptic feedback for valid selection
+            UIImpactFeedbackGenerator *feedbackGenerator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+            [feedbackGenerator prepare];
+            [feedbackGenerator impactOccurred];
+
             [self.delegate squareTouched:self];
         }
-        
+
         else {
+            // Provide error haptic feedback for invalid selection
+            UINotificationFeedbackGenerator *feedbackGenerator = [[UINotificationFeedbackGenerator alloc] init];
+            [feedbackGenerator prepare];
+            [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeError];
+
             NSLog(@"the square doesn't have enough value to be selected!");
         }
     }
-    
+
     else {
         NSLog(@"A selected square does not have its delegate set!");
     }
