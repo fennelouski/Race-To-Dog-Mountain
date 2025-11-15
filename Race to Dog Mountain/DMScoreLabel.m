@@ -14,22 +14,28 @@
     if (!self.whiteColor) self.whiteColor = [UIColor whiteColor];
     [self addSubview:self.nameLabel];
     [self addSubview:self.scoreLabel];
-    
+
     [self.nameLabel setText:self.name];
-    
+
     if (!self.fontSizeOverwritten) self.fontSize = 16.0f;
     float longestText = (self.name.length > 3) ? (float)self.name.length : (float)3.0f;
     if (!self.fontSizeOverwritten && self.frame.size.height/longestText > self.fontSize) {
         self.fontSize = self.frame.size.height/longestText;
     }
-    
+
     [self.nameLabel setFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height/2.0f)];
     [self.scoreLabel setFrame:CGRectMake(0.0f, self.frame.size.height/2.0f, self.frame.size.width, self.frame.size.height/2.0f)];
-    
+
     [self.nameLabel setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
     [self.scoreLabel setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
-    
+
     [self addGestureRecognizer:self.tap];
+
+    // Add accessibility support
+    self.isAccessibilityElement = YES;
+    self.accessibilityLabel = [NSString stringWithFormat:@"%@, score: %d", self.name ?: @"Player", self.score];
+    self.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitUpdatesFrequently;
+    self.accessibilityHint = @"Double tap to select this player";
 }
 
 - (void)updateScore:(int)newScore {
