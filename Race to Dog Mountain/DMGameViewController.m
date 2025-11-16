@@ -855,6 +855,26 @@
 #pragma mark - AI
 
 - (void)player1AIMove {
+    DMAIDifficulty difficulty = [[DMProjectManager sharedProjectManager] player1AIDifficulty];
+
+    switch (difficulty) {
+        case DMAIDifficultyEasy:
+            [self player1AIEasyMove];
+            break;
+        case DMAIDifficultyNormal:
+            [self player1AINormalMove];
+            break;
+        case DMAIDifficultyAdvanced:
+            [self player1AIAdvancedMove];
+            break;
+        default:
+            [self player1AINormalMove];
+            break;
+    }
+}
+
+- (void)player1AIEasyMove {
+    // Easy AI: Just pick a random valid square
     NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
     for (NSMutableArray *array in self.grid) {
         for (DMSquare *square in array) {
@@ -863,17 +883,35 @@
             }
         }
     }
-    
+
+    if ([possibleSquares count] > 0) {
+        NSUInteger randomIndex = arc4random_uniform((uint32_t)[possibleSquares count]);
+        DMSquare *randomSquare = [possibleSquares objectAtIndex:randomIndex];
+        [self playSquare:randomSquare];
+    }
+}
+
+- (void)player1AINormalMove {
+    // Normal AI: Current implementation with 3-move lookahead
+    NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
+    for (NSMutableArray *array in self.grid) {
+        for (DMSquare *square in array) {
+            if (square.row == self.currentRow && [[square squareValue] intValue] > 0) {
+                [possibleSquares addObject:square];
+            }
+        }
+    }
+
     DMSquare *bestOption = [[DMSquare alloc] initWithFrame:CGRectZero];
-    
+
     if ([possibleSquares count] > 0) {
         bestOption = [possibleSquares objectAtIndex:0];
     }
-    
+
     else {
         NSLog(@"No possible squares!");
     }
-    
+
     int highestValue = -300;
     for (DMSquare *square in possibleSquares) {
         NSMutableSet *possibleSecondSquares = [[NSMutableSet alloc] init];
@@ -884,11 +922,11 @@
                 }
             }
         }
-        
+
         int lowestValue = 100000;
         for (DMSquare *secondSquare in possibleSecondSquares) {
             int highestThirdValue = 0;
-            
+
             if ([self.grid count] > secondSquare.row) {
                 for (DMSquare *possibleThirdSquare in [self.grid objectAtIndex:secondSquare.row]) {
                     if (![possibleThirdSquare isEqual:secondSquare] && [[possibleThirdSquare squareValue] intValue] < highestThirdValue) {
@@ -896,16 +934,16 @@
                     }
                 }
             }
-            
+
             if ([square isEqual:secondSquare]) {
                 // they're the same square
             }
-            
+
             else if ([[square squareValue] intValue] - [[secondSquare squareValue] intValue] + highestThirdValue < lowestValue) {
                 lowestValue = [[square squareValue] intValue] - [[secondSquare squareValue] intValue] + highestThirdValue;
             }
         }
-        
+
         if (lowestValue > highestValue) {
             highestValue = lowestValue;
             bestOption = square;
@@ -915,10 +953,101 @@
     [self playSquare:bestOption];
 }
 
-// player's 
+- (void)player1AIAdvancedMove {
+    // Advanced AI: Enhanced minimax with 4-move lookahead and better evaluation
+    NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
+    for (NSMutableArray *array in self.grid) {
+        for (DMSquare *square in array) {
+            if (square.row == self.currentRow && [[square squareValue] intValue] > 0) {
+                [possibleSquares addObject:square];
+            }
+        }
+    }
+
+    DMSquare *bestOption = [[DMSquare alloc] initWithFrame:CGRectZero];
+
+    if ([possibleSquares count] > 0) {
+        bestOption = [possibleSquares objectAtIndex:0];
+    } else {
+        NSLog(@"No possible squares!");
+        return;
+    }
+
+    int bestScore = -100000;
+
+    for (DMSquare *square in possibleSquares) {
+        // Evaluate this move with deeper lookahead
+        int score = [self evaluateMoveForPlayer1:square depth:4 isMaximizing:NO];
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestOption = square;
+        }
+    }
+
+    [self playSquare:bestOption];
+}
+
+- (int)evaluateMoveForPlayer1:(DMSquare *)square depth:(int)depth isMaximizing:(BOOL)isMaximizing {
+    if (depth == 0) {
+        return [[square squareValue] intValue];
+    }
+
+    int currentValue = [[square squareValue] intValue];
+
+    // Find all possible next moves (in the column of the chosen square)
+    NSMutableArray *nextMoves = [[NSMutableArray alloc] init];
+    for (NSArray *row in self.grid) {
+        for (DMSquare *nextSquare in row) {
+            if ([nextSquare column] == [square column] && [[nextSquare squareValue] intValue] > 0 && ![nextSquare isEqual:square]) {
+                [nextMoves addObject:nextSquare];
+            }
+        }
+    }
+
+    if ([nextMoves count] == 0) {
+        return currentValue;
+    }
+
+    if (isMaximizing) {
+        int maxEval = -100000;
+        for (DMSquare *nextSquare in nextMoves) {
+            int eval = currentValue + [self evaluateMoveForPlayer1:nextSquare depth:depth - 1 isMaximizing:NO];
+            maxEval = MAX(maxEval, eval);
+        }
+        return maxEval;
+    } else {
+        int minEval = 100000;
+        for (DMSquare *nextSquare in nextMoves) {
+            int eval = currentValue - [self evaluateMoveForPlayer1:nextSquare depth:depth - 1 isMaximizing:YES];
+            minEval = MIN(minEval, eval);
+        }
+        return minEval;
+    }
+}
+
+// player's
 - (void)player2AIMove {
-    DMSquare *bestOption;
-    
+    DMAIDifficulty difficulty = [[DMProjectManager sharedProjectManager] player2AIDifficulty];
+
+    switch (difficulty) {
+        case DMAIDifficultyEasy:
+            [self player2AIEasyMove];
+            break;
+        case DMAIDifficultyNormal:
+            [self player2AINormalMove];
+            break;
+        case DMAIDifficultyAdvanced:
+            [self player2AIAdvancedMove];
+            break;
+        default:
+            [self player2AINormalMove];
+            break;
+    }
+}
+
+- (void)player2AIEasyMove {
+    // Easy AI: Just pick a random valid square
     NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
     for (NSMutableArray *array in self.grid) {
         for (DMSquare *square in array) {
@@ -927,14 +1056,107 @@
             }
         }
     }
-    
+
+    if ([possibleSquares count] > 0) {
+        NSUInteger randomIndex = arc4random_uniform((uint32_t)[possibleSquares count]);
+        DMSquare *randomSquare = [possibleSquares objectAtIndex:randomIndex];
+        [self playSquare:randomSquare];
+    }
+}
+
+- (void)player2AINormalMove {
+    // Normal AI: Current greedy implementation
+    DMSquare *bestOption;
+
+    NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
+    for (NSMutableArray *array in self.grid) {
+        for (DMSquare *square in array) {
+            if (square.column == self.currentColumn && [[square squareValue] intValue] > 0) {
+                [possibleSquares addObject:square];
+            }
+        }
+    }
+
     for (DMSquare *square in possibleSquares) {
         if ([[square squareValue] intValue] > [[bestOption squareValue] intValue]) {
             bestOption = square;
         }
     }
-    
+
     [self playSquare:bestOption];
+}
+
+- (void)player2AIAdvancedMove {
+    // Advanced AI: Minimax with lookahead instead of greedy
+    NSMutableArray *possibleSquares = [[NSMutableArray alloc] initWithCapacity:self.numberOfRows];
+    for (NSMutableArray *array in self.grid) {
+        for (DMSquare *square in array) {
+            if (square.column == self.currentColumn && [[square squareValue] intValue] > 0) {
+                [possibleSquares addObject:square];
+            }
+        }
+    }
+
+    DMSquare *bestOption = nil;
+
+    if ([possibleSquares count] > 0) {
+        bestOption = [possibleSquares objectAtIndex:0];
+    } else {
+        NSLog(@"No possible squares for player 2!");
+        return;
+    }
+
+    int bestScore = -100000;
+
+    for (DMSquare *square in possibleSquares) {
+        // Evaluate this move with lookahead
+        int score = [self evaluateMoveForPlayer2:square depth:4 isMaximizing:NO];
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestOption = square;
+        }
+    }
+
+    [self playSquare:bestOption];
+}
+
+- (int)evaluateMoveForPlayer2:(DMSquare *)square depth:(int)depth isMaximizing:(BOOL)isMaximizing {
+    if (depth == 0) {
+        return [[square squareValue] intValue];
+    }
+
+    int currentValue = [[square squareValue] intValue];
+
+    // Find all possible next moves (in the row of the chosen square)
+    NSMutableArray *nextMoves = [[NSMutableArray alloc] init];
+    if ([self.grid count] > square.row) {
+        for (DMSquare *nextSquare in [self.grid objectAtIndex:square.row]) {
+            if ([[nextSquare squareValue] intValue] > 0 && ![nextSquare isEqual:square]) {
+                [nextMoves addObject:nextSquare];
+            }
+        }
+    }
+
+    if ([nextMoves count] == 0) {
+        return currentValue;
+    }
+
+    if (isMaximizing) {
+        int maxEval = -100000;
+        for (DMSquare *nextSquare in nextMoves) {
+            int eval = currentValue + [self evaluateMoveForPlayer2:nextSquare depth:depth - 1 isMaximizing:NO];
+            maxEval = MAX(maxEval, eval);
+        }
+        return maxEval;
+    } else {
+        int minEval = 100000;
+        for (DMSquare *nextSquare in nextMoves) {
+            int eval = currentValue - [self evaluateMoveForPlayer2:nextSquare depth:depth - 1 isMaximizing:YES];
+            minEval = MIN(minEval, eval);
+        }
+        return minEval;
+    }
 }
 
 - (DMSquare *)highestSquareInSet:(NSSet *)possibleSquares {

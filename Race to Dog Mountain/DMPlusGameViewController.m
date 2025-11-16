@@ -888,6 +888,44 @@
 }
 
 - (void)player1AIMove {
+    DMAIDifficulty difficulty = [[DMProjectManager sharedProjectManager] player1AIDifficulty];
+
+    switch (difficulty) {
+        case DMAIDifficultyEasy:
+            [self player1AIEasyMove];
+            break;
+        case DMAIDifficultyNormal:
+            [self player1AINormalMove];
+            break;
+        case DMAIDifficultyAdvanced:
+            [self player1AIAdvancedMove];
+            break;
+        default:
+            [self player1AINormalMove];
+            break;
+    }
+}
+
+- (void)player1AIEasyMove {
+    // Easy AI: Pick a random valid square
+    NSMutableArray *validSquares = [[NSMutableArray alloc] init];
+    for (NSArray *row in self.grid) {
+        for (DMSquare *square in row) {
+            if (![self.playedSquares containsObject:square] && [square selected]) {
+                [validSquares addObject:square];
+            }
+        }
+    }
+
+    if ([validSquares count] > 0) {
+        NSUInteger randomIndex = arc4random_uniform((uint32_t)[validSquares count]);
+        DMSquare *randomSquare = [validSquares objectAtIndex:randomIndex];
+        [self squareTouched:randomSquare];
+    }
+}
+
+- (void)player1AINormalMove {
+    // Normal AI: Current implementation with neighbor evaluation
     DMSquare *highestSquare;
     int highestScore = -INT_MAX + 1;
     int originalSquareWeight = 4;
@@ -897,22 +935,22 @@
                 if (!highestSquare) {
                     highestSquare = square;
                 }
-                
+
                 NSArray *neighbors = [self neighboringSquares:square];
                 int neighboringDifference = 0;
-                
+
                 for (DMSquare *neighboringSquare in neighbors) {
                     if ([neighboringSquare selected]) {
                         neighboringDifference -= [[neighboringSquare squareValue] intValue];
                     }
-                    
+
                     else {
                         neighboringDifference += [[neighboringSquare squareValue] intValue];
                     }
                 }
-                
+
                 neighboringDifference += [[square squareValue] intValue] * originalSquareWeight;
-                
+
                 if (neighboringDifference > highestScore) {
                     highestSquare = square;
                     highestScore = neighboringDifference;
@@ -920,11 +958,131 @@
             }
         }
     }
-    
+
     [self squareTouched:highestSquare];
 }
 
+- (void)player1AIAdvancedMove {
+    // Advanced AI: Enhanced evaluation with 2-level lookahead
+    DMSquare *bestSquare;
+    int bestScore = -INT_MAX + 1;
+
+    NSMutableArray *validSquares = [[NSMutableArray alloc] init];
+    for (NSArray *row in self.grid) {
+        for (DMSquare *square in row) {
+            if (![self.playedSquares containsObject:square] && [square selected]) {
+                [validSquares addObject:square];
+            }
+        }
+    }
+
+    for (DMSquare *square in validSquares) {
+        int score = [self evaluatePlusMoveForPlayer1:square withDepth:2];
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestSquare = square;
+        }
+    }
+
+    if (bestSquare) {
+        [self squareTouched:bestSquare];
+    }
+}
+
+- (int)evaluatePlusMoveForPlayer1:(DMSquare *)square withDepth:(int)depth {
+    if (depth == 0) {
+        return [[square squareValue] intValue];
+    }
+
+    // Calculate immediate score with higher weight
+    NSArray *neighbors = [self neighboringSquares:square];
+    int immediateScore = [[square squareValue] intValue] * 6; // Higher weight for advanced AI
+
+    for (DMSquare *neighboringSquare in neighbors) {
+        if ([neighboringSquare selected]) {
+            immediateScore -= [[neighboringSquare squareValue] intValue];
+        } else {
+            immediateScore += [[neighboringSquare squareValue] intValue];
+        }
+    }
+
+    // Look ahead at opponent's potential responses
+    if (depth > 1) {
+        int worstOpponentScore = INT_MAX;
+        for (DMSquare *neighbor in neighbors) {
+            if (![neighbor selected] && ![self.playedSquares containsObject:neighbor]) {
+                int opponentScore = [self evaluatePlusMoveForPlayer2:neighbor withDepth:depth - 1];
+                worstOpponentScore = MIN(worstOpponentScore, opponentScore);
+            }
+        }
+
+        if (worstOpponentScore != INT_MAX) {
+            immediateScore -= worstOpponentScore / 2;
+        }
+    }
+
+    return immediateScore;
+}
+
+- (int)evaluatePlusMoveForPlayer2:(DMSquare *)square withDepth:(int)depth {
+    if (depth == 0) {
+        return [[square squareValue] intValue];
+    }
+
+    NSArray *neighbors = [self neighboringSquares:square];
+    int immediateScore = [[square squareValue] intValue] * 6;
+
+    for (DMSquare *neighboringSquare in neighbors) {
+        if (![neighboringSquare selected]) {
+            immediateScore -= [[neighboringSquare squareValue] intValue];
+        } else {
+            immediateScore += [[neighboringSquare squareValue] intValue];
+        }
+    }
+
+    return immediateScore;
+}
+
 - (void)player2AIMove {
+    DMAIDifficulty difficulty = [[DMProjectManager sharedProjectManager] player2AIDifficulty];
+
+    switch (difficulty) {
+        case DMAIDifficultyEasy:
+            [self player2AIEasyMove];
+            break;
+        case DMAIDifficultyNormal:
+            [self player2AINormalMove];
+            break;
+        case DMAIDifficultyAdvanced:
+            [self player2AIAdvancedMove];
+            break;
+        default:
+            [self player2AINormalMove];
+            break;
+    }
+}
+
+- (void)player2AIEasyMove {
+    // Easy AI: Pick a random valid square
+    NSMutableArray *validSquares = [[NSMutableArray alloc] init];
+    for (NSArray *row in self.grid) {
+        for (DMSquare *square in row) {
+            if (![self.playedSquares containsObject:square] && ![square selected]) {
+                [validSquares addObject:square];
+            }
+        }
+    }
+
+    if ([validSquares count] > 0) {
+        NSUInteger randomIndex = arc4random_uniform((uint32_t)[validSquares count]);
+        DMSquare *randomSquare = [validSquares objectAtIndex:randomIndex];
+        [self squareTouched:randomSquare];
+    }
+}
+
+- (void)player2AINormalMove {
+    // Normal AI: Current implementation with randomized weight
     DMSquare *highestSquare;
     int highestScore = -INT_MAX + 1;
     float originalSquareWeight = ((float)(arc4random()%5 + 2))/5.0f;
@@ -934,22 +1092,22 @@
                 if (!highestSquare) {
                     highestSquare = square;
                 }
-                
+
                 NSArray *neighbors = [self neighboringSquares:square];
                 int neighboringDifference = 0;
-                
+
                 for (DMSquare *neighboringSquare in neighbors) {
                     if (![neighboringSquare selected]) {
                         neighboringDifference -= [[neighboringSquare squareValue] intValue];
                     }
-                    
+
                     else {
                         neighboringDifference += [[neighboringSquare squareValue] intValue];
                     }
                 }
-                
+
                 neighboringDifference += [[square squareValue] intValue] * originalSquareWeight;
-                
+
                 if (neighboringDifference > highestScore) {
                     highestSquare = square;
                     highestScore = neighboringDifference;
@@ -957,8 +1115,71 @@
             }
         }
     }
-    
+
     [self squareTouched:highestSquare];
+}
+
+- (void)player2AIAdvancedMove {
+    // Advanced AI: Enhanced evaluation with 2-level lookahead
+    DMSquare *bestSquare;
+    int bestScore = -INT_MAX + 1;
+
+    NSMutableArray *validSquares = [[NSMutableArray alloc] init];
+    for (NSArray *row in self.grid) {
+        for (DMSquare *square in row) {
+            if (![self.playedSquares containsObject:square] && ![square selected]) {
+                [validSquares addObject:square];
+            }
+        }
+    }
+
+    for (DMSquare *square in validSquares) {
+        int score = [self evaluatePlusMoveForPlayer2Advanced:square withDepth:2];
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestSquare = square;
+        }
+    }
+
+    if (bestSquare) {
+        [self squareTouched:bestSquare];
+    }
+}
+
+- (int)evaluatePlusMoveForPlayer2Advanced:(DMSquare *)square withDepth:(int)depth {
+    if (depth == 0) {
+        return [[square squareValue] intValue];
+    }
+
+    // Calculate immediate score with higher weight for advanced AI
+    NSArray *neighbors = [self neighboringSquares:square];
+    int immediateScore = [[square squareValue] intValue] * 6;
+
+    for (DMSquare *neighboringSquare in neighbors) {
+        if (![neighboringSquare selected]) {
+            immediateScore -= [[neighboringSquare squareValue] intValue];
+        } else {
+            immediateScore += [[neighboringSquare squareValue] intValue];
+        }
+    }
+
+    // Look ahead at opponent's potential responses
+    if (depth > 1) {
+        int worstOpponentScore = INT_MAX;
+        for (DMSquare *neighbor in neighbors) {
+            if ([neighbor selected] && ![self.playedSquares containsObject:neighbor]) {
+                int opponentScore = [self evaluatePlusMoveForPlayer1:neighbor withDepth:depth - 1];
+                worstOpponentScore = MIN(worstOpponentScore, opponentScore);
+            }
+        }
+
+        if (worstOpponentScore != INT_MAX) {
+            immediateScore -= worstOpponentScore / 2;
+        }
+    }
+
+    return immediateScore;
 }
 
 #pragma mark - Neighboring Squares

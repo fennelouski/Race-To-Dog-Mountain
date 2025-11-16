@@ -50,7 +50,12 @@
     
     [self.view addSubview:self.gameModeLabel];
     [self.view addSubview:self.gameModeSwitch];
-    
+
+    [self.view addSubview:self.player1DifficultyLabel];
+    [self.view addSubview:self.player1DifficultyControl];
+    [self.view addSubview:self.player2DifficultyLabel];
+    [self.view addSubview:self.player2DifficultyControl];
+
     [self setUpColors];
     [self changeColors];
     
@@ -73,8 +78,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self layoutTextFields];
     [self layoutAISwitches];
+    [self layoutDifficultyControls];
     [self gameModeSwitchTouched];
-    
+
     [self.doneButton setFrame:CGRectMake(0.0f,
                                          kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f,
                                          kScreenWidth,
@@ -100,7 +106,8 @@
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         [self layoutTextFields];
         [self layoutAISwitches];
-        
+        [self layoutDifficultyControls];
+
         [self.doneButton setFrame:CGRectMake(0.0f,
                                              kScreenHeight - (kScreenHeight + kScreenWidth)/20.0f,
                                              kScreenWidth,
@@ -240,6 +247,58 @@ self.player1TextField.center.y)];
                                                self.player2AISwitch.center.y - 30.0f)];
 }
 
+- (void)layoutDifficultyControls {
+    float leftSideOffset = 80.0f;
+
+    // portrait
+    if (kScreenHeight > kScreenWidth) {
+        [self.player1DifficultyLabel setFrame:CGRectMake(leftSideOffset,
+                                                         kScreenHeight/8.0f + 50.0f,
+                                                         kScreenWidth - 2.0f * leftSideOffset,
+                                                         20.0f)];
+        [self.player1DifficultyControl setFrame:CGRectMake(leftSideOffset,
+                                                           kScreenHeight/8.0f + 75.0f,
+                                                           kScreenWidth - 2.0f * leftSideOffset,
+                                                           30.0f)];
+
+        [self.player2DifficultyLabel setFrame:CGRectMake(leftSideOffset,
+                                                         kScreenHeight/4.0f + 50.0f,
+                                                         kScreenWidth - 2.0f * leftSideOffset,
+                                                         20.0f)];
+        [self.player2DifficultyControl setFrame:CGRectMake(leftSideOffset,
+                                                           kScreenHeight/4.0f + 75.0f,
+                                                           kScreenWidth - 2.0f * leftSideOffset,
+                                                           30.0f)];
+    }
+
+    // landscape
+    else {
+        [self.player1DifficultyLabel setFrame:CGRectMake(leftSideOffset,
+                                                         kStatusBarHeight + kScreenHeight/4.0f + 10.0f,
+                                                         kScreenWidth/2.0f - 2.0f * leftSideOffset,
+                                                         20.0f)];
+        [self.player1DifficultyControl setFrame:CGRectMake(leftSideOffset,
+                                                           kStatusBarHeight + kScreenHeight/4.0f + 35.0f,
+                                                           kScreenWidth/2.0f - 2.0f * leftSideOffset,
+                                                           30.0f)];
+
+        [self.player2DifficultyLabel setFrame:CGRectMake(kScreenWidth/2.0f + leftSideOffset,
+                                                         kStatusBarHeight + kScreenHeight/4.0f + 10.0f,
+                                                         kScreenWidth/2.0f - 2.0f * leftSideOffset,
+                                                         20.0f)];
+        [self.player2DifficultyControl setFrame:CGRectMake(kScreenWidth/2.0f + leftSideOffset,
+                                                           kStatusBarHeight + kScreenHeight/4.0f + 35.0f,
+                                                           kScreenWidth/2.0f - 2.0f * leftSideOffset,
+                                                           30.0f)];
+    }
+
+    // Hide difficulty controls if AI is disabled
+    [self.player1DifficultyLabel setHidden:!self.player1AISwitch.on];
+    [self.player1DifficultyControl setHidden:!self.player1AISwitch.on];
+    [self.player2DifficultyLabel setHidden:!self.player2AISwitch.on];
+    [self.player2DifficultyControl setHidden:!self.player2AISwitch.on];
+}
+
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSLog(@"keyboardWillShow");
 }
@@ -329,7 +388,11 @@ self.player1TextField.center.y)];
     [_computerLabel2 setTextColor:self.textColor];
     [_gameModeLabel setTextColor:self.textColor];
     [_complexityLabel setTextColor:self.textColor];
-    
+    [_player1DifficultyLabel setTextColor:self.textColor];
+    [_player2DifficultyLabel setTextColor:self.textColor];
+    [_player1DifficultyControl setTintColor:self.tintColor];
+    [_player2DifficultyControl setTintColor:self.tintColor];
+
     [self.view setBackgroundColor:self.backgroundColor];
 }
 
@@ -537,8 +600,50 @@ self.player1TextField.center.y)];
         [_gameModeSwitch addTarget:self action:@selector(gameModeSwitchTouched) forControlEvents:UIControlEventTouchUpInside];
         [_gameModeSwitch setOn:[[DMProjectManager sharedProjectManager] isPlusGame] animated:YES];
     }
-    
+
     return _gameModeSwitch;
+}
+
+- (UILabel *)player1DifficultyLabel {
+    if (!_player1DifficultyLabel) {
+        _player1DifficultyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_player1DifficultyLabel setText:@"AI Difficulty"];
+        [_player1DifficultyLabel setTextAlignment:NSTextAlignmentCenter];
+        [_player1DifficultyLabel setFont:[UIFont systemFontOfSize:12.0f]];
+    }
+
+    return _player1DifficultyLabel;
+}
+
+- (UILabel *)player2DifficultyLabel {
+    if (!_player2DifficultyLabel) {
+        _player2DifficultyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_player2DifficultyLabel setText:@"AI Difficulty"];
+        [_player2DifficultyLabel setTextAlignment:NSTextAlignmentCenter];
+        [_player2DifficultyLabel setFont:[UIFont systemFontOfSize:12.0f]];
+    }
+
+    return _player2DifficultyLabel;
+}
+
+- (UISegmentedControl *)player1DifficultyControl {
+    if (!_player1DifficultyControl) {
+        _player1DifficultyControl = [[UISegmentedControl alloc] initWithItems:@[@"Easy", @"Normal", @"Advanced"]];
+        [_player1DifficultyControl setSelectedSegmentIndex:[[DMProjectManager sharedProjectManager] player1AIDifficulty]];
+        [_player1DifficultyControl addTarget:self action:@selector(player1DifficultyChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+
+    return _player1DifficultyControl;
+}
+
+- (UISegmentedControl *)player2DifficultyControl {
+    if (!_player2DifficultyControl) {
+        _player2DifficultyControl = [[UISegmentedControl alloc] initWithItems:@[@"Easy", @"Normal", @"Advanced"]];
+        [_player2DifficultyControl setSelectedSegmentIndex:[[DMProjectManager sharedProjectManager] player2AIDifficulty]];
+        [_player2DifficultyControl addTarget:self action:@selector(player2DifficultyChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+
+    return _player2DifficultyControl;
 }
 
 #pragma mark - Game Mode
@@ -557,19 +662,23 @@ self.player1TextField.center.y)];
 
 - (void)done {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+
     [defaults setObject:self.player1TextField.text forKey:@"player1Name"];
     [defaults setObject:self.player2TextField.text forKey:@"player2Name"];
-    
+
     [[DMProjectManager sharedProjectManager] setComplexity:self.complexitySlider.value];
-    
+
     [defaults setObject:[NSNumber numberWithBool:self.player1AISwitch.on] forKey:@"player1AI"];
     [defaults setObject:[NSNumber numberWithBool:self.player2AISwitch.on] forKey:@"player2AI"];
-    
+
     [defaults setObject:[NSNumber numberWithFloat:self.complexitySlider.value] forKey:@"complexity"];
-    
+
+    // Save AI difficulty settings
+    [[DMProjectManager sharedProjectManager] setPlayer1AIDifficulty:self.player1DifficultyControl.selectedSegmentIndex];
+    [[DMProjectManager sharedProjectManager] setPlayer2AIDifficulty:self.player2DifficultyControl.selectedSegmentIndex];
+
     [self dismissViewControllerAnimated:YES completion:^{
-        
+
     }];
 }
 
@@ -577,10 +686,22 @@ self.player1TextField.center.y)];
 
 - (void)player1AISwitchTouched {
     [[DMProjectManager sharedProjectManager] setPlayer1AI:self.player1AISwitch.on];
+    [self layoutDifficultyControls];
 }
 
 - (void)player2AISwitchTouched {
     [[DMProjectManager sharedProjectManager] setPlayer2AI:self.player2AISwitch.on];
+    [self layoutDifficultyControls];
+}
+
+#pragma mark - AI Difficulty Changed
+
+- (void)player1DifficultyChanged:(UISegmentedControl *)sender {
+    [[DMProjectManager sharedProjectManager] setPlayer1AIDifficulty:sender.selectedSegmentIndex];
+}
+
+- (void)player2DifficultyChanged:(UISegmentedControl *)sender {
+    [[DMProjectManager sharedProjectManager] setPlayer2AIDifficulty:sender.selectedSegmentIndex];
 }
 
 #pragma mark - Text Field delegate

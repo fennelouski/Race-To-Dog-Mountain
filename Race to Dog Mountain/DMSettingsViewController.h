@@ -22,4 +22,7 @@
 @property (nonatomic, strong) UILabel *gameModeLabel;
 @property (nonatomic, strong) UISwitch *gameModeSwitch;
 
+@property (nonatomic, strong) UILabel *player1DifficultyLabel, *player2DifficultyLabel;
+@property (nonatomic, strong) UISegmentedControl *player1DifficultyControl, *player2DifficultyControl;
+
 @end

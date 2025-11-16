@@ -8,10 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, DMAIDifficulty) {
+    DMAIDifficultyEasy = 0,
+    DMAIDifficultyNormal = 1,
+    DMAIDifficultyAdvanced = 2
+};
+
 @interface DMProjectManager : NSObject
 
 @property (nonatomic, strong) NSString *player1Name, *player2Name;
 @property int complexity;
+@property (nonatomic, assign) DMAIDifficulty player1AIDifficulty;
+@property (nonatomic, assign) DMAIDifficulty player2AIDifficulty;
 
 + (instancetype)sharedProjectManager;
 - (BOOL)isPlusGame;
