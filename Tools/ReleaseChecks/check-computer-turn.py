@@ -17,9 +17,14 @@ identity, body = match.groups()
 harness = r'''
 import Foundation
 
+final class UIApplication {
+    enum State { case active, background }
+    static let shared = UIApplication()
+    var applicationState = State.active
+}
+
 @MainActor final class Turns {
-    enum Phase { case active, inactive }
-    var scenePhase = Phase.active
+    var foregroundNonce = 0
     var confirmExit = false
     var computers = [true, true]
     var game = MountainGame(size: 4, plusMode: false, values: Array(1...16), firstPlayer: 0, startingLine: 0)
@@ -55,14 +60,15 @@ BODY
         await turns.task?.value
         require(turns.game.moves == 1, "Cancel did not resume exactly one computer turn")
 
-        // Changing the game starts the next turn. Leaving the scene cancels it.
+        // Changing the game starts the next turn. Backgrounding cancels it.
         turns.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(50))
-        turns.scenePhase = .inactive
+        UIApplication.shared.applicationState = .background
         turns.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(650))
-        require(turns.game.moves == 1, "Inactive app allowed a pending computer move")
-        turns.scenePhase = .active
+        require(turns.game.moves == 1, "Background app allowed a pending computer move")
+        UIApplication.shared.applicationState = .active
+        turns.foregroundNonce += 1
         turns.restartIfNeeded()
         await turns.task?.value
         require(turns.game.moves == 2, "Returning active did not resume the computer turn")
@@ -70,7 +76,7 @@ BODY
         turns.task?.cancel() // View dismissal cancels its task.
         await turns.task?.value
         require(turns.game.moves == 2, "Canceled view task moved after dismissal")
-        print("Exit dialog pauses pending AI; Cancel resumes once; inactive/dismissed tasks cannot move: PASS")
+        print("Exit dialog pauses pending AI; Cancel resumes once; background/dismissed tasks cannot move: PASS")
     }
 }
 '''.replace('IDENTITY', identity).replace('BODY', body)

@@ -39,8 +39,8 @@ private struct MountainHome: View {
                     Toggle("Computer plays second player", isOn: $secondAI)
                 }
                 Section("Head to head") {
-                    LabeledContent(clean(firstName, fallback: "Player 1"), value: "\(history[0]) wins")
-                    LabeledContent(clean(secondName, fallback: "Player 2"), value: "\(history[1]) wins")
+                    LabeledContent(clean(firstName, fallback: "Player 1"), value: "\(history[0]) \(history[0] == 1 ? "win" : "wins")")
+                    LabeledContent(clean(secondName, fallback: "Player 2"), value: "\(history[1]) \(history[1] == 1 ? "win" : "wins")")
                 }
                 Section("Your game") {
                     Picker("Mode", selection: $plusMode) { Text("Classic").tag(false); Text("Plus").tag(true) }
@@ -82,8 +82,8 @@ private struct MountainGameView: View {
     @State private var game: MountainGame
     @State private var recorded = false
     @State private var confirmExit = false
+    @State private var foregroundNonce = 0
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     init(size: Int, plus: Bool, names: [String], computers: [Bool]) {
@@ -141,10 +141,11 @@ private struct MountainGameView: View {
             .confirmationDialog("Leave this game?", isPresented: $confirmExit, titleVisibility: .visible) {
                 Button("Leave game", role: .destructive) { dismiss() }
             } message: { Text("This unfinished game will not count toward your wins.") }
-            .task(id: "\(game.moves)-\(computers)-\(scenePhase)-\(confirmExit)") {
-                guard scenePhase == .active, !confirmExit, !game.isOver, computers[game.turn] else { return }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in foregroundNonce += 1 }
+            .task(id: "\(game.moves)-\(computers)-\(confirmExit)-\(foregroundNonce)") {
+                guard UIApplication.shared.applicationState != .background, !confirmExit, !game.isOver, computers[game.turn] else { return }
                 do { try await Task.sleep(for: .milliseconds(550)) } catch { return }
-                guard !Task.isCancelled, !confirmExit, scenePhase == .active else { return }
+                guard !Task.isCancelled, !confirmExit, UIApplication.shared.applicationState != .background else { return }
                 if let next = game.computerMove() { move(next) }
             }
             .onChange(of: game.isOver) { _, over in if over { recordWin() } }
