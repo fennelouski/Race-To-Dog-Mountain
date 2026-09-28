@@ -1,0 +1,3 @@
+No sign-in, network connection, or in-app purchase is required. Choose player names, human/computer control, board size, and Classic or Plus. Start game and choose a highlighted number on each turn. The Players menu can change computer control during play. A game ends when the next player has no legal move. Closing an unfinished game asks for confirmation and does not add a win.
+
+The Privacy Policy is available at Home > Privacy > Privacy Policy. This optional policy link opens the system browser and needs an internet connection.

@@ -53,6 +53,9 @@ private struct MountainHome: View {
                         Label("Start game", systemImage: "play.fill").font(.headline).frame(maxWidth: .infinity).padding(.vertical, 8)
                     }.buttonStyle(.borderedProminent)
                 }
+                Section("Privacy") {
+                    Link("Privacy Policy", destination: URL(string: "https://nathanfennel.com/race-to-dog-mountain/privacy.html")!)
+                }
             }
             .navigationTitle("Dog Mountain")
             .fullScreenCover(isPresented: $playing, onDismiss: refreshHistory) {
