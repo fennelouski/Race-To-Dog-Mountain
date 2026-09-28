@@ -150,7 +150,8 @@
 #pragma mark - Core Data Saving support
 
 - (void)saveContext {
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    // The game uses UserDefaults. Do not initialize an unused legacy store while quitting.
+    NSManagedObjectContext *managedObjectContext = _managedObjectContext;
     if (managedObjectContext != nil) {
         NSError *error = nil;
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {

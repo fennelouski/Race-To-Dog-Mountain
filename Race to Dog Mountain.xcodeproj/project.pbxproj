@@ -25,6 +25,9 @@
 		908AFC7D1A6718AE0050EC0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 908AFC7C1A6718AE0050EC0B /* Images.xcassets */; };
 		908AFC801A6718AE0050EC0B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 908AFC7E1A6718AE0050EC0B /* LaunchScreen.xib */; };
 		908AFC8C1A6718AE0050EC0B /* Race_to_Dog_MountainTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 908AFC8B1A6718AE0050EC0B /* Race_to_Dog_MountainTests.m */; };
+		A02609270000000000000002 /* MountainGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02609270000000000000001; };
+		A02609270000000000000012 /* MountainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02609270000000000000011; };
+		89AA3F92BB374081BE421669 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		908AFC851A6718AE0050EC0B /* Race to Dog MountainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Race to Dog MountainTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		908AFC8A1A6718AE0050EC0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		908AFC8B1A6718AE0050EC0B /* Race_to_Dog_MountainTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Race_to_Dog_MountainTests.m; sourceTree = "<group>"; };
+		A02609270000000000000001 /* MountainGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainGame.swift"; sourceTree = SOURCE_ROOT; };
+		A02609270000000000000011 /* MountainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainViews.swift"; sourceTree = SOURCE_ROOT; };
+		E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Race to Dog Mountain/PrivacyInfo.xcprivacy"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +102,8 @@
 			children = (
 				908AFC761A6718AE0050EC0B /* ViewController.h */,
 				908AFC771A6718AE0050EC0B /* ViewController.m */,
+				A02609270000000000000011 /* MountainViews.swift */,
+				A02609270000000000000001 /* MountainGame.swift */,
 				9068E4DC1A9CD4A400A4142A /* DMSettingsViewController.h */,
 				9068E4DD1A9CD4A400A4142A /* DMSettingsViewController.m */,
 				9017A1421A671AE500361817 /* DMGameViewController.h */,
@@ -142,6 +150,7 @@
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
 			children = (
+				E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */,
 				908AFC6B1A6718AE0050EC0B /* Race to Dog Mountain */,
 				908AFC881A6718AE0050EC0B /* Race to Dog MountainTests */,
 				908AFC6A1A6718AE0050EC0B /* Products */,
@@ -288,6 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89AA3F92BB374081BE421669 /* PrivacyInfo.xcprivacy in Resources */,
 				9068E4E01A9CD9ED00A4142A /* Gear Icon.png in Resources */,
 				908AFC7B1A6718AE0050EC0B /* Main.storyboard in Resources */,
 				908AFC801A6718AE0050EC0B /* LaunchScreen.xib in Resources */,
@@ -321,6 +331,8 @@
 				9068E4E31A9CEC1E00A4142A /* DMMainScreenBackgroundView.m in Sources */,
 				9017A1471A671B3300361817 /* DMSquare.m in Sources */,
 				908AFC781A6718AE0050EC0B /* ViewController.m in Sources */,
+				A02609270000000000000012 /* MountainViews.swift in Sources */,
+				A02609270000000000000002 /* MountainGame.swift in Sources */,
 				908AFC6F1A6718AE0050EC0B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,7 +392,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -422,7 +434,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -446,13 +458,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				INFOPLIST_FILE = "Race to Dog Mountain/Info.plist";
+				SWIFT_VERSION = 5.0;
+				CLANG_ENABLE_MODULES = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
+				MARKETING_VERSION = 2.0;
+				CURRENT_PROJECT_VERSION = 3;
 			};
 			name = Debug;
 		};
@@ -461,13 +480,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				INFOPLIST_FILE = "Race to Dog Mountain/Info.plist";
+				SWIFT_VERSION = 5.0;
+				CLANG_ENABLE_MODULES = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
+				MARKETING_VERSION = 2.0;
+				CURRENT_PROJECT_VERSION = 3;
 			};
 			name = Release;
 		};
