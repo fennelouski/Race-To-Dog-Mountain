@@ -141,9 +141,10 @@ private struct MountainGameView: View {
             .confirmationDialog("Leave this game?", isPresented: $confirmExit, titleVisibility: .visible) {
                 Button("Leave game", role: .destructive) { dismiss() }
             } message: { Text("This unfinished game will not count toward your wins.") }
-            .task(id: "\(game.moves)-\(computers)-\(scenePhase)") {
-                guard scenePhase == .active, !game.isOver, computers[game.turn] else { return }
+            .task(id: "\(game.moves)-\(computers)-\(scenePhase)-\(confirmExit)") {
+                guard scenePhase == .active, !confirmExit, !game.isOver, computers[game.turn] else { return }
                 do { try await Task.sleep(for: .milliseconds(550)) } catch { return }
+                guard !Task.isCancelled, !confirmExit, scenePhase == .active else { return }
                 if let next = game.computerMove() { move(next) }
             }
             .onChange(of: game.isOver) { _, over in if over { recordWin() } }

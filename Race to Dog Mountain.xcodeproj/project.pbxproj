@@ -471,7 +471,7 @@
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				MARKETING_VERSION = 2.0;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 			};
 			name = Debug;
 		};
@@ -493,7 +493,7 @@
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				MARKETING_VERSION = 2.0;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 			};
 			name = Release;
 		};
