@@ -116,6 +116,20 @@ struct MountainGame: Sendable, Codable {
 
 }
 
+extension MountainGame {
+    var isValid: Bool {
+        guard (4...14).contains(size) else { return false }
+        let count = size * size, total = count * (count + 1) / 2
+        guard tiles.count == count, scores.count == 2, (0...1).contains(turn),
+              (0..<size).contains(row), (0..<size).contains(column), (0...count).contains(moves),
+              scores.allSatisfy({ (0...total).contains($0) }),
+              tiles.enumerated().allSatisfy({ $0.offset == $0.element.id && (0...count).contains($0.element.value) }) else { return false }
+        let remaining = tiles.filter { $0.value > 0 }.map(\.value)
+        return Set(remaining).count == remaining.count && count - remaining.count == moves &&
+            scores.reduce(0, +) + remaining.reduce(0, +) == total
+    }
+}
+
 struct MountainReplay: Sendable, Codable {
     let before: MountainGame
     let tileID: Int

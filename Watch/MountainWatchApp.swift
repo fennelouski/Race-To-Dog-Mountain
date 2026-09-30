@@ -174,10 +174,7 @@ private struct WatchGame: View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
             ForEach(match.game.legalMoves, id: \.self) { tile in
                 Button { play(tile) } label: {
-                    VStack(spacing: 2) {
-                        Text("\(match.game.tiles[tile].value)").font(.title3.bold()).monospacedDigit()
-                        Label("\(match.game.turn == 0 ? tile % match.game.size + 1 : tile / match.game.size + 1)", systemImage: match.game.turn == 0 ? "arrow.down" : "arrow.right").font(.caption2)
-                    }.frame(maxWidth: .infinity)
+                    Text("\(match.game.tiles[tile].value)").font(.title3.bold()).monospacedDigit().frame(maxWidth: .infinity)
                 }.buttonStyle(WatchButton(tileColor: MountainStyle.player(match.game.turn)))
                     .accessibilityLabel("\(match.game.tiles[tile].value) points, row \(tile / match.game.size + 1), column \(tile % match.game.size + 1)")
                     .accessibilityHint("Sets the next player's \(match.game.turn == 0 ? "column" : "row")")
@@ -207,7 +204,7 @@ private struct WatchPointsBar: View {
         GeometryReader { geometry in
             HStack(spacing: 0) {
                 ForEach(0..<3, id: \.self) { index in
-                    Rectangle().fill(index == 2 ? MountainStyle.cream.opacity(0.25) : MountainStyle.player(index))
+                    Rectangle().fill(index == 2 ? MountainStyle.cream.opacity(0.4) : MountainStyle.player(index))
                         .frame(width: geometry.size.width * CGFloat(points[index]) / CGFloat(max(1, points.reduce(0, +))))
                 }
             }.clipShape(Capsule())

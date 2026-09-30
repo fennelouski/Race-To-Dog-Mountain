@@ -57,24 +57,13 @@ struct WatchMatch: Codable, Sendable {
     static func restore(defaults: UserDefaults = .standard) -> WatchMatch? {
         guard let data = defaults.data(forKey: saveKey), data.count < 262_144,
               let match = try? JSONDecoder().decode(Self.self, from: data),
-              match.computers.count == 2, (-2...2).contains(match.adjustment), valid(match.game),
+              match.computers.count == 2, (-2...2).contains(match.adjustment), match.game.isValid,
               match.game.turn == (MountainGame.startingPlayer(computers: match.computers) + match.game.moves) % 2 else { return nil }
         if let replay = match.replay {
-            guard valid(replay.before), replay.before.canPlay(replay.tileID), replay.before.size == match.game.size,
+            guard replay.before.isValid, replay.before.canPlay(replay.tileID), replay.before.size == match.game.size,
                   match.computers[replay.before.turn], replay.difficulty == match.difficulty,
                   replay.before.moves < match.game.moves else { return nil }
         }
         return match
-    }
-    private static func valid(_ game: MountainGame) -> Bool {
-        guard (4...14).contains(game.size) else { return false }
-        let count = game.size * game.size, total = count * (count + 1) / 2
-        guard game.tiles.count == count, game.scores.count == 2, (0...1).contains(game.turn),
-              (0..<game.size).contains(game.row), (0..<game.size).contains(game.column),
-              game.scores.allSatisfy({ (0...total).contains($0) }),
-              game.tiles.enumerated().allSatisfy({ $0.offset == $0.element.id && (0...count).contains($0.element.value) }) else { return false }
-        let remaining = game.tiles.filter { $0.value > 0 }.map(\.value)
-        return Set(remaining).count == remaining.count && game.moves == count - remaining.count
-            && remaining.reduce(0, +) + game.scores.reduce(0, +) == total
     }
 }

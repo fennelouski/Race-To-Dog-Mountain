@@ -1,12 +1,12 @@
+# Race to Dog Mountain release
+
 ## Apple Watch edition, 2026-09-30
 
-The `Race to Dog Mountain Watch` scheme builds an independent native watchOS 10+ game. Classic starts with a 4 × 4 board, human first and computer player 2. All sixteen human rivals, adaptive accuracy and replay reuse the existing game. Watch play is fixed at 4 × 4; only rival difficulty is configurable. Native swipe pages separate moves, board, score/replay and settings. A thin gold/mint/remaining-points bar replaces exact scores on the moves page; exact totals have their own page. Large legal-number buttons and Crown scrolling suit wrist play. Every move is saved locally. Computer turns pause while inactive or dimmed, and on any page except Moves, during replay and during exit confirmation. The home backdrop is static and the game uses plain pine.
+The `Race to Dog Mountain Watch` scheme builds an independent native watchOS 10+ game. Classic starts with a 4 × 4 board, human first and computer player 2. All sixteen human rivals, adaptive accuracy and replay reuse the existing game. Watch play is fixed at 4 × 4; only rival difficulty is configurable. Native vertical pages separate moves, board, score/replay and settings. A thin gold/mint/remaining-points bar sits in a separate footer below the moves, away from the native clock. Exact totals have their own page. Controls use icons, portraits and numbers, with descriptive VoiceOver labels; only exit confirmation displays explanatory text. Large legal-number buttons and Crown scrolling suit wrist play. Every move is saved locally. Computer turns pause while inactive or dimmed, and on any page except Moves, during replay and during exit confirmation. The home backdrop is static and the game uses plain pine.
 
 Run `./script/build_watch_and_run.sh` or Codex **Run Apple Watch** to rebuild, install and open the watch simulator. The script preserves saved matches. Debug simulator and unsigned watchOS device Release builds passed. Production rules, computer lifecycle, persistence, replay and adaptation checks run with `bash Tools/ReleaseChecks/run.sh`. iOS, macOS and visionOS regression builds passed after the shared scenery extraction.
 
-Native simulator captures and verification are recorded in `/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-watchos/`. Physical Watch battery, haptic comfort, VoiceOver and accessibility text sizes remain hardware/runtime checks. The device build is unsigned; this work does not constitute a watch App Store upload or submission. No phone sync, complications or widgets are included.
-
-# Race to Dog Mountain release
+The independent visual finish review returned `ship` for the supplied 40 mm and 42 mm captures and source. Native simulator captures and verification are recorded in `/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-watchos/`. Physical Watch battery, haptic comfort, VoiceOver and accessibility text sizes remain hardware/runtime checks. The device build is unsigned; this work does not constitute a watch App Store upload or submission. No phone sync, complications or widgets are included.
 
 ## Native visionOS build — 2026-09-30
 
@@ -55,3 +55,12 @@ Still required: actual phone/iPad setup and both-mode games, interrupted turns, 
 Native releases are outside the parent workspace AWS/Vercel policy. Apply that policy to any future website or API deployment.
 
 Build 4 adds the canonical Privacy Policy link at Home > Privacy > Privacy Policy. All app behavior, storage, bundle/team and entitlements remain unchanged. Previous build 3 archives and source evidence are retained; they do not prove build 4 runtime, screenshots, upload or submission. Build 4 compilation and strict archive verification passed; actual link navigation remains part of native QA. Build 5 passed Release archive and strict signature verification. Its actual native QA and screenshots remain pending before upload.
+
+
+## Social play development preview · 30 September 2026
+
+The full-size editions now have a multi-game lobby. New local games and pass-and-play games save independently, resume after relaunch and keep completed games in a disclosure. Game Center uses native two-player turn-based matches with invitations, refreshed authoritative moves and rematches. The iOS app embeds the `Dog Mountain Messages` extension: a fixed 4 × 4 board, one move per prepared bubble and an independent Messages session for every race. The player taps the native Send control. No custom server is required.
+
+Run `bash Tools/ReleaseChecks/run.sh` for rules, computer turn gates, Watch persistence and validated social transcript/save checks. Shared schemes are `Race to Dog Mountain`, `Dog Mountain in Messages`, `Race to Dog Mountain Mac`, `Race to Dog Mountain Vision` and `Race to Dog Mountain Watch`. The `Dog Mountain in Messages` scheme uses the native Messages host; the main iOS scheme embeds the extension. Debug simulator and unsigned device Release builds compile the extension.
+
+This is an unsubmitted development preview. Local concurrent games were exercised and survived relaunch. Live Game Center invitation, turn delivery, outcomes and cross-platform grouping still require service configuration, valid provisioning and two authenticated test accounts. Messages registered with the simulator, but opening its board/composer has not yet been verified. Before release, test both devices selecting old bubbles, alternating turns, cancelling a draft, finishing, rematching and keeping two races independent. Confirm the Messages-specific App Store icon requirements. Do not treat compilation or these checks as proof of live delivery. The Watch retains its simple solo game.

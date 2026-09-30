@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-30T19:06:27.206846+00:00",
+  "generatedAt": "2026-09-30T20:55:03.616561+00:00",
   "title": "Design System: Race to Dog Mountain",
   "extensions": {
     "colorMeta": {
@@ -145,6 +145,34 @@
       "vision-rival": {
         "displayName": "Vision rival name",
         "purpose": "Native visionOS launch rival name. Georgia-Bold scales relative to large title."
+      },
+      "watch-points": {
+        "displayName": "Watch points",
+        "purpose": "Move values, scores and replay points; monospaced digits.",
+        "nativeTextStyle": "title3",
+        "nativeFontWeight": "bold",
+        "dynamicType": "SwiftUI semantic text style; no fixed CSS size"
+      },
+      "watch-caption": {
+        "displayName": "Watch caption",
+        "purpose": "Direction/line indicators and remaining points; monospaced digits.",
+        "nativeTextStyle": "caption",
+        "nativeFontWeight": "regular",
+        "dynamicType": "SwiftUI semantic text style; no fixed CSS size"
+      },
+      "watch-board-number": {
+        "displayName": "Watch board number",
+        "purpose": "Read-only board numbers; monospaced digits.",
+        "nativeTextStyle": "caption2",
+        "nativeFontWeight": "bold",
+        "dynamicType": "SwiftUI semantic text style; no fixed CSS size"
+      },
+      "watch-control": {
+        "displayName": "Watch control",
+        "purpose": "Default Watch button labels; specific move or symbol roles can override it.",
+        "nativeTextStyle": "headline",
+        "nativeFontWeight": "semibold",
+        "dynamicType": "SwiftUI semantic text style; no fixed CSS size"
       }
     },
     "shadows": [
@@ -217,6 +245,44 @@
         "purpose": "Native visionOS side-by-side game only outside accessibility Dynamic Type sizes."
       }
     ],
+    "socialPlay": {
+      "source": [
+        "Race to Dog Mountain/MountainViews.swift",
+        "Race to Dog Mountain/MountainBoard.swift",
+        "Race to Dog Mountain/MountainSocialViews.swift",
+        "Messages/MessagesViewController.swift"
+      ],
+      "sharedControls": "MountainBoard.swift holds the existing board, button styles and platform view helpers extracted from MountainViews.swift. Local, friend and Messages games reuse them.",
+      "home": {
+        "scrim": "MountainStyle.ink.opacity(0.5) on iOS/macOS; incumbent visionOS scrim unchanged",
+        "compactTitle": "iOS/macOS occupied inbox: Georgia-Bold 36pt, tracking -1pt; accessibility title: 32pt, tracking -1pt; scales relative to large title",
+        "inbox": "Real friend matches and independently saved local games; friend turns needing a move first; finished games in native DisclosureGroup",
+        "row": "Plain full-width button; 44pt symbol area, 14pt horizontal gap, 12pt vertical padding; headline name, wrapping subheadline status and bold monospaced score",
+        "statusColor": "Gold symbol when a move is available, mint otherwise; written status carries the meaning. Board player colors retain their row/column roles.",
+        "accessibility": "Names and status wrap; decorative symbols are hidden; row children combine into one accessibility element.",
+        "visionPassAndPlay": "Pine foreground on the native gold capsule"
+      },
+      "friendBoard": {
+        "presentation": "Native NavigationStack sheet with Done and refresh actions; static scenery under pine scrim at 0.65 opacity",
+        "scores": "Player-colored 0.12-opacity panels, 16pt radius/padding, Georgia-Bold 36pt monospaced score; ViewThatFits stacks panels when horizontal layout cannot fit",
+        "status": "Written move/result label plus active row/column direction; native progress while saving; move selection disabled while busy",
+        "board": "Existing MountainBoard dimensions, colors, spoken coordinates and horizontal scrolling",
+        "serviceUI": "Native Game Center sign-in and invitations"
+      },
+      "messages": {
+        "interactiveBackground": "Plain pine",
+        "expanded": "Shared MountainChallengeBoard with existing tile targets and scroll behavior",
+        "compact": "Written turn status and Open board action",
+        "moveControls": "Add move to message and Undo choice after one selection; staged move prompts native Send",
+        "bubble": "Static alpine scenery under 0.6-opacity pine scrim; cream Georgia title, monospaced scores and player-colored legal tiles"
+      },
+      "verificationLimits": [
+        "Native lobby captures are in .impeccable/review/social; captures establish appearance only.",
+        "Game Center delivery, provisioning and cross-platform two-account play remain unverified.",
+        "Messages compiles and registers; host board/composer interaction, participant mapping and two-device delivery remain unverified.",
+        "Social large Dynamic Type and live VoiceOver remain unverified; no release is established by this record."
+      ]
+    },
     "nativePlatforms": {
       "visionOS": {
         "source": [
@@ -283,6 +349,93 @@
           "Live visionOS gameplay, replay, compact layout and accessibility text-size flows remain unverified because shared Simulator focus/input prevented dependable interaction.",
           "Hardware gaze/pinch comfort, depth and launcher parallax remain unverified."
         ]
+      },
+      "watchOS": {
+        "source": [
+          "Watch/MountainWatchApp.swift",
+          "Watch/WatchMatch.swift",
+          "Race to Dog Mountain/MountainScenery.swift"
+        ],
+        "minimumVersion": "watchOS 10",
+        "units": "Frontmatter lengths represent native points; typography uses SwiftUI Dynamic Type roles.",
+        "home": {
+          "pages": [
+            "Play",
+            "Settings"
+          ],
+          "navigation": "TabView.tabViewStyle(.verticalPage) inside NavigationStack",
+          "emblem": "{components.watch-home-emblem}",
+          "scenery": "MountainScenery(active: false)",
+          "scrim": "MountainStyle.ink.opacity(0.65)"
+        },
+        "game": {
+          "pages": [
+            "Moves",
+            "Board",
+            "Score/replay",
+            "Settings"
+          ],
+          "navigation": "native vertical pages with Crown-compatible ScrollView content",
+          "background": "{colors.pine-ink}",
+          "configuration": "fixed 4 × 4, human first, computer player 2",
+          "clock": "Keep native safe-area clearance above app content.",
+          "moveColumns": 2,
+          "gap": "{spacing.watch-gap}",
+          "move": "{components.watch-move}",
+          "buttonHeightConstraint": "minimum",
+          "score": "{typography.watch-points}"
+        },
+        "board": {
+          "cell": "{components.watch-board-cell}",
+          "gap": "{spacing.watch-board-gap}",
+          "inset": "4pt",
+          "interaction": "read-only; move selection lives on Moves",
+          "legalFill": "MountainStyle.player(game.turn)",
+          "usedFill": "MountainStyle.cream.opacity(0.06)",
+          "replayOutline": "MountainStyle.gold, strokeBorder(lineWidth: 3)"
+        },
+        "pointsFooter": {
+          "bar": "{components.watch-points-bar}",
+          "shape": "Capsule",
+          "placement": "separate footer below move ScrollView",
+          "horizontalPadding": "{spacing.watch-gap}",
+          "bottomPadding": "{spacing.watch-gap}",
+          "segments": [
+            "human earned points in gold",
+            "computer earned points in mint",
+            "remaining points in cream at 0.4 opacity"
+          ],
+          "widths": "points[index] / max(1, total points)"
+        },
+        "interaction": {
+          "primary": "{components.watch-button-primary}",
+          "secondary": "{components.watch-button-secondary}",
+          "buttonHeightConstraint": "minimum",
+          "press": "scaleEffect(0.96), easeOut(duration: 0.15)",
+          "move": "easeOut(duration: 0.2)",
+          "reduceMotion": "No custom press scale or animation.",
+          "haptics": "native click for a move, success for the final move",
+          "confirmation": "Native confirmation dialog explains discarded unfinished progress."
+        },
+        "rivals": {
+          "portrait": "{components.watch-portrait}",
+          "selectorPortrait": "{components.watch-rival-portrait}",
+          "crop": "Circle; decorative portrait hidden from VoiceOver",
+          "choices": "all sixteen numbered human portraits; selected checkmark",
+          "setting": "difficulty only, applies to the next game"
+        },
+        "replay": {
+          "presentation": "native sheet with explicit close and repeat controls",
+          "beforeDelay": "650ms",
+          "choiceDelay": "900ms",
+          "transition": "easeOut(duration: 0.2), nil for Reduce Motion",
+          "board": "{components.watch-board-cell}"
+        },
+        "accessibility": "Full spoken labels retain point values, coordinates, player identity, status and actions. Visible ordinary screens use icons and numerals.",
+        "verificationLimits": [
+          "40 mm and 42 mm simulator captures inspected in .impeccable/review/watch; final review disposition ship.",
+          "Physical Watch battery and haptic comfort, live VoiceOver and largest accessibility text remain unverified."
+        ]
       }
     }
   },
@@ -336,13 +489,14 @@
   ],
   "narrative": {
     "northStar": "The Alpine Travel Poster",
-    "overview": "A cream serif title sits above geometric mountain ridges and an amber sun. Deep pine sky, drifting cloud lines, stars and a dotted climbing trail make the opening scene recognizable before any controls appear. The number board carries the same colors into play.\n\nClassic is the only game. The home screen offers Play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results remain inside the mountain scene.\n\nThe native visionOS adaptation keeps the alpine scene inside one bounded floating window. Its invitation and named rival lead directly to Play. Glass surrounds the illustrated game; controls use native hover feedback and shallow depth offsets.",
+    "overview": "A cream serif title sits above geometric mountain ridges and an amber sun. Deep pine sky, drifting cloud lines, stars and a dotted climbing trail make the opening scene recognizable before any controls appear. The number board carries the same colors into play.\n\nClassic is the only game. The home screen offers local and friend play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results remain inside the mountain scene.\n\nThe native visionOS adaptation keeps the alpine scene inside one bounded floating window. Its invitation and named rival lead directly to Play. Glass surrounds the illustrated game; controls use native hover feedback and shallow depth offsets.\n\nThe native watchOS adaptation keeps the alpine palette and human rivals in short, icon-led pages. System type, SF Symbols and numerals carry ordinary screens; full spoken labels retain their meaning. The scenery is static on home, and play uses plain pine behind large move buttons.",
     "keyCharacteristics": [
       "Layered angular ridges, a circular sun and a winding dotted trail.",
       "Cream Georgia display type with readable system text for controls.",
       "Gold rows and mint columns, each also identified by words and arrows.",
       "Background motion isolated from game state and controls.",
-      "Illustrated human hiker rivals with named levels and small portrait reactions."
+      "Illustrated human hiker rivals with named levels and small portrait reactions.",
+      "Native wrist controls use system text roles, icons and numerals with descriptive accessibility labels."
     ],
     "rules": [
       {

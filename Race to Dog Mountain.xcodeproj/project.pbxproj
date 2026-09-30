@@ -49,6 +49,30 @@
 		AC6000000000000000000003 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
 		AC6000000000000000000004 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
 		AC6000000000000000000005 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
+		D1FD0CB4CB104CC38C1568D4 = {isa = PBXBuildFile; fileRef = ACA28E16E86F4A5883D954BF; };
+		90DED3BED5504C52BDE98F20 = {isa = PBXBuildFile; fileRef = ACA28E16E86F4A5883D954BF; };
+		4640D79C31FC4736A16DB2F8 = {isa = PBXBuildFile; fileRef = ACA28E16E86F4A5883D954BF; };
+		8F57ED9290084093B0B650AD = {isa = PBXBuildFile; fileRef = ACA28E16E86F4A5883D954BF; };
+		5D8A6FC8E32443729EAC383E = {isa = PBXBuildFile; fileRef = 2B76FDE8510140AD9FFB7479; };
+		DA5D1969B580466096080FAC = {isa = PBXBuildFile; fileRef = 2B76FDE8510140AD9FFB7479; };
+		9B8697A4A5AD4B0CAA7B052F = {isa = PBXBuildFile; fileRef = 2B76FDE8510140AD9FFB7479; };
+		CF86BB403ADB4322AC37A2BA = {isa = PBXBuildFile; fileRef = 5FA96690DF744B39A451D591; };
+		E7C30CE8ED2C49D1A9512CDF = {isa = PBXBuildFile; fileRef = 5FA96690DF744B39A451D591; };
+		F4E168B8F08F4AAEBD1B28BD = {isa = PBXBuildFile; fileRef = 5FA96690DF744B39A451D591; };
+		EE19F9175D5D4389BFDB3F7F = {isa = PBXBuildFile; fileRef = 3BD04EC23E624FC4B7F11927; };
+		8A898CFCE3FC4FAF81AA3F0E = {isa = PBXBuildFile; fileRef = 3BD04EC23E624FC4B7F11927; };
+		862C8A5F11BD41939D78D8FC = {isa = PBXBuildFile; fileRef = 3BD04EC23E624FC4B7F11927; };
+		9B975F648F3C4260B2190A56 = {isa = PBXBuildFile; fileRef = 3BD04EC23E624FC4B7F11927; };
+		E68D2D5E5EFB466FAD9A7405 = {isa = PBXBuildFile; fileRef = D57F8242A8A74593A736258B; };
+		248512FCC4D9419F9CF85636 = {isa = PBXBuildFile; fileRef = D57F8242A8A74593A736258B; };
+		2B003EECA7FD48E190287A80 = {isa = PBXBuildFile; fileRef = D57F8242A8A74593A736258B; };
+		DF7AFACEC47A4D05BF048775 = {isa = PBXBuildFile; fileRef = D57F8242A8A74593A736258B; };
+		8FBB174260EC48C89132D707 = {isa = PBXBuildFile; fileRef = BF126CF9A80443BA82872C31; };
+		91D19DB636D14EEA93D1BE3C = {isa = PBXBuildFile; fileRef = BB4290820ECF4804A3B40671; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C8029FB6EF2740FFAAF9C17A = {isa = PBXBuildFile; fileRef = A02609270000000000000001; };
+		ADC7ED325385431B85191815 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
+		F2D94E1C5C564DF994449D99 = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC; };
+		8009B09B90B94BF49E02ACC2 = {isa = PBXBuildFile; fileRef = F077205C4DA34F089AA45721; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +83,12 @@
 			remoteGlobalIDString = 908AFC681A6718AE0050EC0B;
 			remoteInfo = "Race to Dog Mountain";
 		};
+		5BD6AF67699246CEB9FAD40C = {isa = PBXContainerItemProxy; containerPortal = 908AFC611A6718AE0050EC0B; proxyType = 1; remoteGlobalIDString = AAEA442FE80D48608D3CB314; remoteInfo = "Dog Mountain Messages"; };
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ECC1171EE0A144C8857528A0 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (91D19DB636D14EEA93D1BE3C); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		900C5C5A1A7302B100B2BBA7 /* NSString+AppFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AppFunctions.h"; sourceTree = "<group>"; };
@@ -108,6 +137,14 @@
 		AC5000000000000000000010 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch/WatchMatch.swift; sourceTree = SOURCE_ROOT; };
 		AC5000000000000000000011 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Watch/WatchAssets.xcassets; sourceTree = SOURCE_ROOT; };
 		AC6000000000000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainScenery.swift"; sourceTree = SOURCE_ROOT; };
+		ACA28E16E86F4A5883D954BF = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainMatches.swift"; sourceTree = SOURCE_ROOT; };
+		2B76FDE8510140AD9FFB7479 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainLibrary.swift"; sourceTree = SOURCE_ROOT; };
+		5FA96690DF744B39A451D591 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainFriends.swift"; sourceTree = SOURCE_ROOT; };
+		3BD04EC23E624FC4B7F11927 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainSocialViews.swift"; sourceTree = SOURCE_ROOT; };
+		D57F8242A8A74593A736258B = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainBoard.swift"; sourceTree = SOURCE_ROOT; };
+		BF126CF9A80443BA82872C31 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages/MessagesViewController.swift; sourceTree = SOURCE_ROOT; };
+		BB4290820ECF4804A3B40671 = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Dog Mountain Messages.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F077205C4DA34F089AA45721 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Messages/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +165,7 @@
 		AC3000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		AC4000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		AC5000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A98D1D0B4FF14D189CD634E1 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -183,7 +221,7 @@
 		};
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
-			children = (
+			children = (BF126CF9A80443BA82872C31, ACA28E16E86F4A5883D954BF, 2B76FDE8510140AD9FFB7479, 5FA96690DF744B39A451D591, 3BD04EC23E624FC4B7F11927, D57F8242A8A74593A736258B,
 				AC5000000000000000000004 /* MountainWatchApp.swift */,
 				AC5000000000000000000010 /* WatchMatch.swift */,
 				AC5000000000000000000011 /* WatchAssets.xcassets */,
@@ -200,7 +238,7 @@
 		};
 		908AFC6A1A6718AE0050EC0B /* Products */ = {
 			isa = PBXGroup;
-			children = (
+			children = (BB4290820ECF4804A3B40671,
 				AC5000000000000000000007 /* Race to Dog Mountain Watch.app */,
 				AC4000000000000000000007 /* Race to Dog Mountain Vision.app */,
 				AC3000000000000000000007 /* Race to Dog Mountain Mac.app */,
@@ -261,14 +299,14 @@
 		908AFC681A6718AE0050EC0B /* Race to Dog Mountain */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 908AFC8F1A6718AE0050EC0B /* Build configuration list for PBXNativeTarget "Race to Dog Mountain" */;
-			buildPhases = (
+			buildPhases = (ECC1171EE0A144C8857528A0,
 				908AFC651A6718AE0050EC0B /* Sources */,
 				908AFC661A6718AE0050EC0B /* Frameworks */,
 				908AFC671A6718AE0050EC0B /* Resources */,
 			);
 			buildRules = (
 			);
-			dependencies = (
+			dependencies = (3034A6558BF94DCCA0477888,
 			);
 			name = "Race to Dog Mountain";
 			productName = "Race to Dog Mountain";
@@ -326,6 +364,7 @@
 			productReference = AC5000000000000000000007;
 			productType = "com.apple.product-type.application";
 		};
+		AAEA442FE80D48608D3CB314 = {isa = PBXNativeTarget; buildConfigurationList = 052FE32B8C974B13AAAC70B2; buildPhases = (583155B068674EFFB42AFEE0, A98D1D0B4FF14D189CD634E1, C0228B29EF724117B4D59264); buildRules = (); dependencies = (); name = "Dog Mountain Messages"; productName = "Dog Mountain Messages"; productReference = BB4290820ECF4804A3B40671; productType = "com.apple.product-type.app-extension.messages"; };
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -340,7 +379,7 @@
 						DevelopmentTeam = 94E25AA8V5;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -362,7 +401,7 @@
 			productRefGroup = 908AFC6A1A6718AE0050EC0B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			targets = (
+			targets = (AAEA442FE80D48608D3CB314,
 				AC5000000000000000000009 /* Race to Dog Mountain Watch */,
 				AC4000000000000000000009 /* Race to Dog Mountain Vision */,
 				AC3000000000000000000009 /* Race to Dog Mountain Mac */,
@@ -395,13 +434,14 @@
 		AC300000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC3000000000000000000005, AC3000000000000000000006); runOnlyForDeploymentPostprocessing = 0; };
 		AC400000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC4000000000000000000005, AC4000000000000000000006, AC400000000000000000000F); runOnlyForDeploymentPostprocessing = 0; };
 		AC500000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC5000000000000000000005, AC5000000000000000000006, AC5000000000000000000012); runOnlyForDeploymentPostprocessing = 0; };
+		C0228B29EF724117B4D59264 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (8009B09B90B94BF49E02ACC2, F2D94E1C5C564DF994449D99); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		908AFC651A6718AE0050EC0B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (AC6000000000000000000002,
+			files = (D1FD0CB4CB104CC38C1568D4, 5D8A6FC8E32443729EAC383E, CF86BB403ADB4322AC37A2BA, EE19F9175D5D4389BFDB3F7F, E68D2D5E5EFB466FAD9A7405, AC6000000000000000000002,
 				9017A1411A67197200361817 /* DMProjectManager.m in Sources */,
 				9017A14D1A672B7000361817 /* UIColor+AppColors.m in Sources */,
 				9017A1441A671AE500361817 /* DMGameViewController.m in Sources */,
@@ -428,9 +468,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AC300000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC6000000000000000000003, AC3000000000000000000001, AC3000000000000000000002, AC3000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
-		AC400000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC6000000000000000000004, AC4000000000000000000001, AC4000000000000000000002, AC4000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+		AC300000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (90DED3BED5504C52BDE98F20, DA5D1969B580466096080FAC, E7C30CE8ED2C49D1A9512CDF, 8A898CFCE3FC4FAF81AA3F0E, 248512FCC4D9419F9CF85636, AC6000000000000000000003, AC3000000000000000000001, AC3000000000000000000002, AC3000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+		AC400000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (4640D79C31FC4736A16DB2F8, 9B8697A4A5AD4B0CAA7B052F, F4E168B8F08F4AAEBD1B28BD, 862C8A5F11BD41939D78D8FC, 2B003EECA7FD48E190287A80, AC6000000000000000000004, AC4000000000000000000001, AC4000000000000000000002, AC4000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
 		AC500000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC6000000000000000000005, AC5000000000000000000001, AC5000000000000000000002, AC5000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+		583155B068674EFFB42AFEE0 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (8F57ED9290084093B0B650AD, 9B975F648F3C4260B2190A56, DF7AFACEC47A4D05BF048775, C8029FB6EF2740FFAAF9C17A, ADC7ED325385431B85191815, 8FBB174260EC48C89132D707); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -439,6 +480,7 @@
 			target = 908AFC681A6718AE0050EC0B /* Race to Dog Mountain */;
 			targetProxy = 908AFC861A6718AE0050EC0B /* PBXContainerItemProxy */;
 		};
+		3034A6558BF94DCCA0477888 = {isa = PBXTargetDependency; target = AAEA442FE80D48608D3CB314; targetProxy = 5BD6AF67699246CEB9FAD40C; };
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -542,6 +584,7 @@
 		908AFC901A6718AE0050EC0B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -564,6 +607,7 @@
 		908AFC911A6718AE0050EC0B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -620,6 +664,7 @@
 		AC300000000000000000000D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -644,6 +689,7 @@
 		AC300000000000000000000E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -668,6 +714,7 @@
 		AC400000000000000000000D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = VisionIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
@@ -693,6 +740,7 @@
 		AC400000000000000000000E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = VisionIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
@@ -765,6 +813,8 @@
 			};
 			name = Release;
 		};
+		C851F65DE85D44F58F6105FB = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DOGMOUNTAIN_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 7; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Debug; };
+		C02982FAFB6341A1BAB73262 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DOGMOUNTAIN_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 7; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Release; };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -798,6 +848,7 @@
 		AC300000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC300000000000000000000D, AC300000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		AC400000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC400000000000000000000D, AC400000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		AC500000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC500000000000000000000D, AC500000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		052FE32B8C974B13AAAC70B2 = {isa = XCConfigurationList; buildConfigurations = (C851F65DE85D44F58F6105FB, C02982FAFB6341A1BAB73262); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
