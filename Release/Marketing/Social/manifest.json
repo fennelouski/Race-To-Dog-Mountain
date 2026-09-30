@@ -1,0 +1,56 @@
+{
+  "version": "2.1",
+  "build": 8,
+  "method": "Approved alpine background and unchanged native captures. Screenshot images are scaled proportionally; no invented gameplay or UI.",
+  "files": [
+    {
+      "file": "phone-lobby.png",
+      "width": 1320,
+      "height": 2868,
+      "capture": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/.impeccable/review/social/iphone-games.png",
+      "captureSHA256": "c3dae2cafece112b77a991329258183cddbc78c8a3d47ace26b2c03dbb0f07cd",
+      "copy": [
+        "Keep the games going.",
+        "Your next move is waiting."
+      ]
+    },
+    {
+      "file": "tablet-lobby.png",
+      "width": 2064,
+      "height": 2752,
+      "capture": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/.impeccable/review/social/ipad-home.png",
+      "captureSHA256": "43f27a8e7c7c1000e738cefc4617cc5ea6c141b036015d55c37d6019e2705ba7",
+      "copy": [
+        "Play with a friend.",
+        "Pick a number. Plan the next move."
+      ]
+    },
+    {
+      "file": "mac-lobby.png",
+      "width": 1440,
+      "height": 900,
+      "capture": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/.impeccable/review/social/macos-home.png",
+      "captureSHA256": "6b22c02692c5c683df9cb11e32f631d04b725ecd1d794ce674b0a16825b8cfbe",
+      "copy": [
+        "A mountain of strategy.",
+        "Practice solo. Race your friends."
+      ]
+    },
+    {
+      "file": "vision-home.png",
+      "width": 3840,
+      "height": 2160,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-10-01-race-all-platforms/vision-native.png",
+      "captureSHA256": "cac69643000daed6d64c8bfde5f166f9833f46886340d72d6cef65d53c0d713d",
+      "copy": []
+    },
+    {
+      "file": "watch-game-46mm.png",
+      "width": 416,
+      "height": 496,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-10-01-race-all-platforms/watch-native-46mm.png",
+      "captureSHA256": "4308fa73d5ebd1c56338d8fa11201ce24a594ed7844d8d4de0ef2f3c389daf79",
+      "copy": []
+    }
+  ]
+}

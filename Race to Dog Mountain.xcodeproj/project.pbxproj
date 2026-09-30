@@ -73,6 +73,7 @@
 		ADC7ED325385431B85191815 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
 		F2D94E1C5C564DF994449D99 = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC; };
 		8009B09B90B94BF49E02ACC2 = {isa = PBXBuildFile; fileRef = F077205C4DA34F089AA45721; };
+		AD8000000000000000000001 = {isa = PBXBuildFile; fileRef = AC5000000000000000000007; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,10 +85,12 @@
 			remoteInfo = "Race to Dog Mountain";
 		};
 		5BD6AF67699246CEB9FAD40C = {isa = PBXContainerItemProxy; containerPortal = 908AFC611A6718AE0050EC0B; proxyType = 1; remoteGlobalIDString = AAEA442FE80D48608D3CB314; remoteInfo = "Dog Mountain Messages"; };
+		AD8000000000000000000002 = {isa = PBXContainerItemProxy; containerPortal = 908AFC611A6718AE0050EC0B; proxyType = 1; remoteGlobalIDString = AC5000000000000000000009; remoteInfo = "Race to Dog Mountain Watch"; };
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		ECC1171EE0A144C8857528A0 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (91D19DB636D14EEA93D1BE3C); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0; };
+		AD8000000000000000000003 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = "$(CONTENTS_FOLDER_PATH)/Watch"; dstSubfolderSpec = 16; files = (AD8000000000000000000001); name = "Embed Watch Content"; runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -299,14 +302,14 @@
 		908AFC681A6718AE0050EC0B /* Race to Dog Mountain */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 908AFC8F1A6718AE0050EC0B /* Build configuration list for PBXNativeTarget "Race to Dog Mountain" */;
-			buildPhases = (ECC1171EE0A144C8857528A0,
+			buildPhases = (ECC1171EE0A144C8857528A0, AD8000000000000000000003,
 				908AFC651A6718AE0050EC0B /* Sources */,
 				908AFC661A6718AE0050EC0B /* Frameworks */,
 				908AFC671A6718AE0050EC0B /* Resources */,
 			);
 			buildRules = (
 			);
-			dependencies = (3034A6558BF94DCCA0477888,
+			dependencies = (3034A6558BF94DCCA0477888, AD8000000000000000000004,
 			);
 			name = "Race to Dog Mountain";
 			productName = "Race to Dog Mountain";
@@ -481,6 +484,7 @@
 			targetProxy = 908AFC861A6718AE0050EC0B /* PBXContainerItemProxy */;
 		};
 		3034A6558BF94DCCA0477888 = {isa = PBXTargetDependency; target = AAEA442FE80D48608D3CB314; targetProxy = 5BD6AF67699246CEB9FAD40C; };
+		AD8000000000000000000004 = {isa = PBXTargetDependency; target = AC5000000000000000000009; targetProxy = AD8000000000000000000002; };
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -600,7 +604,7 @@
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 			};
 			name = Debug;
 		};
@@ -623,7 +627,7 @@
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 			};
 			name = Release;
 		};
@@ -666,17 +670,19 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -691,17 +697,19 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Race to Dog Mountain/GameCenter.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -721,13 +729,13 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -747,13 +755,13 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -771,14 +779,17 @@
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_KEY_WKApplication = YES;
-				INFOPLIST_KEY_WKWatchOnly = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_WKWatchOnly = NO;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.nathanfennel.RacetoDogMountain";
+				SKIP_INSTALL = YES;
+				GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -796,14 +807,17 @@
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_KEY_WKApplication = YES;
-				INFOPLIST_KEY_WKWatchOnly = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_WKWatchOnly = NO;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.nathanfennel.RacetoDogMountain";
+				SKIP_INSTALL = YES;
+				GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -813,8 +827,8 @@
 			};
 			name = Release;
 		};
-		C851F65DE85D44F58F6105FB = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DOGMOUNTAIN_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 7; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Debug; };
-		C02982FAFB6341A1BAB73262 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DOGMOUNTAIN_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 7; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Release; };
+		C851F65DE85D44F58F6105FB = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DOGMOUNTAIN_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 8; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Debug; };
+		C02982FAFB6341A1BAB73262 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DOGMOUNTAIN_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 8; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Release; };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */

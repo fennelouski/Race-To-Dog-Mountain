@@ -1,5 +1,9 @@
 # Race to Dog Mountain release
 
+## Version 2.1, build 8 — 2026-10-01
+
+macOS and visionOS are **Waiting for Review**. The iOS build, including Watch and Messages, uploaded and processed but is blocked by required Messages screenshots and a conflicting App Store Connect Game Center entitlement check. The prior iOS build 7 submission was removed to replace it. Current media, submission IDs, verification and limitations are in [submission-2.1-8.md](submission-2.1-8.md). Earlier sections below are historical records.
+
 ## Apple Watch edition, 2026-09-30
 
 The `Race to Dog Mountain Watch` scheme builds an independent native watchOS 10+ game. Classic starts with a 4 × 4 board, human first and computer player 2. All sixteen human rivals, adaptive accuracy and replay reuse the existing game. Watch play is fixed at 4 × 4; only rival difficulty is configurable. Native vertical pages separate moves, board, score/replay and settings. A thin gold/mint/remaining-points bar sits in a separate footer below the moves, away from the native clock. Exact totals have their own page. Controls use icons, portraits and numbers, with descriptive VoiceOver labels; only exit confirmation displays explanatory text. Large legal-number buttons and Crown scrolling suit wrist play. Every move is saved locally. Computer turns pause while inactive or dimmed, and on any page except Moves, during replay and during exit confirmation. The home backdrop is static and the game uses plain pine.
