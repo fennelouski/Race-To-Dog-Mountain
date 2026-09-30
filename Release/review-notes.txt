@@ -1,5 +1,5 @@
-Version 2.0 (build 5).
+Version 2.1 (build 7). No sign-in, network connection, ads, or in-app purchase.
 
-No sign-in, network connection, or in-app purchase is required. Choose player names, human/computer control, board size, and Classic or Plus. Start game and choose a highlighted number on each turn. The Players menu can change computer control during play. A game ends when the next player has no legal move. Closing an unfinished game pauses computer turns and asks for confirmation. Cancel resumes play; leaving does not add a win.
+The app opens on an animated mountain Play screen. Tap Let’s play to start Classic; it is the only mode. Human player 1 starts, computer player 2 is the default. Players & board offers 16 computer levels with human portraits, names, and optional dialogue (off by default). Difficulty adjusts slightly after a completed human-versus-computer win or loss. Both-computer games wait for the in-game Play button.
 
-The Privacy Policy is available at Home > Privacy > Privacy Policy. This optional policy link opens the system browser and needs an internet connection.
+Replay computer move is always present and becomes available after the first computer move; replay pauses the live game and never changes its score. Computer turns pause while the app is inactive or exit confirmation is open. Cancel resumes play. The How to play sheet includes the Privacy Policy link, which opens the browser.

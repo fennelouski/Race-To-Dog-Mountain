@@ -28,6 +28,11 @@
 		A02609270000000000000002 /* MountainGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02609270000000000000001; };
 		A02609270000000000000012 /* MountainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02609270000000000000011; };
 		89AA3F92BB374081BE421669 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */; };
+		AC3000000000000000000001 = {isa = PBXBuildFile; fileRef = A02609270000000000000001; };
+		AC3000000000000000000002 = {isa = PBXBuildFile; fileRef = A02609270000000000000011; };
+		AC3000000000000000000003 = {isa = PBXBuildFile; fileRef = AC3000000000000000000004; };
+		AC3000000000000000000005 = {isa = PBXBuildFile; fileRef = 908AFC7C1A6718AE0050EC0B; };
+		AC3000000000000000000006 = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +82,8 @@
 		A02609270000000000000001 /* MountainGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainGame.swift"; sourceTree = SOURCE_ROOT; };
 		A02609270000000000000011 /* MountainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainViews.swift"; sourceTree = SOURCE_ROOT; };
 		E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Race to Dog Mountain/PrivacyInfo.xcprivacy"; sourceTree = SOURCE_ROOT; };
+		AC3000000000000000000004 /* MountainMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mac/MountainMacApp.swift; sourceTree = SOURCE_ROOT; };
+		AC3000000000000000000007 /* Race to Dog Mountain Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Race to Dog Mountain Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +101,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC3000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -150,6 +158,7 @@
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
 			children = (
+				AC3000000000000000000004 /* MountainMacApp.swift */,
 				E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */,
 				908AFC6B1A6718AE0050EC0B /* Race to Dog Mountain */,
 				908AFC881A6718AE0050EC0B /* Race to Dog MountainTests */,
@@ -160,6 +169,7 @@
 		908AFC6A1A6718AE0050EC0B /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				AC3000000000000000000007 /* Race to Dog Mountain Mac.app */,
 				908AFC691A6718AE0050EC0B /* Race to Dog Mountain.app */,
 				908AFC851A6718AE0050EC0B /* Race to Dog MountainTests.xctest */,
 			);
@@ -249,6 +259,17 @@
 			productReference = 908AFC851A6718AE0050EC0B /* Race to Dog MountainTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		AC3000000000000000000009 /* Race to Dog Mountain Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC300000000000000000000A;
+			buildPhases = (AC300000000000000000000B, AC3000000000000000000008, AC300000000000000000000C);
+			buildRules = ();
+			dependencies = ();
+			name = "Race to Dog Mountain Mac";
+			productName = "Race to Dog Mountain Mac";
+			productReference = AC3000000000000000000007;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -286,6 +307,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				AC3000000000000000000009 /* Race to Dog Mountain Mac */,
 				908AFC681A6718AE0050EC0B /* Race to Dog Mountain */,
 				908AFC841A6718AE0050EC0B /* Race to Dog MountainTests */,
 			);
@@ -312,6 +334,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC300000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC3000000000000000000005, AC3000000000000000000006); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -345,6 +368,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC300000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC3000000000000000000001, AC3000000000000000000002, AC3000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -470,8 +494,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
-				MARKETING_VERSION = 2.0;
-				CURRENT_PROJECT_VERSION = 6;
+				MARKETING_VERSION = 2.1;
+				CURRENT_PROJECT_VERSION = 7;
 			};
 			name = Debug;
 		};
@@ -492,8 +516,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
-				MARKETING_VERSION = 2.0;
-				CURRENT_PROJECT_VERSION = 6;
+				MARKETING_VERSION = 2.1;
+				CURRENT_PROJECT_VERSION = 7;
 			};
 			name = Release;
 		};
@@ -531,6 +555,54 @@
 			};
 			name = Release;
 		};
+		AC300000000000000000000D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 2.1;
+				CURRENT_PROJECT_VERSION = 7;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "";
+			};
+			name = Debug;
+		};
+		AC300000000000000000000E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 2.1;
+				CURRENT_PROJECT_VERSION = 7;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -561,6 +633,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		AC300000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC300000000000000000000D, AC300000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */

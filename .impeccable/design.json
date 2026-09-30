@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T17:04:56.356066+00:00",
+  "title": "Design System: Race to Dog Mountain",
+  "extensions": {
+    "colorMeta": {
+      "pine-ink": {
+        "role": "neutral",
+        "displayName": "Pine ink",
+        "tonalRamp": [
+          "oklch(15% 0.03 230)",
+          "oklch(25% 0.03 230)",
+          "oklch(35% 0.03 230)",
+          "oklch(45% 0.03 230)",
+          "oklch(55% 0.03 230)",
+          "oklch(65% 0.03 230)",
+          "oklch(80% 0.03 230)",
+          "oklch(95% 0.03 230)"
+        ]
+      },
+      "warm-cream": {
+        "role": "neutral",
+        "displayName": "Warm cream",
+        "tonalRamp": [
+          "oklch(15% 0.04 85)",
+          "oklch(25% 0.04 85)",
+          "oklch(35% 0.04 85)",
+          "oklch(45% 0.04 85)",
+          "oklch(55% 0.04 85)",
+          "oklch(65% 0.04 85)",
+          "oklch(80% 0.04 85)",
+          "oklch(95% 0.04 85)"
+        ]
+      },
+      "trail-gold": {
+        "role": "primary",
+        "displayName": "Trail gold",
+        "tonalRamp": [
+          "oklch(15% 0.11 78)",
+          "oklch(25% 0.11 78)",
+          "oklch(35% 0.11 78)",
+          "oklch(45% 0.11 78)",
+          "oklch(55% 0.11 78)",
+          "oklch(65% 0.11 78)",
+          "oklch(80% 0.11 78)",
+          "oklch(95% 0.11 78)"
+        ]
+      },
+      "column-mint": {
+        "role": "secondary",
+        "displayName": "Column mint",
+        "tonalRamp": [
+          "oklch(15% 0.08 180)",
+          "oklch(25% 0.08 180)",
+          "oklch(35% 0.08 180)",
+          "oklch(45% 0.08 180)",
+          "oklch(55% 0.08 180)",
+          "oklch(65% 0.08 180)",
+          "oklch(80% 0.08 180)",
+          "oklch(95% 0.08 180)"
+        ]
+      },
+      "sky-teal": {
+        "role": "secondary",
+        "displayName": "Sky teal",
+        "tonalRamp": [
+          "oklch(15% 0.04 205)",
+          "oklch(25% 0.04 205)",
+          "oklch(35% 0.04 205)",
+          "oklch(45% 0.04 205)",
+          "oklch(55% 0.04 205)",
+          "oklch(65% 0.04 205)",
+          "oklch(80% 0.04 205)",
+          "oklch(95% 0.04 205)"
+        ]
+      },
+      "distant-mist": {
+        "role": "secondary",
+        "displayName": "Distant mist",
+        "tonalRamp": [
+          "oklch(15% 0.04 180)",
+          "oklch(25% 0.04 180)",
+          "oklch(35% 0.04 180)",
+          "oklch(45% 0.04 180)",
+          "oklch(55% 0.04 180)",
+          "oklch(65% 0.04 180)",
+          "oklch(80% 0.04 180)",
+          "oklch(95% 0.04 180)"
+        ]
+      },
+      "far-ridge": {
+        "role": "secondary",
+        "displayName": "Far ridge",
+        "tonalRamp": [
+          "oklch(15% 0.04 190)",
+          "oklch(25% 0.04 190)",
+          "oklch(35% 0.04 190)",
+          "oklch(45% 0.04 190)",
+          "oklch(55% 0.04 190)",
+          "oklch(65% 0.04 190)",
+          "oklch(80% 0.04 190)",
+          "oklch(95% 0.04 190)"
+        ]
+      },
+      "near-ridge": {
+        "role": "secondary",
+        "displayName": "Near ridge",
+        "tonalRamp": [
+          "oklch(15% 0.04 205)",
+          "oklch(25% 0.04 205)",
+          "oklch(35% 0.04 205)",
+          "oklch(45% 0.04 205)",
+          "oklch(55% 0.04 205)",
+          "oklch(65% 0.04 205)",
+          "oklch(80% 0.04 205)",
+          "oklch(95% 0.04 205)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Poster title",
+        "purpose": "Home title. Native 52-point base, 76 above 600-point width, 32 at accessibility text sizes. Georgia-Bold scales with Dynamic Type."
+      },
+      "score": {
+        "displayName": "Player score",
+        "purpose": "Georgia score with monospaced digits and numeric transitions."
+      },
+      "title": {
+        "displayName": "Turn title",
+        "purpose": "Bold system turn label."
+      },
+      "body": {
+        "displayName": "Instructions",
+        "purpose": "Native system body text."
+      },
+      "label": {
+        "displayName": "Player and control labels",
+        "purpose": "Native semibold system labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "primary-action",
+        "value": "0 8px 12px rgb(0 0 0 / .22)",
+        "purpose": "Gold action shadow. CSS translation of SwiftUI radius 12, y 8."
+      },
+      {
+        "name": "filled-tile",
+        "value": "0 3px 3px rgb(0 0 0 / .2)",
+        "purpose": "Short shadow beneath available numbers. Used cells have none."
+      }
+    ],
+    "motion": [
+      {
+        "name": "scenery-clock",
+        "value": "TimelineView(.animation(minimumInterval: 1.0 / 30, paused: ...))",
+        "purpose": "Only Canvas scenery redraws. Pause for Reduce Motion, covered home and inactive scene."
+      },
+      {
+        "name": "button-press",
+        "value": "spring(response: 0.28, dampingFraction: 0.65), scale: 0.96",
+        "purpose": "Primary and secondary presses; disabled by Reduce Motion."
+      },
+      {
+        "name": "tile-press",
+        "value": "spring(response: 0.25, dampingFraction: 0.7), scale: 0.9",
+        "purpose": "Legal tile presses; disabled by Reduce Motion."
+      },
+      {
+        "name": "move-score",
+        "value": "spring(response: 0.34, dampingFraction: 0.8), contentTransition(.numericText())",
+        "purpose": "Tile changes and numeric score updates; no animation with Reduce Motion."
+      },
+      {
+        "name": "trail",
+        "value": "dash: [4, 9], dashPhase: -time * 3",
+        "purpose": "Dotted trail climbs through the lower ridge. Static phase under Reduce Motion."
+      },
+      {
+        "name": "result-confetti",
+        "value": "36 particles, phase: time * 0.12",
+        "purpose": "Gold and mint celebration inside scenery. Static positions under Reduce Motion."
+      },
+      {
+        "name": "opponent-reaction",
+        "value": "scale: 1.06 + (rawValue % 4) * 0.01, rotation: ±4 degrees, spring(response: 0.3 + rawValue * 0.015)",
+        "purpose": "Brief profile-specific portrait reaction after a computer move or replay stage. Reduce Motion leaves scale and rotation unchanged."
+      },
+      {
+        "name": "opponent-thinking",
+        "value": "offset y: -2 - (rawValue % 3), easeInOut(duration: 0.7 + rawValue * 0.04)",
+        "purpose": "Small portrait bob while the computer is choosing in an active scene. Stops during replay, exit confirmation and Reduce Motion."
+      },
+      {
+        "name": "computer-replay",
+        "value": "before: 700ms, choosing: 900ms, easeOut(duration: 0.25), spring(response: 0.4)",
+        "purpose": "Read-only snapshot advances from before to chosen tile to completed move. Reduce Motion shows the completed move immediately."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-home",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Gold action for Play, Race again, replay Play again and completing the rules. Native spring presses are approximated for the browser preview.",
+      "html": "<button class=\"ds-primary\">Let's play <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-primary{font:600 17px system-ui,sans-serif;padding:18px 22px;min-height:56px;border:0;border-radius:16px;cursor:pointer;transition:transform .18s;background:rgb(100% 73% 28%);color:rgb(2.5% 12% 17%);box-shadow:0 8px 12px rgb(0 0 0 / .22)}.ds-primary:hover{filter:brightness(1.04)}.ds-primary:focus-visible{outline:2px solid rgb(100% 95% 82%);outline-offset:4px}.ds-primary:active{transform:scale(.96)}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}.ds-primary:active{transform:none}}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Translucent cream control for Players & board, Replay computer move and returning home. Replay is disabled until the first computer move.",
+      "html": "<div class=\"ds-stage\"><button class=\"ds-secondary\">Players &amp; board</button></div>",
+      "css": ".ds-stage{padding:20px;background:rgb(2.5% 12% 17%);border-radius:20px}.ds-secondary{font:600 17px system-ui,sans-serif;padding:18px 22px;min-height:56px;border:0;border-radius:16px;cursor:pointer;transition:transform .18s;background:rgb(100% 95% 82% / .1);color:rgb(100% 95% 82%)}.ds-secondary:hover{background:rgb(100% 95% 82% / .15)}.ds-secondary:focus-visible{outline:2px solid rgb(100% 73% 28%);outline-offset:4px}.ds-secondary:active{transform:scale(.96)}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}.ds-secondary:active{transform:none}}"
+    },
+    {
+      "name": "Player input",
+      "kind": "input",
+      "refersTo": "player-input",
+      "description": "Native player-name field translated into a self-contained browser preview.",
+      "html": "<label class=\"ds-field\"><span>↔ Row player</span><input aria-label=\"First player name\" value=\"Player 1\"></label>",
+      "css": ".ds-field{display:grid;gap:14px;background:rgb(2.5% 12% 17%);padding:20px;color:rgb(100% 73% 28%);font:600 17px system-ui,sans-serif}.ds-field input{font:600 20px system-ui,sans-serif;padding:16px;color:rgb(100% 95% 82%);background:rgb(100% 95% 82% / .08);border:0;border-radius:12px;min-width:0}.ds-field input:focus-visible{outline:2px solid rgb(100% 73% 28%);outline-offset:2px}"
+    },
+    {
+      "name": "Game navigation",
+      "kind": "nav",
+      "description": "Circular close action and compact centered game identity. The close action confirms when a game is unfinished.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Game\"><button aria-label=\"Close game\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></button><strong>Dog Mountain</strong><button aria-label=\"Player controls\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"7\" r=\"3\"/><path d=\"M3 21v-3a6 6 0 0112 0v3M17 4a3 3 0 010 6M18 15a5 5 0 013 5\"/></svg></button></nav>",
+      "css": ".ds-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;background:rgb(2.5% 12% 17%);color:rgb(100% 95% 82%);font:600 17px system-ui,sans-serif}.ds-nav button{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:rgb(100% 95% 82% / .1);color:rgb(100% 95% 82%);cursor:pointer}.ds-nav button:hover{background:rgb(100% 95% 82% / .16)}.ds-nav button:focus-visible{outline:2px solid rgb(100% 73% 28%);outline-offset:3px}.ds-nav button:active{background:rgb(100% 95% 82% / .22)}"
+    },
+    {
+      "name": "Active score panel",
+      "kind": "card",
+      "description": "Row player score with translucent gold fill and an active underline. The column equivalent uses mint. Native score panels stack at accessibility text sizes.",
+      "html": "<div class=\"ds-stage\"><article class=\"ds-score\"><span>Player 1</span><strong>42</strong><small>↔ Your turn</small></article></div>",
+      "css": ".ds-stage{padding:20px;background:rgb(2.5% 12% 17%);border-radius:20px}.ds-score{position:relative;display:grid;gap:10px;padding:18px;border-radius:16px;color:rgb(100% 73% 28%);background:rgb(100% 73% 28% / .17);font:600 15px system-ui,sans-serif;max-width:220px}.ds-score strong{font:700 40px Georgia,serif;font-variant-numeric:tabular-nums}.ds-score small{font-size:12px}.ds-score:after{content:\"\";position:absolute;bottom:0;left:18px;right:18px;height:3px;border-radius:99px;background:rgb(100% 73% 28%)}"
+    },
+    {
+      "name": "Number board",
+      "kind": "custom",
+      "refersTo": "number-tile",
+      "description": "Cream square number cells, gold legal row and faint used cells. Accessible row and column labels belong to every native tile. The same board renders read-only replay snapshots; a gold outline marks the chosen tile while player colors retain their row/column meaning.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-board\"><button class=\"ds-cell ds-legal\" aria-label=\"Row 1, column 1, 6\">6</button><button class=\"ds-cell ds-legal\" aria-label=\"Row 1, column 2, 3\">3</button><button class=\"ds-cell\" disabled aria-label=\"Row 2, column 1, 8\">8</button><button class=\"ds-cell ds-used\" disabled aria-label=\"Row 2, column 2, used\">+4</button></div></div>",
+      "css": ".ds-stage{padding:20px;background:rgb(2.5% 12% 17%);border-radius:20px}.ds-board{display:grid;grid-template-columns:repeat(2,60px);gap:6px;width:max-content;padding:12px;border-radius:20px;background:rgb(2.5% 12% 17% / .7)}.ds-cell{width:60px;height:60px;border:2px solid transparent;border-radius:12px;background:rgb(100% 95% 82%);color:rgb(2.5% 12% 17%);font:800 20px system-ui,sans-serif;font-variant-numeric:tabular-nums;box-shadow:0 3px 3px rgb(0 0 0 / .2);transition:transform .18s}.ds-legal{background:rgb(100% 73% 28%);border-color:rgb(100% 95% 82% / .75);cursor:pointer}.ds-used{background:rgb(100% 95% 82% / .035);color:rgb(100% 95% 82%);font-size:12px;box-shadow:none}.ds-legal:hover{filter:brightness(1.04)}.ds-legal:focus-visible{outline:2px solid rgb(42% 88% 81%);outline-offset:2px}.ds-legal:active{transform:scale(.9)}@media(prefers-reduced-motion:reduce){.ds-cell{transition:none}.ds-legal:active{transform:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Alpine Travel Poster",
+    "overview": "A cream serif title sits above geometric mountain ridges and an amber sun. Deep pine sky, drifting cloud lines, stars and a dotted climbing trail make the opening scene recognizable before any controls appear. The number board carries the same colors into play.\n\nClassic is the only game. The home screen offers Play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results remain inside the mountain scene.",
+    "keyCharacteristics": [
+      "Layered angular ridges, a circular sun and a winding dotted trail.",
+      "Cream Georgia display type with readable system text for controls.",
+      "Gold rows and mint columns, each also identified by words and arrows.",
+      "Background motion isolated from game state and controls.",
+      "Illustrated human hiker rivals with named levels and small portrait reactions."
+    ],
+    "rules": [
+      {
+        "name": "The Rivalry Rule",
+        "body": "Gold always belongs to the row player; mint always belongs to the column player. Pair each color with its directional symbol and label.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do reuse the mountain geometry, circular sun and dotted trail as the app's visual signature.",
+      "Do keep gold tied to rows and mint tied to columns, with arrows and labels.",
+      "Do preserve readable tiles, Dynamic Type, scroll access and 44-point minimum targets.",
+      "Do pause scenery offscreen and in the background, and freeze it for Reduce Motion."
+    ],
+    "donts": [
+      "Don't introduce another game mode; Classic is the game.",
+      "Don't open the app into player settings.",
+      "Don't replace the mountain world with stock list or form styling.",
+      "Don't let scenery motion drive game state or interfere with reading the board."
+    ]
+  }
+}

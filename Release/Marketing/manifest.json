@@ -1,0 +1,85 @@
+{
+  "version": "2.1",
+  "build": 7,
+  "method": "New SVG layouts: generated background, native screenshots embedded unchanged, exact typeset copy. No invented UI.",
+  "files": [
+    {
+      "file": "phone-01-game.png",
+      "width": 1320,
+      "height": 2868,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-2.1-build7/raw/phone-game.png",
+      "captureSHA256": "7e7f62eea37cba50abddaefeb67aa495182c9b94df35c66c34fc8ea390cb7967",
+      "copy": [
+        "Every move",
+        "shapes the climb.",
+        "Classic strategy. You move first."
+      ],
+      "SHA256": "77df2212348b6b2b909c8868b1e4e2f82c790b91a6ea30e5245c8e161730a632"
+    },
+    {
+      "file": "phone-02-home.png",
+      "width": 1320,
+      "height": 2868,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-2.1-build7/raw/phone-home.png",
+      "captureSHA256": "475b2bdc095f6d8bfd9f624bfd1b7fb8898a617ee320ba8eb25cf54e9bc90dbe",
+      "copy": [
+        "Meet your",
+        "next rival.",
+        "16 levels. 16 named opponents."
+      ],
+      "SHA256": "0c1f9f5907a586844251e278c31598e839c3e91d765767681cc02e73686ebacd"
+    },
+    {
+      "file": "phone-03-replay.png",
+      "width": 1320,
+      "height": 2868,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-2.1-build7/raw/phone-replay.png",
+      "captureSHA256": "6556b4405169e4420721652ccec633d7d561df97f792456ed9882919ef9bbfde",
+      "copy": [
+        "Watch the",
+        "clever moves.",
+        "Replay your rival\u2019s last move."
+      ],
+      "SHA256": "3ae4f0e555417de994d89d1bdb0e03375ada72f1fbb5965e7c62ff0131852100"
+    },
+    {
+      "file": "tablet-01-game.png",
+      "width": 2064,
+      "height": 2752,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-2.1-build7/raw/tablet-game.png",
+      "captureSHA256": "8f0b36a230a074402eac194e39c0e2e71f2d0dbc42e53ce27d0e1e80c88838f0",
+      "copy": [
+        "Every move",
+        "shapes the climb.",
+        "Classic strategy. You move first."
+      ],
+      "SHA256": "1a8f6880ca790bd0da43fdf4c0553b932b2d6a70632afac1a567b63688878dcb"
+    },
+    {
+      "file": "tablet-02-home.png",
+      "width": 2064,
+      "height": 2752,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-2.1-build7/raw/tablet-home.png",
+      "captureSHA256": "9dfd85cfaa6d6683603a01126e3264322efcf355423c861a92629083961335e7",
+      "copy": [
+        "Meet your",
+        "next rival.",
+        "16 levels. 16 named opponents."
+      ],
+      "SHA256": "e4a58201afaf1cf56e9d8c89cb3a8f21a18e6be31091d7597977650c5f54a0ae"
+    },
+    {
+      "file": "tablet-03-replay.png",
+      "width": 2064,
+      "height": 2752,
+      "capture": "/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-2.1-build7/raw/tablet-replay.png",
+      "captureSHA256": "360a68bb7872bb444b7eced073b0dbde81f252d775e0f37cea65c4bc6c5efb0c",
+      "copy": [
+        "Watch the",
+        "clever moves.",
+        "Replay your rival\u2019s last move."
+      ],
+      "SHA256": "0fb91cac944d3187e45ceb5c1448a923afbf913c2c9ce716a9e186341ecd8671"
+    }
+  ]
+}
