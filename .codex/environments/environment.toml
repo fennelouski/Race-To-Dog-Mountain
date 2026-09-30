@@ -9,3 +9,8 @@ script = ""
 name = "Run"
 icon = "run"
 command = "./script/build_and_run.sh"
+
+[[actions]]
+name = "Run Vision Pro"
+icon = "run"
+command = "./script/build_vision_and_run.sh"

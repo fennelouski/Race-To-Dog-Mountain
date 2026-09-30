@@ -60,6 +60,7 @@ private struct MountainButton: ButtonStyle {
             .shadow(color: .black.opacity(prominent ? 0.22 : 0), radius: 12, x: 0, y: 8)
             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.96 : 1)
             .animation(reduceMotion ? nil : .spring(response: 0.28, dampingFraction: 0.65), value: configuration.isPressed)
+            .mountainHover()
     }
 }
 
@@ -152,11 +153,15 @@ struct MountainHome: View {
 
     var body: some View {
         Group {
-#if os(macOS)
+#if os(macOS) || os(visionOS)
             if playing {
                 MountainGameView(size: size, names: names, computers: [firstAI, secondAI], difficulty: difficulty, adjustment: computerAdjustment, onLeave: { playing = false; refreshHistory() })
             } else {
+#if os(macOS)
                 home.focusedSceneValue(\.mountainActions, MountainActions(newGame: { playing = true }, options: { options = true }, rules: { rules = true }))
+#else
+                visionHome
+#endif
             }
 #else
             home.fullScreenCover(isPresented: $playing, onDismiss: refreshHistory) {
@@ -234,6 +239,63 @@ struct MountainHome: View {
         }
         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
     }
+
+#if os(visionOS)
+    private var visionHome: some View {
+        GeometryReader { geometry in
+            ZStack {
+                MountainScenery(active: !options && !rules)
+                ScrollView {
+                    VStack(spacing: 32) {
+                        HStack {
+                            Image(systemName: "pawprint.fill").font(.title).accessibilityHidden(true)
+                            Spacer()
+                            Button { rules = true } label: { Label("How to play", systemImage: "questionmark.circle") }
+                                .buttonStyle(MountainButton()).accessibilityLabel("How to play")
+                        }.foregroundStyle(MountainStyle.gold)
+                        ViewThatFits(in: .horizontal) {
+                            HStack(alignment: .center, spacing: 64) {
+                                visionInvitation.frame(width: 460)
+                                visionLaunch.frame(width: 340)
+                            }
+                            VStack(alignment: .leading, spacing: 32) { visionInvitation; visionLaunch }
+                        }
+                    }.padding(48)
+                        .frame(maxWidth: 1140, minHeight: geometry.size.height)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+    }
+    private var visionInvitation: some View {
+        VStack(alignment: .leading, spacing: 28) {
+            Text("Race to\nDog Mountain").font(MountainStyle.display(64))
+                .tracking(-2).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
+            Text("Pick a number.\nOutsmart your rival.").font(.title2).lineSpacing(8)
+        }
+    }
+    private var visionLaunch: some View {
+        VStack(spacing: 24) {
+            if firstAI || secondAI {
+                OpponentPortrait(difficulty: difficulty, size: 132)
+                VStack(spacing: 8) {
+                    Text(difficulty.name).font(MountainStyle.display(36))
+                    Text("\(difficulty.title) · \(difficulty.detail)").font(.headline).multilineTextAlignment(.center)
+                }
+            }
+            Button { playing = true } label: { Label("Let's play", systemImage: "arrow.right").frame(maxWidth: .infinity) }
+                .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
+                .keyboardShortcut("n", modifiers: .command)
+            Text("Classic · \(size) × \(size) · \(firstAI && secondAI ? "Computer vs. computer" : firstAI || secondAI ? "You move first" : "Two players")")
+                .font(.subheadline).multilineTextAlignment(.center)
+            Button { options = true } label: { Label("Players & board", systemImage: "slider.horizontal.3").frame(maxWidth: .infinity) }
+                .buttonStyle(MountainButton()).accessibilityIdentifier("game-options")
+            if history.contains(where: { $0 > 0 }) {
+                Text("\(names[0])  \(history[0]) : \(history[1])  \(names[1])").font(.footnote).multilineTextAlignment(.center)
+            }
+        }.offset(z: 20)
+    }
+#endif
 
     private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: computerLevel) ?? .level6 }
     private var names: [String] { [clean(firstName, fallback: "Player 1"), clean(secondName, fallback: "Player 2")] }
@@ -368,12 +430,25 @@ private struct MountainGameView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                MountainScenery(celebration: game.isOver)
+                MountainScenery(active: !replaying && !confirmExit, celebration: game.isOver)
                 MountainStyle.ink.opacity(0.60).ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 24) {
                         header
-#if os(macOS)
+#if os(visionOS)
+                        if geometry.size.width >= 1040 && !typeSize.isAccessibilitySize {
+                            turnLabel
+                            HStack(alignment: .center, spacing: 24) {
+                                score(player: 0).frame(width: 180).offset(z: 24)
+                                board(width: min(geometry.size.width - 464, 740)).offset(z: 12)
+                                score(player: 1).frame(width: 180).offset(z: 24)
+                            }
+                            startComputerButton
+                            matchControls.frame(maxWidth: 520)
+                        } else {
+                            verticalGame(width: min(geometry.size.width - 64, 740))
+                        }
+#elseif os(macOS)
                         if geometry.size.width >= 900 {
                             HStack(alignment: .top, spacing: 24) {
                                 VStack(spacing: 18) {
@@ -391,10 +466,15 @@ private struct MountainGameView: View {
 #else
                         verticalGame(width: min(geometry.size.width - 32, 760))
 #endif
-                    }.padding(16)
+                    }
+#if os(visionOS)
+                    .padding(32).frame(maxWidth: 1268)
+#else
+                    .padding(16)
+#endif
 #if os(macOS)
                         .frame(maxWidth: 1076)
-#else
+#elseif os(iOS)
                         .frame(maxWidth: 792)
 #endif
                         .frame(maxWidth: .infinity)
@@ -508,7 +588,7 @@ private struct MountainGameView: View {
                 Label("\(playerName(game.turn))'s \(game.turn == 0 ? "row" : "column")", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
                     .font(.title2.bold()).foregroundStyle(MountainStyle.player(game.turn)).multilineTextAlignment(.center)
                     .contentTransition(.opacity)
-                Text(waitingForStart ? "Tap Play when you’re ready." : computers[game.turn] ? "\(difficulty.name) is choosing…" : "Tap a \(game.turn == 0 ? "gold" : "mint") tile. Take its points.")
+                Text(waitingForStart ? "Select Play when you’re ready." : computers[game.turn] ? "\(difficulty.name) is choosing…" : "Choose a \(game.turn == 0 ? "gold" : "mint") tile. Take its points.")
                     .font(.subheadline).multilineTextAlignment(.center)
                 if computerDialogue, computers.contains(true) {
                     Text("“\(lastComputerMove == nil ? difficulty.greeting : difficulty.phrase(move: lastComputerMove!.after.moves))”")
@@ -590,11 +670,19 @@ private struct MountainBoard: View {
     var lastPoints = 0
     var selected: Int?
     var select: (Int) -> Void = { _ in }
+    #if os(visionOS)
+    @ScaledMetric(relativeTo: .title3) private var minimumTile: CGFloat = 60
+    private let gap: CGFloat = 12
+    private let maximumTile: CGFloat = 92
+#else
     @ScaledMetric(relativeTo: .title3) private var minimumTile: CGFloat = 44
+    private let gap: CGFloat = 6
+    private let maximumTile: CGFloat = 76
+#endif
     var body: some View {
-        let width = max(minimumTile, min(76, (availableWidth - 24 - CGFloat(game.size - 1) * 6) / CGFloat(game.size)))
+        let width = max(minimumTile, min(maximumTile, (availableWidth - 24 - CGFloat(game.size - 1) * gap) / CGFloat(game.size)))
         return ScrollView(.horizontal) {
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(width), spacing: 6), count: game.size), spacing: 6) {
+            LazyVGrid(columns: Array(repeating: GridItem(.fixed(width), spacing: gap), count: game.size), spacing: gap) {
                 ForEach(game.tiles) { tile in
                     let playable = game.canPlay(tile.id)
                     Button { select(tile.id) } label: {
@@ -616,7 +704,7 @@ private struct MountainBoard: View {
                             }
                             .shadow(color: .black.opacity(tile.value == 0 ? 0 : 0.2), radius: 3, x: 0, y: 3)
                     }
-                    .buttonStyle(MountainTileButton()).disabled(!playable || !interactive || game.isOver)
+                    .buttonStyle(MountainTileButton()).mountainHover().disabled(!playable || !interactive || game.isOver)
                     .accessibilityLabel("Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value == 0 ? "used" : String(tile.value))")
                     .accessibilityHint(playable ? "Adds \(tile.value) points and sets the next player's \(game.turn == 0 ? "column" : "row")" : "")
                     .accessibilityIdentifier("tile-\(tile.id)")
@@ -699,6 +787,13 @@ private struct MountainReplayView: View {
 }
 
 private extension View {
+    @ViewBuilder func mountainHover() -> some View {
+#if os(visionOS)
+        contentShape(.hoverEffect, RoundedRectangle(cornerRadius: 16)).hoverEffect(.highlight)
+#else
+        self
+#endif
+    }
     @ViewBuilder func mountainInlineTitle() -> some View {
 #if os(iOS)
         navigationBarTitleDisplayMode(.inline)
@@ -707,7 +802,7 @@ private extension View {
 #endif
     }
     @ViewBuilder func mountainSheetSize() -> some View {
-#if os(macOS)
+#if os(macOS) || os(visionOS)
         frame(minWidth: 600, idealWidth: 650, minHeight: 680, idealHeight: 820)
 #else
         self
