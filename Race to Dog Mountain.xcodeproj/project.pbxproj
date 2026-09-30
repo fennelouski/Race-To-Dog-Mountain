@@ -39,6 +39,16 @@
 		AC4000000000000000000005 = {isa = PBXBuildFile; fileRef = 908AFC7C1A6718AE0050EC0B; };
 		AC4000000000000000000006 = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC; };
 		AC400000000000000000000F = {isa = PBXBuildFile; fileRef = AC4000000000000000000010; };
+		AC5000000000000000000001 = {isa = PBXBuildFile; fileRef = A02609270000000000000001; };
+		AC5000000000000000000002 = {isa = PBXBuildFile; fileRef = AC5000000000000000000010; };
+		AC5000000000000000000003 = {isa = PBXBuildFile; fileRef = AC5000000000000000000004; };
+		AC5000000000000000000005 = {isa = PBXBuildFile; fileRef = 908AFC7C1A6718AE0050EC0B; };
+		AC5000000000000000000006 = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC; };
+		AC5000000000000000000012 = {isa = PBXBuildFile; fileRef = AC5000000000000000000011; };
+		AC6000000000000000000002 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
+		AC6000000000000000000003 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
+		AC6000000000000000000004 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
+		AC6000000000000000000005 = {isa = PBXBuildFile; fileRef = AC6000000000000000000001; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +103,11 @@
 		AC4000000000000000000004 /* MountainVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vision/MountainVisionApp.swift; sourceTree = SOURCE_ROOT; };
 		AC4000000000000000000007 /* Race to Dog Mountain Vision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Race to Dog Mountain Vision.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC4000000000000000000010 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Vision/VisionAssets.xcassets; sourceTree = SOURCE_ROOT; };
+		AC5000000000000000000004 /* MountainWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch/MountainWatchApp.swift; sourceTree = SOURCE_ROOT; };
+		AC5000000000000000000007 /* Race to Dog Mountain Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Race to Dog Mountain Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC5000000000000000000010 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch/WatchMatch.swift; sourceTree = SOURCE_ROOT; };
+		AC5000000000000000000011 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Watch/WatchAssets.xcassets; sourceTree = SOURCE_ROOT; };
+		AC6000000000000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Race to Dog Mountain/MountainScenery.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +127,7 @@
 		};
 		AC3000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		AC4000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		AC5000000000000000000008 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -168,6 +184,10 @@
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
 			children = (
+				AC5000000000000000000004 /* MountainWatchApp.swift */,
+				AC5000000000000000000010 /* WatchMatch.swift */,
+				AC5000000000000000000011 /* WatchAssets.xcassets */,
+				AC6000000000000000000001 /* MountainScenery.swift */,
 				AC4000000000000000000004 /* MountainVisionApp.swift */,
 				AC4000000000000000000010 /* VisionAssets.xcassets */,
 				AC3000000000000000000004 /* MountainMacApp.swift */,
@@ -181,6 +201,7 @@
 		908AFC6A1A6718AE0050EC0B /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				AC5000000000000000000007 /* Race to Dog Mountain Watch.app */,
 				AC4000000000000000000007 /* Race to Dog Mountain Vision.app */,
 				AC3000000000000000000007 /* Race to Dog Mountain Mac.app */,
 				908AFC691A6718AE0050EC0B /* Race to Dog Mountain.app */,
@@ -294,6 +315,17 @@
 			productReference = AC4000000000000000000007;
 			productType = "com.apple.product-type.application";
 		};
+		AC5000000000000000000009 /* Race to Dog Mountain Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC500000000000000000000A;
+			buildPhases = (AC500000000000000000000B, AC5000000000000000000008, AC500000000000000000000C);
+			buildRules = ();
+			dependencies = ();
+			name = "Race to Dog Mountain Watch";
+			productName = "Race to Dog Mountain Watch";
+			productReference = AC5000000000000000000007;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -331,6 +363,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				AC5000000000000000000009 /* Race to Dog Mountain Watch */,
 				AC4000000000000000000009 /* Race to Dog Mountain Vision */,
 				AC3000000000000000000009 /* Race to Dog Mountain Mac */,
 				908AFC681A6718AE0050EC0B /* Race to Dog Mountain */,
@@ -361,13 +394,14 @@
 		};
 		AC300000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC3000000000000000000005, AC3000000000000000000006); runOnlyForDeploymentPostprocessing = 0; };
 		AC400000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC4000000000000000000005, AC4000000000000000000006, AC400000000000000000000F); runOnlyForDeploymentPostprocessing = 0; };
+		AC500000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AC5000000000000000000005, AC5000000000000000000006, AC5000000000000000000012); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		908AFC651A6718AE0050EC0B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
+			files = (AC6000000000000000000002,
 				9017A1411A67197200361817 /* DMProjectManager.m in Sources */,
 				9017A14D1A672B7000361817 /* UIColor+AppColors.m in Sources */,
 				9017A1441A671AE500361817 /* DMGameViewController.m in Sources */,
@@ -394,8 +428,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AC300000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC3000000000000000000001, AC3000000000000000000002, AC3000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
-		AC400000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC4000000000000000000001, AC4000000000000000000002, AC4000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+		AC300000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC6000000000000000000003, AC3000000000000000000001, AC3000000000000000000002, AC3000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+		AC400000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC6000000000000000000004, AC4000000000000000000001, AC4000000000000000000002, AC4000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+		AC500000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AC6000000000000000000005, AC5000000000000000000001, AC5000000000000000000002, AC5000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -680,6 +715,56 @@
 			};
 			name = Release;
 		};
+		AC500000000000000000000D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = WatchIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				MARKETING_VERSION = 2.1;
+				CURRENT_PROJECT_VERSION = 7;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		AC500000000000000000000E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = WatchIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Race to Dog Mountain";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				MARKETING_VERSION = 2.1;
+				CURRENT_PROJECT_VERSION = 7;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -712,6 +797,7 @@
 		};
 		AC300000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC300000000000000000000D, AC300000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		AC400000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC400000000000000000000D, AC400000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		AC500000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC500000000000000000000D, AC500000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */

@@ -1,4 +1,20 @@
+## Apple Watch edition, 2026-09-30
+
+The `Race to Dog Mountain Watch` scheme builds an independent native watchOS 10+ game. Classic starts with a 4 × 4 board, human first and computer player 2. All sixteen human rivals, adaptive accuracy and replay reuse the existing game. Watch play is fixed at 4 × 4; only rival difficulty is configurable. Native swipe pages separate moves, board, score/replay and settings. A thin gold/mint/remaining-points bar replaces exact scores on the moves page; exact totals have their own page. Large legal-number buttons and Crown scrolling suit wrist play. Every move is saved locally. Computer turns pause while inactive or dimmed, and on any page except Moves, during replay and during exit confirmation. The home backdrop is static and the game uses plain pine.
+
+Run `./script/build_watch_and_run.sh` or Codex **Run Apple Watch** to rebuild, install and open the watch simulator. The script preserves saved matches. Debug simulator and unsigned watchOS device Release builds passed. Production rules, computer lifecycle, persistence, replay and adaptation checks run with `bash Tools/ReleaseChecks/run.sh`. iOS, macOS and visionOS regression builds passed after the shared scenery extraction.
+
+Native simulator captures and verification are recorded in `/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-watchos/`. Physical Watch battery, haptic comfort, VoiceOver and accessibility text sizes remain hardware/runtime checks. The device build is unsigned; this work does not constitute a watch App Store upload or submission. No phone sync, complications or widgets are included.
+
 # Race to Dog Mountain release
+
+## Native visionOS build — 2026-09-30
+
+The `Race to Dog Mountain Vision` scheme builds a native SwiftUI app for visionOS 2 and later. Its floating alpine window opens with the invitation and named human rival beside Play. The wide game centers a larger board between both scores, with subtle depth and native hover feedback. Compact windows use vertical scrolling. The three-layer Vision Pro icon matches the pine, cream, amber and mint palette. Classic rules, sixteen difficulty levels, human-first defaults, adaptive accuracy and paused computer replay use the existing game.
+
+Run `./script/build_vision_and_run.sh` or Codex **Run Vision Pro** to rebuild, install and open the app in an available Vision Pro simulator. Debug simulator and unsigned arm64 device Release builds passed, as did the production game checks and iOS/macOS regression builds. The app was installed and launched in the visionOS 26.5 simulator, and the native home was captured. The reviewer scored the home/source corrections separately; live visionOS gameplay, replay, compact layout, large text, gaze/pinch comfort and physical-headset performance remain unverified. Shared Simulator focus and synthetic input prevented a reliable live gameplay check.
+
+The device build at `build/vision/Build/Products/Release-xros/Race to Dog Mountain Vision.app` is unsigned (`CODE_SIGNING_ALLOWED=NO`); this is not a headset installation or App Store submission. Build logs, native capture and receipt are in `/Users/nathan/Documents/GitHub/app-store-audit/2026-09-30-race-visionos/`.
 
 ## Native macOS build — 2026-09-30
 

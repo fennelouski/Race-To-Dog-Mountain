@@ -14,3 +14,8 @@ command = "./script/build_and_run.sh"
 name = "Run Vision Pro"
 icon = "run"
 command = "./script/build_vision_and_run.sh"
+
+[[actions]]
+name = "Run Apple Watch"
+icon = "run"
+command = "./script/build_watch_and_run.sh"

@@ -1,6 +1,6 @@
 import Foundation
 
-enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable {
+enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     case level1, level2, level3, level4, level5, level6, level7, level8
     case level9, level10, level11, level12, level13, level14, level15, level16
     var id: Int { rawValue }
@@ -46,8 +46,8 @@ enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable {
     }
 }
 
-struct MountainGame: Sendable {
-    struct Tile: Identifiable, Sendable {
+struct MountainGame: Sendable, Codable {
+    struct Tile: Identifiable, Sendable, Codable {
         let id: Int
         var value: Int
     }
@@ -116,7 +116,7 @@ struct MountainGame: Sendable {
 
 }
 
-struct MountainReplay: Sendable {
+struct MountainReplay: Sendable, Codable {
     let before: MountainGame
     let tileID: Int
     let difficulty: ComputerDifficulty

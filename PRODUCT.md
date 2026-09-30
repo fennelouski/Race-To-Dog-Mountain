@@ -4,11 +4,15 @@
 
 ## Platform
 
-ios, macos
+ios, macos, visionos, watchos
 
 ## Product purpose
 
 A local two-player number strategy game. Players alternate selecting numbers from a highlighted row or column. Each selection sets the opponent's next line. The higher total wins when no legal moves remain.
+
+The native visionOS edition supports visionOS 2 and later. It shares the Classic game and rivals, with a resizable floating window, spatial depth, larger indirect-selection targets, native hover feedback and a layered icon. A wide game window places the board between both scores; compact windows scroll vertically. No immersive environment or room permissions are required.
+
+The independent watchOS edition supports watchOS 10 and later. It is a simple wrist game: fixed 4 × 4 Classic, human first against computer player 2, large legal-number choices and separate swipe pages for the read-only board, score/replay and settings. A thin three-part points bar replaces exact totals on the moves page. One difficulty selector retains all sixteen rivals. Board-size, role and chat options stay on the other platforms. It saves after every move and resumes after interruption. No phone is required; progress does not sync between devices.
 
 ## Capabilities and constraints
 

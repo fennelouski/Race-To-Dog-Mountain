@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-30T17:04:56.356066+00:00",
+  "generatedAt": "2026-09-30T19:06:27.206846+00:00",
   "title": "Design System: Race to Dog Mountain",
   "extensions": {
     "colorMeta": {
@@ -137,6 +137,14 @@
       "label": {
         "displayName": "Player and control labels",
         "purpose": "Native semibold system labels."
+      },
+      "vision-display": {
+        "displayName": "Vision invitation",
+        "purpose": "Native visionOS home title. Georgia-Bold scales relative to large title; tracking follows the vision display token."
+      },
+      "vision-rival": {
+        "displayName": "Vision rival name",
+        "purpose": "Native visionOS launch rival name. Georgia-Bold scales relative to large title."
       }
     },
     "shadows": [
@@ -202,8 +210,81 @@
       {
         "name": "wide-home",
         "value": "600px"
+      },
+      {
+        "name": "vision-wide-game",
+        "value": "1040px",
+        "purpose": "Native visionOS side-by-side game only outside accessibility Dynamic Type sizes."
       }
-    ]
+    ],
+    "nativePlatforms": {
+      "visionOS": {
+        "source": [
+          "Vision/MountainVisionApp.swift",
+          "Race to Dog Mountain/MountainViews.swift"
+        ],
+        "window": {
+          "style": "plain",
+          "default": "{components.vision-window}",
+          "minimum": "{components.vision-window-minimum}",
+          "resizability": "contentMinSize",
+          "material": "glassBackgroundEffect behind clipped alpine scenery"
+        },
+        "home": {
+          "container": "{components.vision-home}",
+          "widthConstraint": "maximum",
+          "invitation": "{components.vision-invitation}",
+          "launch": "{components.vision-launch}",
+          "rival": "{components.vision-rival}",
+          "horizontalGap": "{spacing.vision-home-gap}",
+          "fallback": "ViewThatFits vertical stack inside ScrollView",
+          "scrim": "MountainStyle.ink.opacity(0.50)",
+          "launchDepth": "offset(z: 20)"
+        },
+        "game": {
+          "container": "{components.vision-game}",
+          "widthConstraint": "maximum",
+          "breakpoint": "vision-wide-game",
+          "wideCondition": "width >= 1040 && !typeSize.isAccessibilitySize",
+          "scorePane": "{components.vision-score-pane}",
+          "board": "{components.vision-board}",
+          "boardWidthConstraint": "budget maximum",
+          "boardBudget": "min(availableWidth - 472, 740)",
+          "compactBoardBudget": "min(availableWidth - 64, 740)",
+          "gap": "{spacing.section}",
+          "boardDepth": "offset(z: 12)",
+          "scoreDepth": "offset(z: 24)",
+          "fallback": "existing scrolling vertical game"
+        },
+        "interaction": {
+          "primary": "{components.vision-button-primary}",
+          "secondary": "{components.vision-button-secondary}",
+          "buttonHeightConstraint": "minimum",
+          "header": "{components.vision-header-control}",
+          "tileMinimum": "{components.vision-tile-minimum}",
+          "tileMinimumScaling": "ScaledMetric(relativeTo: .title3)",
+          "tileMaximum": "{components.vision-tile-maximum}",
+          "tileGap": "{spacing.small}",
+          "hover": "contentShape(.hoverEffect, RoundedRectangle(cornerRadius: 16)).hoverEffect(.highlight)",
+          "sheets": "native rules, player settings and paused computer replay"
+        },
+        "icon": {
+          "asset": "Vision/VisionAssets.xcassets/VisionIcon.solidimagestack",
+          "layerSize": "{components.vision-icon-layer}",
+          "layers": {
+            "Back": "opaque pine field and gold sun",
+            "Middle": "mountain and snow",
+            "Front": "near ridge and square trail"
+          },
+          "provenance": "Original geometric artwork in Tools/generate-vision-icon.swift; PNG description metadata names that source."
+        },
+        "verificationLimits": [
+          "Home simulator capture inspected.",
+          "Live visionOS gameplay, replay, compact layout and accessibility text-size flows remain unverified because shared Simulator focus/input prevented dependable interaction.",
+          "Hardware gaze/pinch comfort, depth and launcher parallax remain unverified."
+        ]
+      }
+    }
   },
   "components": [
     {
@@ -255,7 +336,7 @@
   ],
   "narrative": {
     "northStar": "The Alpine Travel Poster",
-    "overview": "A cream serif title sits above geometric mountain ridges and an amber sun. Deep pine sky, drifting cloud lines, stars and a dotted climbing trail make the opening scene recognizable before any controls appear. The number board carries the same colors into play.\n\nClassic is the only game. The home screen offers Play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results remain inside the mountain scene.",
+    "overview": "A cream serif title sits above geometric mountain ridges and an amber sun. Deep pine sky, drifting cloud lines, stars and a dotted climbing trail make the opening scene recognizable before any controls appear. The number board carries the same colors into play.\n\nClassic is the only game. The home screen offers Play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results remain inside the mountain scene.\n\nThe native visionOS adaptation keeps the alpine scene inside one bounded floating window. Its invitation and named rival lead directly to Play. Glass surrounds the illustrated game; controls use native hover feedback and shallow depth offsets.",
     "keyCharacteristics": [
       "Layered angular ridges, a circular sun and a winding dotted trail.",
       "Cream Georgia display type with readable system text for controls.",
