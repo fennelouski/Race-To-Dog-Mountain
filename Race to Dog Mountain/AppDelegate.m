@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Race_to_Dog_Mountain-Swift.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,7 @@
 
     //set Motion Gesture
     [application setApplicationSupportsShakeToEdit:YES];
+    [MountainPhoneCoordinator activate];
 
     return YES;
 }

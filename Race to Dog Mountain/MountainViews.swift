@@ -50,7 +50,11 @@ struct MountainHome: View {
     @State private var playing = false
     @State private var selection: SavedMountainGame?
     @State private var library = MountainLibrary()
+#if os(iOS)
+    @State private var friends = MountainPhoneCoordinator.shared.friends
+#else
     @State private var friends = MountainFriends()
+#endif
     @Environment(\.scenePhase) private var phase
     @State private var options = false
     @State private var rules = false
@@ -258,7 +262,7 @@ struct MountainHome: View {
             if !friends.active.isEmpty || !library.active.isEmpty {
                 Text("Your games").font(.title2.bold()).accessibilityAddTraits(.isHeader)
                 ForEach(friends.active) { race in
-                    MountainMatchRow(title: race.title, subtitle: race.yourTurn ? "Your move · Game Center" : "Waiting for a friend · Game Center", scores: race.challenge?.game.scores, symbol: "person.2.fill", needsMove: race.yourTurn) { Task { await friends.open(race.id) } }
+                    MountainMatchRow(title: race.title, subtitle: race.problem != nil ? "Refresh needed · Game Center" : race.yourTurn ? "Your move · Game Center" : "Waiting for a friend · Game Center", scores: race.challenge?.game.scores, symbol: "person.2.fill", needsMove: race.yourTurn && race.problem == nil) { Task { await friends.open(race.id) } }
                 }
                 ForEach(library.active) { saved in
                     MountainMatchRow(title: saved.title, subtitle: "\(saved.computers.contains(true) ? saved.difficulty.title : "Pass & play") · \(saved.game.size) × \(saved.game.size)", scores: saved.game.scores, symbol: saved.computers.contains(true) ? "person.crop.square" : "person.2.fill", needsMove: true) { resume(saved) }

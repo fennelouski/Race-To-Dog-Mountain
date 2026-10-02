@@ -8,10 +8,12 @@ import WatchKit
 private struct WatchMountain: View {
     @AppStorage("computerLevel") private var level = ComputerDifficulty.level6.rawValue
     @State private var match = WatchMatch.restore()
+    @State private var friends = MountainWatchFriends()
     private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: level) ?? .level6 }
 
     var body: some View {
         NavigationStack {
+            Group {
             if let match {
                 WatchGame(match: match) {
                     UserDefaults.standard.removeObject(forKey: WatchMatch.saveKey)
@@ -35,7 +37,93 @@ private struct WatchMountain: View {
                 }.tabViewStyle(.verticalPage)
 
             }
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    NavigationLink { WatchFriendsInbox(friends: friends) } label: { Image(systemName: "person.2.fill") }
+                        .accessibilityLabel("Friend games").accessibilityIdentifier("friend-games")
+                }
+            }
         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+            .task { friends.activate() }
+    }
+}
+
+private struct WatchFriendsInbox: View {
+    let friends: MountainWatchFriends
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Friend games").font(.headline).accessibilityAddTraits(.isHeader)
+                Button { friends.refresh() } label: { Label("Refresh", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+                    .buttonStyle(WatchButton()).disabled(friends.sending)
+                if friends.sending || friends.awaitingSnapshot { ProgressView("Updating games") }
+                if !friends.reachable { Text("Connect to your paired iPhone to play.").font(.caption) }
+                if let error = friends.error { Text(error).font(.caption).foregroundStyle(MountainStyle.gold) }
+                ForEach(friends.active) { race in row(race) }
+                if !friends.finished.isEmpty {
+                    Text("Finished").font(.headline).accessibilityAddTraits(.isHeader)
+                    ForEach(friends.finished) { race in row(race) }
+                }
+                if friends.active.isEmpty && friends.finished.isEmpty {
+                    Text("Start a friend game on iPhone, iPad, Mac or Vision Pro. Watch connects through your paired iPhone.")
+                        .font(.caption).fixedSize(horizontal: false, vertical: true)
+                }
+            }.padding(.horizontal, 8).padding(.bottom, 16)
+        }.background(MountainStyle.ink)
+    }
+    private func row(_ race: FriendRace) -> some View {
+        NavigationLink { WatchFriendGame(id: race.id, friends: friends) } label: {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(race.title).fixedSize(horizontal: false, vertical: true)
+                Text(race.ended ? "Finished" : race.problem != nil ? "Refresh needed" : race.yourTurn ? "Your move" : "Friend's move").font(.caption)
+                if let game = race.challenge?.game { Text("\(game.scores[0]) : \(game.scores[1])").monospacedDigit() }
+            }.frame(maxWidth: .infinity, alignment: .leading)
+        }.buttonStyle(WatchButton()).accessibilityIdentifier("friend-\(race.id)")
+    }
+}
+
+private struct WatchFriendGame: View {
+    let id: String
+    let friends: MountainWatchFriends
+    private var race: FriendRace? { friends.inbox?.matches.first { $0.id == id } }
+    var body: some View {
+        TabView {
+            ScrollView {
+                VStack(spacing: 10) {
+                    if let race, let game = race.challenge?.game {
+                        Text(race.title).font(.headline).fixedSize(horizontal: false, vertical: true)
+                        HStack { Text("\(game.scores[0])"); Text(":"); Text("\(game.scores[1])") }.font(.title3.bold()).monospacedDigit()
+                            .accessibilityElement(children: .ignore).accessibilityLabel("\(race.names[0]), \(game.scores[0]) points. \(race.names[1]), \(game.scores[1]) points.")
+                        Text(game.isOver || race.ended ? "Finished" : race.yourTurn ? "Your move" : "Friend's move").font(.caption)
+                        if !game.isOver && !race.ended {
+                            Label("\(game.turn == 0 ? "Row" : "Column") \(game.turn == 0 ? game.row + 1 : game.column + 1)", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
+                                .font(.caption).foregroundStyle(MountainStyle.player(game.turn))
+                        }
+                        if friends.sending || friends.awaitingSnapshot { ProgressView("Confirming with iPhone") }
+                        if let problem = race.problem { Text(problem).font(.caption) }
+                        if race.yourTurn && !game.isOver && !race.ended {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                                ForEach(game.legalMoves, id: \.self) { tile in
+                                    Button { friends.play(tile, in: race) } label: {
+                                        Text("\(game.tiles[tile].value)").font(.title3.bold()).monospacedDigit().frame(maxWidth: .infinity)
+                                    }.buttonStyle(WatchButton(tileColor: MountainStyle.player(game.turn)))
+                                        .disabled(!friends.canMove || race.problem != nil)
+                                        .accessibilityLabel("\(game.tiles[tile].value) points, row \(tile / game.size + 1), column \(tile % game.size + 1)")
+                                        .accessibilityIdentifier("friend-tile-\(tile)")
+                                }
+                            }
+                        }
+                    } else { Text(race?.problem ?? "Refresh to open this game.").font(.caption) }
+                    if !friends.reachable { Text("Connect to your paired iPhone to send a move.").font(.caption) }
+                    if let error = friends.error { Text(error).font(.caption).foregroundStyle(MountainStyle.gold) }
+                    Button { friends.open(id) } label: { Image(systemName: "arrow.clockwise").frame(maxWidth: .infinity) }
+                        .buttonStyle(WatchButton()).disabled(friends.sending).accessibilityLabel("Refresh game")
+                }.padding(.horizontal, 8).padding(.bottom, 16)
+            }
+            if let game = race?.challenge?.game { ScrollView { WatchBoard(game: game).padding(.bottom, 18) } }
+        }.tabViewStyle(.verticalPage).background(MountainStyle.ink)
+            .task { friends.open(id) }
     }
 }
 
@@ -82,6 +170,7 @@ private struct WatchGame: View {
     @State private var replaying = false
     @State private var page = 0
     @State private var confirmExit = false
+    @State private var visible = false
     @Environment(\.scenePhase) private var phase
     @Environment(\.isLuminanceReduced) private var dimmed
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -91,7 +180,7 @@ private struct WatchGame: View {
         _match = State(initialValue: match)
         self.onLeave = onLeave
     }
-    private var active: Bool { phase == .active && !dimmed }
+    private var active: Bool { visible && phase == .active && !dimmed }
     private var paused: Bool { replaying || page != 0 || confirmExit }
     private func name(_ player: Int) -> String {
         match.computers[player] ? match.difficulty.name : match.computers.contains(true) ? "You" : "Player \(player + 1)"
@@ -142,6 +231,8 @@ private struct WatchGame: View {
                 if match.game.isOver { onLeave() } else { confirmExit = true }
             }).tag(3)
         }.tabViewStyle(.verticalPage).background(MountainStyle.ink)
+        .onAppear { visible = true }
+        .onDisappear { visible = false }
         .onChange(of: match.game.isOver) { _, over in if over { page = 2 } }
         .confirmationDialog("End this game?", isPresented: $confirmExit, titleVisibility: .visible) {
             Button("End game", role: .destructive, action: onLeave)
@@ -155,7 +246,7 @@ private struct WatchGame: View {
             }
         }
 
-        .task(id: "\(match.id)-\(match.game.moves)-\(phase)-\(dimmed)-\(paused)-\(match.computerStarted)") {
+        .task(id: "\(match.id)-\(match.game.moves)-\(phase)-\(dimmed)-\(paused)-\(visible)-\(match.computerStarted)") {
             guard match.canComputerMove(active: active, paused: paused) else { return }
             do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
             let snapshot = match
