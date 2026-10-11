@@ -20,7 +20,7 @@
     // Override point for customization after application launch.
 
     //set Motion Gesture
-    [application setApplicationSupportsShakeToEdit:YES];
+    if (![MountainQARuntime isActive]) { [application setApplicationSupportsShakeToEdit:YES]; }
     [MountainPhoneCoordinator activate];
 
     return YES;
@@ -41,6 +41,9 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+#if DEBUG
+    if ([MountainQARuntime isActive]) { return; }
+#endif
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"closingScreenBrightness"];
     [defaults setObject:[NSDate date] forKey:@"lastClosedDate"];
@@ -54,6 +57,9 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+#if DEBUG
+    if ([MountainQARuntime isActive]) { return; }
+#endif
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"closingScreenBrightness"];
     [defaults setObject:[NSDate date] forKey:@"lastClosedDate"];
@@ -72,6 +78,9 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+#if DEBUG
+    if ([MountainQARuntime isActive]) { return; }
+#endif
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"originalScreenBrightness"];
 

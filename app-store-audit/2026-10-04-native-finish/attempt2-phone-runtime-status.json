@@ -1,0 +1,214 @@
+{
+  "startedAt": "2026-10-04T07:53:26.824761+00:00",
+  "deviceUUID": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+  "headless": true,
+  "nativeSourceFreeze": "66d938f7075bca0970800b9235ded28ae12a36431733121c0a2e8766d26d96d2",
+  "privateQA": {
+    "sessionUUID": "20B9DE9D-DA49-4833-B76E-A66F166FE132",
+    "suite": "com.codex.racedog.qa.20B9DE9D-DA49-4833-B76E-A66F166FE132",
+    "appBundle": "com.nathanfennel.RacetoDogMountain",
+    "blankHostBundle": "com.codex.RacedogQABlank",
+    "device": "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+  },
+  "runtimeTests": [
+    {
+      "method": "testARealPhoneStartContinueCompletionExportAndEffects",
+      "command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/tmp/racedog-private-ui-products-20261004/Build/Products/PrivateRunner-isolated.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "-parallel-testing-enabled",
+        "NO",
+        "-maximum-concurrent-test-simulator-destinations",
+        "1",
+        "-maximum-parallel-testing-workers",
+        "1",
+        "-jobs",
+        "2",
+        "-only-testing:NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects",
+        "-resultBundlePath",
+        "/tmp/racedog-testARealPhoneStartContinueCompletionExportAndEffects-private-debug-20261004.xcresult",
+        "-quiet"
+      ],
+      "resultBundle": "/tmp/racedog-testARealPhoneStartContinueCompletionExportAndEffects-private-debug-20261004.xcresult",
+      "startedAt": "2026-10-04T07:53:44.700937+00:00",
+      "exitCode": 65,
+      "finishedAt": "2026-10-04T07:54:33.214193+00:00"
+    }
+  ],
+  "sourceBeforeVerified": true,
+  "beforeDevice": {
+    "lastBootedAt": "2026-10-04T07:41:44Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2196471808,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 471040,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "executedInputs": [
+    {
+      "path": "/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app/Info.plist",
+      "sha256": "44ddafee60f719ed25c7d3c5ac13f0d3e5d2caf960ca638f437556bc62e22425"
+    },
+    {
+      "path": "/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app/Race to Dog Mountain",
+      "sha256": "b274468721ba714e7993c5dd2abe219f5016a3be689531c63db392d54f3dac07"
+    },
+    {
+      "path": "/tmp/racedog-private-ui-products-20261004/Build/Products/Debug-iphonesimulator/NativeFinishUITests-Runner.app/PlugIns/NativeFinishUITests.xctest/NativeFinishUITests",
+      "sha256": "a3a80a9b71c45a3af31080bd97828c41ab50c701d4e31ae18cdb7c2cde9bba4a"
+    }
+  ],
+  "boot": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "boot",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "bootstatus": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "bootstatus",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "-b"
+    ],
+    "exitCode": 0,
+    "stdout": "Monitoring boot status for Games Math QA Phone 20261003 (4051F719-157D-4697-AED1-FEFBB7E99CA1).\n[2026-10-04 07:53:28 +0000] Status=2, isTerminal=NO, Elapsed=00:01.\n\tWaiting on Data Migration\n\t\tReason:(null)\n\t\tMigration Elapsed:00:00 seconds\n\n[2026-10-04 07:53:29 +0000] Status=4, isTerminal=NO, Elapsed=00:02.\n\tWaiting on System App\n\n[2026-10-04 07:53:30 +0000] Status=4, isTerminal=NO, Elapsed=00:03.\n\tWaiting on System App\n\n[2026-10-04 07:53:31 +0000] Status=4, isTerminal=NO, Elapsed=00:04.\n\tWaiting on System App\n\n[2026-10-04 07:53:32 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:05.\n\tFinished",
+    "stderr": ""
+  },
+  "appearanceBefore": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "light",
+    "stderr": ""
+  },
+  "productionBeforeInstall": {
+    "installed": true,
+    "container": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data/Containers/Data/Application/B3B56C64-8376-4BCB-A901-5AF8A7B6350B",
+    "files": {
+      "Library/Preferences/com.nathanfennel.RacetoDogMountain.plist": "c952475653cef20dd7918805c97353555b8d223ba28cd0b7c4ba8d2f8a57895a",
+      "Library/Application Support": null
+    }
+  },
+  "install": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "install",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "productionBeforeRuntime": {
+    "installed": true,
+    "container": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data/Containers/Data/Application/AE9A60F1-35F8-47A0-AD2A-116473B47326",
+    "files": {
+      "Library/Preferences/com.nathanfennel.RacetoDogMountain.plist": "c952475653cef20dd7918805c97353555b8d223ba28cd0b7c4ba8d2f8a57895a",
+      "Library/Application Support": null
+    }
+  },
+  "enumerationExitCode": 0,
+  "enumeration": {
+    "errors": [],
+    "values": [
+      {
+        "disabledTests": [],
+        "enabledTests": [
+          {
+            "identifier": "NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()"
+          },
+          {
+            "identifier": "NativeFinishUITests/NativeFinishUITests/testBLargestTextFirstViewportAndActualSavedFinish()"
+          }
+        ],
+        "testPlan": "PrivateRunner"
+      }
+    ]
+  },
+  "recordingPath": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/phone-private-debug-actual-ui.mp4",
+  "sourceAfterVerified": true,
+  "productionAfterRuntime": {
+    "installed": true,
+    "container": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data/Containers/Data/Application/AE9A60F1-35F8-47A0-AD2A-116473B47326",
+    "files": {
+      "Library/Preferences/com.nathanfennel.RacetoDogMountain.plist": "c952475653cef20dd7918805c97353555b8d223ba28cd0b7c4ba8d2f8a57895a",
+      "Library/Application Support": null
+    }
+  },
+  "privatePreferencesSHA256": "5eacf3bd340cfb5fd5ee889ae6b1edc78ed0d3937a44b2c0751ea700ac2c36ae",
+  "actualExportFiles": [],
+  "videoExitCode": 0,
+  "appearanceBeforeShutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "light",
+    "stderr": ""
+  },
+  "appearancePreserved": true,
+  "shutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "shutdown",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "afterDevice": {
+    "lastBootedAt": "2026-10-04T07:53:27Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2188034048,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 573440,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "appearanceAfterShutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "unknown",
+    "stderr": ""
+  },
+  "finishedAt": "2026-10-04T07:54:37.331625+00:00"
+}

@@ -1,0 +1,3 @@
+ActivityListView: (9.0, 498.0, 384.0, 366.66666666666663)
+Copy Cell: (27.33333333333334, 726.3333333333334, 81.99999999999999, 138.33333333333326), hittable=true
+PopoverDismissRegion: (0.0, 0.0, 402.0, 874.0), hittable=true

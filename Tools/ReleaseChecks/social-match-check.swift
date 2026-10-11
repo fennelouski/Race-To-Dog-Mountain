@@ -91,12 +91,17 @@ import Foundation
         let separate = SavedMountainGame(size: 4, names: ["C", "D"], computers: [false, true], difficulty: .level8, adjustment: 1)
         library.save(local); library.save(separate)
         let tile = local.game.legalMoves[0]
+        assert(local.history!.record(tile, before: local.game))
         local.game.play(tile); library.save(local)
         let restored = MountainLibrary(defaults: defaults)
         assert(restored.active.count == 2)
         assert(restored.games.first { $0.id == local.id }!.game.moves == 1)
         assert(restored.games.first { $0.id == separate.id }!.game.moves == 0)
-        while !local.game.isOver { local.game.play(local.game.legalMoves[0]) }
+        while !local.game.isOver {
+            let next = local.game.legalMoves[0]
+            assert(local.history!.record(next, before: local.game))
+            local.game.play(next)
+        }
         local.recorded = true; library.save(local)
         assert(library.active.count == 1 && library.finished.count == 1)
         assert(MountainLibrary(defaults: defaults).finished[0].recorded)

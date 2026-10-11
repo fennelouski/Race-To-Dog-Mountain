@@ -2,7 +2,9 @@ import SwiftUI
 
 struct MountainButton: ButtonStyle {
     var prominent = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
@@ -22,7 +24,9 @@ struct MountainButton: ButtonStyle {
 }
 
 private struct MountainTileButton: ButtonStyle {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.9 : 1)
@@ -61,15 +65,19 @@ struct MountainBoard: View {
                             if tile.value == 0 {
                                 if lastMove == tile.id {
                                     Text("+\(lastPoints)").font(.caption.bold()).foregroundStyle(MountainStyle.cream)
+                                        .transition(.identity).transaction { $0.animation = nil }
                                 } else {
                                     Image(systemName: "pawprint.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
+                                        .transition(.identity).transaction { $0.animation = nil }
                                 }
                             } else {
                                 Text("\(tile.value)").font(.title3.weight(.heavy)).monospacedDigit().foregroundStyle(MountainStyle.ink)
+                                    .transition(.identity).transaction { $0.animation = nil }
                             }
                         }.frame(width: width, height: width)
                             .overlay { RoundedRectangle(cornerRadius: 12).strokeBorder(playable ? MountainStyle.cream.opacity(0.75) : .clear, lineWidth: 2)
-                                if selected == tile.id { RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.gold, lineWidth: 5) }
+                                if selected == tile.id { RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.gold, lineWidth: 5)
+                                    .transition(.identity).transaction { $0.animation = nil } }
                             }
                             .shadow(color: .black.opacity(tile.value == 0 ? 0 : 0.2), radius: 3, x: 0, y: 3)
                     }
@@ -110,8 +118,8 @@ extension View {
     }
     @ViewBuilder func mountainGameFeedback(moves: Int, over: Bool) -> some View {
 #if os(iOS)
-        sensoryFeedback(.selection, trigger: moves)
-            .sensoryFeedback(.success, trigger: over) { _, finished in finished }
+        sensoryFeedback(.selection, trigger: moves) { _, _ in MountainExperience.hapticsEnabled && !MountainExperience.isQAActive }
+            .sensoryFeedback(.success, trigger: over) { _, finished in finished && MountainExperience.hapticsEnabled && !MountainExperience.isQAActive }
 #else
         self
 #endif

@@ -1,0 +1,4 @@
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  ↪︎Find: Descendants matching type Other
+    ↪︎Find: Elements matching predicate '"ActivityListView" IN identifiers'

@@ -1,0 +1,35 @@
+{
+  "sourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "rootExactExclusiveDevice": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+  "privateSession": {
+    "sessionUUID": "ABEA31B0-4471-48C8-8613-925A357E3BD3",
+    "suite": "com.codex.racedog.qa.ABEA31B0-4471-48C8-8613-925A357E3BD3",
+    "appBundle": "com.nathanfennel.RacetoDogMountain",
+    "blankHostBundle": "com.codex.RacedogQABlank",
+    "device": "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+  },
+  "DEBUGUUIDGuard": "-MountainUITests requires adjacent valid -MountainTestSession UUID; Release always returns nil",
+  "storeIsolation": "All SwiftUI @AppStorage wrappers, library, friend cache, win counts and WatchMatch use MountainExperience.defaults; private DEBUG suite only",
+  "effectsSuppressedInQA": [
+    "all native sensoryFeedback",
+    "watch hardware haptic",
+    "Game Center authentication/refresh/checkAuthentication",
+    "WatchConnectivity phone relay, watch activate/send",
+    "AppDelegate shake enable and brightness/preferences lifecycle",
+    "legacy SceneDelegate brightness/preferences lifecycle"
+  ],
+  "legacyCoreData": "saveContext only uses existing _managedObjectContext, does not create unused legacy store",
+  "blankRunnerHost": "Color.clear only; no data, network, effects or accounts",
+  "xctestrun": {
+    "path": "/tmp/racedog-private-ui-products-20261004/Build/Products/PrivateRunner-isolated.xctestrun",
+    "sha256": "52507b6cca1ee6293b44a8b90f365619754328e07c6669d24d60baf76f39cad1",
+    "UITargetAppPath": "__TESTROOT__/Debug-iphonesimulator/Blank.app"
+  },
+  "uiDriver": "Same genuine completed 16-move UUID/session, actual native Share/Again/AX controls, one real opening pair; no new full match",
+  "nativeSharing": "local GIF prep and native chooser only; no destination selected",
+  "forbiddenEffects": "no foreground Simulator, system appearance mutation, hardware, erase/rename, accounts, media/library, transmission or visionOS",
+  "DEBUGCompilationVerified": "sim-build.log includes main Swift compile -D DEBUG and Messages active condition DOGMOUNTAIN_MESSAGES retained",
+  "guardBeforeInteraction": "driver launch requires dedicated staticText mountain-private-qa before any controls; parent container identifier removed to preserve Play AX id",
+  "driverCorrection": "Actual board-size-setting-Decrement native button; Stepper container is not a tap target",
+  "boundedCorrection": "semantic feedback interpolation disabled; outer saved motion unchanged; export identity/URL fixed height"
+}

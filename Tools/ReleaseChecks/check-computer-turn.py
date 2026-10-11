@@ -11,11 +11,14 @@ import tempfile
 
 root = Path(__file__).resolve().parents[2]
 source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
-match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
+match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.task\(id: resolution\)', source, re.S)
 assert match, 'Computer task extraction no longer matches production source'
 identity, body = match.groups()
+resolution_match = re.search(r'\.task\(id: resolution\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
+assert resolution_match, 'Resolution task extraction no longer matches production source'
+resolution_body = resolution_match.group(1).replace('MountainExperience.computerDuration', 'duration')
 record = source.split('    private func recordWin() {', 1)[1].split('\n    }\n}', 1)[0]
-record = record.replace('UserDefaults.standard', 'preferences')
+record = record.replace('MountainExperience.defaults', 'preferences')
 harness = r'''
 import Foundation
 
@@ -30,6 +33,9 @@ final class UIApplication {
 }
 
 @MainActor final class Turns {
+    let savedID = UUID()
+    var resolution: UUID?
+    var scenePhase = "active"
     var foregroundNonce = 0
     var confirmExit = false
     var computerStarted = false
@@ -59,6 +65,14 @@ RECORD
     }
     func runActualBody() async {
 BODY
+    }
+}
+
+@MainActor final class Resolution {
+    var resolution: UUID?
+    let duration = 0.4
+    func runActualBody() async {
+RESOLUTION_BODY
     }
 }
 
@@ -143,11 +157,30 @@ BODY
         result.recorded = false; result.computers = [false, false]
         result.recordWin()
         require(result.computerAdjustment == 0, "Human-only game affected adaptation")
+        let resolution = Resolution()
+        resolution.resolution = UUID()
+        let start = ContinuousClock.now
+        let pending = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(350))
+        require(resolution.resolution != nil, "Computer resolution released input before 350ms")
+        await pending.value
+        require(resolution.resolution == nil && start.duration(to: .now) >= .milliseconds(400), "Actual production resolver must retain its full bounded interval")
+        resolution.resolution = UUID()
+        let stale = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(50))
+        let replacement = UUID(); resolution.resolution = replacement
+        await stale.value
+        require(resolution.resolution == replacement, "A stale resolver cleared a replacement game token")
+        let canceled = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(50))
+        resolution.resolution = nil; canceled.cancel(); await canceled.value
+        require(resolution.resolution == nil, "Exit cancellation recreated a resolution")
+        print("Actual resolution task holds input >=400ms; stale token and canceled exit cannot clear/recreate a new interval: PASS")
         print("Win/loss adaptation applies once and ignores changed roles and demos: PASS")
         print("Play gates computer starts; replay and exit dialog pause pending AI; Cancel resumes once; inactive/background/dismissed tasks cannot move: PASS")
     }
 }
-'''.replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
+'''.replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
 with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
     swift = Path(tmp) / 'ComputerTurnChecks.swift'
     swift.write_text(harness)

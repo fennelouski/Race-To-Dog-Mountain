@@ -1,0 +1,21 @@
+{
+  "errors" : [
+
+  ],
+  "values" : [
+    {
+      "disabledTests" : [
+
+      ],
+      "enabledTests" : [
+        {
+          "identifier" : "NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()"
+        },
+        {
+          "identifier" : "NativeFinishUITests/NativeFinishUITests/testBLargestTextFirstViewportAndActualSavedFinish()"
+        }
+      ],
+      "testPlan" : "PrivateRunner"
+    }
+  ]
+}

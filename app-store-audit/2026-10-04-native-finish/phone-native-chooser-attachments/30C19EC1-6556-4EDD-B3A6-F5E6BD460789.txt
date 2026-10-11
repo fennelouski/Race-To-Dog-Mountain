@@ -1,0 +1,123 @@
+Attributes: Application, 0x1154d0780, pid: 12862, label: 'Race to Dog Mountain'
+Element subtree:
+ →Application, 0x1154d0780, pid: 12862, label: 'Race to Dog Mountain'
+    Window (Main), 0x1154d0c80, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x1154d0dc0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x1154d0b40, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x1154d08c0, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x1154d0a00, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x1154d1400, {{0.0, 0.0}, {402.0, 874.0}}
+              Image, 0x1154d3d40, {{30.7, 89.0}, {22.7, 22.0}}, identifier: 'pawprint.fill', label: 'Pawprint'
+              Button, 0x1154d2580, {{339.0, 87.3}, {26.0, 25.3}}, identifier: 'questionmark.circle', label: 'How to play'
+              StaticText, 0x1154d3e80, {{28.0, 138.0}, {228.3, 82.0}}, label: 'Race to Dog Mountain'
+              Button, 0x1154d1680, {{28.0, 236.0}, {346.0, 56.3}}, identifier: 'start-game', label: 'Continue'
+                Image, 0x1154d35c0, {{155.3, 256.7}, {13.3, 15.0}}, identifier: 'play.fill', label: 'Play'
+                StaticText, 0x1154d3480, {{155.3, 254.0}, {93.5, 20.3}}, label: 'Continue'
+              ScrollView, 0x1154d3700, {{28.0, 308.3}, {346.0, 515.7}}
+                Other, 0x1154d17c0, {{28.0, 308.3}, {346.0, 718.0}}
+                  Button, 0x1154d2440, {{28.0, 308.3}, {346.0, 56.3}}, identifier: 'new-local-game', label: 'New local game'
+                    Image, 0x1154d2300, {{127.3, 329.3}, {14.3, 14.3}}, identifier: 'plus', label: 'Add'
+                    StaticText, 0x1154d1900, {{127.3, 326.3}, {149.5, 20.3}}, label: 'New local game'
+                  StaticText, 0x1154d3c00, {{48.7, 380.7}, {304.7, 24.0}}, label: 'Pick a number. Outsmart your rival.'
+                  Button, 0x1154d3340, {{28.0, 420.7}, {346.0, 56.3}}, identifier: 'play-friend', label: 'Play a friend'
+                    Image, 0x1154d2bc0, {{136.3, 441.0}, {24.3, 16.7}}, identifier: 'person.2.fill', label: 'person.2.fill'
+                    StaticText, 0x1154d2d00, {{136.3, 438.7}, {131.5, 20.3}}, label: 'Play a friend'
+                  Button, 0x1154d1a40, {{86.0, 501.3}, {118.0, 19.3}}, identifier: 'pass-and-play', label: 'Pass & play'
+                    Image, 0x1154d3840, {{87.3, 502.7}, {25.3, 16.7}}, identifier: 'iphone.gen3.radiowaves.left.and.right', label: 'iphone.gen3.radiowaves.left.and.right'
+                    StaticText, 0x1154d1040, {{86.0, 501.3}, {118.0, 19.3}}, label: 'Pass & play'
+                  Button, 0x1154d0f00, {{220.0, 502.0}, {96.3, 18.0}}, label: 'iMessage'
+                    Image, 0x1154d1180, {{221.3, 503.3}, {17.7, 15.0}}, identifier: 'message.fill', label: 'Message'
+                    StaticText, 0x1154d12c0, {{220.0, 502.0}, {96.3, 18.0}}, label: 'iMessage'
+                  StaticText, 0x1154d1b80, {{28.0, 549.0}, {120.7, 26.3}}, label: 'Your games'
+                  Button, 0x1154d2a80, {{40.0, 595.3}, {333.0, 66.3}}, label: 'You & Finn, Level 6 · 4 × 4, 5 : 9'
+                    Image, 0x1154d21c0, {{40.0, 618.7}, {20.0, 20.0}}, identifier: 'person.crop.square', label: 'Selfie'
+                    StaticText, 0x1154d1e00, {{86.0, 595.3}, {83.7, 20.3}}, label: 'You & Finn'
+                    StaticText, 0x1154d0000, {{86.0, 620.7}, {97.3, 18.0}}, label: 'Level 6 · 4 × 4'
+                    StaticText, 0x1154d0640, {{86.0, 643.7}, {31.7, 18.0}}, label: '5 : 9'
+                    Image, 0x1154d0140, {{364.7, 621.3}, {8.3, 14.7}}, identifier: 'chevron.right', label: 'Forward'
+                  Button, 0x1154d0280, {{28.0, 693.7}, {346.0, 28.3}}, label: 'Finished games'
+                    StaticText, 0x1154d03c0, {{28.0, 693.7}, {346.0, 28.3}}, label: 'Finished games'
+                    Image, 0x1154d0500, {{362.8, 705.5}, {12.0, 7.0}}, identifier: 'expanded'
+                  Button, 0x1154d1f40, {{41.0, 734.0}, {332.0, 66.3}}, identifier: 'finished-local-C7D6F881-5AB4-4BDB-84BB-3340310BB357', label: 'You & Finn, Finished · Local, 69 : 67'
+                    Image, 0x1154d3200, {{41.0, 756.7}, {19.3, 21.3}}, identifier: 'flag.checkered', label: 'flag.checkered'
+                    StaticText, 0x1154d2e40, {{86.0, 734.0}, {83.7, 20.3}}, label: 'You & Finn'
+                    StaticText, 0x1154d1540, {{86.0, 759.3}, {106.0, 18.0}}, label: 'Finished · Local'
+                    StaticText, 0x1154d30c0, {{86.0, 782.3}, {50.7, 18.0}}, label: '69 : 67'
+                    Image, 0x1154d1cc0, {{364.7, 760.0}, {8.3, 14.7}}, identifier: 'chevron.right', label: 'Forward'
+                  StaticText, 0x1154d2800, {{119.3, 828.3}, {163.3, 48.0}}, label: 'Finn · Level 6'
+                    Image, 0x1154d26c0, {{119.3, 828.3}, {48.0, 48.0}}, label: 'Opponent6'
+                    StaticText, 0x1154d3ac0, {{179.3, 842.2}, {103.3, 20.3}}, label: 'Finn · Level 6'
+                  StaticText, 0x1154d3980, {{97.7, 892.3}, {206.7, 18.0}}, label: 'Classic · 4 × 4 · You move first'
+                  Button, 0x1154d2940, {{28.0, 926.3}, {346.0, 56.3}}, identifier: 'game-options', label: 'Players & board'
+                    Image, 0x1154d2080, {{125.7, 947.0}, {17.7, 15.0}}, identifier: 'slider.horizontal.3', label: 'Edit'
+                    StaticText, 0x105597ac0, {{125.7, 944.3}, {152.7, 20.3}}, label: 'Players & board'
+                  StaticText, 0x105597980, {{133.7, 998.7}, {134.7, 15.7}}, label: 'Head to head. Player 1, 1 wins. Player 2, 0 wins.'
+              StaticText, 0x105597340, {{378.3, 0.0}, {23.7, 83.3}}, identifier: 'mountain-private-qa', label: 'Private Mountain QA'
+      Other, 0x105596f80, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x105596e40, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x105597840, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x1055975c0, {{0.0, 0.0}, {402.0, 874.0}}
+            ScrollView, 0x105597700, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x105597c00, {{0.0, 62.0}, {402.0, 848.0}}
+                Button, 0x105597d40, {{16.0, 78.0}, {48.0, 48.0}}, identifier: 'close-game', label: 'Close game'
+                StaticText, 0x105597e80, {{132.3, 91.8}, {139.3, 20.3}}, label: 'Dog Mountain'
+                Button, 0x1055970c0, {{338.0, 78.0}, {48.0, 48.0}}, label: 'Player controls'
+                  Button, 0x105597200, {{338.0, 78.0}, {48.0, 48.0}}
+                    Image, 0x105597480, {{350.7, 94.0}, {24.0, 16.3}}, identifier: 'person.2.fill', label: 'person.2.fill'
+                StaticText, 0x115004500, {{16.0, 150.0}, {178.0, 164.0}}, label: 'Player 1, Row player, 69, Points'
+                  Image, 0x1150075c0, {{34.0, 168.0}, {48.0, 48.0}}, identifier: 'person.fill', label: 'person.fill'
+                  StaticText, 0x115007480, {{92.0, 174.3}, {55.7, 18.0}}, label: 'Player 1'
+                  StaticText, 0x115005680, {{92.0, 195.3}, {61.7, 14.3}}, label: 'Row player'
+                  StaticText, 0x1150057c0, {{34.0, 226.0}, {52.0, 45.7}}, label: '69'
+                  Image, 0x115005cc0, {{35.3, 285.0}, {12.0, 7.7}}, identifier: 'arrow.left.and.right', label: 'arrow.left.and.right'
+                  StaticText, 0x115005e00, {{54.7, 281.7}, {37.0, 14.3}}, label: 'Points'
+                StaticText, 0x115006300, {{208.0, 150.0}, {178.0, 164.0}}, label: 'Finn, Level 6, 67, Points'
+                  Image, 0x115005900, {{226.0, 168.0}, {48.0, 48.0}}, label: 'Opponent6'
+                  StaticText, 0x115005a40, {{284.0, 174.3}, {30.3, 18.0}}, label: 'Finn'
+                  StaticText, 0x115005b80, {{284.0, 195.3}, {40.7, 14.3}}, label: 'Level 6'
+                  StaticText, 0x1150061c0, {{226.0, 226.0}, {48.3, 45.7}}, label: '67'
+                  Image, 0x115006440, {{227.3, 283.0}, {7.7, 12.0}}, identifier: 'arrow.up.and.down', label: 'arrow.up.and.down'
+                  StaticText, 0x115006580, {{242.3, 281.7}, {37.0, 14.3}}, label: 'Points'
+                StaticText, 0x1150066c0, {{94.7, 340.3}, {212.7, 103.3}}, label: 'Player 1 wins!, The mountain has a winner.'
+                  Image, 0x115007840, {{187.0, 340.3}, {29.7, 32.7}}, identifier: 'flag.checkered', label: 'flag.checkered'
+                  StaticText, 0x115007700, {{94.7, 383.3}, {212.7, 34.3}}, label: 'Player 1 wins!'
+                  StaticText, 0x1150048c0, {{107.3, 425.7}, {187.3, 18.0}}, label: 'The mountain has a winner.'
+                ScrollView, 0x1150070c0, {{16.0, 467.7}, {370.0, 346.0}}
+                  Other, 0x115004c80, {{16.0, 467.7}, {370.0, 346.0}}
+                    Other, 0x115006f80, {{40.0, 479.7}, {322.0, 322.0}}
+                      Button, 0x115004780, {{40.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-0', label: 'Row 1, column 1, used', Disabled
+                      Button, 0x115007200, {{122.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-1', label: 'Row 1, column 2, used', Disabled
+                      Button, 0x115006800, {{204.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-2', label: 'Row 1, column 3, used', Disabled
+                      Button, 0x115005540, {{286.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-3', label: 'Row 1, column 4, used', Disabled
+                      Button, 0x115007c00, {{40.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-4', label: 'Row 2, column 1, used', Disabled
+                      Button, 0x115007e80, {{122.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-5', label: 'Row 2, column 2, used', Disabled
+                      Button, 0x115004a00, {{204.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-6', label: 'Row 2, column 3, used', Disabled
+                      Button, 0x115006080, {{286.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-7', label: 'Row 2, column 4, used', Disabled
+                      Button, 0x115004dc0, {{40.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-8', label: 'Row 3, column 1, used', Disabled
+                      Button, 0x1150043c0, {{122.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-9', label: 'Row 3, column 2, used', Disabled
+                      Button, 0x115004f00, {{204.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-10', label: 'Row 3, column 3, used', Disabled
+                      Button, 0x115005400, {{286.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-11', label: 'Row 3, column 4, used', Disabled
+                      Button, 0x115004b40, {{40.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-12', label: 'Row 4, column 1, used', Disabled
+                      Button, 0x115004280, {{122.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-13', label: 'Row 4, column 2, used', Disabled
+                      Button, 0x115004000, {{204.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-14', label: 'Row 4, column 3, used', Disabled
+                      Button, 0x115004140, {{286.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-15', label: 'Row 4, column 4, used', Disabled
+                  Other, 0x1150052c0, {{17.7, 780.7}, {366.7, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x115007980, {{374.3, 807.7}, {7.0, 3.0}}
+                  Other, 0x115007d40, {{17.7, 780.7}, {366.7, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x115007340, {{374.3, 807.7}, {7.0, 3.0}}
+                Button, 0x115006e40, {{16.0, 837.7}, {370.0, 56.3}}, identifier: 'replay-computer', label: 'Replay computer move'
+                  Image, 0x115006d00, {{96.0, 858.3}, {20.0, 15.7}}, identifier: 'play.rectangle', label: 'Slideshow'
+                  StaticText, 0x115007ac0, {{96.0, 855.7}, {212.0, 20.3}}, label: 'Replay computer move'
+            StaticText, 0x115006a80, {{147.2, 710.0}, {107.7, 20.3}}, identifier: 'game-result', label: 'Player 1 wins!'
+            StaticText, 0x115005f40, {{143.7, 740.3}, {114.7, 14.3}}, label: 'Player 1 69 · Finn 67'
+            Button, 0x115006bc0, {{16.0, 765.7}, {294.7, 57.3}}, identifier: 'race-again', label: 'Race again'
+              Image, 0x115005180, {{108.3, 785.0}, {15.0, 18.3}}, identifier: 'arrow.clockwise', label: 'Refresh'
+              StaticText, 0x115006940, {{108.3, 784.8}, {111.3, 20.3}}, label: 'Race again'
+            Button, 0x115005040, {{322.7, 764.7}, {63.3, 59.3}}, identifier: 'share-result', label: 'Share'
+Path to element:
+ →Application, 0x1154d0780, pid: 12862, label: 'Race to Dog Mountain'
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  Output: {
+    Application, 0x1154d2f80, pid: 12862, label: 'Race to Dog Mountain'
+  }

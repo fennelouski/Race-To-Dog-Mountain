@@ -1,0 +1,42 @@
+Attributes: Application, 0x117009a40, pid: 99789, label: 'Race to Dog Mountain'
+Element subtree:
+ →Application, 0x117009a40, pid: 99789, label: 'Race to Dog Mountain'
+    Window (Main), 0x117009b80, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x117009cc0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x117009e00, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x117009f40, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x11700a080, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x11700a1c0, {{0.0, 0.0}, {402.0, 874.0}}, identifier: 'mountain-app'
+              Image, 0x11700a300, {{30.7, 89.0}, {22.7, 22.0}}, identifier: 'mountain-app', label: 'Pawprint'
+              Button, 0x11700a440, {{339.0, 87.3}, {26.0, 25.3}}, identifier: 'mountain-app', label: 'How to play'
+              StaticText, 0x11700a580, {{28.0, 138.0}, {228.3, 82.0}}, identifier: 'mountain-app', label: 'Race to Dog Mountain'
+              Button, 0x11700a6c0, {{28.0, 236.0}, {346.0, 56.3}}, identifier: 'mountain-app', label: 'Play'
+                Image, 0x11700a800, {{174.3, 256.7}, {13.3, 15.0}}, identifier: 'play.fill', label: 'Play'
+                StaticText, 0x11700a940, {{174.3, 254.0}, {55.3, 20.3}}, label: 'Play'
+              ScrollView, 0x11700aa80, {{28.0, 308.3}, {346.0, 515.7}}, identifier: 'mountain-app'
+                Other, 0x11700abc0, {{28.0, 308.3}, {346.0, 404.7}}
+                  StaticText, 0x11700ad00, {{48.7, 308.3}, {304.7, 24.0}}, label: 'Pick a number. Outsmart your rival.'
+                  Button, 0x11700ae40, {{28.0, 348.3}, {346.0, 56.3}}, identifier: 'play-friend', label: 'Play a friend'
+                    Image, 0x11700af80, {{136.3, 368.7}, {24.3, 16.7}}, identifier: 'person.2.fill', label: 'person.2.fill'
+                    StaticText, 0x11700b0c0, {{136.3, 366.3}, {131.5, 20.3}}, label: 'Play a friend'
+                  Button, 0x11700b200, {{86.0, 429.0}, {118.0, 19.3}}, identifier: 'pass-and-play', label: 'Pass & play'
+                    Image, 0x11700b340, {{87.3, 430.3}, {25.3, 16.7}}, identifier: 'iphone.gen3.radiowaves.left.and.right', label: 'iphone.gen3.radiowaves.left.and.right'
+                    StaticText, 0x11700b480, {{86.0, 429.0}, {118.0, 19.3}}, label: 'Pass & play'
+                  Button, 0x11700b5c0, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage'
+                    Image, 0x11700b700, {{221.3, 431.0}, {17.7, 15.0}}, identifier: 'message.fill', label: 'Message'
+                    StaticText, 0x11700b840, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage'
+                  StaticText, 0x11700b980, {{54.8, 484.7}, {292.3, 38.0}}, label: 'Start a race with a friend. Come back here whenever it's your move.'
+                  StaticText, 0x11700bac0, {{119.3, 546.7}, {163.3, 48.0}}, label: 'Finn · Level 6'
+                    Image, 0x11700bc00, {{119.3, 546.7}, {48.0, 48.0}}, label: 'Opponent6'
+                    StaticText, 0x11700bd40, {{179.3, 560.5}, {103.3, 20.3}}, label: 'Finn · Level 6'
+                  StaticText, 0x11700be80, {{97.8, 610.7}, {206.3, 18.0}}, label: 'Classic · 6 × 6 · You move first'
+                  Button, 0x106996e40, {{28.0, 644.7}, {346.0, 56.3}}, identifier: 'game-options', label: 'Players & board'
+                    Image, 0x11722c000, {{125.7, 665.3}, {17.7, 15.0}}, identifier: 'slider.horizontal.3', label: 'Edit'
+                    StaticText, 0x11722c140, {{125.7, 662.7}, {152.7, 20.3}}, label: 'Players & board'
+Path to element:
+ →Application, 0x117009a40, pid: 99789, label: 'Race to Dog Mountain'
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  Output: {
+    Application, 0x11722c280, pid: 99789, label: 'Race to Dog Mountain'
+  }

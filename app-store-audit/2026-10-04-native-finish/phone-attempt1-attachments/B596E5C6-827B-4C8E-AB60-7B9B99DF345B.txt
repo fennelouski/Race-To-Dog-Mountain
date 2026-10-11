@@ -1,0 +1,4 @@
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  ↪︎Find: Descendants matching type Button
+    ↪︎Find: Elements matching predicate '"start-game" IN identifiers'

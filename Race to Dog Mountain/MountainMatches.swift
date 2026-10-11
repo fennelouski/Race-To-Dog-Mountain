@@ -214,6 +214,7 @@ struct SavedMountainGame: Codable, Identifiable {
     var adjustment: Int
     var game: MountainGame
     var replay: MountainReplay?
+    var history: MountainHistory?
     var recorded = false
     var computerStarted = false
     var rolesChanged = false
@@ -222,11 +223,27 @@ struct SavedMountainGame: Codable, Identifiable {
         self.names = names; self.computers = computers; self.difficulty = difficulty
         self.adjustment = min(2, max(-2, adjustment))
         game = MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers))
+        history = MountainHistory(initial: game)
     }
     var title: String { computers.contains(true) ? "You & \(difficulty.name)" : names.joined(separator: " & ") }
     var isValid: Bool {
         names.count == 2 && names.allSatisfy { !$0.isEmpty && $0.utf8.count <= 240 } &&
         computers.count == 2 && (-2...2).contains(adjustment) && game.isValid &&
+        (history == nil || history!.matches(game)) &&
         (replay == nil || (replay!.before.isValid && replay!.before.canPlay(replay!.tileID) && replay!.before.size == game.size && replay!.before.moves < game.moves))
+    }
+}
+
+// Friend transcripts already contain the genuine initial board and each legal choice.
+extension MountainHistory {
+    init?(challenge: MountainChallenge) {
+        guard challenge.isValid else { return nil }
+        let initial = MountainGame(size: challenge.size, values: challenge.values, startingLine: challenge.startingLine)
+        self.init(initial: initial)
+        var state = initial
+        for tile in challenge.moves {
+            guard record(tile, before: state), state.play(tile) else { return nil }
+        }
+        guard matches(challenge.game) else { return nil }
     }
 }

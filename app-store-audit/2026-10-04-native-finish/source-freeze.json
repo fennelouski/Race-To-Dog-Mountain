@@ -1,0 +1,29 @@
+{
+  "files": {
+    "Race to Dog Mountain.xcodeproj/project.pbxproj": "d2da670868d3c24872cbab8e35177b5ef3c046643dd07373da05cd8e7446d92b",
+    "Race to Dog Mountain/AppDelegate.m": "9880de446bacf403a69abf8b90d2e86ee3078486fc023c429556ee3dece87ecf",
+    "Race to Dog Mountain/MountainBoard.swift": "b7bf7b26e9d3b18cf92867aed83dfa154d563ed9d165b01cff54bc0117b3f1e0",
+    "Race to Dog Mountain/MountainFriends.swift": "55ebd46e5888ddd343fb088ceddc71e5be624ce9e677ba55b88901d4e482cdee",
+    "Race to Dog Mountain/MountainGame.swift": "924cd6d5c78f0d1047ec6df545a5e67bdfc6a90712e73bc08bd3a2c859a2ca76",
+    "Race to Dog Mountain/MountainLibrary.swift": "c9550e4429134ee7d721944fd36ef0233373f27bd8d7bbb11ebc344dc465ec93",
+    "Race to Dog Mountain/MountainMatches.swift": "a2077d6ef40fa8f726a7adb9cc7699c39e6ebb8c4729ef1e9944514fb0f97461",
+    "Race to Dog Mountain/MountainScenery.swift": "39c880b56b0253b90b67ed55aef69562e4c02d127eab87dfe586ea9178214f0f",
+    "Race to Dog Mountain/MountainSocialViews.swift": "840e940acc3888564f7d6adfa95851edaf6fbce0992fef3f39de11d98334ea29",
+    "Race to Dog Mountain/MountainViews.swift": "b1871ce0a8fb2bf5b1ee22370c4b65907bd3d11db5b304e8ab9b22d4f8518b32",
+    "Race to Dog Mountain/MountainWatchConnectivity.swift": "07d12c9bc1f54ccdfd3e441039ea4c9d2c9834a46da0323effee22064e285fb0",
+    "Race to Dog Mountain/SceneDelegate.m": "65aa539dcebc2a33717da60c9a37a9bdef702a6318503dfac1cd003f11c82b39",
+    "Tools/ReleaseChecks/check-computer-turn.py": "3bd6129091c4876e509b11a50a28d74154ec29c2ab8f61147e8a630dfbbb29a0",
+    "Tools/ReleaseChecks/native-finish-check.swift": "56d45d2abc2c3fb31ee42bf9f5113de08fd8a557f6bdb894d7c4a97da2576335",
+    "Tools/ReleaseChecks/social-match-check.swift": "13fc913acab52bc0c3f7fd253d232f5d80d2e43b4c995dd3dc484be7758e7be0",
+    "Watch/MountainWatchApp.swift": "cbb4c54c34d9e84d32206cebb0c021bf0e792c975f19986017ed55307d6e55ae",
+    "Watch/WatchMatch.swift": "396e99c3eba047455796e0ff9a58f3316ab156c0fd4b45955613edeb9b5dc3ae"
+  },
+  "aggregateSHA256": "18bd3b3a1bd1d31995fb58e43651c3ad478cd5c322694b965b0f3e5e24673bab",
+  "version": "2.1",
+  "build": "8",
+  "head": "be7b1505f7f48a24ab403806ffc0f9fc91d2ba7d",
+  "matchingSimulatorBuild": true,
+  "note": "owned native finish/test input freeze; production project unchanged; privateQA Swift DEBUG command override",
+  "observedAt": "2026-10-04T08:13:25.998022+00:00",
+  "boundedCorrection": "First actual-frame feedback semantics + full replay footer, preserved66d938"
+}

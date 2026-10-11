@@ -1,0 +1,20 @@
+{
+  "retainedRatherThanRepeated": true,
+  "unchangedCoreFiles": {
+    "Race to Dog Mountain/MountainGame.swift": "924cd6d5c78f0d1047ec6df545a5e67bdfc6a90712e73bc08bd3a2c859a2ca76",
+    "Race to Dog Mountain/MountainMatches.swift": "a2077d6ef40fa8f726a7adb9cc7699c39e6ebb8c4729ef1e9944514fb0f97461",
+    "Race to Dog Mountain/MountainFriends.swift": "55ebd46e5888ddd343fb088ceddc71e5be624ce9e677ba55b88901d4e482cdee",
+    "Race to Dog Mountain/MountainLibrary.swift": "c9550e4429134ee7d721944fd36ef0233373f27bd8d7bbb11ebc344dc465ec93",
+    "Watch/WatchMatch.swift": "396e99c3eba047455796e0ff9a58f3316ab156c0fd4b45955613edeb9b5dc3ae",
+    "Watch/MountainWatchApp.swift": "cbb4c54c34d9e84d32206cebb0c021bf0e792c975f19986017ed55307d6e55ae"
+  },
+  "actualResolutionTaskSourceIdenticalToPassingHarness": true,
+  "resolutionTaskSHA256": "714cb6378e53abf32d14cda489b5f5d39dd962bd9395c0ac5674f82151d9ca27",
+  "passingLogs": [
+    "actual-resolution-check.log",
+    "social-history-check.log"
+  ],
+  "partialFailureLogRetained": "foundation-checks.log (native/history/rules/AI/Watch passed, social fixture mutated without history; corrected legal-history fixture subsequently passed)",
+  "nativeHistoryLog": "native-finish-check-passed-resolver-harness-template-failed.log first history pass retained separately from resolver template failure",
+  "scope": "Native state/history/rules/AI/watch/social meaningful command-line checks, no invented XCTest unit count. All affected core source identical after first actual-frame correction."
+}

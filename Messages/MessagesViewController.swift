@@ -40,17 +40,30 @@ final class MessagesViewController: MSMessagesAppViewController {
             controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         controller.didMove(toParent: self); host = controller
-        state.expand = { [weak self] in self?.requestPresentationStyle(.expanded) }
+        state.expand = { [weak self] in self?.expandBoard() }
         state.stage = { [weak self] in self?.stage($0) }
         state.newRace = { [weak self] in self?.start() }
     }
     override func willBecomeActive(with conversation: MSConversation) { configure(conversation) }
+    override func didBecomeActive(with conversation: MSConversation) {
+        super.didBecomeActive(with: conversation)
+        synchronizePresentationStyle()
+    }
     override func didSelect(_ message: MSMessage, conversation: MSConversation) { configure(conversation, message: message) }
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) { state.expanded = presentationStyle == .expanded }
     override func didReceive(_ message: MSMessage, conversation: MSConversation) { configure(conversation, message: message) }
 
-    private func configure(_ conversation: MSConversation, message: MSMessage? = nil) {
+    private func synchronizePresentationStyle() {
         state.expanded = presentationStyle == .expanded
+    }
+    private func expandBoard() {
+        synchronizePresentationStyle()
+        guard !state.expanded else { return }
+        requestPresentationStyle(.expanded)
+        synchronizePresentationStyle()
+    }
+    private func configure(_ conversation: MSConversation, message: MSMessage? = nil) {
+        synchronizePresentationStyle()
         localIdentifier = conversation.localParticipantIdentifier.uuidString
         state.twoPlayers = conversation.remoteParticipantIdentifiers.count == 1
         state.error = nil; state.busy = false; state.staged = false
@@ -83,7 +96,7 @@ final class MessagesViewController: MSMessagesAppViewController {
         let challenge = MountainChallenge(size: 4, player: state.player)
         session = MSSession(); cacheKey = "messageRace.\(challenge.id).\(localIdentifier)"
         state.challenge = challenge; state.original = challenge; state.staged = false; state.error = nil
-        requestPresentationStyle(.expanded)
+        expandBoard()
     }
     private func stage(_ challenge: MountainChallenge) {
         guard !state.busy, !state.staged, let original = state.original,

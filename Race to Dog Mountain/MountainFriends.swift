@@ -37,7 +37,7 @@ struct MountainGameCenterSheet: Identifiable {
     @ObservationIgnored var inboxChanged: (() -> Void)?
 #endif
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = MountainExperience.defaults) {
         self.defaults = defaults
         cachedInbox = defaults.data(forKey: "friendRaces.v1").flatMap { try? MountainFriendInbox.decode($0) }
         requestedSize = min(14, max(4, defaults.object(forKey: "complexity") as? Int ?? 6))
@@ -48,15 +48,18 @@ struct MountainGameCenterSheet: Identifiable {
     var finished: [FriendRace] { matches.filter(\.ended).sorted { $0.updated > $1.updated } }
 
     func resume() async {
+        guard !MountainExperience.isQAActive else { return }
         if checkAuthentication() { await refresh() }
-        else if UserDefaults.standard.bool(forKey: "usedGameCenter") { authenticate() }
+        else if MountainExperience.defaults.bool(forKey: "usedGameCenter") { authenticate() }
     }
     func invite(size: Int) {
+        guard !MountainExperience.isQAActive else { return }
         requestedSize = min(14, max(4, size)); wantsMatch = true
         if checkAuthentication() { showMatchmaker() }
         else { authenticate() }
     }
     func authenticate() {
+        guard !MountainExperience.isQAActive else { return }
         guard !signingIn else { return }
         signingIn = true; error = nil
         GKLocalPlayer.local.authenticateHandler = { [weak self] controller, failure in
@@ -66,7 +69,7 @@ struct MountainGameCenterSheet: Identifiable {
                 self.signingIn = false
                 self.authenticationResolved = true
                 if self.checkAuthentication() {
-                    UserDefaults.standard.set(true, forKey: "usedGameCenter")
+                    MountainExperience.defaults.set(true, forKey: "usedGameCenter")
                     await self.refresh()
                     if self.wantsMatch { self.showMatchmaker() }
                 } else {
@@ -89,6 +92,7 @@ struct MountainGameCenterSheet: Identifiable {
         presentation = MountainGameCenterSheet(controller: controller)
     }
     @discardableResult private func checkAuthentication() -> Bool {
+        guard !MountainExperience.isQAActive else { return false }
         let local = GKLocalPlayer.local
         let player = local.isAuthenticated ? local.teamPlayerID : nil
         if player != nil || registeredPlayer != nil { authenticationResolved = true }
@@ -113,6 +117,7 @@ struct MountainGameCenterSheet: Identifiable {
         defaults.set(data, forKey: "friendRaces.v1"); cachedInbox = next
     }
     func refresh() async {
+        guard !MountainExperience.isQAActive else { return }
         guard checkAuthentication() else { return }
         if loading { refreshAgain = true; return }
         loading = true

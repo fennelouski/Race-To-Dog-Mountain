@@ -1,0 +1,692 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "80E71800-AD6B-4266-A138-C0E97D0E4587.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Actual native tree_0_A7E55CF9-1865-4AEE-946C-863EFBC3E3D0.txt",
+        "timestamp" : 1791100780.203
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "19F494CD-FD8F-4E74-8ED9-B30C1F81733A",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.38 AM",
+        "timestamp" : 1791100778.356
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "AC49824A-7AE0-4C7B-A80D-16B905763A01",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.38 AM",
+        "timestamp" : 1791100778.697
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "AB78A421-2CDE-4BE7-9B43-9B55A296DD31",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.37 AM",
+        "timestamp" : 1791100777.185
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "A773EF19-8220-49AF-B710-41D5D02E0463",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.37 AM",
+        "timestamp" : 1791100777.516
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "EB348ACB-789C-4E28-9353-621B4031E55B",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.35 AM",
+        "timestamp" : 1791100775.539
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "A4722CF7-8808-47CE-BA8B-DB75018D8432",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.35 AM",
+        "timestamp" : 1791100775.954
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "39738C01-A33C-43D6-93EF-5BAD1771B70F.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Native share chooser actual tree_0_CC7D6B2A-6DBD-4E6B-8E09-D1941DDB4404.txt",
+        "timestamp" : 1791100775.418
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "D4F34820-A67F-4BB5-9A9A-A83F70A2DAD0.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Native share chooser without external destination_0_DFE3EEF6-78D3-4900-90B3-7F1B062D3F5A.png",
+        "timestamp" : 1791100775.194
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "53AD455B-32D3-4A1D-9E94-3CB95A92D696",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.34 AM",
+        "timestamp" : 1791100774.797
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "D33BB986-BCD2-47C0-8FFA-7B19230FB972",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.35 AM",
+        "timestamp" : 1791100775.085
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "A89637F2-6F1A-4638-A8BC-DABF71863C13.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Actual replay GIF ready_0_2E796EC9-9E75-456F-B0FC-752C18087A73.png",
+        "timestamp" : 1791100774.738
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "BD36B895-44F8-414F-9883-4BFAA53EB635",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.33 AM",
+        "timestamp" : 1791100773.165
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "7E26ED3D-019B-4940-9BB6-FF21A58C326F",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.33 AM",
+        "timestamp" : 1791100773.451
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "F8E62700-3408-4D73-AAAD-AE202B1BA40A.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Actual human button choices after Continue_0_007E1365-9768-4D59-BE59-B0F534B5F185.txt",
+        "timestamp" : 1791100773.124
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "43C03CB2-C49F-489E-A779-35DB2ECE482F.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Actual completed local game with pinned actions_0_F0A46998-6EE9-4ECC-BD08-4350FC05640F.png",
+        "timestamp" : 1791100773.123
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "B6018768-68C2-49F2-9889-3A73BCE5B48C",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.29 AM",
+        "timestamp" : 1791100769.716
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "95B5C4BD-2535-47CD-8925-A533E4D806E2",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.30 AM",
+        "timestamp" : 1791100770.002
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "75E82FBA-D362-4120-AEA9-0088BE106729",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.27 AM",
+        "timestamp" : 1791100767.544
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "3DEC209B-8CB2-4F9D-8047-E43284B25579",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.27 AM",
+        "timestamp" : 1791100767.833
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "3396537D-52F2-41AE-893F-0DAB8FFA5A5C",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.25 AM",
+        "timestamp" : 1791100765.366
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "C18CD00C-FD48-486C-AD37-B7BECEEE7297",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.25 AM",
+        "timestamp" : 1791100765.652
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "AD39A93B-78B6-4161-891F-8262BD14CBDA",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.23 AM",
+        "timestamp" : 1791100763.189
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "E5A56A3D-83A5-424C-BA89-61650AAE1598",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.23 AM",
+        "timestamp" : 1791100763.476
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "1BB4216A-EE33-426B-8C1F-70B0C9851C41",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.21 AM",
+        "timestamp" : 1791100761.013
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "5F7D6403-C782-47EA-92FE-1C786384A444",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.21 AM",
+        "timestamp" : 1791100761.299
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "C191EBAB-6439-49BD-908C-B4F0B86404F3",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.18 AM",
+        "timestamp" : 1791100758.819
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "8BDA291B-7204-4782-A934-6B4383BC6A7E",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.19 AM",
+        "timestamp" : 1791100759.107
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "662902A4-67AE-4528-964C-736625DCA2E1",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.16 AM",
+        "timestamp" : 1791100756.466
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "089A03FB-3AF6-4B47-BD99-CC540FADCB32",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.16 AM",
+        "timestamp" : 1791100756.752
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "49E53E5C-50BD-448C-AAB8-ED8B1AFCDDF3",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.14 AM",
+        "timestamp" : 1791100754.559
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "76EFCD8D-B533-4AAB-9632-7EF8FE4D6032",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.14 AM",
+        "timestamp" : 1791100754.846
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "CBA29063-666D-43ED-9507-D119AA3208CB.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Cold launch Continue_0_9596F48E-311E-4409-B3B1-2200C95E2DB1.png",
+        "timestamp" : 1791100754.532
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "26F52318-1510-4340-974B-BCD5F4490274",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.07 AM",
+        "timestamp" : 1791100747.778
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "E2C4F266-6073-45D9-8BCF-75C8CD230754",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.08 AM",
+        "timestamp" : 1791100748.066
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "55ADA0F6-7D5E-4C78-BED3-6A1EC1CEF0EB",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.06 AM",
+        "timestamp" : 1791100746.189
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "F47667CA-BB64-40AA-9D34-06E1CB3D07FF",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.06 AM",
+        "timestamp" : 1791100746.477
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "13F1A358-025E-4D5C-AF3D-AC2EA6A9EAC8",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.05 AM",
+        "timestamp" : 1791100745.183
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "077A0198-D1A1-4149-8961-B3B6DD316F04",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.05 AM",
+        "timestamp" : 1791100745.599
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "79E378D2-9E39-49FD-B665-E7CAD0D40D6D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Actual computer resolution_0_F2E57889-E5B5-4C39-B3A2-216F40D9FB92.png",
+        "timestamp" : 1791100745.084
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "4B9DF418-B9E8-493F-A2E4-2B1F85F8F8F6",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.03 AM",
+        "timestamp" : 1791100743.539
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "0FFA338B-291D-44D6-B3A9-2E3C74DF00D9",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.03 AM",
+        "timestamp" : 1791100743.826
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "2EE2142D-AFC1-4624-9CC9-995CB9347C33.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Real local starting board_0_56CBE09F-C88C-4E9F-9A51-D92A58B1AD6F.png",
+        "timestamp" : 1791100743.433
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "2C1B4CE6-2C9A-4E84-8917-6D466168555D",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.01 AM",
+        "timestamp" : 1791100741.471
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "18709913-734A-461F-9ED3-F947BCB6F0A4",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.01 AM",
+        "timestamp" : 1791100741.76
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "AF802C1D-D05C-46A0-85D6-D0EBA413DEB4",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.59.00 AM",
+        "timestamp" : 1791100740.379
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "250F48A4-9163-4749-B35E-8421E4EE308E",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.59.00 AM",
+        "timestamp" : 1791100740.671
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "CD6D72DD-4A4F-4F13-94FB-BA8D583FE035.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Independent saved effects and computer speed_0_D420E801-9659-4B60-830E-20482CA6AE9D.png",
+        "timestamp" : 1791100740.333
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "18D60606-0D6B-4D0E-BFBE-40E6B04EAFC7",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.58 AM",
+        "timestamp" : 1791100738.508
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "7F72EB7A-8AE8-474D-998C-C1FC26C6BD7C",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.58 AM",
+        "timestamp" : 1791100738.796
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "7385A3B3-37B7-4BDD-8EE4-2FFB4E43F69A",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.55 AM",
+        "timestamp" : 1791100735.869
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "1ECD1946-0DAD-46E4-85A3-73CA830C2425",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.56 AM",
+        "timestamp" : 1791100736.157
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "C82EDF64-CE09-4424-87BC-7898532B9487",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.54 AM",
+        "timestamp" : 1791100734.138
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "5D60C233-A0DB-43F3-85C9-9062022088BF",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.54 AM",
+        "timestamp" : 1791100734.426
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "351CC21D-0CA6-4BF3-98D8-557171B4206E",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.52 AM",
+        "timestamp" : 1791100732.42
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "8B3399A9-3737-4B82-ABC7-345991027617",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.52 AM",
+        "timestamp" : 1791100732.709
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "54FF8FD0-FF57-43A2-A87F-E6573D5CE6C6",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.50 AM",
+        "timestamp" : 1791100730.585
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "1147E49F-ADE2-4CC5-A837-2A8A053BBBAF",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.51 AM",
+        "timestamp" : 1791100731.003
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "FF6C0A95-B233-43F8-AE98-F5D22A362B6E",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.49 AM",
+        "timestamp" : 1791100729.267
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "2941B0B0-5770-49E1-A293-EF8058141EC4",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.49 AM",
+        "timestamp" : 1791100729.554
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "74F7F76C-48A0-4580-BD0A-FE2A5FF03EF3",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.43 AM",
+        "timestamp" : 1791100723.067
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "FF44EDF2-7AFE-4F22-8126-DEA23EEFAB51",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.43 AM",
+        "timestamp" : 1791100723.358
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "4816C0C8-1277-4F02-A8F9-413099EC4DFB",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.41 AM",
+        "timestamp" : 1791100721.45
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "C53A1847-93CA-4CEF-B548-8384BC66798F",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.41 AM",
+        "timestamp" : 1791100721.739
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "448255B7-4AE3-4890-AD39-B79FBC1C77A3",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.39 AM",
+        "timestamp" : 1791100719.817
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "400A76AC-4E9F-4E50-965F-31E155C12981",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.40 AM",
+        "timestamp" : 1791100720.103
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "B958AD7A-224A-4563-9C07-BDE40299F62F",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.39 AM",
+        "timestamp" : 1791100719.291
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "FB193361-E7C0-4A9A-AB84-EA74B44832A3",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.39 AM",
+        "timestamp" : 1791100719.58
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "1C3CFF0E-AD39-4D07-A52E-8CF7237D15F9",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.38 AM",
+        "timestamp" : 1791100718.941
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "9B118C3A-5D61-4090-9E90-26D864DF3E83",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.39 AM",
+        "timestamp" : 1791100719.23
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "A3CA22C2-6A51-4956-B8E9-FD2BFD7215E7",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.37 AM",
+        "timestamp" : 1791100717.317
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "2208909C-468F-40F2-8294-1919A647947A",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.37 AM",
+        "timestamp" : 1791100717.735
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "43CA5C78-26BC-4B5F-97A7-B6039FEEDBB2",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.58.36 AM",
+        "timestamp" : 1791100716.002
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "6D224C45-2CB7-4C03-9E74-63FD16E79EEF",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Synthesized Event 2026-10-04 at 09.58.36 AM",
+        "timestamp" : 1791100716.392
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "E6D39B2A-5064-4915-9A40-7E677FE4D5BA.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Phone first viewport Play_0_E271AA4B-1F80-4C4D-BE20-90B92B17B6FF.png",
+        "timestamp" : 1791100715.954
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "7BD87C65-4D75-4187-9945-3A42A02A5E97.mp4",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Screen Recording 2026-10-04 at 09.58.31 AM.mp4",
+        "timestamp" : 1791100711.763
+      }
+    ],
+    "testIdentifier" : "NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()",
+    "testIdentifierURL" : "test://com.apple.xcode/PrivateRunner/NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects"
+  }
+]

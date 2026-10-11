@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-10-04T07:38:27.801122+00:00",
+  "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+  "device": {
+    "lastBootedAt": "2026-10-03T21:27:20Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2127286272,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 364544,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003"
+  },
+  "rootAllocation": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+  "noBootYet": true
+}

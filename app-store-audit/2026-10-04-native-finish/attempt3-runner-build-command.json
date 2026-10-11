@@ -1,0 +1,23 @@
+{
+  "command": [
+    "xcodebuild",
+    "-project",
+    "/tmp/racedog-private-ui-20261004/PrivateRunner.xcodeproj",
+    "-scheme",
+    "PrivateRunner",
+    "-configuration",
+    "Debug",
+    "-sdk",
+    "iphonesimulator",
+    "-destination",
+    "generic/platform=iOS Simulator",
+    "-derivedDataPath",
+    "/tmp/racedog-private-ui-products-20261004",
+    "-jobs",
+    "2",
+    "CODE_SIGNING_ALLOWED=NO",
+    "build-for-testing"
+  ],
+  "startedAt": "2026-10-04T07:57:20.334985+00:00",
+  "change": "driver-only compound Stepper -> actual Decrement button"
+}

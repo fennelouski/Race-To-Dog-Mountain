@@ -1,0 +1,28 @@
+Attributes: Button, 0x1175d8640, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+Element subtree:
+ →Button, 0x1175d8640, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+Path to element:
+ →Application, 0x119955400, pid: 9564, label: 'Race to Dog Mountain'
+  ↳Window, 0x1199552c0, {{0.0, 0.0}, {402.0, 874.0}}
+   ↳Other, 0x119956080, {{0.0, 0.0}, {402.0, 874.0}}
+    ↳Other, 0x119955180, {{0.0, 72.0}, {402.0, 802.0}}
+     ↳Other, 0x119956a80, {{0.0, 72.0}, {402.0, 802.0}}
+      ↳Other, 0x119956940, {{0.0, 72.0}, {402.0, 802.0}}
+       ↳Other, 0x1175e1540, {{0.0, 72.0}, {402.0, 802.0}}
+        ↳Other, 0x1175f3e80, {{0.0, 72.0}, {402.0, 802.0}}
+         ↳Other, 0x1175d9540, {{0.0, 72.0}, {402.0, 802.0}}
+          ↳NavigationBar, 0x1175d8140, {{0.0, 88.0}, {402.0, 54.0}}, identifier: 'Share'
+           ↳Other, 0x1175d8f00, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+            ↳Other, 0x1175d8b40, {{20.0, 92.0}, {64.3, 36.0}}
+             ↳Button, 0x1175d8640, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  ↪︎Find: Descendants matching type Button
+    ↪︎Find: Elements matching predicate '"close-share" IN identifiers'
+      Output: {
+        Button, 0x1176261c0, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+      }
+      ↪︎Find: First Match
+        Output: {
+          Button, 0x10759b840, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+        }

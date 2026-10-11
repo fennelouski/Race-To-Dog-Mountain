@@ -7,7 +7,7 @@ import Observation
     private let defaults: UserDefaults
     private static let key = "mountainGames.v1"
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = MountainExperience.defaults) {
         self.defaults = defaults
         if let data = defaults.data(forKey: Self.key) {
             if data.count <= 4_194_304, let saved = try? JSONDecoder().decode([SavedMountainGame].self, from: data),

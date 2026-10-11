@@ -1,0 +1,134 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "08DE9099-DDD0-4354-AE1E-7F3E4C6B5AE2.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Actual native tree_0_FECC8734-1817-4500-9042-471C55632AF4.txt",
+        "timestamp" : 1791099735.461
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "64AEECC7-14B9-4849-8A4C-1D847996476D.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "App UI hierarchy for com.nathanfennel_0_4BD33FBC-2AA6-408C-B4DB-A2307C908700.RacetoDogMountain",
+        "timestamp" : 1791099735.212
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "295024ED-AD13-42B5-951A-AFC18278875C",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "UI Snapshot 2026-10-04 at 09.42.15 AM",
+        "timestamp" : 1791099735.212
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "F368FCF8-B782-46A8-8C08-8AA7A4EE59BE.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_55567B6C-6272-42BB-97A6-007F68D95233.txt",
+        "timestamp" : 1791099735.185
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "B596E5C6-827B-4C8E-AB60-7B9B99DF345B.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_2037C777-23DA-4AF2-BD89-CE94DB7B505B.txt",
+        "timestamp" : 1791099734.193
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "6B40043A-4740-4ABD-809A-960B98B21ADD.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_4464FF17-43AA-4B05-A0B6-614C957E3552.txt",
+        "timestamp" : 1791099733.205
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "AB1453EF-B545-4BFA-BA0A-52287AFE52B7.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_149F0FCC-4AF1-412B-9B2C-C61D6CD8F39E.txt",
+        "timestamp" : 1791099732.223
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "C45554CB-84B5-4931-AED5-60C93E63EC01.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_941B6402-3A2D-49CB-950D-E7D97B5E49F7.txt",
+        "timestamp" : 1791099731.231
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "B1F9FFB6-9D95-417E-8397-293BB5425AE1.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_A4B1057D-0793-4DAA-9727-C643C61F24F4.txt",
+        "timestamp" : 1791099730.243
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "844CAFC2-7777-4311-86E9-62CDF40CE27C.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_0BA925A2-AB35-4475-A2F7-854ACA7E30DD.txt",
+        "timestamp" : 1791099729.255
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "C82909F5-D2B9-424B-84D7-7662238B09F4.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_7D530E85-CD3D-459A-AB96-E49944B9CA2E.txt",
+        "timestamp" : 1791099728.265
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "668A83D8-35A4-44B9-A1A3-E6A98B18AC90.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_A301D651-8905-404A-921B-8E02A4720D44.txt",
+        "timestamp" : 1791099727.178
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "81D90DD3-79D6-49C7-8E4E-52533FE7046A.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Debug description for `\"start-game\" Button`_0_CBAB03B0-5C9F-46D3-BF3B-64203643E1B6.txt",
+        "timestamp" : 1791099726.291
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+        "deviceName" : "Games Math QA Phone 20261003",
+        "exportedFileName" : "ECB02DB6-83EA-4692-A5BD-A32B41CCC722.mp4",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Screen Recording 2026-10-04 at 09.42.02 AM.mp4",
+        "timestamp" : 1791099722.878
+      }
+    ],
+    "testIdentifier" : "NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()",
+    "testIdentifierURL" : "test://com.apple.xcode/PrivateRunner/NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects"
+  }
+]

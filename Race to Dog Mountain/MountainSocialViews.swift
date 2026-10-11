@@ -53,6 +53,7 @@ struct MountainChallengeBoard: View {
 struct MountainFriendGame: View {
     @Bindable var friends: MountainFriends
     @Environment(\.dismiss) private var dismiss
+    @State private var sharing = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -64,12 +65,23 @@ struct MountainFriendGame: View {
                                                busy: friends.sending, ended: race.ended) { tile in Task { await friends.play(tile) } }
                         if let problem = race.problem { Text(problem).font(.footnote).padding(.horizontal, 16) }
                         if race.ended && race.problem == nil {
-                            Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
-                                .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending).padding(.horizontal, 16).padding(.bottom, 16)
+                            HStack(spacing: 12) {
+                                Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+                                    .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending)
+                                if challenge.game.isOver, MountainHistory(challenge: challenge) != nil {
+                                    Button { sharing = true } label: { Image(systemName: "square.and.arrow.up") }
+                                        .buttonStyle(MountainButton()).accessibilityLabel("Share")
+                                }
+                            }.padding(.horizontal, 16).padding(.bottom, 16)
                         }
                     }
                 } else if let problem = friends.opened?.problem {
                     Text(problem).padding(24).fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .sheet(isPresented: $sharing) {
+                if let race = friends.opened, let challenge = race.challenge, let history = MountainHistory(challenge: challenge) {
+                    MountainFinishShare(game: challenge.game, names: race.names, history: history)
                 }
             }
             .navigationTitle("Friend game").mountainInlineTitle()
@@ -105,6 +117,7 @@ struct MountainMatchRow: View {
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.right").accessibilityHidden(true)
             }.padding(.vertical, 12)
+                .contentShape(Rectangle())
         }.buttonStyle(.plain).mountainHover().accessibilityElement(children: .combine)
     }
 }

@@ -13,7 +13,7 @@ import GameKit
 
     private override init() {
         super.init()
-        bridge = MountainPhoneBridge(friends: friends)
+        if !MountainExperience.isQAActive { bridge = MountainPhoneBridge(friends: friends) }
     }
     @objc public static func activate() { _ = shared }
 }
@@ -26,7 +26,7 @@ import GameKit
     private var receipts: [MountainWatchReceipt]
     private var publishedSequence: UInt64 = 0
 
-    init(friends: MountainFriends, defaults: UserDefaults = .standard) {
+    init(friends: MountainFriends, defaults: UserDefaults = MountainExperience.defaults) {
         self.friends = friends; self.defaults = defaults
         inbox = defaults.data(forKey: "watchFriendInbox.v1").flatMap { try? MountainFriendInbox.decode($0) }
         receipts = defaults.data(forKey: "watchMoveReceipts.v1").flatMap { data in
@@ -128,7 +128,7 @@ import GameKit
     private var awaitedSequence: UInt64 = 0
     private var activated = false
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = MountainExperience.defaults) {
         self.defaults = defaults
         inbox = defaults.data(forKey: "watchFriendInbox.v1").flatMap { try? MountainFriendInbox.decode($0) }
         super.init()
@@ -140,7 +140,7 @@ import GameKit
     var canMove: Bool { reachable && inbox?.player != nil && !sending && !awaitingSnapshot }
 
     func activate() {
-        guard !activated, WCSession.isSupported() else { return }
+        guard !MountainExperience.isQAActive, !activated, WCSession.isSupported() else { return }
         activated = true
         WCSession.default.delegate = self
         WCSession.default.activate()
@@ -154,7 +154,7 @@ import GameKit
                                  move: MountainMoveRequest(id: id, matchID: race.id, previous: previous, tile: tile)))
     }
     private func send(_ request: MountainWatchRequest) {
-        guard !sending else { return }
+        guard !MountainExperience.isQAActive, !sending else { return }
         reachable = WCSession.default.activationState == .activated && WCSession.default.isReachable
         guard reachable else { error = "Connect to your paired iPhone to refresh or send a move."; return }
         guard let data = try? JSONEncoder().encode(request) else { return }
