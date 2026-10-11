@@ -1,0 +1,13 @@
+{
+  "window": {
+    "start": "2026-10-04T08:23:46.283054+00:00",
+    "end": "2026-10-04T08:24:44.654243+00:00"
+  },
+  "preservedIPSCount": 0,
+  "currentWindowIPSCount": 0,
+  "currentAppCrashCount": 0,
+  "parseErrors": 0,
+  "currentWindow": [],
+  "classification": "All attached diagnostics preserved. Timestamp-window classification avoids attributing historical host/other-Simulator reports to this runtime. No app current-window crash reported; UI1/1passed.",
+  "reports": []
+}
