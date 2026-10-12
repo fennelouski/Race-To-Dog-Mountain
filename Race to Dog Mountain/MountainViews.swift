@@ -134,7 +134,7 @@ struct MountainHome: View {
                     }
                     Text("Race to Dog Mountain")
                         .font(MountainStyle.display(typeSize.isAccessibilitySize || geometry.size.height < 500 ? 24 : geometry.size.width > 600 ? 52 : 36))
-                        .lineLimit(2).accessibilityAddTraits(.isHeader)
+                        .fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
                     Button {
                         if let saved = library.active.first { resume(saved) } else { startLocal() }
                     } label: {
