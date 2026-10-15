@@ -40,9 +40,9 @@ private struct MountainCommands: Commands {
         CommandMenu("Game") {
             Button("Replay Computer Move") { actions?.replay?() }
                 .keyboardShortcut("r").disabled(actions?.replay == nil)
-            Button("Players & Board…") { actions?.options?() }
+            Button("Settings…") { actions?.options?() }
                 .keyboardShortcut(",").disabled(actions?.options == nil)
-            Button("Leave Game…") { actions?.close?() }
+            Button("Leave Game") { actions?.close?() }
                 .keyboardShortcut("w", modifiers: [.command, .shift]).disabled(actions?.close == nil)
         }
         CommandGroup(replacing: .help) {

@@ -6,6 +6,7 @@ enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     var id: Int { rawValue }
     var name: String { ["Quinn", "Milo", "June", "Theo", "Amara", "Finn", "Leila", "Oscar", "Nia", "Hugo", "Sana", "Ezra", "Inez", "Kai", "Zuri", "Avery"][rawValue] }
     var title: String { "Level \(rawValue + 1)" }
+    var displayName: String { "\(name) (\(rawValue + 1))" }
     var portrait: String { "Opponent\(rawValue + 1)" }
     var detail: String {
         ["Curious beginner", "Easygoing explorer", "Enthusiastic newcomer", "Patient trail walker", "Careful route finder", "Adventurous thinker", "Observant challenger", "Steady tactician", "Playful strategist", "Quiet problem solver", "Focused planner", "Analytical navigator", "Confident climber", "Precise pathfinder", "Inventive expert", "Summit strategist"][rawValue]
@@ -314,20 +315,70 @@ struct MountainBoardLayout {
     }
 }
 
+/// Decorative solar timing only: local civil time plus a coarse seasonal latitude
+/// estimate. It requests no location and makes no astronomical accuracy claim.
+struct MountainSky {
+    let daylight: Double
+    let sunProgress: Double
+    init(date: Date, timeZone: TimeZone = .current) {
+        var calendar = Calendar(identifier: .gregorian); calendar.timeZone = timeZone
+        let parts = calendar.dateComponents([.hour, .minute, .second], from: date)
+        let hour = Double(parts.hour ?? 12) + Double(parts.minute ?? 0) / 60 + Double(parts.second ?? 0) / 3600
+        let day = Double(calendar.ordinality(of: .day, in: .year, for: date) ?? 182)
+        let zone = timeZone.identifier
+        let latitudes: [String: Double] = ["Europe/Amsterdam": 52, "Europe/London": 51, "America/New_York": 41, "America/Los_Angeles": 34, "America/Chicago": 42, "America/Toronto": 44, "Asia/Tokyo": 36, "Asia/Singapore": 1, "Asia/Kolkata": 23, "Australia/Sydney": -34, "Pacific/Auckland": -37, "America/Sao_Paulo": -24]
+        let latitude = latitudes[zone] ?? (zone.hasPrefix("Australia/") ? -30 : zone.hasPrefix("Africa/") ? 0 : 35)
+        let season = sin((day - 80) / 365.25 * 2 * .pi)
+        let length = min(17, max(7, 12 + 4 * season * latitude / 52))
+        let sunrise = 12 - length / 2, sunset = 12 + length / 2
+        daylight = min(1, max(0, min(hour - sunrise + 0.5, sunset - hour + 0.5)))
+        sunProgress = min(1, max(0, (hour - sunrise) / length))
+    }
+}
+
+/// An isolated, deterministic teaching board. Never enters saved games or learning.
+struct MountainTutorial {
+    static let lastStep = 4
+    private(set) var step = 0
+    private var states = [MountainGame(size: 4, values: [4, 11, 2, 8, 13, 6, 15, 1, 7, 16, 3, 10, 12, 5, 14, 9], firstPlayer: 0, startingLine: 1)]
+    private var choices: [Int] = []
+    var game: MountainGame { states[step] }
+    var finished: Bool { step == Self.lastStep }
+    var canGoForward: Bool { step + 1 < states.count }
+    var lastMove: Int? { step > 0 ? choices[step - 1] : nil }
+    var lastPoints: Int { lastMove.map { states[step - 1].tiles[$0].value } ?? 0 }
+    @discardableResult mutating func choose(_ tile: Int) -> Bool {
+        guard !finished, game.canPlay(tile) else { return false }
+        var next = game
+        guard next.play(tile) else { return false }
+        states = Array(states.prefix(step + 1)) + [next]
+        choices = Array(choices.prefix(step)) + [tile]
+        step += 1
+        return true
+    }
+    mutating func navigate(to page: Int) {
+        guard (0..<states.count).contains(page) else { return }
+        step = page
+    }
+}
+
 struct MountainHumanProfile: Codable {
     var displayName: String
     var symbol: String
+    var avatarStyle: String? = nil
+    var photoID: String? = nil
+    var resolvedStyle: String { avatarStyle ?? (symbol == "person.fill" ? "fonster" : "symbol") }
     static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "mountain.2.fill", "sparkles"]
     static func read(identity: String, data: Data) -> Self {
         let profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
         guard let profile = profiles[identity], symbols.contains(profile.symbol) else { return Self(displayName: identity, symbol: "person.fill") }
-        return Self(displayName: String(profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60)).isEmpty ? identity : String(profile.displayName.prefix(60)), symbol: profile.symbol)
+        return Self(displayName: String(profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60)).isEmpty ? identity : String(profile.displayName.prefix(60)), symbol: profile.symbol, avatarStyle: ["fonster", "symbol", "photo"].contains(profile.resolvedStyle) ? profile.resolvedStyle : "fonster", photoID: profile.photoID.flatMap { UUID(uuidString: $0) == nil ? nil : $0 })
     }
-    static func updating(identity: String, displayName: String, symbol: String, data: Data) -> Data? {
-        guard symbols.contains(symbol) else { return nil }
+    static func updating(identity: String, displayName: String, symbol: String, data: Data, avatarStyle: String? = nil, photoID: String? = nil) -> Data? {
+        guard symbols.contains(symbol), avatarStyle == nil || ["fonster", "symbol", "photo"].contains(avatarStyle!), photoID == nil || UUID(uuidString: photoID!) != nil else { return nil }
         var profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
         let name = String(displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
-        profiles[identity] = Self(displayName: name.isEmpty ? identity : name, symbol: symbol)
+        profiles[identity] = Self(displayName: name.isEmpty ? identity : name, symbol: symbol, avatarStyle: avatarStyle, photoID: photoID)
         guard profiles.count <= 256 else { return nil }
         return try? JSONEncoder().encode(profiles)
     }
@@ -335,11 +386,36 @@ struct MountainHumanProfile: Codable {
 
 struct MountainMoveFeedback: Identifiable, Sendable {
     let id: Int
+    let token = UUID() // A late completion can never remove a later game’s move with the same number.
     let tile: Int
     let player: Int
     let points: Int
     let maximum: Int
+    static let maximumActive = 4
+    static let duration = 0.9
+    var particleCount: Int { min(48, max(0, points)) }
+    var spread: Double { 8 + sqrt(Double(min(196, max(0, points)))) * 4 }
+    func adding(to events: [Self]) -> [Self] { Array((events + [self]).suffix(Self.maximumActive)) }
+    static func finishing(_ token: UUID, in events: [Self]) -> [Self] { events.filter { $0.token != token } }
     var intensity: Double { maximum > 0 ? min(1, max(0, Double(points) / Double(maximum))) : 0 }
+}
+
+/// Deterministic individual point paths; independent of game state and authoritative scoring.
+struct MountainPointParticle {
+    let x: Double
+    let y: Double
+    let opacity: Double
+    static func sample(index: Int, count: Int, progress: Double, startX: Double, startY: Double,
+                       endX: Double, endY: Double, spread: Double) -> Self {
+        let delay = count > 1 ? Double(index) / Double(count - 1) * 0.22 : 0
+        let t = min(1, max(0, (progress - delay) / (1 - delay)))
+        let travel = t * t * (3 - 2 * t)
+        let fan = sin(.pi * t)
+        let lane = sin(Double(index + 1) * 2.39996)
+        return Self(x: startX + (endX - startX) * travel + fan * lane * spread,
+                    y: startY + (endY - startY) * travel - fan * (24 + spread * (0.4 + abs(lane))),
+                    opacity: progress < delay || t >= 1 ? 0 : min(1, t * 12) * min(1, (1 - t) * 10))
+    }
 }
 
 struct MountainDisplaySnapshot: Sendable {
@@ -352,6 +428,8 @@ struct MountainDisplaySnapshot: Sendable {
     let lastMove: Int?
     let lastPoints: Int
     let paused: Bool
+    var avatarStyles: [String] = []
+    var photoIDs: [String?] = []
     var humanVictory: Bool { game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1] }
     static var design: Self {
         var game = MountainGame(size: 6, values: Array(1...36), startingLine: 2)

@@ -23,6 +23,38 @@ struct MountainButton: ButtonStyle {
     }
 }
 
+/// Role is encoded by the pair of edges; turn emphasis changes only the overlay.
+struct MountainPlayerHighlight: View {
+    let player: Int
+    let active: Bool
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    var body: some View {
+        MountainPlayerEdges(horizontal: player == 0)
+            .stroke(MountainStyle.player(player).opacity(active ? 0.95 : 0.26),
+                    style: StrokeStyle(lineWidth: active ? 3 : 1.25, lineCap: .round))
+            .animation(systemReduceMotion || !animationsEnabled ? nil : .easeInOut(duration: 0.2), value: active)
+            .allowsHitTesting(false).accessibilityHidden(true)
+    }
+}
+private struct MountainPlayerEdges: Shape {
+    let horizontal: Bool
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let inset = min(18.0, min(rect.width, rect.height) * 0.2)
+        if horizontal {
+            for y in [1.5, rect.height - 1.5] {
+                path.move(to: CGPoint(x: inset, y: y)); path.addLine(to: CGPoint(x: rect.width - inset, y: y))
+            }
+        } else {
+            for x in [1.5, rect.width - 1.5] {
+                path.move(to: CGPoint(x: x, y: inset)); path.addLine(to: CGPoint(x: x, y: rect.height - inset))
+            }
+        }
+        return path
+    }
+}
+
 private struct MountainTileButton: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
@@ -124,7 +156,7 @@ struct MountainBoard: View {
                     .accessibilityIdentifier("tile-\(tile.id)")
                 }
         }.padding(MountainBoardLayout.padding).frame(width: CGFloat(metrics.extent))
-            .accessibilityIdentifier("game-board")
+            .accessibilityElement(children: .contain).accessibilityIdentifier("game-board")
     }
 }
 
@@ -167,18 +199,65 @@ struct MountainMoveAnchors: PreferenceKey {
     static func reduce(value: inout [MountainMoveAnchor: Anchor<CGRect>], nextValue: () -> [MountainMoveAnchor: Anchor<CGRect>]) { value.merge(nextValue(), uniquingKeysWith: { _, new in new }) }
 }
 
-struct MountainMoveVisual: View {
-    let event: MountainMoveFeedback
-    let start: CGPoint
-    let end: CGPoint
-    @State private var progress = 0.0
+/// A hidden text template alone determines geometry; changing content is painted in its overlay.
+struct MountainReservedText<Content: View>: View {
+    var lines = 1
+    var alignment: Alignment = .leading
+    @ViewBuilder var content: Content
     var body: some View {
-        MountainMoveFlight(event: event, start: start, end: end, progress: progress)
-            .onAppear { withAnimation(.easeInOut(duration: 0.55)) { progress = 1 } }
+        Text(Array(repeating: "Ag", count: lines).joined(separator: "\n"))
+            .fixedSize(horizontal: false, vertical: true).hidden().accessibilityHidden(true)
+            .frame(maxWidth: .infinity, alignment: alignment)
+            .overlay(alignment: alignment) { content.lineLimit(lines).minimumScaleFactor(0.5) }
     }
 }
 
-private struct MountainMoveFlight: View, Animatable {
+struct MountainMoveEffects: View {
+    @Binding var events: [MountainMoveFeedback]
+    let anchors: [MountainMoveAnchor: Anchor<CGRect>]
+    var reduceMotion: Bool
+    @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var pace = 0.7
+    private var duration: Double { MountainMoveFeedback.duration * (pace.isFinite ? min(1.2, max(0.4, pace)) : 0.7) / 0.7 }
+    var body: some View {
+        GeometryReader { proxy in
+            if !reduceMotion {
+                ForEach(events, id: \.token) { event in
+                    ZStack {
+                        Color.clear // Keep expiry mounted even when a scrolled-off tile has no anchor.
+                        if let source = anchors[.tile(event.tile)], let target = anchors[.score(event.player)] {
+                            MountainMoveVisual(event: event, duration: duration,
+                                start: CGPoint(x: proxy[source].midX, y: proxy[source].midY),
+                                end: CGPoint(x: proxy[target].midX, y: proxy[target].midY))
+                        }
+                    }.task {
+                        do { try await Task.sleep(for: .seconds(duration + 0.1)) } catch { return }
+                        guard !Task.isCancelled else { return }
+                        events = MountainMoveFeedback.finishing(event.token, in: events)
+                    }
+                }
+            }
+        }.allowsHitTesting(false).accessibilityHidden(true)
+    }
+}
+
+struct MountainMoveVisual: View {
+    let duration: Double
+    let event: MountainMoveFeedback
+    @State private var start: CGPoint
+    @State private var end: CGPoint
+    @State private var progress = 0.0
+    init(event: MountainMoveFeedback, duration: Double, start: CGPoint, end: CGPoint) {
+        self.event = event; self.duration = duration
+        // Capture endpoints once: animated score digit widths cannot bend an in-flight path.
+        _start = State(initialValue: start); _end = State(initialValue: end)
+    }
+    var body: some View {
+        MountainMoveFlight(event: event, start: start, end: end, progress: progress)
+            .onAppear { withAnimation(.linear(duration: duration)) { progress = 1 } }
+    }
+}
+
+struct MountainMoveFlight: View, Animatable {
     let event: MountainMoveFeedback
     let start: CGPoint
     let end: CGPoint
@@ -186,21 +265,19 @@ private struct MountainMoveFlight: View, Animatable {
     var animatableData: Double { get { progress } set { progress = newValue } }
     var body: some View {
         ZStack {
-            ForEach(0..<(4 + Int(event.intensity * 8)), id: \.self) { index in
-                let angle = Double(index) * 2.39996
-                let distance = (12 + event.intensity * 32) * progress
-                Circle().fill(MountainStyle.player(event.player))
-                    .frame(width: 2 + event.intensity * 3, height: 2 + event.intensity * 3)
-                    .position(x: start.x + cos(angle) * distance, y: start.y + sin(angle) * distance + 16 * progress * progress)
-                    .opacity(max(0, 1 - progress * 1.7))
+            Canvas { context, _ in
+                for index in 0..<event.particleCount {
+                    let point = MountainPointParticle.sample(index: index, count: event.particleCount, progress: progress,
+                        startX: start.x, startY: start.y, endX: end.x, endY: end.y, spread: event.spread)
+                    let radius = 2.5 + event.intensity * 1.5
+                    let core = CGRect(x: point.x - radius, y: point.y - radius, width: radius * 2, height: radius * 2)
+                    context.opacity = point.opacity * 0.18
+                    context.fill(Path(ellipseIn: core.insetBy(dx: -radius, dy: -radius)), with: .color(MountainStyle.player(event.player)))
+                    context.opacity = point.opacity
+                    context.fill(Path(ellipseIn: core), with: .color(MountainStyle.player(event.player)))
+                }
             }
-            Text("+\(event.points)").font(.title2.bold()).monospacedDigit()
-                .foregroundStyle(MountainStyle.player(event.player))
-                .padding(8).background(MountainStyle.ink, in: Capsule())
-                .scaleEffect(1 + event.intensity * 0.2 * sin(progress * .pi))
-                .position(x: start.x + (end.x - start.x) * progress,
-                          y: start.y + (end.y - start.y) * progress - sin(progress * .pi) * 44)
-                .opacity(progress < 0.85 ? 1 : max(0, (1 - progress) / 0.15))
+
         }
     }
 }
@@ -213,6 +290,7 @@ struct MountainScoreNumber: View, Animatable {
 
 /// The connected display is a presentation surface; this view cannot play a move or create an AI task.
 struct MountainExternalPresentation: View {
+    @AppStorage("aiUsesPictures", store: MountainExperience.defaults) private var pictures = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
@@ -223,17 +301,11 @@ struct MountainExternalPresentation: View {
             let inset = max(20, min(geometry.size.width, geometry.size.height) * 0.045)
             let scoreWidth = min(360, max(180, geometry.size.width * 0.25))
             let wide = geometry.size.width > geometry.size.height
-            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 92 : 400), geometry.size.width - inset * 2 - (wide ? scoreWidth + 36 : 0)))
+            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 0 : 220), geometry.size.width - inset * 2 - (wide ? scoreWidth + 36 : 0)))
             ZStack {
                 MountainScenery(active: !snapshot.paused, celebration: snapshot.humanVictory)
                     .overlay(MountainStyle.ink.opacity(0.50)).ignoresSafeArea()
                 VStack(spacing: 24) {
-                    HStack(alignment: .firstTextBaseline) {
-                        Text("Race to Dog Mountain").font(MountainStyle.display(max(24, min(42, geometry.size.width * 0.03))))
-                        Spacer()
-                        Text(snapshot.game.isOver ? "The summit" : snapshot.paused ? "Paused" : "\(snapshot.names[snapshot.game.turn])'s \(snapshot.game.turn == 0 ? "row" : "column")")
-                            .font(.title2.weight(.semibold)).lineLimit(2).minimumScaleFactor(0.5).foregroundStyle(MountainStyle.player(snapshot.game.turn))
-                    }
                     if wide {
                         HStack(alignment: .center, spacing: 36) {
                             displayBoard(side: side).frame(maxWidth: .infinity)
@@ -255,33 +327,18 @@ struct MountainExternalPresentation: View {
                         .overlay { RoundedRectangle(cornerRadius: 32).strokeBorder(MountainStyle.gold.opacity(0.7), lineWidth: 2) }
                         .padding(inset)
                 }
-            }
+            }.onChange(of: geometry.size) { _, _ in feedback.removeAll() }
         }
         .overlayPreferenceValue(MountainMoveAnchors.self) { anchors in
-            GeometryReader { proxy in
-                if !reduceMotion {
-                    ForEach(feedback) { event in
-                        if let source = anchors[.tile(event.tile)], let target = anchors[.score(event.player)] {
-                            MountainMoveVisual(event: event,
-                                start: CGPoint(x: proxy[source].midX, y: proxy[source].midY),
-                                end: CGPoint(x: proxy[target].midX, y: proxy[target].midY))
-                        }
-                    }
-                }
-            }.allowsHitTesting(false).accessibilityHidden(true)
+            MountainMoveEffects(events: $feedback, anchors: anchors, reduceMotion: reduceMotion)
         }
         .onChange(of: snapshot.game.moves) { old, new in
             guard new > old, !reduceMotion, !snapshot.paused, let tile = snapshot.lastMove else { return }
             let event = MountainMoveFeedback(id: new, tile: tile, player: 1 - snapshot.game.turn, points: snapshot.lastPoints, maximum: snapshot.game.size * snapshot.game.size)
-            feedback = Array((feedback + [event]).suffix(8))
+            feedback = event.adding(to: feedback)
         }
         .onChange(of: snapshot.paused) { _, paused in if paused { feedback.removeAll() } }
         .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
-        .task(id: feedback.last?.id) {
-            guard !feedback.isEmpty else { return }
-            do { try await Task.sleep(for: .milliseconds(650)) } catch { return }
-            feedback.removeAll()
-        }
         .foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
     }
     private func displayBoard(side: CGFloat) -> some View {
@@ -289,24 +346,33 @@ struct MountainExternalPresentation: View {
                       lastMove: snapshot.lastMove, lastPoints: snapshot.lastPoints)
             .allowsHitTesting(false)
     }
+    @ViewBuilder private func displayAvatar(_ player: Int, size: CGFloat) -> some View {
+        let style = snapshot.avatarStyles.indices.contains(player) ? snapshot.avatarStyles[player] : "fonster"
+        if snapshot.computers[player] && pictures && style == "fonster" {
+            Image(snapshot.difficulty.portrait).resizable().scaledToFill().frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
+        } else {
+            MountainAvatar(name: snapshot.computers[player] ? snapshot.difficulty.name : snapshot.names[player], symbol: snapshot.symbols[player], style: style,
+                           photoID: snapshot.photoIDs.indices.contains(player) ? snapshot.photoIDs[player] : nil, size: size)
+        }
+    }
     private func displayScore(_ player: Int, height: CGFloat) -> some View {
         let compact = height < 600
         return VStack(alignment: .leading, spacing: compact ? 8 : 16) {
             HStack(spacing: compact ? 8 : 14) {
-                Image(systemName: snapshot.symbols[player]).font(compact ? .title2 : .largeTitle)
-                Text(snapshot.names[player]).font(compact ? .headline : .title.weight(.semibold)).lineLimit(2).minimumScaleFactor(0.5)
+                displayAvatar(player, size: compact ? 48 : 72)
+                MountainReservedText(lines: 2) { Text(snapshot.names[player]) }.font(compact ? .headline : .title.weight(.semibold))
             }
-            MountainScoreNumber(value: Double(snapshot.game.scores[player]))
+            MountainReservedText {
+                MountainScoreNumber(value: Double(snapshot.game.scores[player]))
                 .font(MountainStyle.display(max(32, min(108, height * (compact ? 0.1 : 0.14)))))
                 .lineLimit(1).minimumScaleFactor(0.25)
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: snapshot.game.scores[player])
                 .anchorPreference(key: MountainMoveAnchors.self, value: .bounds) { [.score(player): $0] }
-            Text(snapshot.game.isOver ? "Points" : snapshot.game.turn == player ? "\(player == 0 ? "Row" : "Column") · Your turn" : "Points")
-                .font(compact ? .caption.weight(.semibold) : .title3.weight(.semibold)).lineLimit(2)
+            }.font(MountainStyle.display(max(32, min(108, height * (compact ? 0.1 : 0.14)))))
         }.padding(compact ? 16 : 28).frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(MountainStyle.player(player))
             .background(MountainStyle.ink.opacity(0.80), in: RoundedRectangle(cornerRadius: 24))
-            .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(MountainStyle.player(player).opacity(snapshot.game.turn == player ? 0.85 : 0.2), lineWidth: 2) }
-            .accessibilityElement(children: .ignore).accessibilityLabel("\(snapshot.names[player]), \(snapshot.game.scores[player]) points")
+            .overlay { MountainPlayerHighlight(player: player, active: snapshot.game.turn == player && !snapshot.game.isOver) }
+            .accessibilityElement(children: .ignore).accessibilityLabel("\(snapshot.names[player]), \(snapshot.game.scores[player]) points. \(player == 0 ? "Row" : "Column") player. \(snapshot.game.isOver ? "Game over" : snapshot.game.turn == player ? "Your turn" : "Waiting")")
     }
 }

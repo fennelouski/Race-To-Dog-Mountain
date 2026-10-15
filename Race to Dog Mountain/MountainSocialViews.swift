@@ -18,17 +18,11 @@ struct MountainChallengeBoard: View {
                         HStack(spacing: 16) { score(0); score(1) }
                         VStack(spacing: 12) { score(0); score(1) }
                     }
-                    VStack(spacing: 8) {
-                        Label(status, systemImage: game.isOver || ended ? "flag.checkered" : canPlay ? "hand.point.up.left.fill" : "hourglass")
-                            .font(.title2.bold()).multilineTextAlignment(.center)
-                        if !game.isOver && !ended {
-                            Label("\(names[game.turn])'s \(game.turn == 0 ? "row" : "column")", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
-                                .foregroundStyle(MountainStyle.player(game.turn)).font(.subheadline)
-                        }
-                    }.accessibilityElement(children: .combine)
-                    if busy { ProgressView("Saving move…").tint(MountainStyle.gold) }
+                    Image(systemName: game.isOver || ended ? "flag.checkered" : canPlay ? "hand.point.up.left.fill" : "hourglass")
+                        .font(.title2).frame(height: 44).foregroundStyle(MountainStyle.player(game.turn))
+                        .overlay { if busy { ProgressView().tint(MountainStyle.gold) } }
+                        .accessibilityLabel(status + (game.isOver || ended ? "" : ". \(names[game.turn]), \(game.turn == 0 ? "row" : "column") player"))
                     MountainBoard(game: game, availableWidth: min(geometry.size.width - 32, 700), interactive: canPlay && !busy, lastMove: challenge.moves.last, lastPoints: challenge.moves.last.map { challenge.values[$0] } ?? 0, select: select)
-                    Text("Every choice sets your friend's next move.").font(.footnote).multilineTextAlignment(.center)
                 }.padding(16).frame(maxWidth: 760).frame(maxWidth: .infinity)
             }
         }
@@ -40,12 +34,13 @@ struct MountainChallengeBoard: View {
     }
     private func score(_ player: Int) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(names[player], systemImage: "person.fill").font(.headline).fixedSize(horizontal: false, vertical: true)
-            Text("\(game.scores[player])").font(MountainStyle.display(36)).monospacedDigit()
+            HStack { MountainAvatar(name: names[player], size: 40); MountainReservedText(lines: 2) { Text(names[player]) }.font(.headline) }
+            MountainReservedText { Text("\(game.scores[player])").monospacedDigit() }.font(MountainStyle.display(36))
         }.frame(maxWidth: .infinity, alignment: .leading).padding(16)
             .foregroundStyle(MountainStyle.player(player))
-            .background(MountainStyle.player(player).opacity(0.12), in: RoundedRectangle(cornerRadius: 16))
-            .accessibilityElement(children: .ignore).accessibilityLabel("\(names[player]), \(game.scores[player]) points")
+            .background(MountainStyle.player(player).opacity(game.turn == player && !game.isOver ? 0.2 : 0.08), in: RoundedRectangle(cornerRadius: 16))
+            .overlay { MountainPlayerHighlight(player: player, active: game.turn == player && !game.isOver && !ended) }
+            .accessibilityElement(children: .ignore).accessibilityLabel("\(names[player]), \(game.scores[player]) points. \(player == 0 ? "Row" : "Column") player. \(game.isOver || ended ? "Game ended" : game.turn == player ? "Current player" : "Waiting")")
     }
 }
 

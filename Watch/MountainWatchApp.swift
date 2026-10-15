@@ -197,7 +197,7 @@ private struct WatchGame: View {
     private var active: Bool { visible && phase == .active && !dimmed }
     private var paused: Bool { replaying || page != 0 || confirmExit }
     private func name(_ player: Int) -> String {
-        match.computers[player] ? match.difficulty.name : match.computers.contains(true) ? "You" : "Player \(player + 1)"
+        match.computers[player] ? match.difficulty.displayName : match.computers.contains(true) ? "You" : "Player \(player + 1)"
     }
 
     var body: some View {
@@ -206,7 +206,7 @@ private struct WatchGame: View {
                 ScrollView {
                     VStack(spacing: 8) {
                     if resolution != nil {
-                        Label("+\(resolvedPoints)", systemImage: "hand.point.up.left.fill").font(.title3).accessibilityLabel("\(match.difficulty.name) takes \(resolvedPoints) points")
+                        Label("+\(resolvedPoints)", systemImage: "hand.point.up.left.fill").font(.title3).accessibilityLabel("\(match.difficulty.displayName) takes \(resolvedPoints) points")
                     } else if match.game.isOver {
                         Button { page = 2 } label: { Image(systemName: "trophy.fill").font(.title2).frame(maxWidth: .infinity) }.buttonStyle(WatchButton(prominent: true)).accessibilityLabel("See final score")
                     } else {
@@ -219,14 +219,14 @@ private struct WatchGame: View {
                         if match.waitingForStart {
                             Button { match.startComputer(); match.save() } label: { Image(systemName: "play.fill").frame(maxWidth: .infinity) }.buttonStyle(WatchButton(prominent: true)).accessibilityLabel("Play computer")
                         } else if match.computers[match.game.turn] {
-                            HStack { WatchPortrait(difficulty: match.difficulty, size: 24); ProgressView().tint(MountainStyle.mint) }.accessibilityElement(children: .ignore).accessibilityLabel("\(match.difficulty.name) is choosing")
+                            HStack { WatchPortrait(difficulty: match.difficulty, size: 24); ProgressView().tint(MountainStyle.mint) }.accessibilityElement(children: .ignore).accessibilityLabel("\(match.difficulty.displayName) is choosing")
                         } else {
                             moves
                         }
                     }
                     }.padding(.horizontal, 8).padding(.top, 6).padding(.bottom, 4)
                 }
-                WatchPointsBar(game: match.game, rival: match.difficulty.name).padding(.horizontal, 8).padding(.bottom, 8)
+                WatchPointsBar(game: match.game, rival: match.difficulty.displayName).padding(.horizontal, 8).padding(.bottom, 8)
             }.tag(0)
             ScrollView { WatchBoard(game: match.game).padding(.bottom, 18) }.tag(1)
             ScrollView {

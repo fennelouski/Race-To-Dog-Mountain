@@ -14,6 +14,7 @@ source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
 match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source[source.index('.task(id: \"'):], re.S)
 assert match, 'Computer task extraction no longer matches production source'
 identity, body = match.groups()
+role_change_body = re.search(r"\.onChange\(of: computers\) \{ (.*?) \}\n", source).group(1).replace("MountainExperience.defaults", "preferences")
 assert 'snapshot.computerMove' in body and 'waitingForStart' in body and 'customizing == nil' in body and '!resultPresented' in body, 'Must extract the production AI task, not visual cleanup'
 resolution_match = re.search(r'\.task\(id: resolution\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
 assert resolution_match, 'Must extract the production computer resolution task'
@@ -42,9 +43,11 @@ struct HumanSelection { let id: Int }
     var resultPresented = false
     var resolution: UUID?
     var foregroundNonce = 0
-    var confirmExit = false
+    var leavingGame = false
     var computerStarted = false
     var replaying = false
+    var gameHelp = false
+    var gameSettings = false
     var recorded = false
     var rolesChanged = false
     var savedID = UUID()
@@ -67,6 +70,8 @@ struct HumanSelection { let id: Int }
         task?.cancel()
         task = Task { await self.runActualBody() }
     }
+    func persist() {}
+    func applyRoleChange() { ROLE_CHANGE_BODY }
     func recordWin() {
 RECORD
     }
@@ -81,8 +86,10 @@ BODY
     var resultPresented = false
     var pendingResult = false
     var scenePhase = ScenePhase.active
-    var confirmExit = false
+    var leavingGame = false
     var replaying = false
+    var gameHelp = false
+    var gameSettings = false
     var customizing: HumanSelection?
     func presentPendingResult() {
 PRESENTATION_BODY
@@ -102,17 +109,17 @@ RESOLUTION_BODY
         turns.restartIfNeeded()
         await turns.task?.value
         require(turns.game.moves == 0, "Computer started before Play")
-        turns.computerStarted = true
-        turns.restartIfNeeded()
+        let changed = Turns(); changed.computers = [true, false]; changed.applyRoleChange()
+        require(changed.computerStarted, "Adding a human left an invisible computer start gate")
+        changed.restartIfNeeded(); await changed.task?.value
+        require(changed.game.moves == 1, "Role change did not resume the computer exactly once")
+        let closing = Turns(); closing.computerStarted = true; closing.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(50))
-        turns.confirmExit = true
-        turns.restartIfNeeded()
+        closing.leavingGame = true; closing.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(850))
-        require(turns.game.moves == 0, "Computer moved while exit confirmation was open")
-        turns.confirmExit = false
-        turns.restartIfNeeded()
-        await turns.task?.value
-        require(turns.game.moves == 1, "Cancel did not resume exactly one computer turn")
+        require(closing.game.moves == 0, "Immediate close allowed a pending computer move")
+        turns.computerStarted = true; turns.restartIfNeeded(); await turns.task?.value
+        require(turns.game.moves == 1, "Play did not start exactly one computer turn")
 
         // Changing the game starts the next turn. Backgrounding cancels it.
         turns.restartIfNeeded()
@@ -163,6 +170,20 @@ RESOLUTION_BODY
         turns.task?.cancel() // View dismissal cancels its task.
         await turns.task?.value
         require(turns.game.moves == 6, "Canceled view task moved after dismissal")
+        let help = Turns(); help.computerStarted = true; help.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        help.gameHelp = true; help.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(help.game.moves == 0, "Help allowed a pending AI move")
+        help.gameHelp = false; help.restartIfNeeded(); await help.task?.value
+        require(help.game.moves == 1, "Closing Help did not resume once")
+        let settings = Turns(); settings.computerStarted = true; settings.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        settings.gameSettings = true; settings.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(settings.game.moves == 0, "Settings allowed pending AI move")
+        settings.gameSettings = false; settings.restartIfNeeded(); await settings.task?.value
+        require(settings.game.moves == 1, "Closing Settings did not resume once")
         let scene = Turns()
         scene.computerStarted = true; scene.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(50))
@@ -197,9 +218,11 @@ RESOLUTION_BODY
         require(!presentation.resultPresented, "Result interrupted computer hold")
         presentation.scenePhase = .background; presentation.resolution = nil; presentation.presentPendingResult()
         require(!presentation.resultPresented && presentation.pendingResult, "Background lost pending result")
-        presentation.scenePhase = .active; presentation.confirmExit = true; presentation.presentPendingResult()
-        require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted exit dialog")
-        presentation.confirmExit = false; presentation.presentPendingResult()
+        presentation.scenePhase = .active; presentation.leavingGame = true; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted immediate close")
+        presentation.leavingGame = false; presentation.gameHelp = true; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted Help")
+        presentation.gameHelp = false; presentation.presentPendingResult()
         require(presentation.resultPresented && !presentation.pendingResult, "Resume failed to present final result")
         presentation.resultPresented = false; presentation.presentPendingResult()
         require(!presentation.resultPresented, "View board unexpectedly reopened seen result")
@@ -237,10 +260,10 @@ RESOLUTION_BODY
         result.recordWin()
         require(!result.recorded && result.learningStore!.learning(for: key).recent.count == 2, "Unfinished game trained learning")
         print("Completed outcomes train once; changed roles, demos, human-only, manual and abandoned games do not train: PASS")
-        print("Play gates computer starts; replay and exit dialog pause pending AI; Cancel resumes once; inactive/background/dismissed tasks cannot move: PASS")
+        print("Play gates computer starts; replay pauses pending AI; immediate close cancels pending AI; inactive/background/dismissed tasks cannot move: PASS")
     }
 }
-'''.replace('PRESENTATION_BODY', presentation_body).replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
+'''.replace('ROLE_CHANGE_BODY', role_change_body).replace('PRESENTATION_BODY', presentation_body).replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
 with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
     swift = Path(tmp) / 'ComputerTurnChecks.swift'
     swift.write_text(harness)
