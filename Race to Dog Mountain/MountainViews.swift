@@ -39,6 +39,7 @@ final class MountainSceneDelegate: UIResponder, UIWindowSceneDelegate {
 #endif
 
 struct MountainHome: View {
+    @AppStorage("showStatusBar") private var showStatusBar = false
     @AppStorage("player1Name") private var firstName = "Player 1"
     @AppStorage("player2Name") private var secondName = "Player 2"
     @AppStorage("player1AI") private var firstAI = false
@@ -92,6 +93,9 @@ struct MountainHome: View {
         .alert("Friend games", isPresented: Binding(get: { friends.error != nil && friends.opened == nil }, set: { if !$0 { friends.error = nil } })) {
             Button("OK") { friends.error = nil }
         } message: { Text(friends.error ?? "") }
+#if os(iOS)
+        .statusBarHidden(!showStatusBar)
+#endif
         .onChange(of: firstName) { refreshHistory() }
         .onChange(of: secondName) { refreshHistory() }
     }
@@ -175,6 +179,9 @@ struct MountainHome: View {
         MountainGameView(size: size, names: names, computers: [firstAI, secondAI], difficulty: difficulty,
                          adjustment: computerAdjustment, saved: selection, onSave: library.save,
                          onLeave: { playing = false; refreshHistory() })
+#if os(iOS)
+            .statusBarHidden(!showStatusBar)
+#endif
     }
     private func startLocal(passAndPlay: Bool = false) {
         let next = SavedMountainGame(size: size, names: names, computers: passAndPlay ? [false, false] : [firstAI, secondAI], difficulty: difficulty, adjustment: computerAdjustment)
@@ -287,6 +294,10 @@ struct MountainHome: View {
                         Spacer()
                         Text("\(history[0]) : \(history[1])").monospacedDigit().foregroundStyle(MountainStyle.gold)
                     }
+#if os(iOS)
+                    Toggle("Show Status Bar", isOn: $showStatusBar)
+                        .accessibilityIdentifier("show-status-bar")
+#endif
                     Link("Privacy Policy", destination: URL(string: "https://nathanfennel.com/race-to-dog-mountain/privacy.html")!).font(.footnote).frame(minHeight: 44)
                 }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
             }
