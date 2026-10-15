@@ -101,10 +101,11 @@ struct SavedMountainGame: Codable, Identifiable {
     var rolesChanged = false
     var learning: MountainLearningContext?
 
-    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int) {
+    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, startingPlayer: Int? = nil) {
         self.names = names; self.computers = computers; self.difficulty = difficulty
         self.adjustment = min(2, max(-2, adjustment))
-        game = MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers))
+        computerStarted = computers.contains(false)
+        game = MountainGame(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers, coin: startingPlayer))
     }
     var title: String { computers.contains(true) ? "You & \(difficulty.name)" : names.joined(separator: " & ") }
     var isValid: Bool {

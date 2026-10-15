@@ -50,6 +50,8 @@ struct MountainBoard: View {
 #else
     @ScaledMetric(relativeTo: .title3) private var minimumTile: CGFloat = 44
 #endif
+    @Namespace private var selectionAnimation
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ScaledMetric(relativeTo: .title3) private var numberSize: CGFloat = 20
     @ScaledMetric(relativeTo: .caption) private var badgeSize: CGFloat = 12
     private var compact: Bool {
@@ -94,9 +96,18 @@ struct MountainBoard: View {
                         }.frame(width: width, height: width)
                             .overlay { RoundedRectangle(cornerRadius: 12).strokeBorder(playable ? MountainStyle.cream.opacity(0.75) : .clear, lineWidth: 2)
                                 if selected == tile.id { RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.gold, lineWidth: 5) }
+                                if lastMove == tile.id {
+                                    RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.gold, lineWidth: 3)
+                                        .matchedGeometryEffect(id: "last-picked-square", in: selectionAnimation)
+                                }
                             }
                             .shadow(color: .black.opacity(tile.value == 0 ? 0 : 0.2), radius: 3, x: 0, y: 3)
                     }
+                    .anchorPreference(key: MountainMoveAnchors.self, value: .bounds) { [.tile(tile.id): $0] }
+                    .phaseAnimator([false, true, false], trigger: lastMove) { content, pulse in
+                        content.scaleEffect(!reduceMotion && lastMove == tile.id && pulse ? 1.08 : 1)
+                    }
+                    .animation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.7), value: lastMove)
                     .buttonStyle(MountainTileButton()).mountainHover().disabled(!playable || !interactive || game.isOver)
                     .accessibilityLabel("Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value == 0 ? "used" : String(tile.value))")
                     .accessibilityHint(playable ? "Adds \(tile.value) points and sets the next player's \(game.turn == 0 ? "column" : "row")" : "")
@@ -130,12 +141,62 @@ extension View {
         self
 #endif
     }
-    @ViewBuilder func mountainGameFeedback(moves: Int, over: Bool) -> some View {
+    @ViewBuilder func mountainGameFeedback(moves: Int, over: Bool, enabled: Bool = true, intensity: Double = 0.5) -> some View {
 #if os(iOS)
-        sensoryFeedback(.selection, trigger: moves)
-            .sensoryFeedback(.success, trigger: over) { _, finished in finished }
+        sensoryFeedback(.impact(weight: .medium, intensity: min(1, max(0, intensity))), trigger: moves) { old, new in enabled && new > old }
+            .sensoryFeedback(.success, trigger: over) { _, finished in enabled && finished }
 #else
         self
 #endif
     }
+}
+
+enum MountainMoveAnchor: Hashable { case tile(Int), score(Int) }
+struct MountainMoveAnchors: PreferenceKey {
+    static var defaultValue: [MountainMoveAnchor: Anchor<CGRect>] = [:]
+    static func reduce(value: inout [MountainMoveAnchor: Anchor<CGRect>], nextValue: () -> [MountainMoveAnchor: Anchor<CGRect>]) { value.merge(nextValue(), uniquingKeysWith: { _, new in new }) }
+}
+
+struct MountainMoveVisual: View {
+    let event: MountainMoveFeedback
+    let start: CGPoint
+    let end: CGPoint
+    @State private var progress = 0.0
+    var body: some View {
+        MountainMoveFlight(event: event, start: start, end: end, progress: progress)
+            .onAppear { withAnimation(.easeInOut(duration: 0.55)) { progress = 1 } }
+    }
+}
+
+private struct MountainMoveFlight: View, Animatable {
+    let event: MountainMoveFeedback
+    let start: CGPoint
+    let end: CGPoint
+    var progress: Double
+    var animatableData: Double { get { progress } set { progress = newValue } }
+    var body: some View {
+        ZStack {
+            ForEach(0..<(4 + Int(event.intensity * 8)), id: \.self) { index in
+                let angle = Double(index) * 2.39996
+                let distance = (12 + event.intensity * 32) * progress
+                Circle().fill(MountainStyle.player(event.player))
+                    .frame(width: 2 + event.intensity * 3, height: 2 + event.intensity * 3)
+                    .position(x: start.x + cos(angle) * distance, y: start.y + sin(angle) * distance + 16 * progress * progress)
+                    .opacity(max(0, 1 - progress * 1.7))
+            }
+            Text("+\(event.points)").font(.title2.bold()).monospacedDigit()
+                .foregroundStyle(MountainStyle.player(event.player))
+                .padding(8).background(MountainStyle.ink, in: Capsule())
+                .scaleEffect(1 + event.intensity * 0.2 * sin(progress * .pi))
+                .position(x: start.x + (end.x - start.x) * progress,
+                          y: start.y + (end.y - start.y) * progress - sin(progress * .pi) * 44)
+                .opacity(progress < 0.85 ? 1 : max(0, (1 - progress) / 0.15))
+        }
+    }
+}
+
+struct MountainScoreNumber: View, Animatable {
+    var value: Double
+    var animatableData: Double { get { value } set { value = newValue } }
+    var body: some View { Text("\(Int(value.rounded()))").monospacedDigit() }
 }

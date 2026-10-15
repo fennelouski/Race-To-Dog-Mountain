@@ -92,6 +92,11 @@ struct MountainGame: Sendable, Codable {
         computers.firstIndex(of: false) ?? 0
     }
 
+    static func randomStartingPlayer(computers: [Bool], coin: Int? = nil) -> Int {
+        guard computers.contains(true) else { return 0 }
+        return coin.map { min(1, max(0, $0)) } ?? Int.random(in: 0...1)
+    }
+
     func computerMove(difficulty: ComputerDifficulty = .level6, adjustment: Int = 0, roll: Double? = nil) -> Int? {
         var random = SystemRandomNumberGenerator()
         return computerMove(difficulty: difficulty, adjustment: adjustment, roll: roll, using: &random)
@@ -243,4 +248,32 @@ struct MountainBoardLayout {
         tile = scrolls ? max(minimumTile, fittedTile) : fittedTile
         extent = tile * side + Self.gap * (side - 1) + Self.padding * 2
     }
+}
+
+struct MountainHumanProfile: Codable {
+    var displayName: String
+    var symbol: String
+    static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "mountain.2.fill", "sparkles"]
+    static func read(identity: String, data: Data) -> Self {
+        let profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
+        guard let profile = profiles[identity], symbols.contains(profile.symbol) else { return Self(displayName: identity, symbol: "person.fill") }
+        return Self(displayName: String(profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60)).isEmpty ? identity : String(profile.displayName.prefix(60)), symbol: profile.symbol)
+    }
+    static func updating(identity: String, displayName: String, symbol: String, data: Data) -> Data? {
+        guard symbols.contains(symbol) else { return nil }
+        var profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
+        let name = String(displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
+        profiles[identity] = Self(displayName: name.isEmpty ? identity : name, symbol: symbol)
+        guard profiles.count <= 256 else { return nil }
+        return try? JSONEncoder().encode(profiles)
+    }
+}
+
+struct MountainMoveFeedback: Identifiable, Sendable {
+    let id: Int
+    let tile: Int
+    let player: Int
+    let points: Int
+    let maximum: Int
+    var intensity: Double { maximum > 0 ? min(1, max(0, Double(points) / Double(maximum))) : 0 }
 }

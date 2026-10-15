@@ -10,6 +10,24 @@ struct SeededRandom: RandomNumberGenerator {
 
 @main enum AdaptiveChecks {
     @MainActor static func main() throws {
+        for computers in [[false, true], [true, false], [true, true]] {
+            assert(MountainGame.randomStartingPlayer(computers: computers, coin: 0) == 0)
+            assert(MountainGame.randomStartingPlayer(computers: computers, coin: 1) == 1)
+        }
+        assert(MountainGame.randomStartingPlayer(computers: [false, false], coin: 1) == 0)
+        for coin in [0, 1] {
+            let match = SavedMountainGame(size: 4, names: ["A", "B"], computers: [false, true], difficulty: .level1, adjustment: 0, startingPlayer: coin)
+            assert(match.game.turn == coin && match.computerStarted)
+        }
+        let humanOnly = SavedMountainGame(size: 4, names: ["A", "B"], computers: [false, false], difficulty: .level1, adjustment: 0, startingPlayer: 1)
+        assert(humanOnly.game.turn == 0)
+        let profileData = MountainHumanProfile.updating(identity: "A", displayName: "New look", symbol: "leaf.fill", data: Data())!
+        assert(MountainHumanProfile.read(identity: "A", data: profileData).displayName == "New look")
+        assert(MountainHumanProfile.read(identity: "B", data: profileData).displayName == "B")
+        assert(MountainHumanProfile.updating(identity: "A", displayName: "", symbol: "bad-symbol", data: profileData) == nil)
+        for (points, maximum, expected) in [(-1, 16, 0.0), (0, 0, 0), (8, 16, 0.5), (32, 16, 1)] {
+            assert(MountainMoveFeedback(id: 1, tile: 0, player: 0, points: points, maximum: maximum).intensity == expected)
+        }
         var learning = MountainLearning()
         assert(learning.difficulty == .level1 && learning.skill == 0 && learning.winRate == nil)
         for _ in 0..<3 { learning.record(.win) }

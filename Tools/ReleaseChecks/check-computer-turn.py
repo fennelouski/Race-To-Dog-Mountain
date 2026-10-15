@@ -11,9 +11,10 @@ import tempfile
 
 root = Path(__file__).resolve().parents[2]
 source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
-match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
+match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source[source.index('.task(id: \"'):], re.S)
 assert match, 'Computer task extraction no longer matches production source'
 identity, body = match.groups()
+assert 'snapshot.computerMove' in body and 'waitingForStart' in body and 'customizing == nil' in body and '!resultPresented' in body, 'Must extract the production AI task, not visual cleanup'
 record = source.split('    private func recordWin() {', 1)[1].split('\n    }\n}', 1)[0]
 record = record.replace('UserDefaults.standard', 'preferences')
 harness = r'''
@@ -29,7 +30,10 @@ final class UIApplication {
     static var isActive: Bool { UIApplication.shared.applicationState == .active }
 }
 
+struct HumanSelection { let id: Int }
 @MainActor final class Turns {
+    var customizing: HumanSelection?
+    var resultPresented = false
     var foregroundNonce = 0
     var confirmExit = false
     var computerStarted = false
@@ -118,9 +122,22 @@ BODY
         await turns.task?.value
         require(turns.game.moves == 4, "Closing replay did not resume exactly one computer turn")
         turns.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        turns.customizing = HumanSelection(id: 0)
+        turns.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(turns.game.moves == 4, "Profile sheet allowed pending AI move")
+        turns.customizing = nil; turns.restartIfNeeded(); await turns.task?.value
+        require(turns.game.moves == 5, "Closing profile did not resume one AI move")
+        turns.restartIfNeeded(); turns.resultPresented = true; turns.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(turns.game.moves == 5, "Result sheet allowed pending AI move")
+        turns.resultPresented = false; turns.restartIfNeeded(); await turns.task?.value
+        require(turns.game.moves == 6, "Closing result did not resume one AI move")
+        turns.restartIfNeeded()
         turns.task?.cancel() // View dismissal cancels its task.
         await turns.task?.value
-        require(turns.game.moves == 4, "Canceled view task moved after dismissal")
+        require(turns.game.moves == 6, "Canceled view task moved after dismissal")
         let result = Turns()
         result.game = MountainGame(size: 4, values: [100] + Array(2...16), firstPlayer: 0, startingLine: 0)
         while !result.game.isOver { result.game.play(result.game.legalMoves[0]) }
