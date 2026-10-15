@@ -277,3 +277,21 @@ struct MountainMoveFeedback: Identifiable, Sendable {
     let maximum: Int
     var intensity: Double { maximum > 0 ? min(1, max(0, Double(points) / Double(maximum))) : 0 }
 }
+
+struct MountainDisplaySnapshot: Sendable {
+    let owner: UUID
+    let game: MountainGame
+    let names: [String]
+    let symbols: [String]
+    let computers: [Bool]
+    let difficulty: ComputerDifficulty
+    let lastMove: Int?
+    let lastPoints: Int
+    let paused: Bool
+    var humanVictory: Bool { game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1] }
+    static var design: Self {
+        var game = MountainGame(size: 6, values: Array(1...36), startingLine: 2)
+        for tile in [17, 35, 30, 0, 4, 28] { game.play(tile) }
+        return Self(owner: UUID(uuidString: "00000000-0000-4000-8000-000000000001")!, game: game, names: ["Nathan", "Quinn"], symbols: ["leaf.fill", "pawprint.fill"], computers: [false, true], difficulty: .level1, lastMove: 28, lastPoints: 29, paused: false)
+    }
+}

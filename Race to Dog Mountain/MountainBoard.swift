@@ -36,6 +36,7 @@ struct MountainBoard: View {
     let availableWidth: CGFloat
     var availableHeight: CGFloat? = nil
     var fitAllSizes = false
+    var numberScale: CGFloat = 1
     @AppStorage("boardScrollThreshold") private var scrollThreshold = 7
 #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -90,7 +91,7 @@ struct MountainBoard: View {
                                     Image(systemName: "pawprint.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
                                 }
                             } else {
-                                Text("\(tile.value)").font(.system(size: min(numberSize, max(1, (width - 4) / 2.2)), weight: .heavy)).monospacedDigit()
+                                Text("\(tile.value)").font(.system(size: min(numberSize * numberScale, max(1, (width - 4) / 2.2)), weight: .heavy)).monospacedDigit()
                                     .lineLimit(1).minimumScaleFactor(0.1).padding(.horizontal, 2).foregroundStyle(MountainStyle.ink)
                             }
                         }.frame(width: width, height: width)
@@ -199,4 +200,72 @@ struct MountainScoreNumber: View, Animatable {
     var value: Double
     var animatableData: Double { get { value } set { value = newValue } }
     var body: some View { Text("\(Int(value.rounded()))").monospacedDigit() }
+}
+
+/// The connected display is a presentation surface; this view cannot play a move or create an AI task.
+struct MountainExternalPresentation: View {
+    let snapshot: MountainDisplaySnapshot
+    var body: some View {
+        GeometryReader { geometry in
+            let inset = max(20, min(geometry.size.width, geometry.size.height) * 0.045)
+            let scoreWidth = min(360, max(180, geometry.size.width * 0.25))
+            let wide = geometry.size.width > geometry.size.height
+            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 92 : 300), geometry.size.width - inset * 2 - (wide ? scoreWidth + 36 : 0)))
+            ZStack {
+                MountainScenery(active: !snapshot.paused, celebration: snapshot.humanVictory)
+                    .overlay(MountainStyle.ink.opacity(0.50)).ignoresSafeArea()
+                VStack(spacing: 24) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text("Race to Dog Mountain").font(MountainStyle.display(max(24, min(42, geometry.size.width * 0.03))))
+                        Spacer()
+                        Text(snapshot.paused ? "Paused" : snapshot.game.isOver ? "The summit" : "\(snapshot.names[snapshot.game.turn])'s \(snapshot.game.turn == 0 ? "row" : "column")")
+                            .font(.title2.weight(.semibold)).foregroundStyle(MountainStyle.player(snapshot.game.turn))
+                    }
+                    if wide {
+                        HStack(alignment: .center, spacing: 36) {
+                            displayBoard(side: side).frame(maxWidth: .infinity)
+                            VStack(spacing: 24) { displayScore(0, height: geometry.size.height); displayScore(1, height: geometry.size.height) }.frame(width: scoreWidth)
+                        }
+                    } else {
+                        displayBoard(side: side)
+                        HStack(spacing: 24) { displayScore(0, height: geometry.size.height * 0.5); displayScore(1, height: geometry.size.height * 0.5) }
+                    }
+                    Spacer(minLength: 0)
+                }.padding(inset)
+                if snapshot.game.isOver {
+                    VStack(spacing: 18) {
+                        Image(systemName: snapshot.humanVictory ? "pawprint.fill" : "mountain.2.fill").font(.system(size: 56)).accessibilityHidden(true)
+                        Text(snapshot.game.scores[0] == snapshot.game.scores[1] ? "An even climb" : "\(snapshot.names[snapshot.game.scores[0] > snapshot.game.scores[1] ? 0 : 1]) wins!")
+                            .font(MountainStyle.display(54)).multilineTextAlignment(.center)
+                        Text("\(snapshot.game.scores[0]) : \(snapshot.game.scores[1])").font(.largeTitle.bold()).monospacedDigit()
+                    }.padding(48).background(MountainStyle.ink.opacity(0.96), in: RoundedRectangle(cornerRadius: 32))
+                        .overlay { RoundedRectangle(cornerRadius: 32).strokeBorder(MountainStyle.gold.opacity(0.7), lineWidth: 2) }
+                        .padding(inset)
+                }
+            }
+        }.foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
+    }
+    private func displayBoard(side: CGFloat) -> some View {
+        MountainBoard(game: snapshot.game, availableWidth: side, fitAllSizes: true, numberScale: 2,
+                      lastMove: snapshot.lastMove, lastPoints: snapshot.lastPoints)
+            .allowsHitTesting(false)
+    }
+    private func displayScore(_ player: Int, height: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 14) {
+                Image(systemName: snapshot.symbols[player]).font(.largeTitle)
+                Text(snapshot.names[player]).font(.title.weight(.semibold)).fixedSize(horizontal: false, vertical: true)
+            }
+            MountainScoreNumber(value: Double(snapshot.game.scores[player]))
+                .font(MountainStyle.display(max(44, min(108, height * 0.14))))
+                .animation(.easeInOut(duration: 0.3), value: snapshot.game.scores[player])
+                .anchorPreference(key: MountainMoveAnchors.self, value: .bounds) { [.score(player): $0] }
+            Text(snapshot.game.isOver ? "Points" : snapshot.game.turn == player ? "\(player == 0 ? "Row" : "Column") · Your turn" : "Points")
+                .font(.title3.weight(.semibold))
+        }.padding(28).frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(MountainStyle.player(player))
+            .background(MountainStyle.ink.opacity(0.80), in: RoundedRectangle(cornerRadius: 24))
+            .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(MountainStyle.player(player).opacity(snapshot.game.turn == player ? 0.85 : 0.2), lineWidth: 2) }
+            .accessibilityElement(children: .ignore).accessibilityLabel("\(snapshot.names[player]), \(snapshot.game.scores[player]) points")
+    }
 }
