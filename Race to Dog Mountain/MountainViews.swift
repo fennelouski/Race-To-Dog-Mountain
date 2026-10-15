@@ -39,6 +39,7 @@ final class MountainSceneDelegate: UIResponder, UIWindowSceneDelegate {
 #endif
 
 struct MountainHome: View {
+    @AppStorage("boardScrollThreshold") private var boardScrollThreshold = 7
     @AppStorage("showStatusBar") private var showStatusBar = false
     @AppStorage("player1Name") private var firstName = "Player 1"
     @AppStorage("player2Name") private var secondName = "Player 2"
@@ -322,6 +323,11 @@ struct MountainHome: View {
                             Text("\(size) × \(size)").font(.title2.bold()).monospacedDigit().foregroundStyle(MountainStyle.gold)
                         }
                     }
+                    Stepper(value: $boardScrollThreshold, in: 4...14) {
+                        Text("Fit compact boards up to \(boardScrollThreshold) × \(boardScrollThreshold)")
+                            .fixedSize(horizontal: false, vertical: true)
+                    }.accessibilityIdentifier("board-scroll-threshold")
+                    Text("Larger compact boards scroll to keep tiles easy to tap. Roomier layouts fit the whole board. Fitted tiles can be smaller than 44 points. Higher limits and narrow windows make smaller numbers; full values remain available to VoiceOver.").font(.footnote)
                     Text("Bigger board, more possibilities. Classic rules, every time.").font(.subheadline)
                     HStack {
                         Text("Head to head").font(.headline)
@@ -393,6 +399,7 @@ private struct MountainGameView: View {
     @AppStorage("computerLevel") private var computerLevel = 5
     @State private var learning: MountainLearningContext?
     @AppStorage("computerDialogue") private var computerDialogue = false
+    @State private var boardTop: CGFloat = 0
     @State private var matchAdjustment: Int
     @State private var rolesChanged = false
     @State private var computerStarted = false
@@ -434,21 +441,7 @@ private struct MountainGameView: View {
                 ScrollView {
                     VStack(spacing: 24) {
                         header
-#if os(visionOS)
-                        if geometry.size.width >= 1040 && !typeSize.isAccessibilitySize {
-                            turnLabel
-                            HStack(alignment: .center, spacing: 24) {
-                                score(player: 0).frame(width: 180).offset(z: 24)
-                                board(width: min(geometry.size.width - 472, 740)).offset(z: 12)
-                                score(player: 1).frame(width: 180).offset(z: 24)
-                            }
-                            startComputerButton
-                            matchControls.frame(maxWidth: 520)
-                        } else {
-                            verticalGame(width: min(geometry.size.width - 64, 740))
-                        }
-#elseif os(macOS)
-                        if geometry.size.width >= 900 {
+                        if usesSideControls(width: geometry.size.width, height: geometry.size.height) && !typeSize.isAccessibilitySize {
                             HStack(alignment: .top, spacing: 24) {
                                 VStack(spacing: 18) {
                                     score(player: 0)
@@ -456,26 +449,22 @@ private struct MountainGameView: View {
                                     turnLabel
                                     startComputerButton
                                     matchControls
-                                }.frame(width: 260)
-                                board(width: min(geometry.size.width - 316, 760))
+                                }.frame(width: 240)
+                                board(width: max(160, min(min(geometry.size.width, 1268) - gameHorizontalPadding - 264, geometry.size.height - 128)), fitAllSizes: geometry.size.width >= 900 && geometry.size.height >= 600)
+                                    .frame(maxWidth: .infinity)
                             }
                         } else {
-                            verticalGame(width: min(geometry.size.width - 32, 760))
+                            verticalGame(width: min(geometry.size.width - 32, 760), maxHeight: geometry.size.width >= 600 && !typeSize.isAccessibilitySize ? max(160, geometry.size.height - boardTop - gameHorizontalPadding) : nil)
                         }
-#else
-                        verticalGame(width: min(geometry.size.width - 32, 760))
-#endif
                     }
+                    .coordinateSpace(name: "mountain-game-content")
+                    .onPreferenceChange(MountainBoardTop.self) { boardTop = $0 }
 #if os(visionOS)
                     .padding(32).frame(maxWidth: 1268)
 #else
                     .padding(16)
 #endif
-#if os(macOS)
-                        .frame(maxWidth: 1076)
-#elseif os(iOS)
-                        .frame(maxWidth: 792)
-#endif
+                        .frame(maxWidth: 1268)
                         .frame(maxWidth: .infinity)
                 }.scrollIndicators(.hidden)
             }
@@ -507,10 +496,27 @@ private struct MountainGameView: View {
         .focusedSceneValue(\.mountainActions, MountainActions(newGame: { restart() }, replay: lastComputerMove == nil ? nil : { replaying = true }, close: { if game.isOver { leaveGame() } else { confirmExit = true } }))
 #endif
     }
-    private func board(width: CGFloat) -> some View {
-        MountainBoard(game: game, availableWidth: width, interactive: !computers[game.turn], lastMove: lastMove, lastPoints: lastPoints) { move($0) }
+    private func usesSideControls(width: CGFloat, height: CGFloat) -> Bool {
+#if os(macOS)
+        width >= 620
+#else
+        width >= 650 && width > height
+#endif
     }
-    private func verticalGame(width: CGFloat) -> some View {
+    private var gameHorizontalPadding: CGFloat {
+#if os(visionOS)
+        64
+#else
+        32
+#endif
+    }
+    private func board(width: CGFloat, maxHeight: CGFloat? = nil, fitAllSizes: Bool = false) -> some View {
+        MountainBoard(game: game, availableWidth: width, availableHeight: maxHeight, fitAllSizes: fitAllSizes, interactive: !computers[game.turn], lastMove: lastMove, lastPoints: lastPoints) { move($0) }
+            .background { GeometryReader { proxy in
+                Color.clear.preference(key: MountainBoardTop.self, value: proxy.frame(in: .named("mountain-game-content")).minY)
+            } }
+    }
+    private func verticalGame(width: CGFloat, maxHeight: CGFloat? = nil) -> some View {
         VStack(spacing: 24) {
             if typeSize.isAccessibilitySize {
                 VStack(spacing: 14) { score(player: 0); score(player: 1) }
@@ -519,7 +525,7 @@ private struct MountainGameView: View {
             }
             turnLabel
             startComputerButton
-            board(width: width)
+            board(width: width, maxHeight: maxHeight)
             matchControls
         }
     }
@@ -752,4 +758,9 @@ private struct MountainReplayView: View {
                 }
         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
     }
+}
+
+private struct MountainBoardTop: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = max(value, nextValue()) }
 }

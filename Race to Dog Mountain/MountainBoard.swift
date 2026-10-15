@@ -34,24 +34,47 @@ private struct MountainTileButton: ButtonStyle {
 struct MountainBoard: View {
     let game: MountainGame
     let availableWidth: CGFloat
+    var availableHeight: CGFloat? = nil
+    var fitAllSizes = false
+    @AppStorage("boardScrollThreshold") private var scrollThreshold = 7
+#if os(iOS)
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+#endif
     var interactive = false
     var lastMove: Int?
     var lastPoints = 0
     var selected: Int?
     var select: (Int) -> Void = { _ in }
-    #if os(visionOS)
+#if os(visionOS)
     @ScaledMetric(relativeTo: .title3) private var minimumTile: CGFloat = 60
-    private let gap: CGFloat = 12
-    private let maximumTile: CGFloat = 92
 #else
     @ScaledMetric(relativeTo: .title3) private var minimumTile: CGFloat = 44
-    private let gap: CGFloat = 6
-    private let maximumTile: CGFloat = 76
 #endif
+    @ScaledMetric(relativeTo: .title3) private var numberSize: CGFloat = 20
+    @ScaledMetric(relativeTo: .caption) private var badgeSize: CGFloat = 12
+    private var compact: Bool {
+#if os(iOS)
+        horizontalSizeClass != .regular && availableWidth < 600 && !fitAllSizes
+#else
+        false
+#endif
+    }
     var body: some View {
-        let width = max(minimumTile, min(maximumTile, (availableWidth - 24 - CGFloat(game.size - 1) * gap) / CGFloat(game.size)))
-        return ScrollView(.horizontal) {
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(width), spacing: gap), count: game.size), spacing: gap) {
+        let metrics = MountainBoardLayout(size: game.size, availableWidth: Double(availableWidth), availableHeight: availableHeight.map(Double.init), compact: compact, scrollThreshold: scrollThreshold, minimumTile: Double(minimumTile))
+        Group {
+            if metrics.scrolls {
+                ScrollView(.horizontal) { grid(metrics) }
+                    .accessibilityIdentifier("board-scroll")
+            } else {
+                grid(metrics)
+            }
+        }
+        .frame(width: max(64, availableWidth))
+        .background(MountainStyle.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 20))
+    }
+    private func grid(_ metrics: MountainBoardLayout) -> some View {
+        let width = CGFloat(metrics.tile)
+        return LazyVGrid(columns: Array(repeating: GridItem(.fixed(width), spacing: MountainBoardLayout.gap), count: game.size), spacing: MountainBoardLayout.gap) {
                 ForEach(game.tiles) { tile in
                     let playable = game.canPlay(tile.id)
                     Button { select(tile.id) } label: {
@@ -60,12 +83,13 @@ struct MountainBoard: View {
                                 .fill(tile.value == 0 ? MountainStyle.cream.opacity(0.035) : playable ? MountainStyle.player(game.turn) : MountainStyle.cream)
                             if tile.value == 0 {
                                 if lastMove == tile.id {
-                                    Text("+\(lastPoints)").font(.caption.bold()).foregroundStyle(MountainStyle.cream)
+                                    Text("+\(lastPoints)").font(.system(size: min(badgeSize, max(1, (width - 4) / 2.8)), weight: .bold)).lineLimit(1).minimumScaleFactor(0.1).foregroundStyle(MountainStyle.cream)
                                 } else {
                                     Image(systemName: "pawprint.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
                                 }
                             } else {
-                                Text("\(tile.value)").font(.title3.weight(.heavy)).monospacedDigit().foregroundStyle(MountainStyle.ink)
+                                Text("\(tile.value)").font(.system(size: min(numberSize, max(1, (width - 4) / 2.2)), weight: .heavy)).monospacedDigit()
+                                    .lineLimit(1).minimumScaleFactor(0.1).padding(.horizontal, 2).foregroundStyle(MountainStyle.ink)
                             }
                         }.frame(width: width, height: width)
                             .overlay { RoundedRectangle(cornerRadius: 12).strokeBorder(playable ? MountainStyle.cream.opacity(0.75) : .clear, lineWidth: 2)
@@ -78,10 +102,8 @@ struct MountainBoard: View {
                     .accessibilityHint(playable ? "Adds \(tile.value) points and sets the next player's \(game.turn == 0 ? "column" : "row")" : "")
                     .accessibilityIdentifier("tile-\(tile.id)")
                 }
-            }.padding(12).frame(minWidth: availableWidth)
-        }
-        .background(MountainStyle.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 20))
-        .scrollIndicators(.visible)
+        }.padding(MountainBoardLayout.padding).frame(width: CGFloat(metrics.extent))
+            .accessibilityIdentifier("game-board")
     }
 }
 

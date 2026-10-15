@@ -226,3 +226,21 @@ struct MountainLearningContext: Codable, Sendable {
     let key: String
     let generation: UUID
 }
+
+/// Pure geometry policy, shared by live, friend and replay boards.
+struct MountainBoardLayout {
+    let tile: Double
+    let extent: Double
+    let scrolls: Bool
+    static let padding = 8.0
+    static let gap = 4.0
+    init(size: Int, availableWidth: Double, availableHeight: Double? = nil, compact: Bool, scrollThreshold: Int, minimumTile: Double) {
+        let side = Double(min(14, max(4, size)))
+        scrolls = compact && size > min(14, max(4, scrollThreshold))
+        let available = max(64, availableWidth)
+        let fittedExtent = min(available, availableHeight.map { max(64, $0) } ?? available)
+        let fittedTile = max(1, (fittedExtent - Self.padding * 2 - Self.gap * (side - 1)) / side)
+        tile = scrolls ? max(minimumTile, fittedTile) : fittedTile
+        extent = tile * side + Self.gap * (side - 1) + Self.padding * 2
+    }
+}

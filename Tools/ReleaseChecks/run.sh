@@ -12,3 +12,5 @@ xcrun swiftc -parse-as-library -target "$(uname -m)-apple-macos14.0" "Race to Do
 "$output/social-check"
 xcrun swiftc -parse-as-library -target "$(uname -m)-apple-macos14.0" "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainMatches.swift" "Race to Dog Mountain/MountainLibrary.swift" Tools/ReleaseChecks/adaptive-check.swift -o "$output/adaptive-check"
 "$output/adaptive-check"
+xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" Tools/ReleaseChecks/board-layout-check.swift -o "$output/board-check"
+"$output/board-check"
