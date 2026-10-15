@@ -30,8 +30,10 @@ final class UIApplication {
     static var isActive: Bool { UIApplication.shared.applicationState == .active }
 }
 
+enum ScenePhase { case active, inactive, background }
 struct HumanSelection { let id: Int }
 @MainActor final class Turns {
+    var scenePhase = ScenePhase.active
     var customizing: HumanSelection?
     var resultPresented = false
     var foregroundNonce = 0
@@ -138,6 +140,16 @@ BODY
         turns.task?.cancel() // View dismissal cancels its task.
         await turns.task?.value
         require(turns.game.moves == 6, "Canceled view task moved after dismissal")
+        let scene = Turns()
+        scene.computerStarted = true; scene.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        scene.scenePhase = .inactive // Another window keeps UIApplication active.
+        try await Task.sleep(for: .milliseconds(850))
+        require(scene.game.moves == 0, "Inactive controller scene moved while another scene remained active")
+        scene.restartIfNeeded(); await scene.task?.value
+        require(scene.game.moves == 0, "Inactive controller scene began a new AI turn")
+        scene.scenePhase = .active; scene.restartIfNeeded(); await scene.task?.value
+        require(scene.game.moves == 1, "Reactivated controller scene did not resume once")
         let result = Turns()
         result.game = MountainGame(size: 4, values: [100] + Array(2...16), firstPlayer: 0, startingLine: 0)
         while !result.game.isOver { result.game.play(result.game.legalMoves[0]) }

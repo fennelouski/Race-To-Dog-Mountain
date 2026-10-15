@@ -107,6 +107,33 @@ struct SeededRandom: RandomNumberGenerator {
         assert(defaults.data(forKey: "mountainLearning.v1.recovery") == Data("corrupt-learning".utf8))
         assert(sceneA.learning(for: key).skill == 0)
 
+        let hub = MountainDisplayHub()
+        let snapshot = MountainDisplaySnapshot.design
+        hub.claim(owner: snapshot.owner); hub.publish(snapshot); hub.connected("screen1"); hub.disconnected("screen1")
+        assert(hub.snapshot?.game.moves == snapshot.game.moves && hub.connections.isEmpty)
+        hub.connected("screen2")
+        hub.clear(owner: UUID())
+        assert(hub.snapshot?.owner == snapshot.owner, "An unrelated display cannot clear the primary game")
+        let stale = MountainDisplaySnapshot(owner: snapshot.owner, game: MountainGame(size: 6, values: Array(1...36), startingLine: 2), names: snapshot.names, symbols: snapshot.symbols, computers: snapshot.computers, difficulty: snapshot.difficulty, lastMove: nil, lastPoints: 0, paused: false)
+        hub.publish(stale)
+        assert(hub.snapshot?.game.moves == snapshot.game.moves, "Ignore stale snapshots for the same game")
+        let replacement = MountainDisplaySnapshot(owner: UUID(), game: stale.game, names: snapshot.names, symbols: snapshot.symbols, computers: snapshot.computers, difficulty: snapshot.difficulty, lastMove: nil, lastPoints: 0, paused: false)
+        hub.claim(owner: replacement.owner); hub.publish(replacement)
+        hub.publish(snapshot); hub.clear(owner: snapshot.owner)
+        assert(hub.snapshot?.owner == replacement.owner, "Retired teardown cannot reclaim or clear a new game")
+        hub.clear(owner: replacement.owner)
+        assert(hub.snapshot == nil && hub.activeOwner == nil)
+        hub.publish(replacement)
+        assert(hub.snapshot == nil, "A released owner cannot publish without a new claim")
+        let libraryA = MountainLibrary(defaults: defaults), libraryB = MountainLibrary(defaults: defaults)
+        var firstGame = SavedMountainGame(size: 4, names: ["A", "B"], computers: [false, false], difficulty: .level1, adjustment: 0)
+        let secondGame = SavedMountainGame(size: 4, names: ["C", "D"], computers: [false, false], difficulty: .level1, adjustment: 0)
+        libraryA.save(firstGame); libraryB.save(secondGame)
+        let staleGame = firstGame
+        firstGame.game.play(firstGame.game.legalMoves[0]); libraryA.save(firstGame); libraryB.save(staleGame)
+        let freshLibrary = MountainLibrary(defaults: defaults)
+        assert(freshLibrary.games.count == 2 && freshLibrary.games.first(where: { $0.id == firstGame.id })?.game.moves == 1, "Interleaved saves preserve both games and newer moves")
+
         var saved = SavedMountainGame(size: 4, names: ["A", "B"], computers: [false, true], difficulty: .level1, adjustment: 0)
         saved.learning = repaired
         let data = try JSONEncoder().encode(saved)

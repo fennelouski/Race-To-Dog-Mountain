@@ -204,13 +204,15 @@ struct MountainScoreNumber: View, Animatable {
 
 /// The connected display is a presentation surface; this view cannot play a move or create an AI task.
 struct MountainExternalPresentation: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var feedback: [MountainMoveFeedback] = []
     let snapshot: MountainDisplaySnapshot
     var body: some View {
         GeometryReader { geometry in
             let inset = max(20, min(geometry.size.width, geometry.size.height) * 0.045)
             let scoreWidth = min(360, max(180, geometry.size.width * 0.25))
             let wide = geometry.size.width > geometry.size.height
-            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 92 : 300), geometry.size.width - inset * 2 - (wide ? scoreWidth + 36 : 0)))
+            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 92 : 400), geometry.size.width - inset * 2 - (wide ? scoreWidth + 36 : 0)))
             ZStack {
                 MountainScenery(active: !snapshot.paused, celebration: snapshot.humanVictory)
                     .overlay(MountainStyle.ink.opacity(0.50)).ignoresSafeArea()
@@ -218,8 +220,8 @@ struct MountainExternalPresentation: View {
                     HStack(alignment: .firstTextBaseline) {
                         Text("Race to Dog Mountain").font(MountainStyle.display(max(24, min(42, geometry.size.width * 0.03))))
                         Spacer()
-                        Text(snapshot.paused ? "Paused" : snapshot.game.isOver ? "The summit" : "\(snapshot.names[snapshot.game.turn])'s \(snapshot.game.turn == 0 ? "row" : "column")")
-                            .font(.title2.weight(.semibold)).foregroundStyle(MountainStyle.player(snapshot.game.turn))
+                        Text(snapshot.game.isOver ? "The summit" : snapshot.paused ? "Paused" : "\(snapshot.names[snapshot.game.turn])'s \(snapshot.game.turn == 0 ? "row" : "column")")
+                            .font(.title2.weight(.semibold)).lineLimit(2).minimumScaleFactor(0.5).foregroundStyle(MountainStyle.player(snapshot.game.turn))
                     }
                     if wide {
                         HStack(alignment: .center, spacing: 36) {
@@ -243,7 +245,33 @@ struct MountainExternalPresentation: View {
                         .padding(inset)
                 }
             }
-        }.foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
+        }
+        .overlayPreferenceValue(MountainMoveAnchors.self) { anchors in
+            GeometryReader { proxy in
+                if !reduceMotion {
+                    ForEach(feedback) { event in
+                        if let source = anchors[.tile(event.tile)], let target = anchors[.score(event.player)] {
+                            MountainMoveVisual(event: event,
+                                start: CGPoint(x: proxy[source].midX, y: proxy[source].midY),
+                                end: CGPoint(x: proxy[target].midX, y: proxy[target].midY))
+                        }
+                    }
+                }
+            }.allowsHitTesting(false).accessibilityHidden(true)
+        }
+        .onChange(of: snapshot.game.moves) { old, new in
+            guard new > old, !reduceMotion, !snapshot.paused, let tile = snapshot.lastMove else { return }
+            let event = MountainMoveFeedback(id: new, tile: tile, player: 1 - snapshot.game.turn, points: snapshot.lastPoints, maximum: snapshot.game.size * snapshot.game.size)
+            feedback = Array((feedback + [event]).suffix(8))
+        }
+        .onChange(of: snapshot.paused) { _, paused in if paused { feedback.removeAll() } }
+        .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
+        .task(id: feedback.last?.id) {
+            guard !feedback.isEmpty else { return }
+            do { try await Task.sleep(for: .milliseconds(650)) } catch { return }
+            feedback.removeAll()
+        }
+        .foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
     }
     private func displayBoard(side: CGFloat) -> some View {
         MountainBoard(game: snapshot.game, availableWidth: side, fitAllSizes: true, numberScale: 2,
@@ -251,18 +279,20 @@ struct MountainExternalPresentation: View {
             .allowsHitTesting(false)
     }
     private func displayScore(_ player: Int, height: CGFloat) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 14) {
-                Image(systemName: snapshot.symbols[player]).font(.largeTitle)
-                Text(snapshot.names[player]).font(.title.weight(.semibold)).fixedSize(horizontal: false, vertical: true)
+        let compact = height < 600
+        return VStack(alignment: .leading, spacing: compact ? 8 : 16) {
+            HStack(spacing: compact ? 8 : 14) {
+                Image(systemName: snapshot.symbols[player]).font(compact ? .title2 : .largeTitle)
+                Text(snapshot.names[player]).font(compact ? .headline : .title.weight(.semibold)).lineLimit(2).minimumScaleFactor(0.5)
             }
             MountainScoreNumber(value: Double(snapshot.game.scores[player]))
-                .font(MountainStyle.display(max(44, min(108, height * 0.14))))
-                .animation(.easeInOut(duration: 0.3), value: snapshot.game.scores[player])
+                .font(MountainStyle.display(max(32, min(108, height * (compact ? 0.1 : 0.14)))))
+                .lineLimit(1).minimumScaleFactor(0.25)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: snapshot.game.scores[player])
                 .anchorPreference(key: MountainMoveAnchors.self, value: .bounds) { [.score(player): $0] }
             Text(snapshot.game.isOver ? "Points" : snapshot.game.turn == player ? "\(player == 0 ? "Row" : "Column") · Your turn" : "Points")
-                .font(.title3.weight(.semibold))
-        }.padding(28).frame(maxWidth: .infinity, alignment: .leading)
+                .font(compact ? .caption.weight(.semibold) : .title3.weight(.semibold)).lineLimit(2)
+        }.padding(compact ? 16 : 28).frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(MountainStyle.player(player))
             .background(MountainStyle.ink.opacity(0.80), in: RoundedRectangle(cornerRadius: 24))
             .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(MountainStyle.player(player).opacity(snapshot.game.turn == player ? 0.85 : 0.2), lineWidth: 2) }

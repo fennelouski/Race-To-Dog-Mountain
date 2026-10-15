@@ -20,7 +20,12 @@ import Observation
     }
     func save(_ game: SavedMountainGame) {
         guard game.isValid else { error = "This game couldn't be saved."; return }
+        // Merge the freshest persisted library so a retired scene cannot erase a newer game.
         var next = games
+        if let data = defaults.data(forKey: Self.key), data.count <= 4_194_304,
+           let latest = try? JSONDecoder().decode([SavedMountainGame].self, from: data),
+           latest.allSatisfy(\.isValid), Set(latest.map(\.id)).count == latest.count { next = latest }
+        if let current = next.first(where: { $0.id == game.id }), current.game.moves > game.game.moves { games = next; return }
         if let index = next.firstIndex(where: { $0.id == game.id }) { next[index] = game }
         else { next.append(game) }
         do {
@@ -98,4 +103,24 @@ import Observation
         defaults.set(data, forKey: Self.storageKey)
         revision += 1
     }
+}
+
+/// Read-only snapshots cross the display boundary; the primary view alone owns game mutation and AI.
+@MainActor @Observable final class MountainDisplayHub {
+    static let shared = MountainDisplayHub()
+    private(set) var snapshot: MountainDisplaySnapshot?
+    private(set) var connections: Set<String> = []
+    private(set) var activeOwner: UUID?
+    func claim(owner: UUID) {
+        if activeOwner != owner { snapshot = nil }
+        activeOwner = owner
+    }
+    func publish(_ next: MountainDisplaySnapshot) {
+        guard activeOwner == next.owner else { return }
+        if let current = snapshot, current.owner == next.owner, current.game.moves > next.game.moves { return }
+        snapshot = next
+    }
+    func clear(owner: UUID) { if activeOwner == owner { snapshot = nil; activeOwner = nil } }
+    func connected(_ scene: String) { connections.insert(scene) }
+    func disconnected(_ scene: String) { connections.remove(scene) }
 }

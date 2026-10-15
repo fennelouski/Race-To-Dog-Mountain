@@ -1,4 +1,5 @@
 import SwiftUI
+import Observation
 #if os(macOS)
 import AppKit
 #else
@@ -24,15 +25,48 @@ import UIKit
 
 #if os(iOS)
 
+@MainActor @Observable private final class MountainPrimaryActivity { var phase: ScenePhase = .inactive }
+
+private struct MountainPrimaryRoot: View {
+    let activity: MountainPrimaryActivity
+    var body: some View { MountainHome().offeringMountainDisplay().environment(\.scenePhase, activity.phase) }
+}
+
 @objc(DMModernSceneDelegate)
 final class MountainSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    private let activity = MountainPrimaryActivity()
+    private static weak var primary: MountainSceneDelegate?
+    private final class WeakScene { weak var value: MountainSceneDelegate?; init(_ value: MountainSceneDelegate) { self.value = value } }
+    private static var scenes: [String: WeakScene] = [:]
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = UIHostingController(rootView: MountainHome())
-        window.makeKeyAndVisible()
         self.window = window
+        Self.scenes[session.persistentIdentifier] = WeakScene(self)
+        if Self.primary == nil { Self.primary = self }
+        configureRoot()
+        window.makeKeyAndVisible()
+    }
+    private func configureRoot() {
+        if Self.primary === self {
+            window?.rootViewController = UIHostingController(rootView: MountainPrimaryRoot(activity: activity))
+        } else {
+            // Additional interactive windows are read-only viewers, never second game/AI owners.
+            window?.rootViewController = UIHostingController(rootView: MountainExternalScreen())
+        }
+    }
+    func sceneDidBecomeActive(_ scene: UIScene) { activity.phase = .active }
+    func sceneWillResignActive(_ scene: UIScene) { activity.phase = .inactive }
+    func sceneDidEnterBackground(_ scene: UIScene) { activity.phase = .background }
+    func sceneDidDisconnect(_ scene: UIScene) {
+        activity.phase = .background
+        Self.scenes.removeValue(forKey: scene.session.persistentIdentifier)
+        window = nil
+        if Self.primary === self {
+            Self.primary = Self.scenes.values.compactMap(\.value).first
+            Self.primary?.configureRoot()
+        }
     }
 }
 
@@ -395,6 +429,7 @@ private struct MountainGameView: View {
     @AppStorage("humanProfiles.v1") private var humanProfiles = Data()
     @AppStorage("hapticsEnabled") private var hapticsEnabled = true
     @Environment(\.scenePhase) private var scenePhase
+    @State private var displayHub = MountainDisplayHub.shared
     @State private var customizing: MountainHumanSelection?
     @State private var resultPresented = false
     @State private var feedback: [MountainMoveFeedback] = []
@@ -442,7 +477,7 @@ private struct MountainGameView: View {
         _computers = State(initialValue: saved?.computers ?? computers)
     }
 
-    var body: some View {
+    private var gameContent: some View {
         GeometryReader { geometry in
             ZStack {
                 MountainScenery(active: !replaying && !confirmExit, celebration: humanVictory)
@@ -495,35 +530,44 @@ private struct MountainGameView: View {
                 do { try await Task.sleep(for: .milliseconds(650)) } catch { return }
                 feedback.removeAll()
             }
-            .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() } }
+            .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() }; publishDisplay() }
             .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
             .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], profiles: $humanProfiles).mountainSheetSize() }
             .sheet(isPresented: $resultPresented) { resultPanel.mountainSheetSize() }
-            .onAppear { if game.isOver { resultPresented = true } }
+            .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay() }
+            .onChange(of: humanProfiles) { publishDisplay() }
+            .onChange(of: customizing?.id) { publishDisplay() }
+            .onChange(of: replaying) { publishDisplay() }
+            .onChange(of: confirmExit) { publishDisplay() }
             .confirmationDialog("Leave this game?", isPresented: $confirmExit, titleVisibility: .visible) {
                 Button("Back to games") { leaveGame() }
             } message: { Text("Your progress is saved. You can finish this game later.") }
+
+        }
+    }
+    var body: some View {
+        gameContent
             .onReceive(NotificationCenter.default.publisher(for: MountainPlatform.didBecomeActive)) { _ in foregroundNonce += 1 }
-            .task(id: "\(game.moves)-\(computers)-\(confirmExit)-\(foregroundNonce)-\(computerStarted)-\(replaying)-\(customizing?.id ?? -1)-\(resultPresented)") {
-                guard MountainPlatform.isActive, !confirmExit, !replaying, customizing == nil, !resultPresented, !waitingForStart, !game.isOver, computers[game.turn] else { return }
+            .task(id: "\(game.moves)-\(computers)-\(confirmExit)-\(foregroundNonce)-\(computerStarted)-\(replaying)-\(customizing?.id ?? -1)-\(resultPresented)-\(scenePhase)") {
+                guard scenePhase == .active, MountainPlatform.isActive, !confirmExit, !replaying, customizing == nil, !resultPresented, !waitingForStart, !game.isOver, computers[game.turn] else { return }
                 do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
                 let snapshot = game, profile = difficulty, skill = matchAdjustment
                 let next = await Task.detached(priority: .userInitiated) {
                     snapshot.computerMove(difficulty: profile, adjustment: skill)
                 }.value
-                guard !Task.isCancelled, !confirmExit, !replaying, customizing == nil, !resultPresented, MountainPlatform.isActive else { return }
+                guard !Task.isCancelled, !confirmExit, !replaying, customizing == nil, !resultPresented, scenePhase == .active, MountainPlatform.isActive else { return }
                 if let next { move(next, computer: true) }
             }
             .onChange(of: game.isOver) { _, over in if over { recordWin(); resultPresented = true } }
             .onChange(of: computers) { rolesChanged = true; persist() }
             .onChange(of: computerStarted) { persist() }
-            .onDisappear { feedback.removeAll(); persist() }
+            .onDisappear { retireDisplay() }
             .sheet(isPresented: $replaying) {
                 if let replay = lastComputerMove { MountainReplayView(replay: replay).mountainSheetSize() }
             }
-        }
         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
         .mountainGameFeedback(moves: game.moves, over: humanVictory, enabled: hapticsEnabled, intensity: 0.2 + moveIntensity * 0.8)
+        .offeringMountainDisplay()
 #if os(macOS)
         .focusedSceneValue(\.mountainActions, MountainActions(newGame: { restart() }, replay: lastComputerMove == nil ? nil : { replaying = true }, close: { if game.isOver { leaveGame() } else { confirmExit = true } }))
 #endif
@@ -718,7 +762,21 @@ private struct MountainGameView: View {
         if game.isOver { recordWin() }
         persist()
     }
-    private func persist() {
+    private func publishDisplay() {
+#if os(iOS)
+        displayHub.publish(MountainDisplaySnapshot(owner: savedID, game: game,
+            names: [playerName(0), playerName(1)],
+            symbols: [0, 1].map { computers[$0] ? "pawprint.fill" : MountainHumanProfile.read(identity: names[$0], data: humanProfiles).symbol },
+            computers: computers, difficulty: difficulty, lastMove: lastMove, lastPoints: lastPoints,
+            paused: scenePhase != .active || replaying || confirmExit || customizing != nil))
+#endif
+    }
+    private func retireDisplay() {
+        feedback.removeAll()
+        if displayHub.activeOwner == savedID { persist(publish: false); displayHub.clear(owner: savedID) }
+    }
+    private func persist(publish: Bool = true) {
+        if publish { publishDisplay() }
         var saved = SavedMountainGame(size: game.size, names: names, computers: computers, difficulty: difficulty, adjustment: matchAdjustment)
         saved.id = savedID; saved.game = game; saved.replay = lastComputerMove
         saved.learning = learning
@@ -728,6 +786,7 @@ private struct MountainGameView: View {
     private func restart() {
         feedback.removeAll(); resultPresented = false
         savedID = UUID()
+        displayHub.claim(owner: savedID)
         game = MountainGame(size: game.size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
         recorded = false; lastMove = nil; lastPoints = 0; lastComputerMove = nil
         computerStarted = computers.contains(false); rolesChanged = false; matchAdjustment = 0
@@ -866,5 +925,82 @@ private struct MountainHumanEditor: View {
                 }
         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
             .onAppear { let profile = MountainHumanProfile.read(identity: identity, data: profiles); name = profile.displayName; symbol = profile.symbol }
+    }
+}
+
+#if os(iOS)
+@objc(DMExternalMountainSceneDelegate)
+final class MountainExternalSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = UIHostingController(rootView: MountainExternalScreen())
+        window.isUserInteractionEnabled = false
+        self.window = window
+        MountainDisplayHub.shared.connected(session.persistentIdentifier)
+        window.isHidden = false
+    }
+    func sceneDidDisconnect(_ scene: UIScene) {
+        MountainDisplayHub.shared.disconnected(scene.session.persistentIdentifier)
+        window?.isHidden = true; window = nil
+    }
+}
+
+private struct MountainExternalScreen: View {
+    @State private var hub = MountainDisplayHub.shared
+    var body: some View {
+        Group {
+            if let snapshot = hub.snapshot {
+                MountainExternalPresentation(snapshot: snapshot).id(snapshot.owner)
+            } else {
+                ZStack {
+                    MountainScenery().overlay(MountainStyle.ink.opacity(0.5)).ignoresSafeArea()
+                    VStack(spacing: 24) {
+                        Image(systemName: "mountain.2.fill").font(.system(size: 80)).foregroundStyle(MountainStyle.gold)
+                        Text("Race to Dog Mountain").font(MountainStyle.display(60)).multilineTextAlignment(.center)
+                        Text("Start a game on your iPhone or iPad").font(.title)
+                    }.padding(48)
+                }.foregroundStyle(MountainStyle.cream)
+            }
+        }.preferredColorScheme(.dark).statusBarHidden()
+    }
+}
+
+#if !targetEnvironment(macCatalyst)
+private struct MountainSceneAccessory: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> MountainAccessoryController { MountainAccessoryController() }
+    func updateUIViewController(_ controller: MountainAccessoryController, context: Context) {}
+}
+
+private final class MountainAccessoryController: UIViewController {
+    private var registration: AnyObject?
+    override func viewDidLoad() { super.viewDidLoad(); view.isUserInteractionEnabled = false }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 27, *), registration == nil {
+            let configuration = UISceneConfiguration(name: "Mountain Display", sessionRole: .windowExternalDisplayNonInteractive)
+            configuration.delegateClass = MountainExternalSceneDelegate.self
+            registration = registerSceneAccessory(.externalNonInteractive(sceneConfiguration: configuration))
+        }
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if #available(iOS 27, *), let registration = registration as? UISceneAccessoryRegistration {
+            unregisterSceneAccessory(registration)
+        }
+        registration = nil
+    }
+}
+#endif
+#endif
+
+private extension View {
+    @ViewBuilder func offeringMountainDisplay() -> some View {
+#if os(iOS) && !targetEnvironment(macCatalyst)
+        background { MountainSceneAccessory().frame(width: 0, height: 0) }
+#else
+        self
+#endif
     }
 }
