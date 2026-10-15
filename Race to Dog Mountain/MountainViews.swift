@@ -46,11 +46,13 @@ struct MountainHome: View {
     @AppStorage("player2AI") private var secondAI = true
     @AppStorage("complexity") private var size = 6
     @AppStorage("computerLevel") private var computerLevel = 5
-    @AppStorage("computerAdjustment") private var computerAdjustment = 0
+    @AppStorage("adaptiveDifficulty") private var adaptiveDifficulty = true
     @AppStorage("computerDialogue") private var computerDialogue = false
     @State private var playing = false
     @State private var selection: SavedMountainGame?
     @State private var library = MountainLibrary()
+    @State private var learningStore = MountainLearningStore.shared
+    @State private var resetLearning = false
     @State private var friends = MountainFriends()
     @Environment(\.scenePhase) private var phase
     @State private var options = false
@@ -177,14 +179,19 @@ struct MountainHome: View {
 
     private var localGame: some View {
         MountainGameView(size: size, names: names, computers: [firstAI, secondAI], difficulty: difficulty,
-                         adjustment: computerAdjustment, saved: selection, onSave: library.save,
+                         adjustment: 0, saved: selection, learningStore: learningStore, onSave: library.save,
                          onLeave: { playing = false; refreshHistory() })
 #if os(iOS)
             .statusBarHidden(!showStatusBar)
 #endif
     }
     private func startLocal(passAndPlay: Bool = false) {
-        let next = SavedMountainGame(size: size, names: names, computers: passAndPlay ? [false, false] : [firstAI, secondAI], difficulty: difficulty, adjustment: computerAdjustment)
+        let computers = passAndPlay ? [false, false] : [firstAI, secondAI]
+        let key = learningKey(computers: computers)
+        let context = adaptiveDifficulty ? key.map { learningStore.begin(key: $0) } : nil
+        let profile = context.map { learningStore.learning(for: $0.key).difficulty } ?? manualDifficulty
+        var next = SavedMountainGame(size: size, names: names, computers: computers, difficulty: profile, adjustment: 0)
+        next.learning = context
         library.save(next); selection = next; playing = true
     }
     private func resume(_ game: SavedMountainGame) { selection = game; playing = true }
@@ -242,7 +249,17 @@ struct MountainHome: View {
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: computerLevel) ?? .level6 }
+    private var manualDifficulty: ComputerDifficulty { ComputerDifficulty(rawValue: computerLevel) ?? .level1 }
+    private func learningKey(computers: [Bool]) -> String? {
+        guard computers.filter({ $0 }).count == 1, let human = computers.firstIndex(of: false) else { return nil }
+        return MountainLearningStore.key(name: names[human], size: size, seat: human)
+    }
+    private var difficulty: ComputerDifficulty {
+        if adaptiveDifficulty, let key = learningKey(computers: [firstAI, secondAI]) {
+            return learningStore.learning(for: key).difficulty
+        }
+        return manualDifficulty
+    }
     private var names: [String] { [clean(firstName, fallback: "Player 1"), clean(secondName, fallback: "Player 2")] }
     private func clean(_ name: String, fallback: String) -> String {
         let result = name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -267,15 +284,32 @@ struct MountainHome: View {
                                     Text(difficulty.detail).font(.subheadline)
                                 }
                             }
-                            Stepper(value: $computerLevel, in: 0...15) {
-                                Text("Difficulty · \(difficulty.title) of 16").font(.headline).monospacedDigit()
-                            }.accessibilityIdentifier("computer-difficulty")
-                            Picker("Choose an opponent", selection: $computerLevel) {
-                                ForEach(ComputerDifficulty.allCases) { profile in
-                                    Text("\(profile.title) · \(profile.name)").tag(profile.rawValue)
+                            if firstAI != secondAI {
+                                Toggle("Adaptive difficulty", isOn: $adaptiveDifficulty)
+                                    .accessibilityIdentifier("adaptive-difficulty")
+                                if adaptiveDifficulty, let key = learningKey(computers: [firstAI, secondAI]) {
+                                    Text("Starts easy and adjusts between games: slowly harder after sustained wins, easier faster after losses. Aims for about 60–70% wins; results will vary.")
+                                        .font(.footnote)
+                                    Text("Next game · \(difficulty.title)").font(.headline)
+                                    if let rate = learningStore.learning(for: key).winRate {
+                                        Text("Recent wins · \(Int((rate * 100).rounded()))% of completed, decisive games")
+                                            .font(.footnote)
+                                    }
+                                    Button("Reset learning for this player & board") { resetLearning = true }
+                                        .frame(minHeight: 44).accessibilityIdentifier("reset-learning")
                                 }
-                            }.pickerStyle(.menu)
-                            Text("A little tougher after you win, a little gentler after you lose. Your selected level stays the same.").font(.footnote)
+                            }
+                            if !adaptiveDifficulty || firstAI == secondAI {
+                                Stepper(value: $computerLevel, in: 0...15) {
+                                    Text("Difficulty · \(manualDifficulty.title) of 16").font(.headline).monospacedDigit()
+                                }.accessibilityIdentifier("computer-difficulty")
+                                Picker("Choose an opponent", selection: $computerLevel) {
+                                    ForEach(ComputerDifficulty.allCases) { profile in
+                                        Text("\(profile.title) · \(profile.name)").tag(profile.rawValue)
+                                    }
+                                }.pickerStyle(.menu)
+                                Text("Manual difficulty stays fixed. Changes apply to new games.").font(.footnote)
+                            }
                             Toggle("Opponent chat", isOn: $computerDialogue)
                                 .accessibilityIdentifier("opponent-chat")
                             Text("Optional phrases from your rival. Off by default.").font(.footnote)
@@ -304,7 +338,11 @@ struct MountainHome: View {
             .background(MountainStyle.ink).navigationTitle("Settings").mountainInlineTitle()
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { options = false } } }
         }.tint(MountainStyle.gold).foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
-            .onChange(of: computerLevel) { computerAdjustment = 0 }
+            .confirmationDialog("Reset learning?", isPresented: $resetLearning, titleVisibility: .visible) {
+                Button("Reset learning", role: .destructive) {
+                    if let key = learningKey(computers: [firstAI, secondAI]) { learningStore.reset(key: key) }
+                }
+            } message: { Text("The next game for this player, board size and role starts easy. Current games keep their difficulty.") }
     }
     private func playerEditor(name: Binding<String>, computer: Binding<Bool>, index: Int) -> some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -346,11 +384,14 @@ private struct MountainRules: View {
 
 private struct MountainGameView: View {
     let names: [String]
-    let difficulty: ComputerDifficulty
+    @State private var difficulty: ComputerDifficulty
+    let learningStore: MountainLearningStore?
     let onLeave: (() -> Void)?
     let onSave: ((SavedMountainGame) -> Void)?
     @State private var savedID: UUID
-    @AppStorage("computerAdjustment") private var computerAdjustment = 0
+    @AppStorage("adaptiveDifficulty") private var adaptiveDifficulty = true
+    @AppStorage("computerLevel") private var computerLevel = 5
+    @State private var learning: MountainLearningContext?
     @AppStorage("computerDialogue") private var computerDialogue = false
     @State private var matchAdjustment: Int
     @State private var rolesChanged = false
@@ -368,10 +409,12 @@ private struct MountainGameView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var typeSize
 
-    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, saved: SavedMountainGame? = nil, onSave: ((SavedMountainGame) -> Void)? = nil, onLeave: (() -> Void)? = nil) {
+    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, saved: SavedMountainGame? = nil, learningStore: MountainLearningStore? = nil, onSave: ((SavedMountainGame) -> Void)? = nil, onLeave: (() -> Void)? = nil) {
         self.names = saved?.names ?? names
         self.onLeave = onLeave; self.onSave = onSave
-        self.difficulty = saved?.difficulty ?? difficulty
+        self.learningStore = learningStore
+        _difficulty = State(initialValue: saved?.difficulty ?? difficulty)
+        _learning = State(initialValue: saved?.learning)
         _savedID = State(initialValue: saved?.id ?? UUID())
         _recorded = State(initialValue: saved?.recorded ?? false)
         _computerStarted = State(initialValue: saved?.computerStarted ?? false)
@@ -607,6 +650,7 @@ private struct MountainGameView: View {
     private func persist() {
         var saved = SavedMountainGame(size: game.size, names: names, computers: computers, difficulty: difficulty, adjustment: matchAdjustment)
         saved.id = savedID; saved.game = game; saved.replay = lastComputerMove
+        saved.learning = learning
         saved.recorded = recorded; saved.computerStarted = computerStarted; saved.rolesChanged = rolesChanged
         onSave?(saved)
     }
@@ -614,17 +658,27 @@ private struct MountainGameView: View {
         savedID = UUID()
         game = MountainGame(size: game.size, firstPlayer: MountainGame.startingPlayer(computers: computers))
         recorded = false; lastMove = nil; lastPoints = 0; lastComputerMove = nil
-        computerStarted = false; rolesChanged = false; matchAdjustment = computerAdjustment
+        computerStarted = false; rolesChanged = false; matchAdjustment = 0
+        if adaptiveDifficulty, computers.filter({ $0 }).count == 1, let human = computers.firstIndex(of: false), let learningStore {
+            let key = MountainLearningStore.key(name: names[human], size: game.size, seat: human)
+            learning = learningStore.begin(key: key)
+            difficulty = learningStore.learning(for: key).difficulty
+        } else {
+            learning = nil
+            difficulty = ComputerDifficulty(rawValue: computerLevel) ?? .level1
+        }
         foregroundNonce += 1; persist()
     }
     private func recordWin() {
-        guard !recorded else { return }
+        guard game.isOver, !recorded else { return }
         recorded = true
+        if !rolesChanged, computers.filter({ $0 }).count == 1,
+           let human = computers.firstIndex(of: false), let learning {
+            let result: MountainLearning.Outcome = game.scores[0] == game.scores[1] ? .tie : game.scores[human] > game.scores[1 - human] ? .win : .loss
+            learningStore?.record(result, gameID: savedID, context: learning)
+        }
         guard game.scores[0] != game.scores[1] else { return }
         let winner = game.scores[0] > game.scores[1] ? 0 : 1
-        if !rolesChanged, computers.filter({ $0 }).count == 1 {
-            computerAdjustment = ComputerDifficulty.adjusted(matchAdjustment, humanWon: !computers[winner])
-        }
         let key = "\(names[winner])vvv\(names[1 - winner])"
         UserDefaults.standard.set(UserDefaults.standard.integer(forKey: key) + 1, forKey: key)
     }

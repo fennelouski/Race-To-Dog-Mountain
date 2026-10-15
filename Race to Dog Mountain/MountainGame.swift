@@ -93,14 +93,23 @@ struct MountainGame: Sendable, Codable {
     }
 
     func computerMove(difficulty: ComputerDifficulty = .level6, adjustment: Int = 0, roll: Double? = nil) -> Int? {
-        let ranked = legalMoves.map { (id: $0, value: evaluated($0, depth: difficulty.depth, branches: difficulty.branches)) }
-            .sorted { $0.value > $1.value }.map(\.id)
+        var random = SystemRandomNumberGenerator()
+        return computerMove(difficulty: difficulty, adjustment: adjustment, roll: roll, using: &random)
+    }
+    func computerMove<R: RandomNumberGenerator>(difficulty: ComputerDifficulty, adjustment: Int = 0, roll: Double? = nil, using random: inout R) -> Int? {
+        let evaluatedMoves: [(id: Int, value: Int)] = legalMoves.map { id in
+            (id: id, value: evaluated(id, depth: difficulty.depth, branches: difficulty.branches))
+        }
+        let ranked = evaluatedMoves.sorted { left, right in
+            if left.value == right.value { return left.id < right.id }
+            return left.value > right.value
+        }.map(\.id)
         guard let best = ranked.first else { return nil }
         let accuracy = min(1, max(0, difficulty.accuracy + Double(min(2, max(-2, adjustment))) * 0.0125))
-        if (roll ?? Double.random(in: 0..<1)) < accuracy || ranked.count == 1 { return best }
+        if (roll ?? Double.random(in: 0..<1, using: &random)) < accuracy || ranked.count == 1 { return best }
         // A softer opponent sometimes picks another promising route, not an illegal move.
         let alternatives = Array(ranked.dropFirst().prefix(difficulty.rawValue < 4 ? ranked.count : 3))
-        return alternatives.randomElement() ?? best
+        return alternatives.randomElement(using: &random) ?? best
     }
     private func evaluated(_ id: Int, depth: Int, branches: Int) -> Int {
         var next = self
@@ -177,3 +186,43 @@ struct MountainReplay: Sendable, Codable {
     }
 }
 #endif
+
+/// Local, between-game AIMD controller. Outcomes guide challenge; they never alter a board or score.
+struct MountainLearning: Codable, Sendable {
+    enum Outcome: String, Codable, Sendable { case win, loss, tie }
+    private(set) var skill = 0.0
+    private(set) var recent: [Outcome] = []
+    private(set) var cooldown = 0
+    var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: Int(skill.rounded(.down))) ?? .level1 }
+    var winRate: Double? {
+        let decisive = recent.filter { $0 != .tie }
+        guard !decisive.isEmpty else { return nil }
+        return Double(decisive.filter { $0 == .win }.count) / Double(decisive.count)
+    }
+    var isValid: Bool {
+        skill.isFinite && (0...15).contains(skill) && recent.count <= 12 && (0...2).contains(cooldown)
+    }
+    mutating func record(_ outcome: Outcome) {
+        // Ties do not count as wins or losses, and break a winning/losing streak.
+        recent.append(outcome); recent = Array(recent.suffix(12))
+        if cooldown > 0 { cooldown -= 1; return }
+        let decisive = recent.filter { $0 != .tie }
+        guard outcome != .tie, decisive.count >= 4 else { return }
+        let wins = Double(decisive.filter { $0 == .win }.count)
+        // Four prior observations centred on 65% damp short-session noise.
+        let smoothed = (wins + 2.6) / (Double(decisive.count) + 4)
+        let pair = Array(recent.suffix(2))
+        if outcome == .loss && smoothed < 0.60 {
+            skill = max(0, skill * 0.65)
+            cooldown = 2
+        } else if outcome == .win && pair == [.win, .win] && smoothed > 0.70 {
+            skill = min(15, skill + 0.25)
+            cooldown = 2
+        }
+    }
+}
+
+struct MountainLearningContext: Codable, Sendable {
+    let key: String
+    let generation: UUID
+}

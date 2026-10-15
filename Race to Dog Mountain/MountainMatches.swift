@@ -99,6 +99,7 @@ struct SavedMountainGame: Codable, Identifiable {
     var recorded = false
     var computerStarted = false
     var rolesChanged = false
+    var learning: MountainLearningContext?
 
     init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int) {
         self.names = names; self.computers = computers; self.difficulty = difficulty

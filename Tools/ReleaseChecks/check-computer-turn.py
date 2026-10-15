@@ -36,7 +36,9 @@ final class UIApplication {
     var replaying = false
     var recorded = false
     var rolesChanged = false
-    var computerAdjustment = 0
+    var savedID = UUID()
+    var learning: MountainLearningContext?
+    lazy var learningStore: MountainLearningStore? = MountainLearningStore(defaults: preferences)
     let names = ["Test first", "Test second"]
     let preferences = UserDefaults(suiteName: "dog-mountain-check-" + UUID().uuidString)!
     var difficulty = ComputerDifficulty.level6
@@ -126,24 +128,33 @@ BODY
         let winner = result.game.scores[0] > result.game.scores[1] ? 0 : 1
         result.computers = [true, true]
         result.computers[winner] = false
+        let key = MountainLearningStore.key(name: "Test human", size: 4, seat: 0)
+        result.learning = result.learningStore!.begin(key: key)
         result.recordWin()
-        require(result.computerAdjustment == 1, "A human win did not slightly increase skill")
+        require(result.learningStore!.learning(for: key).recent == [.win], "Human win was not recorded")
         result.recordWin()
-        require(result.computerAdjustment == 1, "Result applied adaptation twice")
-        result.recorded = false
+        require(result.learningStore!.learning(for: key).recent == [.win], "Result trained twice")
+        result.recorded = false; result.savedID = UUID()
         result.computers = result.computers.map { !$0 }
         result.recordWin()
-        require(result.computerAdjustment == -1, "A human loss did not slightly decrease skill")
-        result.recorded = false; result.computerAdjustment = 0; result.rolesChanged = true
+        require(result.learningStore!.learning(for: key).recent == [.win, .loss], "Human loss was not recorded")
+        result.recorded = false; result.savedID = UUID(); result.rolesChanged = true
         result.recordWin()
-        require(result.computerAdjustment == 0, "Changing roles during a game affected adaptation")
-        result.recorded = false; result.rolesChanged = false; result.computers = [true, true]
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Changed roles trained learning")
+        result.recorded = false; result.savedID = UUID(); result.rolesChanged = false; result.computers = [true, true]
         result.recordWin()
-        require(result.computerAdjustment == 0, "Computer-only game affected adaptation")
-        result.recorded = false; result.computers = [false, false]
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Computer-only game trained learning")
+        result.recorded = false; result.savedID = UUID(); result.computers = [false, false]
         result.recordWin()
-        require(result.computerAdjustment == 0, "Human-only game affected adaptation")
-        print("Win/loss adaptation applies once and ignores changed roles and demos: PASS")
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Human-only game trained learning")
+        result.recorded = false; result.savedID = UUID(); result.computers = [false, true]; result.learning = nil
+        result.recordWin()
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Manual game trained learning")
+        result.recorded = false; result.learning = result.learningStore!.begin(key: key)
+        result.game = MountainGame(size: 4, values: Array(1...16), startingLine: 0)
+        result.recordWin()
+        require(!result.recorded && result.learningStore!.learning(for: key).recent.count == 2, "Unfinished game trained learning")
+        print("Completed outcomes train once; changed roles, demos, human-only, manual and abandoned games do not train: PASS")
         print("Play gates computer starts; replay and exit dialog pause pending AI; Cancel resumes once; inactive/background/dismissed tasks cannot move: PASS")
     }
 }
@@ -152,5 +163,5 @@ with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
     swift = Path(tmp) / 'ComputerTurnChecks.swift'
     swift.write_text(harness)
     executable = Path(tmp) / 'check'
-    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', str(root / 'Race to Dog Mountain/MountainGame.swift'), str(swift), '-o', str(executable)], check=True)
+    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', '-target', subprocess.check_output(['uname', '-m'], text=True).strip() + '-apple-macos14.0', str(root / 'Race to Dog Mountain/MountainGame.swift'), str(root / 'Race to Dog Mountain/MountainMatches.swift'), str(root / 'Race to Dog Mountain/MountainLibrary.swift'), str(swift), '-o', str(executable)], check=True)
     subprocess.run([str(executable)], check=True)

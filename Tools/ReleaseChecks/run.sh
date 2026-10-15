@@ -10,3 +10,5 @@ xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" Watch/W
 "$output/watch-check"
 xcrun swiftc -parse-as-library -target "$(uname -m)-apple-macos14.0" "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainMatches.swift" "Race to Dog Mountain/MountainLibrary.swift" Tools/ReleaseChecks/social-match-check.swift -o "$output/social-check"
 "$output/social-check"
+xcrun swiftc -parse-as-library -target "$(uname -m)-apple-macos14.0" "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainMatches.swift" "Race to Dog Mountain/MountainLibrary.swift" Tools/ReleaseChecks/adaptive-check.swift -o "$output/adaptive-check"
+"$output/adaptive-check"
