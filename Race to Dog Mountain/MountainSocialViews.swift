@@ -34,7 +34,11 @@ struct MountainChallengeBoard: View {
     }
     private func score(_ player: Int) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack { MountainAvatar(name: names[player], size: 40); MountainReservedText(lines: 2) { Text(names[player]) }.font(.headline) }
+            HStack {
+                MountainAvatar(name: names[player], size: 40,
+                    activity: .init(game: game, player: player, paused: ended, lastMove: challenge.moves.last))
+                MountainReservedText(lines: 2) { Text(names[player]) }.font(.headline)
+            }
             MountainReservedText { Text("\(game.scores[player])").monospacedDigit() }.font(MountainStyle.display(36))
         }.frame(maxWidth: .infinity, alignment: .leading).padding(16)
             .foregroundStyle(MountainStyle.player(player))

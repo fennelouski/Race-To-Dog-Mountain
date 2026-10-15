@@ -7,6 +7,8 @@ xcrun swiftc -parse-as-library -D DOGMOUNTAIN_CHECKS "Race to Dog Mountain/Mount
 "$output/check"
 python3 Tools/ReleaseChecks/check-computer-turn.py
 python3 Tools/ReleaseChecks/check-move-feedback.py
+xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" Tools/ReleaseChecks/avatar-motion-check.swift -o "$output/avatar-motion-check"
+"$output/avatar-motion-check"
 xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" Watch/WatchMatch.swift Tools/ReleaseChecks/watch-match-check.swift -o "$output/watch-check"
 "$output/watch-check"
 xcrun swiftc -parse-as-library -target "$(uname -m)-apple-macos14.0" "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainMatches.swift" "Race to Dog Mountain/MountainLibrary.swift" Tools/ReleaseChecks/social-match-check.swift -o "$output/social-check"
@@ -24,3 +26,5 @@ xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" "Race t
 
 xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainFonster.swift" "Race to Dog Mountain/MountainFuzzyPortrait.swift" "Race to Dog Mountain/MountainScenery.swift" Tools/ReleaseChecks/avatar-photo-check.swift -o "$output/avatar-photo-check"
 "$output/avatar-photo-check" "$output/avatars.png"
+xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainFonster.swift" "Race to Dog Mountain/MountainFuzzyPortrait.swift" "Race to Dog Mountain/MountainScenery.swift" Tools/ReleaseChecks/avatar-live-render-check.swift -o "$output/avatar-live-check"
+"$output/avatar-live-check" "$output"

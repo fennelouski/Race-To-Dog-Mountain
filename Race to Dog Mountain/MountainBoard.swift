@@ -353,7 +353,8 @@ struct MountainExternalPresentation: View {
             Image(snapshot.difficulty.portrait).resizable().scaledToFill().frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
         } else {
             MountainAvatar(name: snapshot.computers[player] ? snapshot.difficulty.name : snapshot.names[player], symbol: snapshot.symbols[player], style: style,
-                           photoID: snapshot.photoIDs.indices.contains(player) ? snapshot.photoIDs[player] : nil, size: size)
+                           photoID: snapshot.photoIDs.indices.contains(player) ? snapshot.photoIDs[player] : nil, size: size,
+                           activity: .init(game: snapshot.game, player: player, paused: snapshot.paused, lastMove: snapshot.lastMove))
         }
     }
     private func displayScore(_ player: Int, height: CGFloat) -> some View {

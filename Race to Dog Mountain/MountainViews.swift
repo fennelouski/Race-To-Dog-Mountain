@@ -695,9 +695,9 @@ private struct MountainGameView: View {
             HStack(spacing: 10) {
                 let profile = MountainHumanProfile.read(identity: names[player], data: humanProfiles)
                 if computers[player] && profile.resolvedStyle != "photo" && profile.resolvedStyle != "symbol" {
-                    OpponentPortrait(difficulty: difficulty, size: 48, thinking: game.turn == player && !game.isOver && !waitingForStart && !replaying && !leavingGame, reaction: lastComputerMove?.after.moves ?? 0)
+                    OpponentPortrait(difficulty: difficulty, size: 48, thinking: game.turn == player && !game.isOver && !waitingForStart && !replaying && !leavingGame, reaction: lastComputerMove?.after.moves ?? 0, activity: avatarActivity(player))
                 } else {
-                    MountainAvatar(name: computers[player] ? difficulty.name : profile.displayName, symbol: profile.symbol, style: profile.resolvedStyle, photoID: profile.photoID)
+                    MountainAvatar(name: computers[player] ? difficulty.name : profile.displayName, symbol: profile.symbol, style: profile.resolvedStyle, photoID: profile.photoID, activity: avatarActivity(player))
                 }
                 VStack(alignment: .leading, spacing: 3) {
                     MountainReservedText(lines: 2) { Text(playerName(player)) }.font(.subheadline.weight(.semibold))
@@ -714,6 +714,11 @@ private struct MountainGameView: View {
             .background(MountainStyle.player(player).opacity(game.turn == player && !game.isOver ? 0.17 : 0.06), in: RoundedRectangle(cornerRadius: 16))
             .overlay { MountainPlayerHighlight(player: player, active: game.turn == player && !game.isOver) }
             .accessibilityElement(children: .ignore).accessibilityLabel(scoreDescription(player))
+    }
+    private func avatarActivity(_ player: Int) -> MountainAvatarActivity {
+        .init(game: game, player: player,
+            paused: replaying || leavingGame || gameHelp || gameSettings || customizing != nil || resultPresented || scenePhase != .active,
+            lastMove: lastMove)
     }
     private func scoreDescription(_ player: Int) -> String {
         "\(playerName(player)), \(game.scores[player]) points. \(player == 0 ? "Row" : "Column") player. \(game.isOver ? result : game.turn == player ? computers[player] ? "Computer choosing" : "Your turn" : "Waiting")."
@@ -795,6 +800,7 @@ private struct OpponentPortrait: View {
     var size: CGFloat = 64
     var thinking = false
     var reaction = 0
+    var activity = MountainAvatarActivity()
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
@@ -804,15 +810,15 @@ private struct OpponentPortrait: View {
     var body: some View {
         Group {
             if pictures { Image(difficulty.portrait).resizable().scaledToFill() }
-            else { MountainAvatar(name: difficulty.name, size: size) }
+            else { MountainAvatar(name: difficulty.name, size: size, activity: activity) }
         }
             .frame(width: size, height: size).clipShape(Circle())
             .overlay { Circle().strokeBorder(MountainStyle.gold.opacity(0.65), lineWidth: 2) }
             .phaseAnimator([false, true], trigger: reaction) { content, phase in
-                content.scaleEffect(!reduceMotion && phase ? 1.06 + Double(difficulty.rawValue % 4) * 0.01 : 1)
-                    .rotationEffect(.degrees(!reduceMotion && phase ? Double(difficulty.rawValue % 2 == 0 ? 4 : -4) : 0))
+                content.scaleEffect(pictures && !reduceMotion && phase ? 1.06 + Double(difficulty.rawValue % 4) * 0.01 : 1)
+                    .rotationEffect(.degrees(pictures && !reduceMotion && phase ? Double(difficulty.rawValue % 2 == 0 ? 4 : -4) : 0))
             } animation: { _ in reduceMotion ? nil : .spring(response: 0.3 + Double(difficulty.rawValue) * 0.015) }
-            .phaseAnimator(thinking && !reduceMotion && scenePhase == .active ? [false, true] : [false]) { content, phase in
+            .phaseAnimator(pictures && thinking && !reduceMotion && scenePhase == .active ? [false, true] : [false]) { content, phase in
                 content.offset(y: phase ? -2 - CGFloat(difficulty.rawValue % 3) : 0)
             } animation: { _ in .easeInOut(duration: 0.7 + Double(difficulty.rawValue) * 0.04) }
             .accessibilityHidden(true)

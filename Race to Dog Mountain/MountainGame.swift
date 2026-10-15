@@ -140,6 +140,86 @@ struct MountainGame: Sendable, Codable {
 
 }
 
+/// A read-only view of play. Avatar animation never owns or advances the game.
+struct MountainAvatarActivity: Equatable, Sendable {
+    enum Outcome: Equatable, Sendable { case playing, won, finished }
+    var score = 0
+    var moves = 0
+    var isTurn = false
+    var outcome: Outcome = .playing
+    var paused = false
+    var look: Float = 0
+
+    init() {}
+    init(game: MountainGame, player: Int, paused: Bool = false, lastMove: Int? = nil) {
+        score = game.scores[player]; moves = game.moves
+        isTurn = game.turn == player && !game.isOver
+        self.paused = paused
+        if game.isOver {
+            outcome = game.scores[player] > game.scores[1 - player] ? .won : .finished
+        }
+        let column = lastMove.map { $0 % game.size } ?? game.column
+        look = Float(column) / Float(max(1, game.size - 1)) * 2 - 1
+    }
+
+    func cue(after old: Self?) -> MountainAvatarCue {
+        guard !paused else { return .settle }
+        guard let old else { return .enter }
+        // Undo, reset and replay jumps cannot masquerade as a new score.
+        guard moves >= old.moves, score >= old.score else { return .attention }
+        if outcome != old.outcome { return outcome == .won ? .win : .finish }
+        if score > old.score { return .score }
+        if moves > old.moves || isTurn != old.isTurn { return .attention }
+        return .settle
+    }
+}
+
+enum MountainAvatarCue: Equatable, Sendable { case enter, attention, score, win, finish, settle }
+
+/// All offsets are in scene space, behind a fixed camera and circular rim.
+/// A finite response settles to a quiet pose instead of running an idle loop.
+struct MountainAvatarPose: Equatable, Sendable {
+    var position: SIMD3<Float> = .zero
+    var yaw: Float = -0.16
+    var roll: Float = 0
+    var stride: Float = 0
+    var smile: Float = 0.65
+    var smilingEyes: Float = 0.1
+
+    static func sample(activity: MountainAvatarActivity, cue: MountainAvatarCue, progress: Float) -> Self {
+        let p = min(1, max(0, progress))
+        let ease = p * p * (3 - 2 * p)
+        let pulse = sin(p * .pi)
+        var pose = Self()
+        pose.position = [activity.isTurn ? 0.06 : -0.06, 0, activity.isTurn ? 0.12 : -0.13]
+        pose.yaw += activity.look * 0.18
+        if activity.outcome == .won { pose.smile = 0.95; pose.smilingEyes = 0.45 }
+        if activity.paused { return pose }
+        switch cue {
+        case .enter:
+            let steps = sin(p * .pi * 8) * (1 - p)
+            pose.position += [-2.3 * (1 - ease), abs(steps) * 0.07, -0.8 * (1 - ease)]
+            pose.yaw += 0.85 * (1 - ease)
+            pose.roll = steps * 0.08; pose.stride = steps * 0.35
+        case .attention:
+            pose.position += [activity.look * pulse * 0.13, pulse * 0.025, pulse * 0.12]
+            pose.yaw += activity.look * pulse * 0.25
+        case .score, .win:
+            let hop = abs(sin(p * .pi * (cue == .win ? 2 : 1)))
+            pose.position += [sin(p * .pi * 2) * 0.1, hop * (cue == .win ? 0.16 : 0.1), pulse * 0.16]
+            pose.roll = sin(p * .pi * 4) * 0.09 * (1 - p)
+            pose.stride = pulse * 0.45
+            pose.smile = max(pose.smile, 0.65 + pulse * 0.35)
+            pose.smilingEyes = max(pose.smilingEyes, pulse * 0.65)
+        case .finish:
+            pose.yaw += sin(p * .pi * 2) * 0.15 * (1 - p)
+            pose.smile = 0.55
+        case .settle: break
+        }
+        return pose
+    }
+}
+
 extension MountainGame {
     var isValid: Bool {
         guard (4...14).contains(size) else { return false }

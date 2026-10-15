@@ -947,7 +947,7 @@ import ImageIO
 import UniformTypeIdentifiers
 
 /// Name identities use Fonsters' generator. Modern systems display cached fuzzy
-/// 3D stills; the rounded raster remains a loading/older-system fallback.
+/// 3D stills for exports. Visible modern avatars use the live 3D window.
 @MainActor enum MountainFonster {
     private static let images = NSCache<NSString, CGImage>()
     private static let portraits = NSCache<NSString, CGImage>()
@@ -1025,15 +1025,21 @@ struct MountainAvatar: View {
     var photoID: String? = nil
     var size: CGFloat = 48
     @State private var photo: CGImage?
-    @State private var portrait: CGImage?
-    @State private var portraitSeed: String?
+    var activity = MountainAvatarActivity()
     var body: some View {
         Group {
-            if style == "photo", let photo {
-                Image(decorative: photo, scale: 1).resizable().scaledToFill()
+            if style == "photo" {
+                if let photo {
+                    Image(decorative: photo, scale: 1).resizable().scaledToFill()
+                } else {
+                    Image(systemName: "person.fill").resizable().scaledToFit().padding(size * 0.2)
+                }
             } else if style == "symbol" {
                 Image(systemName: symbol).resizable().scaledToFit().padding(size * 0.2)
-            } else if let generated = (portraitSeed == name ? portrait : nil) ?? MountainFonster.image(seed: name) {
+            } else if #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) {
+                MountainFonsterWindow(seed: name, size: size, activity: activity)
+                    .id(name)
+            } else if let generated = MountainFonster.image(seed: name) {
                 Image(decorative: generated, scale: 1).resizable().scaledToFit().padding(size * 0.05)
             }
         }.frame(width: size, height: size).background(MountainStyle.cream.opacity(0.12), in: Circle())
@@ -1041,16 +1047,12 @@ struct MountainAvatar: View {
             .task(id: [name, style, photoID ?? ""]) {
                 photo = nil
                 guard style != "symbol" else { return }
-                let seed = name
                 if style == "photo", let photoID {
                     let loaded = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.read(photoID) }.value
                     guard !Task.isCancelled, self.photoID == photoID, style == "photo" else { return }
                     photo = loaded
                     if loaded != nil { return }
                 }
-                let rendered = await MountainFonster.portrait(seed: seed)
-                guard !Task.isCancelled, name == seed else { return }
-                portraitSeed = seed; portrait = rendered
             }
     }
 }

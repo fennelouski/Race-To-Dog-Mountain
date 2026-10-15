@@ -1,6 +1,6 @@
 // Fuzzy 3D portraits reuse Nathan's native Fonsters geometry and studio lighting.
 // Source hashes and adaptations: Tools/ReleaseChecks/fuzzy-fonster-provenance.json.
-// No AR session, camera, microphone, network, or continuous renderer is created.
+// Local, virtual-camera rendering only. No AR session, device camera, microphone or network.
 import Foundation
 import CoreGraphics
 import simd
@@ -9,14 +9,9 @@ import simd
 /// caches the result, and releases the GPU renderer before the next portrait.
 @available(macOS 15.0, iOS 18.0, visionOS 2.0, *)
 @MainActor enum MountainFuzzyPortrait {
-    static func render(seed: String) async throws -> CGImage {
-        try Task.checkCancellation()
-        // Race keeps the resulting still, so temporary 3D surface meshes need
-        // not remain cached after completion, failure, or cancellation.
-        defer { MountainPortraitCreatureFur.releaseCachedSurfaces() }
-        guard let device = MTLCreateSystemDefaultDevice() else { throw CocoaError(.featureUnsupported) }
+    static func makeRig(seed: String, furDetail: MountainPortraitCreatureRig.FurDetail) throws -> MountainPortraitCreatureRig {
         let appearance = MountainPortraitCreatureAppearanceDescriptor.resolve(seed: seed)
-        let rig = try MountainPortraitCreatureRig(appearance, furDetail: .portrait)
+        let rig = try MountainPortraitCreatureRig(appearance, furDetail: furDetail)
         // Some legacy seeds have no face. Their resolved fuzzy volume stays
         // intact; a portrait-only expression makes those identities welcoming.
         if !appearance.supported {
@@ -37,6 +32,16 @@ import simd
             try rig.addMouth()
             rig.mouth?.position = center + [0, -bounds.extents.y * 0.15, bounds.extents.z / 2 + 0.035]
         }
+        return rig
+    }
+
+    static func render(seed: String) async throws -> CGImage {
+        try Task.checkCancellation()
+        // Race keeps the resulting still, so temporary 3D surface meshes need
+        // not remain cached after completion, failure, or cancellation.
+        defer { MountainPortraitCreatureFur.releaseCachedSurfaces() }
+        guard let device = MTLCreateSystemDefaultDevice() else { throw CocoaError(.featureUnsupported) }
+        let rig = try makeRig(seed: seed, furDetail: .portrait)
         rig.express(smile: 0.72, smilingEyes: 0.15, opening: 0.9)
         rig.root.orientation = simd_quatf(angle: -0.16, axis: [0, 1, 0])
         let bounds = rig.root.visualBounds(relativeTo: nil)
@@ -1545,3 +1550,197 @@ enum MountainPortraitCreatureSceneLighting {
 }
 #endif
 
+
+// MARK: - A living window onto the player's Fonster
+
+/// One small virtual scene per visible avatar. GPU work is event-driven: after
+/// the walk or response finishes, SwiftUI keeps the last frame and rendering stops.
+@available(macOS 15.0, iOS 18.0, visionOS 2.0, *)
+@MainActor final class MountainLiveFonsterScene {
+    let seed: String
+    let rig: MountainPortraitCreatureRig
+    private let stage = Entity()
+    private let renderer: RealityRenderer
+    private let texture: any MTLTexture
+    private let output: RealityRenderer.CameraOutput
+    private let side: Int
+    private var contactShadow: ModelEntity?
+    private var rendering = false
+    private(set) var pose = MountainAvatarPose()
+
+    private init(seed: String, rig: MountainPortraitCreatureRig, renderer: RealityRenderer,
+                 texture: any MTLTexture, output: RealityRenderer.CameraOutput, side: Int) {
+        self.seed = seed; self.rig = rig; self.renderer = renderer
+        self.texture = texture; self.output = output; self.side = side
+    }
+
+    static func make(seed: String, side: Int) async throws -> MountainLiveFonsterScene {
+        try Task.checkCancellation()
+        guard let device = MTLCreateSystemDefaultDevice() else { throw CocoaError(.featureUnsupported) }
+        defer { MountainPortraitCreatureFur.releaseCachedSurfaces() }
+        let rig = try MountainFuzzyPortrait.makeRig(seed: seed, furDetail: .lobby)
+        let renderer = try RealityRenderer()
+        let pixels = min(256, max(128, side))
+        let description = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm_srgb,
+            width: pixels, height: pixels, mipmapped: false)
+        description.usage = [.renderTarget, .shaderRead]; description.storageMode = .shared
+        guard let texture = device.makeTexture(descriptor: description) else { throw CocoaError(.featureUnsupported) }
+        let output = try RealityRenderer.CameraOutput(.singleProjection(colorTexture: texture))
+        let scene = MountainLiveFonsterScene(seed: seed, rig: rig, renderer: renderer,
+            texture: texture, output: output, side: pixels)
+        let bounds = rig.root.visualBounds(relativeTo: nil)
+        let scale = 1.55 / max(0.1, max(bounds.extents.x, bounds.extents.y))
+        rig.root.scale = .init(repeating: scale)
+        rig.root.position = -bounds.center * scale
+        scene.stage.addChild(rig.root)
+        let camera = PerspectiveCamera()
+        camera.camera.fieldOfViewInDegrees = 33
+        camera.camera.near = 0.01; camera.camera.far = 30
+        camera.look(at: [0, -0.02, 0], from: [0, 0.2, 4.05], relativeTo: nil)
+        let key = DirectionalLight()
+        key.light.intensity = 1800
+        key.light.color = MountainPortraitFonsterPlatformColor(srgbRed: 1, green: 0.9, blue: 0.8, alpha: 1)
+        key.look(at: .zero, from: [-2, 4, 3], relativeTo: nil)
+        let floor = ModelEntity(mesh: .generateBox(size: [8, 0.02, 8]), materials: [SimpleMaterial(
+            color: MountainPortraitFonsterPlatformColor(srgbRed: 0.13, green: 0.22, blue: 0.25, alpha: 1),
+            roughness: 1, isMetallic: false)])
+        floor.position = [0, -0.84, -1]
+        // A grounded oval remains behind the feet while the body moves in depth.
+        let shadow = ModelEntity(mesh: .generateSphere(radius: 1), materials: [SimpleMaterial(
+            color: MountainPortraitFonsterPlatformColor(srgbRed: 0.02, green: 0.06, blue: 0.08, alpha: 0.3),
+            roughness: 1, isMetallic: false)])
+        shadow.scale = [0.5, 0.008, 0.26]; shadow.position = [0, -0.82, 0]
+        scene.contactShadow = shadow
+        var entities: [Entity] = [scene.stage, camera, key, floor, shadow]
+        entities.append(try await MountainPortraitCreatureSceneLighting.studio(for: entities))
+        renderer.entities.append(contentsOf: entities); renderer.activeCamera = camera
+        renderer.cameraSettings.colorBackground = .color(CGColor(red: 0, green: 0, blue: 0, alpha: 0))
+        // Warm the real geometry, fur and lighting before exposing an entrance.
+        // None of these preparation frames replaces the window with a 2D portrait.
+        for _ in 0..<5 { _ = try await scene.render(.init()) }
+        return scene
+    }
+
+    func render(_ pose: MountainAvatarPose) async throws -> CGImage {
+        // A newly changed game state can cancel a response while its GPU frame
+        // is in flight. Reuse the renderer only after that frame completes.
+        while rendering { try await Task.sleep(for: .milliseconds(8)) }
+        try Task.checkCancellation()
+        rendering = true
+        defer { rendering = false }
+        self.pose = pose
+        stage.position = pose.position
+        stage.orientation = simd_quatf(angle: pose.yaw, axis: [0, 1, 0]) * simd_quatf(angle: pose.roll, axis: [0, 0, 1])
+        contactShadow?.position = [pose.position.x, -0.82, pose.position.z]
+        let shadowWidth = max(0.3, 0.5 - pose.position.y * 0.7)
+        contactShadow?.scale = [shadowWidth, 0.008, shadowWidth * 0.52]
+        for (index, limb) in rig.limbs.enumerated() {
+            limb.joint.orientation = simd_quatf(angle: limb.angle + (index.isMultiple(of: 2) ? 1 : -1) * pose.stride, axis: [0, 0, 1])
+            limb.bend.orientation = simd_quatf(angle: abs(pose.stride) * 0.5, axis: [1, 0, 0])
+        }
+        rig.express(smile: pose.smile, smilingEyes: pose.smilingEyes, opening: 0.9)
+        for pupil in rig.pupils { pupil.position.x = min(0.025, max(-0.025, pose.yaw * 0.04)) }
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            do { try renderer.updateAndRender(deltaTime: 1.0 / 30, cameraOutput: output,
+                onComplete: { _ in continuation.resume() }) }
+            catch { continuation.resume(throwing: error) }
+        }
+        try Task.checkCancellation()
+        var bytes = [UInt8](repeating: 0, count: side * side * 4)
+        texture.getBytes(&bytes, bytesPerRow: side * 4, from: MTLRegionMake2D(0, 0, side, side), mipmapLevel: 0)
+        guard let provider = CGDataProvider(data: Data(bytes) as CFData),
+              let image = CGImage(width: side, height: side, bitsPerComponent: 8, bitsPerPixel: 32,
+                bytesPerRow: side * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+                bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue).union(.byteOrder32Little),
+                provider: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
+        else { throw CocoaError(.fileReadCorruptFile) }
+        return image
+    }
+}
+
+@available(macOS 15.0, iOS 18.0, visionOS 2.0, *)
+private struct MountainFonsterRenderRequest: Equatable {
+    let seed: String
+    let activity: MountainAvatarActivity
+    let still: Bool
+    let active: Bool
+    let side: Int
+}
+
+@available(macOS 15.0, iOS 18.0, visionOS 2.0, *)
+struct MountainFonsterWindow: View {
+    let seed: String
+    let size: CGFloat
+    let activity: MountainAvatarActivity
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reducedMotion
+    @Environment(\.displayScale) private var displayScale
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    @State private var lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+    @State private var scene: MountainLiveFonsterScene?
+    @State private var image: CGImage?
+    @State private var previous: MountainAvatarActivity?
+    @State private var failed = false
+
+    var body: some View {
+        let request = MountainFonsterRenderRequest(seed: seed, activity: activity,
+            still: reducedMotion || !animationsEnabled || lowPower || activity.paused,
+            active: scenePhase == .active, side: Int(min(256, max(128, size * displayScale))))
+        ZStack {
+            Circle().fill(RadialGradient(colors: [Color(red: 0.25, green: 0.38, blue: 0.4), MountainStyle.ink],
+                center: .topLeading, startRadius: 0, endRadius: size))
+            if scene?.seed == seed, let image {
+                Image(decorative: image, scale: 1).resizable().scaledToFit()
+            } else if failed {
+                Image(systemName: "pawprint.fill").foregroundStyle(MountainStyle.cream.opacity(0.5)).padding(size * 0.3)
+            }
+        }
+        .frame(width: size, height: size).clipShape(Circle())
+        .overlay {
+            Circle().strokeBorder(LinearGradient(colors: [MountainStyle.cream.opacity(0.5), .black.opacity(0.5)],
+                startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: max(1.5, size * 0.025))
+                .allowsHitTesting(false)
+        }
+        .task(id: request) { await respond(to: request) }
+        .onReceive(NotificationCenter.default.publisher(for: .NSProcessInfoPowerStateDidChange)) { _ in
+            lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+        }
+        .onDisappear { scene = nil; image = nil; previous = nil; failed = false }
+    }
+
+    private func respond(to request: MountainFonsterRenderRequest) async {
+        guard request.active else { return }
+        do {
+            if scene?.seed != request.seed {
+                image = nil; previous = nil; failed = false
+                let built = try await MountainLiveFonsterScene.make(seed: request.seed, side: request.side)
+                try Task.checkCancellation()
+                scene = built
+            }
+            guard let scene, scene.seed == request.seed else { return }
+            let cue = request.activity.cue(after: previous)
+            previous = request.activity
+            let initial = scene.pose
+            let duration: Double = request.still || cue == .settle ? 0 : cue == .enter ? 1.05 : cue == .win ? 1.2 : 0.7
+            let started = ProcessInfo.processInfo.systemUptime
+            repeat {
+                try Task.checkCancellation()
+                let progress = duration == 0 ? Float(1) : Float(min(1, (ProcessInfo.processInfo.systemUptime - started) / duration))
+                var pose = MountainAvatarPose.sample(activity: request.activity, cue: cue, progress: progress)
+                // Interrupt a gesture from its current 3D transform, without a snap.
+                if cue != .enter && !request.still {
+                    let blend = min(1, progress * 4)
+                    pose.position = initial.position * (1 - blend) + pose.position * blend
+                    pose.yaw = initial.yaw * (1 - blend) + pose.yaw * blend
+                    pose.roll = initial.roll * (1 - blend) + pose.roll * blend
+                }
+                let frame = try await scene.render(pose)
+                try Task.checkCancellation()
+                image = frame
+                if progress >= 1 { break }
+                try await Task.sleep(for: .milliseconds(33))
+            } while !Task.isCancelled
+        } catch is CancellationError { return }
+        catch { if !Task.isCancelled { failed = true } }
+    }
+}
