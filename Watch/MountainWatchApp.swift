@@ -111,7 +111,7 @@ private struct WatchFriendGame: View {
                                 ForEach(game.legalMoves, id: \.self) { tile in
                                     Button { friends.play(tile, in: race) } label: {
                                         Text("\(game.tiles[tile].value)").font(.title3.bold()).monospacedDigit().frame(maxWidth: .infinity)
-                                    }.buttonStyle(WatchButton(tileColor: MountainStyle.player(game.turn)))
+                                    }.buttonStyle(WatchButton(tileColor: MountainStyle.player(game.turn), tileValue: game.tiles[tile].value, tilePlayer: game.turn))
                                         .disabled(!friends.canMove || race.problem != nil)
                                         .accessibilityLabel("\(game.tiles[tile].value) points, row \(tile / game.size + 1), column \(tile % game.size + 1)")
                                         .accessibilityIdentifier("friend-tile-\(tile)")
@@ -292,7 +292,7 @@ private struct WatchGame: View {
             ForEach(match.game.legalMoves, id: \.self) { tile in
                 Button { play(tile) } label: {
                     Text("\(match.game.tiles[tile].value)").font(.title3.bold()).monospacedDigit().frame(maxWidth: .infinity)
-                }.buttonStyle(WatchButton(tileColor: MountainStyle.player(match.game.turn)))
+                }.buttonStyle(WatchButton(tileColor: MountainStyle.player(match.game.turn), tileValue: match.game.tiles[tile].value, tilePlayer: match.game.turn))
                     .accessibilityLabel("\(match.game.tiles[tile].value) points, row \(tile / match.game.size + 1), column \(tile % match.game.size + 1)")
                     .accessibilityHint("Sets the next player's \(match.game.turn == 0 ? "column" : "row")")
                     .accessibilityIdentifier("tile-\(tile)")
@@ -355,7 +355,11 @@ private struct WatchBoard: View {
                     ForEach(game.tiles) { tile in
                         Text(tile.value == 0 ? "·" : "\(tile.value)").font(.caption2.bold()).monospacedDigit()
                             .frame(width: 30, height: 30).foregroundStyle(tile.value == 0 ? MountainStyle.cream : MountainStyle.ink)
-                            .background(tile.value == 0 ? MountainStyle.cream.opacity(0.06) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream, in: RoundedRectangle(cornerRadius: 5))
+                            .background {
+                                RoundedRectangle(cornerRadius: 5)
+                                    .fill(tile.value == 0 ? MountainStyle.cream.opacity(0.06) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream)
+                                    .overlay { MountainTileValueShading(value: tile.value, playable: game.canPlay(tile.id), player: game.turn, cornerRadius: 5) }
+                            }
                             .overlay { if selected == tile.id { RoundedRectangle(cornerRadius: 5).strokeBorder(MountainStyle.gold, lineWidth: 3) } }
                             .accessibilityLabel("Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value == 0 ? "used" : "\(tile.value) points")\(game.canPlay(tile.id) ? ", available" : "")")
                     }
@@ -405,6 +409,8 @@ private struct WatchPortrait: View {
 private struct WatchButton: ButtonStyle {
     var prominent = false
     var tileColor: Color?
+    var tileValue = 0
+    var tilePlayer = 0
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
     private var reduceMotion: Bool { systemReduceMotion || !animations }
@@ -412,7 +418,11 @@ private struct WatchButton: ButtonStyle {
         configuration.label.font(.headline).padding(.horizontal, 10).padding(.vertical, 8)
             .frame(maxWidth: .infinity, minHeight: 44)
             .foregroundStyle(prominent || tileColor != nil ? MountainStyle.ink : MountainStyle.cream)
-            .background(tileColor ?? (prominent ? MountainStyle.gold : MountainStyle.cream.opacity(0.10)), in: RoundedRectangle(cornerRadius: 12))
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(tileColor ?? (prominent ? MountainStyle.gold : MountainStyle.cream.opacity(0.10)))
+                    .overlay { MountainTileValueShading(value: tileValue, playable: tileColor != nil, player: tilePlayer) }
+            }
             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.96 : 1)
             .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
     }

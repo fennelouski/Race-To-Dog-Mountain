@@ -1231,7 +1231,11 @@ private struct MountainExportBoard: View {
                         .font(.system(size: game.size > 8 ? 12 : 19, weight: .bold)).monospacedDigit()
                         .frame(width: side, height: side)
                         .foregroundStyle(tile.value == 0 ? MountainStyle.cream : MountainStyle.ink)
-                        .background(tile.value == 0 ? MountainStyle.cream.opacity(0.08) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream, in: RoundedRectangle(cornerRadius: 5))
+                        .background {
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(tile.value == 0 ? MountainStyle.cream.opacity(0.08) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream)
+                                .overlay { MountainTileValueShading(value: tile.value, playable: game.canPlay(tile.id), player: game.turn, cornerRadius: 5) }
+                        }
                         .overlay { RoundedRectangle(cornerRadius: 5).strokeBorder(selected == tile.id ? MountainStyle.gold : .clear, lineWidth: 2) }
                 }
             }.frame(width: 448)

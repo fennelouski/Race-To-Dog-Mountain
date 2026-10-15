@@ -122,6 +122,7 @@ struct MountainBoard: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(tile.value == 0 ? MountainStyle.cream.opacity(0.035) : playable ? MountainStyle.player(game.turn) : MountainStyle.cream)
+                                .overlay { MountainTileValueShading(value: tile.value, playable: playable, player: game.turn) }
                             if tile.value == 0 {
                                 if lastMove == tile.id {
                                     Text("+\(lastPoints)").font(.system(size: min(badgeSize, max(1, (width - 4) / 2.8)), weight: .bold)).lineLimit(1).minimumScaleFactor(0.1).foregroundStyle(MountainStyle.cream)

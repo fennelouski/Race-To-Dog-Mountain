@@ -1,5 +1,14 @@
 import Foundation
 
+/// A fixed scale makes a value look equally valuable on every board size.
+enum MountainTileIntensity {
+    static let maximumValue = 14 * 14
+    static func edgeOpacity(for value: Int) -> Double {
+        let normalized = Double(min(maximumValue, max(0, value))) / Double(maximumValue)
+        return normalized * normalized / 2
+    }
+}
+
 enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     case level1, level2, level3, level4, level5, level6, level7, level8
     case level9, level10, level11, level12, level13, level14, level15, level16

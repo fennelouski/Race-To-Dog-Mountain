@@ -16,6 +16,33 @@ enum MountainStyle {
     }
 }
 
+/// The tint is clipped inside the tile; intersecting edge fades leave its center
+/// transparent. Apply behind the numeral and below selection/turn outlines.
+struct MountainTileValueShading: View {
+    let value: Int
+    var playable = false
+    var player = 0
+    var cornerRadius: CGFloat = 12
+    private var tint: Color {
+        guard playable else { return MountainStyle.gold }
+        return player == 0 ? Color(red: 0.82, green: 0.34, blue: 0.04)
+                           : Color(red: 0.04, green: 0.44, blue: 0.40)
+    }
+    var body: some View {
+        if value > 0 {
+            tint.opacity(MountainTileIntensity.edgeOpacity(for: value))
+                .mask {
+                    ZStack {
+                        LinearGradient(colors: [.white, .clear, .white], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.white, .clear, .white], startPoint: .leading, endPoint: .trailing)
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .allowsHitTesting(false).accessibilityHidden(true)
+        }
+    }
+}
+
 /// Only the scenery redraws. Game state and controls do not tick with the sky.
 struct MountainScenery: View {
     var active = true
