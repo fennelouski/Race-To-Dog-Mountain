@@ -946,10 +946,35 @@ import SwiftUI
 import ImageIO
 import UniformTypeIdentifiers
 
-/// The generator above is copied from Nathan's Fonsters project. This renderer
-/// caches its exact deterministic grid, with gently rounded pixels for this app.
+/// Name identities use Fonsters' generator. Modern systems display cached fuzzy
+/// 3D stills; the rounded raster remains a loading/older-system fallback.
 @MainActor enum MountainFonster {
     private static let images = NSCache<NSString, CGImage>()
+    private static let portraits = NSCache<NSString, CGImage>()
+    private static var lastRequest: Task<CGImage?, Never>?
+    private static var lastRequestID: UUID?
+
+    static func portrait(seed: String) async -> CGImage? {
+        if let cached = portraits.object(forKey: seed as NSString) { return cached }
+        guard #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) else { return image(seed: seed) }
+        let predecessor = lastRequest
+        let requestID = UUID()
+        let request = Task { @MainActor in
+            _ = await predecessor?.value
+            guard !Task.isCancelled else { return nil as CGImage? }
+            if let cached = portraits.object(forKey: seed as NSString) { return cached }
+            guard let rendered = try? await MountainFuzzyPortrait.render(seed: seed), !Task.isCancelled else { return nil }
+            portraits.countLimit = 64
+            portraits.totalCostLimit = 16 * 1024 * 1024
+            portraits.setObject(rendered, forKey: seed as NSString, cost: rendered.bytesPerRow * rendered.height)
+            return rendered
+        }
+        lastRequest = request; lastRequestID = requestID
+        let rendered = await withTaskCancellationHandler(operation: { await request.value }, onCancel: { request.cancel() })
+        if lastRequestID == requestID { lastRequest = nil; lastRequestID = nil }
+        return rendered
+    }
+
     static func image(seed: String) -> CGImage? {
         let key = seed as NSString
         if let cached = images.object(forKey: key) { return cached }
@@ -1000,23 +1025,32 @@ struct MountainAvatar: View {
     var photoID: String? = nil
     var size: CGFloat = 48
     @State private var photo: CGImage?
+    @State private var portrait: CGImage?
+    @State private var portraitSeed: String?
     var body: some View {
         Group {
             if style == "photo", let photo {
                 Image(decorative: photo, scale: 1).resizable().scaledToFill()
             } else if style == "symbol" {
                 Image(systemName: symbol).resizable().scaledToFit().padding(size * 0.2)
-            } else if let generated = MountainFonster.image(seed: name) {
+            } else if let generated = (portraitSeed == name ? portrait : nil) ?? MountainFonster.image(seed: name) {
                 Image(decorative: generated, scale: 1).resizable().scaledToFit().padding(size * 0.05)
             }
         }.frame(width: size, height: size).background(MountainStyle.cream.opacity(0.12), in: Circle())
             .clipShape(Circle()).accessibilityHidden(true)
-            .task(id: style + (photoID ?? "")) {
+            .task(id: [name, style, photoID ?? ""]) {
                 photo = nil
-                guard style == "photo", let photoID else { return }
-                let loaded = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.read(photoID) }.value
-                guard !Task.isCancelled, self.photoID == photoID, style == "photo" else { return }
-                photo = loaded
+                guard style != "symbol" else { return }
+                let seed = name
+                if style == "photo", let photoID {
+                    let loaded = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.read(photoID) }.value
+                    guard !Task.isCancelled, self.photoID == photoID, style == "photo" else { return }
+                    photo = loaded
+                    if loaded != nil { return }
+                }
+                let rendered = await MountainFonster.portrait(seed: seed)
+                guard !Task.isCancelled, name == seed else { return }
+                portraitSeed = seed; portrait = rendered
             }
     }
 }

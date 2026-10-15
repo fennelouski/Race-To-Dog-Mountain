@@ -22,5 +22,5 @@ python3 Tools/ReleaseChecks/check-pinned-layout.py
 xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainMatches.swift" Tools/ReleaseChecks/experience-check.swift -o "$output/experience-check"
 "$output/experience-check"
 
-xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainFonster.swift" "Race to Dog Mountain/MountainScenery.swift" Tools/ReleaseChecks/avatar-photo-check.swift -o "$output/avatar-photo-check"
+xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainFonster.swift" "Race to Dog Mountain/MountainFuzzyPortrait.swift" "Race to Dog Mountain/MountainScenery.swift" Tools/ReleaseChecks/avatar-photo-check.swift -o "$output/avatar-photo-check"
 "$output/avatar-photo-check" "$output/avatars.png"

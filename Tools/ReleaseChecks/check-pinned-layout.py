@@ -21,6 +21,6 @@ with tempfile.TemporaryDirectory(prefix='mountain-pinned-layout-') as temp:
     temp = Path(temp)
     combined = temp / 'Views.swift'; combined.write_text(views + '\n' + mac + '\n' + template)
     binary = temp / 'check'
-    files = ['MountainGame.swift','MountainFonster.swift','MountainMatches.swift','MountainLibrary.swift','MountainFriends.swift','MountainSocialViews.swift','MountainScenery.swift','MountainBoard.swift']
+    files = ['MountainGame.swift','MountainFonster.swift','MountainFuzzyPortrait.swift','MountainMatches.swift','MountainLibrary.swift','MountainFriends.swift','MountainSocialViews.swift','MountainScenery.swift','MountainBoard.swift']
     subprocess.run(['xcrun','swiftc','-parse-as-library','-D','DEBUG','-target',subprocess.check_output(['uname','-m'],text=True).strip()+'-apple-macos14.0',*[str(root / 'Race to Dog Mountain' / name) for name in files],str(combined),'-o',str(binary)],check=True)
     subprocess.run([str(binary),str(temp),'-MountainUITests','-MountainTestSession','3542D1DC-5175-48FC-A002-BC018376C0C0'],check=True)
