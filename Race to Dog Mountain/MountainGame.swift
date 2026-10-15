@@ -5,7 +5,7 @@ enum MountainTileIntensity {
     static let maximumValue = 14 * 14
     static func edgeOpacity(for value: Int) -> Double {
         let normalized = Double(min(maximumValue, max(0, value))) / Double(maximumValue)
-        return normalized * normalized / 2
+        return normalized.squareRoot() / 2
     }
 }
 
