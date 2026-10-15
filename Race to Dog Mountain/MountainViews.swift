@@ -54,6 +54,7 @@ struct MountainHome: View {
     @Environment(\.scenePhase) private var phase
     @State private var options = false
     @State private var rules = false
+    @State private var social = false
 #if os(iOS)
     @State private var messageHelp = false
 #endif
@@ -69,7 +70,7 @@ struct MountainHome: View {
 #if os(macOS)
                 home.focusedSceneValue(\.mountainActions, MountainActions(newGame: { startLocal() }, options: { options = true }, rules: { rules = true }))
 #else
-                visionHome
+                home
 #endif
             }
 #else
@@ -96,126 +97,79 @@ struct MountainHome: View {
     }
 
     private var home: some View {
-        GeometryReader { geometry in
-            ZStack {
-                MountainScenery(active: !playing && !options && !rules).overlay(MountainStyle.ink.opacity(0.5))
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        HStack {
-                            Image(systemName: "pawprint.fill").font(.title).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
-                            Spacer()
-                            Button { rules = true } label: {
-                                if typeSize.isAccessibilitySize {
-                                    Image(systemName: "questionmark.circle").font(.title2)
-                                } else {
-                                    Label("How to play", systemImage: "questionmark.circle")
-                                }
-                            }.accessibilityLabel("How to play")
-                                .font(.subheadline.weight(.semibold)).frame(minHeight: 44)
-                        }
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Race to\nDog Mountain")
-                                .font(MountainStyle.display(typeSize.isAccessibilitySize ? 32 : !library.active.isEmpty || !friends.active.isEmpty ? 36 : geometry.size.width > 600 ? 76 : 52))
-                                .tracking(typeSize.isAccessibilitySize || !library.active.isEmpty || !friends.active.isEmpty ? -1 : -2).fixedSize(horizontal: false, vertical: true)
-                                .accessibilityAddTraits(.isHeader)
-                            if !typeSize.isAccessibilitySize {
-                                Text("Pick a number.\nOutsmart your rival.")
-                                    .font(.title3.weight(.medium)).lineSpacing(4)
-                            }
-                        }
-                        if library.active.isEmpty && friends.active.isEmpty { Spacer(minLength: 24) }
-                        VStack(spacing: 16) {
-                            Button { startLocal() } label: {
-                                HStack { Text("New local game"); Spacer(); Image(systemName: "arrow.right") }.frame(maxWidth: .infinity)
-                            }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
-                                .keyboardShortcut("n", modifiers: .command)
-                            socialActions
-                            gamesInbox
-                            if firstAI || secondAI {
-                                HStack(spacing: 12) {
-                                    OpponentPortrait(difficulty: difficulty, size: 48)
-                                    Text("\(difficulty.name) · \(difficulty.title)").font(.headline)
-                                }.accessibilityElement(children: .combine)
-                            }
-                            Text("Classic · \(size) × \(size) · \(firstAI && secondAI ? "Computer vs. computer" : firstAI || secondAI ? "You move first" : "Two players")")
-                                .font(.subheadline).multilineTextAlignment(.center)
-                            Button { options = true } label: { Label("Players & board", systemImage: "slider.horizontal.3").frame(maxWidth: .infinity) }
-                                .buttonStyle(MountainButton()).accessibilityIdentifier("game-options")
-                            if history.contains(where: { $0 > 0 }) {
-                                Text("\(names[0])  \(history[0]) : \(history[1])  \(names[1])")
-                                    .font(.footnote).multilineTextAlignment(.center)
-                                    .accessibilityLabel("Head to head. \(names[0]), \(history[0]) wins. \(names[1]), \(history[1]) wins.")
-                            }
-                        }
-                    }
-                    .padding(.horizontal, geometry.size.width > 600 ? 48 : 28).padding(.vertical, 20)
-                    .frame(maxWidth: 760, minHeight: geometry.size.height, alignment: .leading)
-                    .frame(maxWidth: .infinity)
-                }.scrollIndicators(.hidden)
+        Group {
+            if social {
+                socialHub
+            } else {
+                landing
             }
         }
         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
     }
 
-#if os(visionOS)
-    private var visionHome: some View {
+    private var landing: some View {
         GeometryReader { geometry in
             ZStack {
-                MountainScenery(active: !options && !rules)
-                MountainStyle.ink.opacity(0.50).ignoresSafeArea()
+                MountainScenery(active: !playing && !options && !rules)
+                    .overlay(MountainStyle.ink.opacity(0.5))
                 ScrollView {
                     VStack(spacing: 32) {
-                        HStack {
-                            Image(systemName: "pawprint.fill").font(.title).accessibilityHidden(true)
-                            Spacer()
-                            Button { rules = true } label: { Label("How to play", systemImage: "questionmark.circle") }
-                                .buttonStyle(MountainButton()).accessibilityLabel("How to play")
-                        }.foregroundStyle(MountainStyle.gold)
-                        ViewThatFits(in: .horizontal) {
-                            HStack(alignment: .center, spacing: 64) {
-                                visionInvitation.frame(width: 460)
-                                visionLaunch.frame(width: 340)
-                            }
-                            VStack(alignment: .leading, spacing: 32) { visionInvitation; visionLaunch }
+                        Spacer(minLength: 16)
+                        Text("Race to\nDog Mountain")
+                            .font(MountainStyle.display(typeSize.isAccessibilitySize ? 36 : geometry.size.width > 600 ? 76 : 48))
+                            .tracking(-1).multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityAddTraits(.isHeader)
+                        Spacer(minLength: 40)
+                        Button { startLocal() } label: {
+                            Text("Play").font(.largeTitle.bold())
+                                .frame(maxWidth: .infinity, minHeight: 64)
                         }
-                        socialActions.frame(maxWidth: 650)
-                        gamesInbox.frame(maxWidth: 900)
-                    }.padding(48)
-                        .frame(maxWidth: 1140, minHeight: geometry.size.height)
-                        .frame(maxWidth: .infinity)
-                }
+                        .buttonStyle(MountainButton(prominent: true))
+                        .accessibilityIdentifier("start-game")
+                        .keyboardShortcut("n", modifiers: .command)
+                        HStack(spacing: 24) {
+                            homeControl("How to play", symbol: "questionmark", identifier: "help") { rules = true }
+                            Spacer(minLength: 0)
+                            homeControl("Play with friends and saved games", symbol: "person.2.fill", identifier: "friends-and-games") { social = true }
+                            Spacer(minLength: 0)
+                            homeControl("Settings", symbol: "gearshape.fill", identifier: "game-options") { options = true }
+                        }
+                        Spacer(minLength: 16)
+                    }
+                    .padding(28)
+                    .frame(maxWidth: 620, minHeight: geometry.size.height)
+                    .frame(maxWidth: .infinity)
+                }.scrollIndicators(.hidden)
             }
-        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
-    }
-    private var visionInvitation: some View {
-        VStack(alignment: .leading, spacing: 28) {
-            Text("Race to\nDog Mountain").font(MountainStyle.display(64))
-                .tracking(-2).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
-            Text("Pick a number.\nOutsmart your rival.").font(.title2).lineSpacing(8)
         }
     }
-    private var visionLaunch: some View {
-        VStack(spacing: 24) {
-            if firstAI || secondAI {
-                OpponentPortrait(difficulty: difficulty, size: 132)
-                VStack(spacing: 8) {
-                    Text(difficulty.name).font(MountainStyle.display(36))
-                    Text("\(difficulty.title) · \(difficulty.detail)").font(.headline).multilineTextAlignment(.center)
-                }
-            }
-            Button { startLocal() } label: { Label("Let's play", systemImage: "arrow.right").frame(maxWidth: .infinity) }
-                .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
-                .keyboardShortcut("n", modifiers: .command)
-            Text("Classic · \(size) × \(size) · \(firstAI && secondAI ? "Computer vs. computer" : firstAI || secondAI ? "You move first" : "Two players")")
-                .font(.subheadline).multilineTextAlignment(.center)
-            Button { options = true } label: { Label("Players & board", systemImage: "slider.horizontal.3").frame(maxWidth: .infinity) }
-                .buttonStyle(MountainButton()).accessibilityIdentifier("game-options")
-            if history.contains(where: { $0 > 0 }) {
-                Text("\(names[0])  \(history[0]) : \(history[1])  \(names[1])").font(.footnote).multilineTextAlignment(.center)
-            }
-        }.offset(z: 20)
+
+    private func homeControl(_ title: String, symbol: String, identifier: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol).font(.title2.weight(.semibold))
+                .frame(width: 60, height: 60)
+                .background(MountainStyle.ink, in: Circle())
+                .overlay { Circle().strokeBorder(MountainStyle.cream.opacity(0.5), lineWidth: 1) }
+        }
+        .buttonStyle(.plain).mountainHover()
+        .accessibilityLabel(title).accessibilityIdentifier(identifier).help(title)
     }
-#endif
+
+    private var socialHub: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    socialActions
+                    gamesInbox
+                }
+                .padding(28).frame(maxWidth: 760).frame(maxWidth: .infinity)
+            }
+            .background(MountainStyle.ink)
+            .navigationTitle("Friends & games").mountainInlineTitle()
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { social = false } } }
+        }
+    }
 
     private var localGame: some View {
         MountainGameView(size: size, names: names, computers: [firstAI, secondAI], difficulty: difficulty,
@@ -336,7 +290,7 @@ struct MountainHome: View {
                     Link("Privacy Policy", destination: URL(string: "https://nathanfennel.com/race-to-dog-mountain/privacy.html")!).font(.footnote).frame(minHeight: 44)
                 }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
             }
-            .background(MountainStyle.ink).navigationTitle("Players & board").mountainInlineTitle()
+            .background(MountainStyle.ink).navigationTitle("Settings").mountainInlineTitle()
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { options = false } } }
         }.tint(MountainStyle.gold).foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
             .onChange(of: computerLevel) { computerAdjustment = 0 }
