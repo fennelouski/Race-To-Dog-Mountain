@@ -188,7 +188,11 @@ private struct MountainMessageCard: View {
                     ForEach(challenge.game.tiles) { tile in
                         Text(tile.value == 0 ? "·" : "\(tile.value)").font(.title3.bold()).monospacedDigit()
                             .frame(width: 48, height: 48).foregroundStyle(MountainStyle.ink)
-                            .background(tile.value == 0 ? MountainStyle.cream.opacity(0.15) : challenge.game.canPlay(tile.id) ? MountainStyle.player(challenge.game.turn) : MountainStyle.cream, in: RoundedRectangle(cornerRadius: 8))
+                            .background {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(tile.value == 0 ? MountainStyle.cream.opacity(0.15) : challenge.game.canPlay(tile.id) ? MountainStyle.player(challenge.game.turn) : MountainStyle.cream)
+                                    .overlay { MountainTileValueShading(value: tile.value, playable: challenge.game.canPlay(tile.id), player: challenge.game.turn, cornerRadius: 8) }
+                            }
                     }
                 }
             }.padding(32)

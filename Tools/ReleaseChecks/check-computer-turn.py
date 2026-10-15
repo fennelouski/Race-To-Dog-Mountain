@@ -11,12 +11,15 @@ import tempfile
 
 root = Path(__file__).resolve().parents[2]
 source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
-match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.task\(id: resolution\)', source, re.S)
+match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source[source.index('.task(id: \"'):], re.S)
 assert match, 'Computer task extraction no longer matches production source'
 identity, body = match.groups()
+role_change_body = re.search(r"\.onChange\(of: computers\) \{ (.*?) \}\n", source).group(1).replace("MountainExperience.defaults", "preferences")
+assert 'snapshot.computerMove' in body and 'waitingForStart' in body and 'customizing == nil' in body and '!resultPresented' in body, 'Must extract the production AI task, not visual cleanup'
 resolution_match = re.search(r'\.task\(id: resolution\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
-assert resolution_match, 'Resolution task extraction no longer matches production source'
+assert resolution_match, 'Must extract the production computer resolution task'
 resolution_body = resolution_match.group(1).replace('MountainExperience.computerDuration', 'duration')
+presentation_body = source.split('    private func presentPendingResult() {', 1)[1].split('\n    }', 1)[0]
 record = source.split('    private func recordWin() {', 1)[1].split('\n    }\n}', 1)[0]
 record = record.replace('MountainExperience.defaults', 'preferences')
 harness = r'''
@@ -32,17 +35,24 @@ final class UIApplication {
     static var isActive: Bool { UIApplication.shared.applicationState == .active }
 }
 
+enum ScenePhase { case active, inactive, background }
+struct HumanSelection { let id: Int }
 @MainActor final class Turns {
-    let savedID = UUID()
+    var scenePhase = ScenePhase.active
+    var customizing: HumanSelection?
+    var resultPresented = false
     var resolution: UUID?
-    var scenePhase = "active"
     var foregroundNonce = 0
-    var confirmExit = false
+    var leavingGame = false
     var computerStarted = false
     var replaying = false
+    var gameHelp = false
+    var gameSettings = false
     var recorded = false
     var rolesChanged = false
-    var computerAdjustment = 0
+    var savedID = UUID()
+    var learning: MountainLearningContext?
+    lazy var learningStore: MountainLearningStore? = MountainLearningStore(defaults: preferences)
     let names = ["Test first", "Test second"]
     let preferences = UserDefaults(suiteName: "dog-mountain-check-" + UUID().uuidString)!
     var difficulty = ComputerDifficulty.level6
@@ -60,6 +70,8 @@ final class UIApplication {
         task?.cancel()
         task = Task { await self.runActualBody() }
     }
+    func persist() {}
+    func applyRoleChange() { ROLE_CHANGE_BODY }
     func recordWin() {
 RECORD
     }
@@ -70,7 +82,19 @@ BODY
 
 @MainActor final class Resolution {
     var resolution: UUID?
-    let duration = 0.4
+    var duration = 0.4
+    var resultPresented = false
+    var pendingResult = false
+    var scenePhase = ScenePhase.active
+    var leavingGame = false
+    var replaying = false
+    var gameHelp = false
+    var gameSettings = false
+    var customizing: HumanSelection?
+    func presentPendingResult() {
+PRESENTATION_BODY
+    }
+    var game = MountainGame(size: 4)
     func runActualBody() async {
 RESOLUTION_BODY
     }
@@ -85,17 +109,17 @@ RESOLUTION_BODY
         turns.restartIfNeeded()
         await turns.task?.value
         require(turns.game.moves == 0, "Computer started before Play")
-        turns.computerStarted = true
-        turns.restartIfNeeded()
+        let changed = Turns(); changed.computers = [true, false]; changed.applyRoleChange()
+        require(changed.computerStarted, "Adding a human left an invisible computer start gate")
+        changed.restartIfNeeded(); await changed.task?.value
+        require(changed.game.moves == 1, "Role change did not resume the computer exactly once")
+        let closing = Turns(); closing.computerStarted = true; closing.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(50))
-        turns.confirmExit = true
-        turns.restartIfNeeded()
+        closing.leavingGame = true; closing.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(850))
-        require(turns.game.moves == 0, "Computer moved while exit confirmation was open")
-        turns.confirmExit = false
-        turns.restartIfNeeded()
-        await turns.task?.value
-        require(turns.game.moves == 1, "Cancel did not resume exactly one computer turn")
+        require(closing.game.moves == 0, "Immediate close allowed a pending computer move")
+        turns.computerStarted = true; turns.restartIfNeeded(); await turns.task?.value
+        require(turns.game.moves == 1, "Play did not start exactly one computer turn")
 
         // Changing the game starts the next turn. Backgrounding cancels it.
         turns.restartIfNeeded()
@@ -130,9 +154,78 @@ RESOLUTION_BODY
         await turns.task?.value
         require(turns.game.moves == 4, "Closing replay did not resume exactly one computer turn")
         turns.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        turns.customizing = HumanSelection(id: 0)
+        turns.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(turns.game.moves == 4, "Profile sheet allowed pending AI move")
+        turns.customizing = nil; turns.restartIfNeeded(); await turns.task?.value
+        require(turns.game.moves == 5, "Closing profile did not resume one AI move")
+        turns.restartIfNeeded(); turns.resultPresented = true; turns.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(turns.game.moves == 5, "Result sheet allowed pending AI move")
+        turns.resultPresented = false; turns.restartIfNeeded(); await turns.task?.value
+        require(turns.game.moves == 6, "Closing result did not resume one AI move")
+        turns.restartIfNeeded()
         turns.task?.cancel() // View dismissal cancels its task.
         await turns.task?.value
-        require(turns.game.moves == 4, "Canceled view task moved after dismissal")
+        require(turns.game.moves == 6, "Canceled view task moved after dismissal")
+        let help = Turns(); help.computerStarted = true; help.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        help.gameHelp = true; help.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(help.game.moves == 0, "Help allowed a pending AI move")
+        help.gameHelp = false; help.restartIfNeeded(); await help.task?.value
+        require(help.game.moves == 1, "Closing Help did not resume once")
+        let settings = Turns(); settings.computerStarted = true; settings.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        settings.gameSettings = true; settings.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(settings.game.moves == 0, "Settings allowed pending AI move")
+        settings.gameSettings = false; settings.restartIfNeeded(); await settings.task?.value
+        require(settings.game.moves == 1, "Closing Settings did not resume once")
+        let scene = Turns()
+        scene.computerStarted = true; scene.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        scene.scenePhase = .inactive // Another window keeps UIApplication active.
+        try await Task.sleep(for: .milliseconds(850))
+        require(scene.game.moves == 0, "Inactive controller scene moved while another scene remained active")
+        scene.restartIfNeeded(); await scene.task?.value
+        require(scene.game.moves == 0, "Inactive controller scene began a new AI turn")
+        scene.scenePhase = .active; scene.restartIfNeeded(); await scene.task?.value
+        require(scene.game.moves == 1, "Reactivated controller scene did not resume once")
+        let resolution = Resolution()
+        resolution.resolution = UUID()
+        let start = ContinuousClock.now
+        let pending = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(350))
+        require(resolution.resolution != nil, "Resolution released before its configured interval")
+        await pending.value
+        require(resolution.resolution == nil && start.duration(to: .now) >= .milliseconds(400), "Resolution did not hold full bounded interval")
+        resolution.resolution = UUID()
+        let staleResolution = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(50))
+        let replacement = UUID(); resolution.resolution = replacement
+        await staleResolution.value
+        require(resolution.resolution == replacement, "Stale resolution cleared replacement token")
+        let canceled = Task { await resolution.runActualBody() }
+        resolution.resolution = nil; canceled.cancel(); await canceled.value
+        require(resolution.resolution == nil, "Canceled resolution recreated a token")
+        let presentation = Resolution()
+        while !presentation.game.isOver { presentation.game.play(presentation.game.legalMoves[0]) }
+        presentation.pendingResult = true; presentation.resolution = UUID()
+        presentation.presentPendingResult()
+        require(!presentation.resultPresented, "Result interrupted computer hold")
+        presentation.scenePhase = .background; presentation.resolution = nil; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Background lost pending result")
+        presentation.scenePhase = .active; presentation.leavingGame = true; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted immediate close")
+        presentation.leavingGame = false; presentation.gameHelp = true; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted Help")
+        presentation.gameHelp = false; presentation.presentPendingResult()
+        require(presentation.resultPresented && !presentation.pendingResult, "Resume failed to present final result")
+        presentation.resultPresented = false; presentation.presentPendingResult()
+        require(!presentation.resultPresented, "View board unexpectedly reopened seen result")
         let result = Turns()
         result.game = MountainGame(size: 4, values: [100] + Array(2...16), firstPlayer: 0, startingLine: 0)
         while !result.game.isOver { result.game.play(result.game.legalMoves[0]) }
@@ -140,50 +233,40 @@ RESOLUTION_BODY
         let winner = result.game.scores[0] > result.game.scores[1] ? 0 : 1
         result.computers = [true, true]
         result.computers[winner] = false
+        let key = MountainLearningStore.key(name: "Test human", size: 4, seat: 0)
+        result.learning = result.learningStore!.begin(key: key)
         result.recordWin()
-        require(result.computerAdjustment == 1, "A human win did not slightly increase skill")
+        require(result.learningStore!.learning(for: key).recent == [.win], "Human win was not recorded")
         result.recordWin()
-        require(result.computerAdjustment == 1, "Result applied adaptation twice")
-        result.recorded = false
+        require(result.learningStore!.learning(for: key).recent == [.win], "Result trained twice")
+        result.recorded = false; result.savedID = UUID()
         result.computers = result.computers.map { !$0 }
         result.recordWin()
-        require(result.computerAdjustment == -1, "A human loss did not slightly decrease skill")
-        result.recorded = false; result.computerAdjustment = 0; result.rolesChanged = true
+        require(result.learningStore!.learning(for: key).recent == [.win, .loss], "Human loss was not recorded")
+        result.recorded = false; result.savedID = UUID(); result.rolesChanged = true
         result.recordWin()
-        require(result.computerAdjustment == 0, "Changing roles during a game affected adaptation")
-        result.recorded = false; result.rolesChanged = false; result.computers = [true, true]
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Changed roles trained learning")
+        result.recorded = false; result.savedID = UUID(); result.rolesChanged = false; result.computers = [true, true]
         result.recordWin()
-        require(result.computerAdjustment == 0, "Computer-only game affected adaptation")
-        result.recorded = false; result.computers = [false, false]
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Computer-only game trained learning")
+        result.recorded = false; result.savedID = UUID(); result.computers = [false, false]
         result.recordWin()
-        require(result.computerAdjustment == 0, "Human-only game affected adaptation")
-        let resolution = Resolution()
-        resolution.resolution = UUID()
-        let start = ContinuousClock.now
-        let pending = Task { await resolution.runActualBody() }
-        try await Task.sleep(for: .milliseconds(350))
-        require(resolution.resolution != nil, "Computer resolution released input before 350ms")
-        await pending.value
-        require(resolution.resolution == nil && start.duration(to: .now) >= .milliseconds(400), "Actual production resolver must retain its full bounded interval")
-        resolution.resolution = UUID()
-        let stale = Task { await resolution.runActualBody() }
-        try await Task.sleep(for: .milliseconds(50))
-        let replacement = UUID(); resolution.resolution = replacement
-        await stale.value
-        require(resolution.resolution == replacement, "A stale resolver cleared a replacement game token")
-        let canceled = Task { await resolution.runActualBody() }
-        try await Task.sleep(for: .milliseconds(50))
-        resolution.resolution = nil; canceled.cancel(); await canceled.value
-        require(resolution.resolution == nil, "Exit cancellation recreated a resolution")
-        print("Actual resolution task holds input >=400ms; stale token and canceled exit cannot clear/recreate a new interval: PASS")
-        print("Win/loss adaptation applies once and ignores changed roles and demos: PASS")
-        print("Play gates computer starts; replay and exit dialog pause pending AI; Cancel resumes once; inactive/background/dismissed tasks cannot move: PASS")
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Human-only game trained learning")
+        result.recorded = false; result.savedID = UUID(); result.computers = [false, true]; result.learning = nil
+        result.recordWin()
+        require(result.learningStore!.learning(for: key).recent.count == 2, "Manual game trained learning")
+        result.recorded = false; result.learning = result.learningStore!.begin(key: key)
+        result.game = MountainGame(size: 4, values: Array(1...16), startingLine: 0)
+        result.recordWin()
+        require(!result.recorded && result.learningStore!.learning(for: key).recent.count == 2, "Unfinished game trained learning")
+        print("Completed outcomes train once; changed roles, demos, human-only, manual and abandoned games do not train: PASS")
+        print("Play gates computer starts; replay pauses pending AI; immediate close cancels pending AI; inactive/background/dismissed tasks cannot move: PASS")
     }
 }
-'''.replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
+'''.replace('ROLE_CHANGE_BODY', role_change_body).replace('PRESENTATION_BODY', presentation_body).replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
 with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
     swift = Path(tmp) / 'ComputerTurnChecks.swift'
     swift.write_text(harness)
     executable = Path(tmp) / 'check'
-    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', str(root / 'Race to Dog Mountain/MountainGame.swift'), str(swift), '-o', str(executable)], check=True)
+    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', '-target', subprocess.check_output(['uname', '-m'], text=True).strip() + '-apple-macos14.0', str(root / 'Race to Dog Mountain/MountainGame.swift'), str(root / 'Race to Dog Mountain/MountainMatches.swift'), str(root / 'Race to Dog Mountain/MountainLibrary.swift'), str(swift), '-o', str(executable)], check=True)
     subprocess.run([str(executable)], check=True)

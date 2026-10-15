@@ -31,6 +31,11 @@
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
     // Called when a new scene session is being created.
     // Use this method to select a configuration to create the new scene with.
+    if (@available(iOS 27.0, *)) {
+        // Newer systems obtain noninteractive display configurations from the registered accessory.
+    } else if ([connectingSceneSession.role isEqualToString:UIWindowSceneSessionRoleExternalDisplayNonInteractive]) {
+        return [[UISceneConfiguration alloc] initWithName:@"Mountain Display" sessionRole:connectingSceneSession.role];
+    }
     return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
 }
 

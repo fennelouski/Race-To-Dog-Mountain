@@ -205,6 +205,12 @@ enum MountainMatchError: LocalizedError {
     }
 }
 
+enum MountainGameCategory: String, CaseIterable, Identifiable {
+    case passAndPlay, ai, messages
+    var id: String { rawValue }
+    var title: String { switch self { case .passAndPlay: "Pass & Play"; case .ai: "AI"; case .messages: "iMessage" } }
+}
+
 struct SavedMountainGame: Codable, Identifiable {
     var id = UUID()
     var updatedAt = Date()
@@ -218,14 +224,18 @@ struct SavedMountainGame: Codable, Identifiable {
     var recorded = false
     var computerStarted = false
     var rolesChanged = false
+    var learning: MountainLearningContext?
 
-    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int) {
+    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, startingPlayer: Int? = nil) {
         self.names = names; self.computers = computers; self.difficulty = difficulty
         self.adjustment = min(2, max(-2, adjustment))
-        game = MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers))
+        computerStarted = computers.contains(false)
+        game = MountainGame(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers, coin: startingPlayer))
         history = MountainHistory(initial: game)
     }
-    var title: String { computers.contains(true) ? "You & \(difficulty.name)" : names.joined(separator: " & ") }
+    var hasScore: Bool { game.scores.contains { $0 > 0 } }
+    var category: MountainGameCategory { computers.contains(true) ? .ai : .passAndPlay }
+    var title: String { names.enumerated().map { computers[$0.offset] ? difficulty.displayName : $0.element }.joined(separator: " & ") }
     var isValid: Bool {
         names.count == 2 && names.allSatisfy { !$0.isEmpty && $0.utf8.count <= 240 } &&
         computers.count == 2 && (-2...2).contains(adjustment) && game.isValid &&

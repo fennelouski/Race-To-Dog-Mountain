@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="26000" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="launch-controller">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="26000"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <scene sceneID="launch-scene">
+            <objects>
+                <viewController id="launch-controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="launch-root">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchSky" translatesAutoresizingMaskIntoConstraints="NO" id="launch-sky"><rect key="frame" x="0" y="0" width="375" height="812"/></imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="LaunchSun" translatesAutoresizingMaskIntoConstraints="NO" id="launch-sun"><rect key="frame" x="176.25" y="341.04" width="112.5" height="112.5"/></imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchRidges" translatesAutoresizingMaskIntoConstraints="NO" id="launch-ridges"><rect key="frame" x="0" y="0" width="375" height="812"/></imageView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="launch-shade">
+                                <rect key="frame" x="0" y="0" width="375" height="812"/>
+                                <color key="backgroundColor" red="0.025" green="0.12" blue="0.17" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="launch-safe-area"/>
+                        <color key="backgroundColor" name="LaunchGround"/>
+                        <constraints>
+                            <constraint firstItem="launch-sky" firstAttribute="leading" secondItem="launch-root" secondAttribute="leading" id="sky-leading"/>
+                            <constraint firstItem="launch-sky" firstAttribute="trailing" secondItem="launch-root" secondAttribute="trailing" id="sky-trailing"/>
+                            <constraint firstItem="launch-sky" firstAttribute="top" secondItem="launch-root" secondAttribute="top" id="sky-top"/>
+                            <constraint firstItem="launch-sky" firstAttribute="bottom" secondItem="launch-root" secondAttribute="bottom" id="sky-bottom"/>
+                            <constraint firstItem="launch-sun" firstAttribute="centerX" secondItem="launch-root" secondAttribute="trailing" multiplier="0.62" id="sun-center"/>
+                            <constraint firstItem="launch-sun" firstAttribute="top" secondItem="launch-root" secondAttribute="bottom" multiplier="0.42" id="sun-top"/>
+                            <constraint firstItem="launch-sun" firstAttribute="width" secondItem="launch-root" secondAttribute="width" multiplier="0.3" id="sun-width"/>
+                            <constraint firstItem="launch-sun" firstAttribute="height" secondItem="launch-sun" secondAttribute="width" id="sun-round"/>
+                            <constraint firstItem="launch-ridges" firstAttribute="leading" secondItem="launch-root" secondAttribute="leading" id="ridge-leading"/>
+                            <constraint firstItem="launch-ridges" firstAttribute="trailing" secondItem="launch-root" secondAttribute="trailing" id="ridge-trailing"/>
+                            <constraint firstItem="launch-ridges" firstAttribute="top" secondItem="launch-root" secondAttribute="top" id="ridge-top"/>
+                            <constraint firstItem="launch-ridges" firstAttribute="bottom" secondItem="launch-root" secondAttribute="bottom" id="ridge-bottom"/>
+                            <constraint firstItem="launch-shade" firstAttribute="leading" secondItem="launch-root" secondAttribute="leading" id="shade-leading"/>
+                            <constraint firstItem="launch-shade" firstAttribute="trailing" secondItem="launch-root" secondAttribute="trailing" id="shade-trailing"/>
+                            <constraint firstItem="launch-shade" firstAttribute="top" secondItem="launch-root" secondAttribute="top" id="shade-top"/>
+                            <constraint firstItem="launch-shade" firstAttribute="bottom" secondItem="launch-root" secondAttribute="bottom" id="shade-bottom"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="launch-first-responder" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LaunchSky" width="375" height="812"/>
+        <image name="LaunchSun" width="128" height="128"/>
+        <image name="LaunchRidges" width="375" height="812"/>
+        <namedColor name="LaunchGround"><color red="0.025" green="0.12" blue="0.17" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></namedColor>
+    </resources>
+</document>

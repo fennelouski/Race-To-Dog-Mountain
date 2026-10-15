@@ -1,0 +1,18 @@
+[
+  {
+    "path": "/Users/nathanfennel/Documents/GitHub/Fonsters/Fonsters/CreatureAvatar/CreatureTypes.swift",
+    "sha256": "d66abc204bbdb479644a2bc1dacddc682c6e737a4b0f0c5b6d00e93809fd1390"
+  },
+  {
+    "path": "/Users/nathanfennel/Documents/GitHub/Fonsters/Fonsters/CreatureAvatar/CreatureConstants.swift",
+    "sha256": "90fd57f7c7da1ba8426c5285ce4d34896cc1df59f858cad04b1d7a1c7625d0a6"
+  },
+  {
+    "path": "/Users/nathanfennel/Documents/GitHub/Fonsters/Fonsters/CreatureAvatar/CreatureHash.swift",
+    "sha256": "9a87100ecb2cc27d9488a7c0ce2d9b0d150dc0dd834557fe4d5e4d8c27b2ab3f"
+  },
+  {
+    "path": "/Users/nathanfennel/Documents/GitHub/Fonsters/Fonsters/CreatureAvatar/CreatureGenerator.swift",
+    "sha256": "c8060b565c5bc8e28c47407d12b9fbf2c7b35ecc7d13642d9ab339d4ce3f7024"
+  }
+]

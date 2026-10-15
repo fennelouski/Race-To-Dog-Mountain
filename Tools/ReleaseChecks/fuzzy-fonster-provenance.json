@@ -1,0 +1,55 @@
+{
+  "sources": [
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/CreatureAvatar/CreatureRaster.swift",
+      "sha256": "67e65781713a278f23cd98e95eef01297bd5b56e2b533e675bda407427c73b17"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/ResolvedCreatureTrace.swift",
+      "sha256": "2e7e4b81a0ba7f230973aae53d4c3c5abcccadbe164b0b2bf733209062cd58fc"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/CreatureAppearanceDescriptor.swift",
+      "sha256": "1487aecdaedc74ca15f3d2164431d89675521eab3a1eebf3a8fa855bfdafc7ed"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/FonsterPlatformColor.swift",
+      "sha256": "33f2cf57e3b6836b590563104fc59af465e8ae95bdd85414b4779d291b0ffb0b"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/CreatureRig.swift",
+      "sha256": "45b5110a4dfacc5ca5b2368f9801727b1dbb0c61c4775f815ad07e832455c5a7"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/CreatureFur.swift",
+      "sha256": "e50f4d09b1e8639438f8a485922662d9df0d2d8b2b0f3139af5b31342f35d3ef"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/CreatureFacialGeometry.swift",
+      "sha256": "eaaf6a6de0ca8f4d118565545940c48e51711ebcd612b7597b89e55e194410ce"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/CreatureFaceDynamics.swift",
+      "sha256": "8a7812c36a92b0741e6aa1fcc2cc029d2e21b685819d1978bbe2cfc46321b788"
+    },
+    {
+      "repository": "fennelouski/Fonsters",
+      "path": "Fonsters/Playroom/CreatureSceneLighting.swift",
+      "sha256": "a5151f6bc0f22ed94a9493e20ba5a3d672a23fb946185bf856904e70e1202bb7"
+    }
+  ],
+  "adaptations": [
+    "Portrait-only rig omits touch hit-testing and interaction state.",
+    "Types are namespaced; native geometry also compiles on visionOS.",
+    "A bounded offscreen still renderer supplies player portraits; no companion controller, care, AR or audio subsystem is copied.",
+    "Existing Race warm pastel palette is applied to the native coat and skin texture. Unsupported legacy families retain their resolved volume with a portrait-only friendly face."
+  ]
+}

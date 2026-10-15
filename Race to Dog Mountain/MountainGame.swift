@@ -1,11 +1,21 @@
 import Foundation
 
+/// A fixed scale makes a value look equally valuable on every board size.
+enum MountainTileIntensity {
+    static let maximumValue = 14 * 14
+    static func edgeOpacity(for value: Int) -> Double {
+        let normalized = Double(min(maximumValue, max(0, value))) / Double(maximumValue)
+        return normalized.squareRoot() / 2
+    }
+}
+
 enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     case level1, level2, level3, level4, level5, level6, level7, level8
     case level9, level10, level11, level12, level13, level14, level15, level16
     var id: Int { rawValue }
     var name: String { ["Quinn", "Milo", "June", "Theo", "Amara", "Finn", "Leila", "Oscar", "Nia", "Hugo", "Sana", "Ezra", "Inez", "Kai", "Zuri", "Avery"][rawValue] }
     var title: String { "Level \(rawValue + 1)" }
+    var displayName: String { "\(name) (\(rawValue + 1))" }
     var portrait: String { "Opponent\(rawValue + 1)" }
     var detail: String {
         ["Curious beginner", "Easygoing explorer", "Enthusiastic newcomer", "Patient trail walker", "Careful route finder", "Adventurous thinker", "Observant challenger", "Steady tactician", "Playful strategist", "Quiet problem solver", "Focused planner", "Analytical navigator", "Confident climber", "Precise pathfinder", "Inventive expert", "Summit strategist"][rawValue]
@@ -92,15 +102,29 @@ struct MountainGame: Sendable, Codable {
         computers.firstIndex(of: false) ?? 0
     }
 
+    static func randomStartingPlayer(computers: [Bool], coin: Int? = nil) -> Int {
+        guard computers.contains(true) else { return 0 }
+        return coin.map { min(1, max(0, $0)) } ?? Int.random(in: 0...1)
+    }
+
     func computerMove(difficulty: ComputerDifficulty = .level6, adjustment: Int = 0, roll: Double? = nil) -> Int? {
-        let ranked = legalMoves.map { (id: $0, value: evaluated($0, depth: difficulty.depth, branches: difficulty.branches)) }
-            .sorted { $0.value > $1.value }.map(\.id)
+        var random = SystemRandomNumberGenerator()
+        return computerMove(difficulty: difficulty, adjustment: adjustment, roll: roll, using: &random)
+    }
+    func computerMove<R: RandomNumberGenerator>(difficulty: ComputerDifficulty, adjustment: Int = 0, roll: Double? = nil, using random: inout R) -> Int? {
+        let evaluatedMoves: [(id: Int, value: Int)] = legalMoves.map { id in
+            (id: id, value: evaluated(id, depth: difficulty.depth, branches: difficulty.branches))
+        }
+        let ranked = evaluatedMoves.sorted { left, right in
+            if left.value == right.value { return left.id < right.id }
+            return left.value > right.value
+        }.map(\.id)
         guard let best = ranked.first else { return nil }
         let accuracy = min(1, max(0, difficulty.accuracy + Double(min(2, max(-2, adjustment))) * 0.0125))
-        if (roll ?? Double.random(in: 0..<1)) < accuracy || ranked.count == 1 { return best }
+        if (roll ?? Double.random(in: 0..<1, using: &random)) < accuracy || ranked.count == 1 { return best }
         // A softer opponent sometimes picks another promising route, not an illegal move.
         let alternatives = Array(ranked.dropFirst().prefix(difficulty.rawValue < 4 ? ranked.count : 3))
-        return alternatives.randomElement() ?? best
+        return alternatives.randomElement(using: &random) ?? best
     }
     private func evaluated(_ id: Int, depth: Int, branches: Int) -> Int {
         var next = self
@@ -114,6 +138,86 @@ struct MountainGame: Sendable, Codable {
             .map { evaluated($0, depth: depth, branches: branches) }.max() ?? 0
     }
 
+}
+
+/// A read-only view of play. Avatar animation never owns or advances the game.
+struct MountainAvatarActivity: Equatable, Sendable {
+    enum Outcome: Equatable, Sendable { case playing, won, finished }
+    var score = 0
+    var moves = 0
+    var isTurn = false
+    var outcome: Outcome = .playing
+    var paused = false
+    var look: Float = 0
+
+    init() {}
+    init(game: MountainGame, player: Int, paused: Bool = false, lastMove: Int? = nil) {
+        score = game.scores[player]; moves = game.moves
+        isTurn = game.turn == player && !game.isOver
+        self.paused = paused
+        if game.isOver {
+            outcome = game.scores[player] > game.scores[1 - player] ? .won : .finished
+        }
+        let column = lastMove.map { $0 % game.size } ?? game.column
+        look = Float(column) / Float(max(1, game.size - 1)) * 2 - 1
+    }
+
+    func cue(after old: Self?) -> MountainAvatarCue {
+        guard !paused else { return .settle }
+        guard let old else { return .enter }
+        // Undo, reset and replay jumps cannot masquerade as a new score.
+        guard moves >= old.moves, score >= old.score else { return .attention }
+        if outcome != old.outcome { return outcome == .won ? .win : .finish }
+        if score > old.score { return .score }
+        if moves > old.moves || isTurn != old.isTurn { return .attention }
+        return .settle
+    }
+}
+
+enum MountainAvatarCue: Equatable, Sendable { case enter, attention, score, win, finish, settle }
+
+/// All offsets are in scene space, behind a fixed camera and circular rim.
+/// A finite response settles to a quiet pose instead of running an idle loop.
+struct MountainAvatarPose: Equatable, Sendable {
+    var position: SIMD3<Float> = .zero
+    var yaw: Float = -0.16
+    var roll: Float = 0
+    var stride: Float = 0
+    var smile: Float = 0.65
+    var smilingEyes: Float = 0.1
+
+    static func sample(activity: MountainAvatarActivity, cue: MountainAvatarCue, progress: Float) -> Self {
+        let p = min(1, max(0, progress))
+        let ease = p * p * (3 - 2 * p)
+        let pulse = sin(p * .pi)
+        var pose = Self()
+        pose.position = [activity.isTurn ? 0.06 : -0.06, 0, activity.isTurn ? 0.12 : -0.13]
+        pose.yaw += activity.look * 0.18
+        if activity.outcome == .won { pose.smile = 0.95; pose.smilingEyes = 0.45 }
+        if activity.paused { return pose }
+        switch cue {
+        case .enter:
+            let steps = sin(p * .pi * 8) * (1 - p)
+            pose.position += [-2.3 * (1 - ease), abs(steps) * 0.07, -0.8 * (1 - ease)]
+            pose.yaw += 0.85 * (1 - ease)
+            pose.roll = steps * 0.08; pose.stride = steps * 0.35
+        case .attention:
+            pose.position += [activity.look * pulse * 0.13, pulse * 0.025, pulse * 0.12]
+            pose.yaw += activity.look * pulse * 0.25
+        case .score, .win:
+            let hop = abs(sin(p * .pi * (cue == .win ? 2 : 1)))
+            pose.position += [sin(p * .pi * 2) * 0.1, hop * (cue == .win ? 0.16 : 0.1), pulse * 0.16]
+            pose.roll = sin(p * .pi * 4) * 0.09 * (1 - p)
+            pose.stride = pulse * 0.45
+            pose.smile = max(pose.smile, 0.65 + pulse * 0.35)
+            pose.smilingEyes = max(pose.smilingEyes, pulse * 0.65)
+        case .finish:
+            pose.yaw += sin(p * .pi * 2) * 0.15 * (1 - p)
+            pose.smile = 0.55
+        case .settle: break
+        }
+        return pose
+    }
 }
 
 extension MountainGame {
@@ -241,3 +345,184 @@ struct MountainHistory: Codable, Sendable {
     }
 }
 #endif
+
+/// Local, between-game AIMD controller. Outcomes guide challenge; they never alter a board or score.
+struct MountainLearning: Codable, Sendable {
+    enum Outcome: String, Codable, Sendable { case win, loss, tie }
+    private(set) var skill = 0.0
+    private(set) var recent: [Outcome] = []
+    private(set) var cooldown = 0
+    var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: Int(skill.rounded(.down))) ?? .level1 }
+    var winRate: Double? {
+        let decisive = recent.filter { $0 != .tie }
+        guard !decisive.isEmpty else { return nil }
+        return Double(decisive.filter { $0 == .win }.count) / Double(decisive.count)
+    }
+    var isValid: Bool {
+        skill.isFinite && (0...15).contains(skill) && recent.count <= 12 && (0...2).contains(cooldown)
+    }
+    mutating func record(_ outcome: Outcome) {
+        // Ties do not count as wins or losses, and break a winning/losing streak.
+        recent.append(outcome); recent = Array(recent.suffix(12))
+        if cooldown > 0 { cooldown -= 1; return }
+        let decisive = recent.filter { $0 != .tie }
+        guard outcome != .tie, decisive.count >= 4 else { return }
+        let wins = Double(decisive.filter { $0 == .win }.count)
+        // Four prior observations centred on 65% damp short-session noise.
+        let smoothed = (wins + 2.6) / (Double(decisive.count) + 4)
+        let pair = Array(recent.suffix(2))
+        if outcome == .loss && smoothed < 0.60 {
+            skill = max(0, skill * 0.65)
+            cooldown = 2
+        } else if outcome == .win && pair == [.win, .win] && smoothed > 0.70 {
+            skill = min(15, skill + 0.25)
+            cooldown = 2
+        }
+    }
+}
+
+struct MountainLearningContext: Codable, Sendable {
+    let key: String
+    let generation: UUID
+}
+
+/// Pure geometry policy, shared by live, friend and replay boards.
+struct MountainBoardLayout {
+    let tile: Double
+    let extent: Double
+    let scrolls: Bool
+    static let padding = 8.0
+    static let gap = 4.0
+    init(size: Int, availableWidth: Double, availableHeight: Double? = nil, compact: Bool, scrollThreshold: Int, minimumTile: Double) {
+        let side = Double(min(14, max(4, size)))
+        scrolls = compact && size > min(14, max(4, scrollThreshold))
+        let available = max(64, availableWidth)
+        let fittedExtent = min(available, availableHeight.map { max(64, $0) } ?? available)
+        let fittedTile = max(1, (fittedExtent - Self.padding * 2 - Self.gap * (side - 1)) / side)
+        tile = scrolls ? max(minimumTile, fittedTile) : fittedTile
+        extent = tile * side + Self.gap * (side - 1) + Self.padding * 2
+    }
+}
+
+/// Decorative solar timing only: local civil time plus a coarse seasonal latitude
+/// estimate. It requests no location and makes no astronomical accuracy claim.
+struct MountainSky {
+    let daylight: Double
+    let sunProgress: Double
+    init(date: Date, timeZone: TimeZone = .current) {
+        var calendar = Calendar(identifier: .gregorian); calendar.timeZone = timeZone
+        let parts = calendar.dateComponents([.hour, .minute, .second], from: date)
+        let hour = Double(parts.hour ?? 12) + Double(parts.minute ?? 0) / 60 + Double(parts.second ?? 0) / 3600
+        let day = Double(calendar.ordinality(of: .day, in: .year, for: date) ?? 182)
+        let zone = timeZone.identifier
+        let latitudes: [String: Double] = ["Europe/Amsterdam": 52, "Europe/London": 51, "America/New_York": 41, "America/Los_Angeles": 34, "America/Chicago": 42, "America/Toronto": 44, "Asia/Tokyo": 36, "Asia/Singapore": 1, "Asia/Kolkata": 23, "Australia/Sydney": -34, "Pacific/Auckland": -37, "America/Sao_Paulo": -24]
+        let latitude = latitudes[zone] ?? (zone.hasPrefix("Australia/") ? -30 : zone.hasPrefix("Africa/") ? 0 : 35)
+        let season = sin((day - 80) / 365.25 * 2 * .pi)
+        let length = min(17, max(7, 12 + 4 * season * latitude / 52))
+        let sunrise = 12 - length / 2, sunset = 12 + length / 2
+        daylight = min(1, max(0, min(hour - sunrise + 0.5, sunset - hour + 0.5)))
+        sunProgress = min(1, max(0, (hour - sunrise) / length))
+    }
+}
+
+/// An isolated, deterministic teaching board. Never enters saved games or learning.
+struct MountainTutorial {
+    static let lastStep = 4
+    private(set) var step = 0
+    private var states = [MountainGame(size: 4, values: [4, 11, 2, 8, 13, 6, 15, 1, 7, 16, 3, 10, 12, 5, 14, 9], firstPlayer: 0, startingLine: 1)]
+    private var choices: [Int] = []
+    var game: MountainGame { states[step] }
+    var finished: Bool { step == Self.lastStep }
+    var canGoForward: Bool { step + 1 < states.count }
+    var lastMove: Int? { step > 0 ? choices[step - 1] : nil }
+    var lastPoints: Int { lastMove.map { states[step - 1].tiles[$0].value } ?? 0 }
+    @discardableResult mutating func choose(_ tile: Int) -> Bool {
+        guard !finished, game.canPlay(tile) else { return false }
+        var next = game
+        guard next.play(tile) else { return false }
+        states = Array(states.prefix(step + 1)) + [next]
+        choices = Array(choices.prefix(step)) + [tile]
+        step += 1
+        return true
+    }
+    mutating func navigate(to page: Int) {
+        guard (0..<states.count).contains(page) else { return }
+        step = page
+    }
+}
+
+struct MountainHumanProfile: Codable {
+    var displayName: String
+    var symbol: String
+    var avatarStyle: String? = nil
+    var photoID: String? = nil
+    var resolvedStyle: String { avatarStyle ?? (symbol == "person.fill" ? "fonster" : "symbol") }
+    static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "mountain.2.fill", "sparkles"]
+    static func read(identity: String, data: Data) -> Self {
+        let profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
+        guard let profile = profiles[identity], symbols.contains(profile.symbol) else { return Self(displayName: identity, symbol: "person.fill") }
+        return Self(displayName: String(profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60)).isEmpty ? identity : String(profile.displayName.prefix(60)), symbol: profile.symbol, avatarStyle: ["fonster", "symbol", "photo"].contains(profile.resolvedStyle) ? profile.resolvedStyle : "fonster", photoID: profile.photoID.flatMap { UUID(uuidString: $0) == nil ? nil : $0 })
+    }
+    static func updating(identity: String, displayName: String, symbol: String, data: Data, avatarStyle: String? = nil, photoID: String? = nil) -> Data? {
+        guard symbols.contains(symbol), avatarStyle == nil || ["fonster", "symbol", "photo"].contains(avatarStyle!), photoID == nil || UUID(uuidString: photoID!) != nil else { return nil }
+        var profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
+        let name = String(displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
+        profiles[identity] = Self(displayName: name.isEmpty ? identity : name, symbol: symbol, avatarStyle: avatarStyle, photoID: photoID)
+        guard profiles.count <= 256 else { return nil }
+        return try? JSONEncoder().encode(profiles)
+    }
+}
+
+struct MountainMoveFeedback: Identifiable, Sendable {
+    let id: Int
+    let token = UUID() // A late completion can never remove a later game’s move with the same number.
+    let tile: Int
+    let player: Int
+    let points: Int
+    let maximum: Int
+    static let maximumActive = 4
+    static let duration = 0.9
+    var particleCount: Int { min(48, max(0, points)) }
+    var spread: Double { 8 + sqrt(Double(min(196, max(0, points)))) * 4 }
+    func adding(to events: [Self]) -> [Self] { Array((events + [self]).suffix(Self.maximumActive)) }
+    static func finishing(_ token: UUID, in events: [Self]) -> [Self] { events.filter { $0.token != token } }
+    var intensity: Double { maximum > 0 ? min(1, max(0, Double(points) / Double(maximum))) : 0 }
+}
+
+/// Deterministic individual point paths; independent of game state and authoritative scoring.
+struct MountainPointParticle {
+    let x: Double
+    let y: Double
+    let opacity: Double
+    static func sample(index: Int, count: Int, progress: Double, startX: Double, startY: Double,
+                       endX: Double, endY: Double, spread: Double) -> Self {
+        let delay = count > 1 ? Double(index) / Double(count - 1) * 0.22 : 0
+        let t = min(1, max(0, (progress - delay) / (1 - delay)))
+        let travel = t * t * (3 - 2 * t)
+        let fan = sin(.pi * t)
+        let lane = sin(Double(index + 1) * 2.39996)
+        return Self(x: startX + (endX - startX) * travel + fan * lane * spread,
+                    y: startY + (endY - startY) * travel - fan * (24 + spread * (0.4 + abs(lane))),
+                    opacity: progress < delay || t >= 1 ? 0 : min(1, t * 12) * min(1, (1 - t) * 10))
+    }
+}
+
+struct MountainDisplaySnapshot: Sendable {
+    let owner: UUID
+    let game: MountainGame
+    let names: [String]
+    let symbols: [String]
+    let computers: [Bool]
+    let difficulty: ComputerDifficulty
+    let lastMove: Int?
+    let lastPoints: Int
+    let paused: Bool
+    var avatarStyles: [String] = []
+    var photoIDs: [String?] = []
+    var humanVictory: Bool { game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1] }
+    static var design: Self {
+        var game = MountainGame(size: 6, values: Array(1...36), startingLine: 2)
+        for tile in [17, 35, 30, 0, 4, 28] { game.play(tile) }
+        return Self(owner: UUID(uuidString: "00000000-0000-4000-8000-000000000001")!, game: game, names: ["Nathan", "Quinn"], symbols: ["leaf.fill", "pawprint.fill"], computers: [false, true], difficulty: .level1, lastMove: 28, lastPoints: 29, paused: false)
+    }
+}

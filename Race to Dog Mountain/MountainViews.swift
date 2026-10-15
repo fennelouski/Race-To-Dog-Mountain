@@ -1,6 +1,10 @@
 import SwiftUI
+import Observation
 import ImageIO
 import UniformTypeIdentifiers
+#if canImport(PhotosUI)
+import PhotosUI
+#endif
 #if os(macOS)
 import AppKit
 #else
@@ -26,32 +30,67 @@ import UIKit
 
 #if os(iOS)
 
+@MainActor @Observable private final class MountainPrimaryActivity { var phase: ScenePhase = .inactive }
+
+private struct MountainPrimaryRoot: View {
+    let activity: MountainPrimaryActivity
+    var body: some View { MountainHome().offeringMountainDisplay().environment(\.scenePhase, activity.phase) }
+}
+
 @objc(DMModernSceneDelegate)
 final class MountainSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    private let activity = MountainPrimaryActivity()
+    private static weak var primary: MountainSceneDelegate?
+    private final class WeakScene { weak var value: MountainSceneDelegate?; init(_ value: MountainSceneDelegate) { self.value = value } }
+    private static var scenes: [String: WeakScene] = [:]
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = UIHostingController(rootView: MountainHome())
-        window.makeKeyAndVisible()
         self.window = window
+        Self.scenes[session.persistentIdentifier] = WeakScene(self)
+        if Self.primary == nil { Self.primary = self }
+        configureRoot()
+        window.makeKeyAndVisible()
+    }
+    private func configureRoot() {
+        if Self.primary === self {
+            window?.rootViewController = UIHostingController(rootView: MountainPrimaryRoot(activity: activity))
+        } else {
+            // Additional interactive windows are read-only viewers, never second game/AI owners.
+            window?.rootViewController = UIHostingController(rootView: MountainExternalScreen())
+        }
+    }
+    func sceneDidBecomeActive(_ scene: UIScene) { activity.phase = .active }
+    func sceneWillResignActive(_ scene: UIScene) { activity.phase = .inactive }
+    func sceneDidEnterBackground(_ scene: UIScene) { activity.phase = .background }
+    func sceneDidDisconnect(_ scene: UIScene) {
+        activity.phase = .background
+        Self.scenes.removeValue(forKey: scene.session.persistentIdentifier)
+        window = nil
+        if Self.primary === self {
+            Self.primary = Self.scenes.values.compactMap(\.value).first
+            Self.primary?.configureRoot()
+        }
     }
 }
 
 #endif
 
 struct MountainHome: View {
+    @AppStorage("boardScrollThreshold", store: MountainExperience.defaults) private var boardScrollThreshold = 7
+    @AppStorage("showStatusBar", store: MountainExperience.defaults) private var showStatusBar = false
     @AppStorage("player1Name", store: MountainExperience.defaults) private var firstName = "Player 1"
     @AppStorage("player2Name", store: MountainExperience.defaults) private var secondName = "Player 2"
     @AppStorage("player1AI", store: MountainExperience.defaults) private var firstAI = false
     @AppStorage("player2AI", store: MountainExperience.defaults) private var secondAI = true
     @AppStorage("complexity", store: MountainExperience.defaults) private var size = 6
     @AppStorage("computerLevel", store: MountainExperience.defaults) private var computerLevel = 5
-    @AppStorage("computerAdjustment", store: MountainExperience.defaults) private var computerAdjustment = 0
-    @AppStorage("computerDialogue", store: MountainExperience.defaults) private var computerDialogue = false
+    @AppStorage("adaptiveDifficulty", store: MountainExperience.defaults) private var adaptiveDifficulty = true
     @State private var playing = false
     @State private var selection: SavedMountainGame?
     @State private var library = MountainLibrary()
+    @State private var learningStore = MountainLearningStore.shared
 #if os(iOS)
     @State private var friends = MountainPhoneCoordinator.shared.friends
 #else
@@ -60,9 +99,11 @@ struct MountainHome: View {
     @Environment(\.scenePhase) private var phase
     @State private var options = false
     @State private var rules = false
-#if os(iOS)
-    @State private var messageHelp = false
-#endif
+    @State private var startAfterGuide = false
+    @State private var social = false
+    @Environment(\.openURL) private var openURL
+    @State private var gameCategory = MountainGameCategory.passAndPlay
+    @AppStorage("humanProfiles.v1", store: MountainExperience.defaults) private var humanProfiles = Data()
     @State private var history = [0, 0]
     @Environment(\.dynamicTypeSize) private var typeSize
 
@@ -75,7 +116,7 @@ struct MountainHome: View {
 #if os(macOS)
                 home.focusedSceneValue(\.mountainActions, MountainActions(newGame: { startLocal() }, options: { options = true }, rules: { rules = true }))
 #else
-                visionHome
+                home
 #endif
             }
 #else
@@ -105,10 +146,9 @@ struct MountainHome: View {
 #endif
         }
         .sheet(isPresented: $options, onDismiss: refreshHistory) { playerOptions.mountainSheetSize() }
-        .sheet(isPresented: $rules) { MountainRules().mountainSheetSize() }
-#if os(iOS)
-        .sheet(isPresented: $messageHelp) { MountainMessagesHelp() }
-#endif
+        .sheet(isPresented: $rules, onDismiss: { if startAfterGuide { startAfterGuide = false; startLocal() } }) {
+            MountainRules { startAfterGuide = true; rules = false }.mountainSheetSize()
+        }
         .onAppear { size = min(max(size, 4), 14); refreshHistory() }
         .task { await friends.resume() }
         .onChange(of: phase) { _, phase in if phase == .active { Task { await friends.refresh() } } }
@@ -117,192 +157,167 @@ struct MountainHome: View {
         .alert("Friend games", isPresented: Binding(get: { friends.error != nil && friends.opened == nil }, set: { if !$0 { friends.error = nil } })) {
             Button("OK") { friends.error = nil }
         } message: { Text(friends.error ?? "") }
+#if os(iOS)
+        .statusBarHidden(!showStatusBar)
+#endif
         .onChange(of: firstName) { refreshHistory() }
         .onChange(of: secondName) { refreshHistory() }
     }
 
     private var home: some View {
-        GeometryReader { geometry in
-            ZStack {
-                MountainScenery(active: !playing && !options && !rules).overlay(MountainStyle.ink.opacity(0.5))
-                VStack(alignment: .leading, spacing: 16) {
-                    HStack {
-                        Image(systemName: "pawprint.fill").font(.title2).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
-                        Spacer()
-                        Button { rules = true } label: { Image(systemName: "questionmark.circle").font(.title2) }
-                            .frame(minWidth: 44, minHeight: 44).accessibilityLabel("How to play")
-                    }
-                    Text("Race to Dog Mountain")
-                        .font(MountainStyle.display(typeSize.isAccessibilitySize || geometry.size.height < 500 ? 24 : geometry.size.width > 600 ? 52 : 36))
-                        .fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
-                    Button {
-                        if let saved = library.active.first { resume(saved) } else { startLocal() }
-                    } label: {
-                        Label(library.active.isEmpty ? "Play" : "Continue", systemImage: "play.fill")
-                            .frame(maxWidth: .infinity)
-                    }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
-#if !os(macOS)
-                        .keyboardShortcut("n", modifiers: .command)
-#endif
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            if !library.active.isEmpty {
-                                Button { startLocal() } label: { Label("New local game", systemImage: "plus").frame(maxWidth: .infinity) }
-                                    .buttonStyle(MountainButton()).accessibilityIdentifier("new-local-game")
-                            }
-                            if !typeSize.isAccessibilitySize { Text("Pick a number. Outsmart your rival.").font(.title3) }
-                            socialActions
-                            gamesInbox
-                            if firstAI || secondAI {
-                                HStack(spacing: 12) {
-                                    OpponentPortrait(difficulty: difficulty, size: 48)
-                                    Text("\(difficulty.name) · \(difficulty.title)").font(.headline)
-                                }.accessibilityElement(children: .combine)
-                            }
-                            Text("Classic · \(size) × \(size) · \(firstAI && secondAI ? "Computer vs. computer" : firstAI || secondAI ? "You move first" : "Two players")")
-                                .font(.subheadline).multilineTextAlignment(.center)
-                            Button { options = true } label: { Label("Players & board", systemImage: "slider.horizontal.3").frame(maxWidth: .infinity) }
-                                .buttonStyle(MountainButton()).accessibilityIdentifier("game-options")
-                            if history.contains(where: { $0 > 0 }) {
-                                Text("\(names[0])  \(history[0]) : \(history[1])  \(names[1])")
-                                    .font(.footnote).multilineTextAlignment(.center)
-                                    .accessibilityLabel("Head to head. \(names[0]), \(history[0]) wins. \(names[1]), \(history[1]) wins.")
-                            }
-                        }.padding(.bottom, 12)
-                    }.scrollIndicators(.hidden)
-                }
-                .padding(.horizontal, geometry.size.width > 600 ? 48 : 28).padding(.vertical, 16)
-                .frame(maxWidth: 760).frame(maxWidth: .infinity)
+        Group {
+            if social {
+                socialHub
+            } else {
+                landing
             }
         }
         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
     }
 
-#if os(visionOS)
-    private var visionHome: some View {
+    private var landing: some View {
         GeometryReader { geometry in
             ZStack {
-                MountainScenery(active: !options && !rules)
-                MountainStyle.ink.opacity(0.50).ignoresSafeArea()
+                MountainScenery(active: !playing && !options && !rules, followsLocalTime: true)
+                    .overlay(MountainStyle.ink.opacity(0.5))
                 ScrollView {
                     VStack(spacing: 32) {
-                        HStack {
-                            Image(systemName: "pawprint.fill").font(.title).accessibilityHidden(true)
-                            Spacer()
-                            Button { rules = true } label: { Label("How to play", systemImage: "questionmark.circle") }
-                                .buttonStyle(MountainButton()).accessibilityLabel("How to play")
-                        }.foregroundStyle(MountainStyle.gold)
-                        ViewThatFits(in: .horizontal) {
-                            HStack(alignment: .center, spacing: 64) {
-                                visionInvitation.frame(width: 460)
-                                visionLaunch.frame(width: 340)
-                            }
-                            VStack(alignment: .leading, spacing: 32) { visionInvitation; visionLaunch }
+                        Spacer(minLength: 16)
+                        Text("Race to\nDog Mountain")
+                            .font(MountainStyle.display(typeSize.isAccessibilitySize ? 36 : geometry.size.width > 600 ? 76 : 48))
+                            .tracking(-1).multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityAddTraits(.isHeader)
+                        Spacer(minLength: 40)
+                        Button { startLocal() } label: {
+                            Text("Play").font(.largeTitle.bold())
+                                .frame(maxWidth: .infinity, minHeight: 64)
                         }
-                        socialActions.frame(maxWidth: 650)
-                        gamesInbox.frame(maxWidth: 900)
-                    }.padding(48)
-                        .frame(maxWidth: 1140, minHeight: geometry.size.height)
-                        .frame(maxWidth: .infinity)
-                }
+                        .buttonStyle(MountainButton(prominent: true))
+                        .accessibilityIdentifier("start-game")
+                        .keyboardShortcut("n", modifiers: .command)
+                        HStack(spacing: 24) {
+                            homeControl("How to play", symbol: "questionmark", identifier: "help") { rules = true }
+                            Spacer(minLength: 0)
+                            homeControl("Play with friends and saved games", symbol: "person.2.fill", identifier: "friends-and-games") { social = true }
+                            Spacer(minLength: 0)
+                            homeControl("Settings", symbol: "gearshape.fill", identifier: "game-options") { options = true }
+                        }
+                        Spacer(minLength: 16)
+                    }
+                    .padding(28)
+                    .frame(maxWidth: 620, minHeight: geometry.size.height)
+                    .frame(maxWidth: .infinity)
+                }.scrollIndicators(.hidden)
             }
-        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
-    }
-    private var visionInvitation: some View {
-        VStack(alignment: .leading, spacing: 28) {
-            Text("Race to\nDog Mountain").font(MountainStyle.display(64))
-                .tracking(-2).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
-            Text("Pick a number.\nOutsmart your rival.").font(.title2).lineSpacing(8)
         }
     }
-    private var visionLaunch: some View {
-        VStack(spacing: 24) {
-            if firstAI || secondAI {
-                OpponentPortrait(difficulty: difficulty, size: 132)
-                VStack(spacing: 8) {
-                    Text(difficulty.name).font(MountainStyle.display(36))
-                    Text("\(difficulty.title) · \(difficulty.detail)").font(.headline).multilineTextAlignment(.center)
-                }
-            }
-            Button { startLocal() } label: { Label("Let's play", systemImage: "arrow.right").frame(maxWidth: .infinity) }
-                .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
-                .keyboardShortcut("n", modifiers: .command)
-            Text("Classic · \(size) × \(size) · \(firstAI && secondAI ? "Computer vs. computer" : firstAI || secondAI ? "You move first" : "Two players")")
-                .font(.subheadline).multilineTextAlignment(.center)
-            Button { options = true } label: { Label("Players & board", systemImage: "slider.horizontal.3").frame(maxWidth: .infinity) }
-                .buttonStyle(MountainButton()).accessibilityIdentifier("game-options")
-            if history.contains(where: { $0 > 0 }) {
-                Text("\(names[0])  \(history[0]) : \(history[1])  \(names[1])").font(.footnote).multilineTextAlignment(.center)
-            }
-        }.offset(z: 20)
+
+    private func homeControl(_ title: String, symbol: String, identifier: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol).font(.title2.weight(.semibold))
+                .frame(width: 60, height: 60)
+                .background(MountainStyle.ink, in: Circle())
+                .overlay { Circle().strokeBorder(MountainStyle.cream.opacity(0.5), lineWidth: 1) }
+        }
+        .buttonStyle(.plain).mountainHover()
+        .accessibilityLabel(title).accessibilityIdentifier(identifier).help(title)
     }
-#endif
+
+    private var socialHub: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    Picker("Game type", selection: $gameCategory) {
+                        ForEach(MountainGameCategory.allCases) { category in Text(category.title).tag(category) }
+                    }.pickerStyle(.segmented).accessibilityIdentifier("games-category")
+                    gamesInbox
+                }.padding(20).frame(maxWidth: 760).frame(maxWidth: .infinity)
+            }.background(MountainStyle.ink).navigationTitle("Your Games").mountainInlineTitle()
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        NavigationLink { gameCenterGames } label: { Image(systemName: "person.2.fill").frame(minWidth: 44, minHeight: 44) }
+                            .accessibilityLabel("Game Center friends").accessibilityIdentifier("game-center-games")
+                    }
+                    ToolbarItem(placement: .confirmationAction) { Button("Done") { social = false } }
+                }
+        }
+    }
+    private var gameCenterGames: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Button { friends.invite(size: size) } label: { Label("Play a friend", systemImage: "person.2.fill").frame(maxWidth: .infinity) }
+                    .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending).accessibilityIdentifier("play-friend")
+                ForEach(friends.active + friends.finished) { race in
+                    MountainMatchRow(title: race.title, subtitle: race.problem != nil ? "Refresh needed" : race.ended ? "Finished" : race.yourTurn ? "Your move" : "Waiting for a friend", scores: race.challenge?.game.scores, symbol: "person.2.fill", needsMove: race.yourTurn && race.problem == nil) { Task { await friends.open(race.id) } }
+                }
+                Button { Task { await friends.refresh() } } label: { Label("Refresh", systemImage: "arrow.clockwise").frame(minHeight: 44) }.disabled(friends.loading)
+                if friends.loading { ProgressView().tint(MountainStyle.gold) }
+            }.padding(20).frame(maxWidth: 760).frame(maxWidth: .infinity)
+        }.background(MountainStyle.ink).navigationTitle("Game Center").mountainInlineTitle()
+    }
+    private var categoryGames: [SavedMountainGame] { library.games.filter { $0.hasScore && $0.category == gameCategory }.sorted { $0.updatedAt > $1.updatedAt } }
+    private var gamesInbox: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            if gameCategory == .messages || categoryGames.isEmpty {
+                Image(systemName: gameCategory == .messages ? "message.fill" : gameCategory == .ai ? "sparkles" : "person.2.fill")
+                    .font(.largeTitle).foregroundStyle(MountainStyle.gold).frame(maxWidth: .infinity).accessibilityHidden(true)
+                Text(gameCategory == .messages ? "Your iMessage games live in their conversations. Open a conversation, tap +, then choose Race to Dog Mountain." : gameCategory == .ai ? "Play a computer on this device. Tap its player card to choose a level." : "Share this device with a friend and take turns on the same board.")
+                    .font(.body).multilineTextAlignment(.center).frame(maxWidth: .infinity)
+            }
+            Button { startCategoryGame() } label: { Label(gameCategory == .messages ? "Open Messages" : "New \(gameCategory.title) game", systemImage: gameCategory == .messages ? "message.fill" : "play.fill").frame(maxWidth: .infinity) }
+                .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("new-category-game")
+            ForEach(categoryGames.filter { !$0.game.isOver }) { saved in savedRow(saved) }
+            if categoryGames.contains(where: { $0.game.isOver }) {
+                DisclosureGroup("Finished games") { ForEach(categoryGames.filter { $0.game.isOver }) { saved in savedRow(saved) } }
+            }
+            if let error = library.error { Text(error).font(.footnote).foregroundStyle(MountainStyle.gold) }
+        }
+    }
+    private func savedRow(_ saved: SavedMountainGame) -> some View {
+        MountainMatchRow(title: saved.names.enumerated().map { saved.computers[$0.offset] ? saved.difficulty.displayName : MountainHumanProfile.read(identity: $0.element, data: humanProfiles).displayName }.joined(separator: " & "),
+                         subtitle: "\(saved.game.isOver ? "Finished · " : "")\(saved.game.size) × \(saved.game.size)", scores: saved.game.scores,
+                         symbol: saved.computers.contains(true) ? "sparkles" : "person.2.fill", needsMove: !saved.game.isOver) { resume(saved) }
+            .accessibilityIdentifier("saved-local-" + saved.id.uuidString)
+    }
+    private func startCategoryGame() {
+        switch gameCategory {
+        case .passAndPlay: startLocal(passAndPlay: true)
+        case .ai: startLocal(againstComputer: true)
+        case .messages:
+            if let url = URL(string: "sms:") { openURL(url) }
+        }
+    }
 
     private var localGame: some View {
         MountainGameView(size: size, names: names, computers: [firstAI, secondAI], difficulty: difficulty,
-                         adjustment: computerAdjustment, saved: selection, onSave: library.save,
+                         adjustment: 0, saved: selection, learningStore: learningStore, onSave: library.save,
                          onLeave: { playing = false; refreshHistory() })
+#if os(iOS)
+            .statusBarHidden(!showStatusBar)
+#endif
     }
-    private func startLocal(passAndPlay: Bool = false) {
-        let next = SavedMountainGame(size: size, names: names, computers: passAndPlay ? [false, false] : [firstAI, secondAI], difficulty: difficulty, adjustment: computerAdjustment)
+    private func startLocal(passAndPlay: Bool = false, againstComputer: Bool = false) {
+        let computers = passAndPlay ? [false, false] : againstComputer ? [false, true] : [firstAI, secondAI]
+        let key = learningKey(computers: computers)
+        let context = adaptiveDifficulty ? key.map { learningStore.begin(key: $0) } : nil
+        let profile = context.map { learningStore.learning(for: $0.key).difficulty } ?? manualDifficulty
+        var next = SavedMountainGame(size: size, names: names, computers: computers, difficulty: profile, adjustment: 0)
+        next.learning = context
         library.save(next); selection = next; playing = true
     }
     private func resume(_ game: SavedMountainGame) { selection = game; playing = true }
-    private var socialActions: some View {
-        VStack(spacing: 12) {
-            Button { friends.invite(size: size) } label: { Label("Play a friend", systemImage: "person.2.fill").frame(maxWidth: .infinity) }
-                .buttonStyle(MountainButton()).disabled(friends.sending).accessibilityIdentifier("play-friend")
-            HStack(spacing: 16) {
-                Button { startLocal(passAndPlay: true) } label: {
-                    Label("Pass & play", systemImage: "iphone.gen3.radiowaves.left.and.right")
-#if os(visionOS)
-                        .foregroundStyle(MountainStyle.ink)
-#endif
-                }
-                    .frame(minHeight: 44).accessibilityIdentifier("pass-and-play")
-#if os(iOS)
-                Button { messageHelp = true } label: { Label("iMessage", systemImage: "message.fill") }.frame(minHeight: 44)
-#endif
-            }.font(.subheadline.weight(.semibold)).frame(maxWidth: .infinity)
-            if friends.authenticated {
-                HStack {
-                    Text("Game Center connected").font(.caption)
-                    Spacer()
-                    Button { Task { await friends.refresh() } } label: { Image(systemName: "arrow.clockwise") }.frame(minWidth: 44, minHeight: 44).disabled(friends.loading).accessibilityLabel("Refresh friend games")
-                }
-            }
-            if friends.loading { ProgressView("Refreshing friend games…").tint(MountainStyle.gold) }
+    private var manualDifficulty: ComputerDifficulty { ComputerDifficulty(rawValue: computerLevel) ?? .level1 }
+    private func learningKey(computers: [Bool]) -> String? {
+        guard computers.filter({ $0 }).count == 1, let human = computers.firstIndex(of: false) else { return nil }
+        return MountainLearningStore.key(name: names[human], size: size, seat: human)
+    }
+    private var difficulty: ComputerDifficulty {
+        if adaptiveDifficulty, let key = learningKey(computers: [firstAI, secondAI]) {
+            return learningStore.learning(for: key).difficulty
         }
+        return manualDifficulty
     }
-    private var gamesInbox: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if !friends.active.isEmpty || !library.active.isEmpty {
-                Text("Your games").font(.title2.bold()).accessibilityAddTraits(.isHeader)
-                ForEach(friends.active) { race in
-                    MountainMatchRow(title: race.title, subtitle: race.problem != nil ? "Refresh needed · Game Center" : race.yourTurn ? "Your move · Game Center" : "Waiting for a friend · Game Center", scores: race.challenge?.game.scores, symbol: "person.2.fill", needsMove: race.yourTurn && race.problem == nil) { Task { await friends.open(race.id) } }
-                }
-                ForEach(library.active) { saved in
-                    MountainMatchRow(title: saved.title, subtitle: "\(saved.computers.contains(true) ? saved.difficulty.title : "Pass & play") · \(saved.game.size) × \(saved.game.size)", scores: saved.game.scores, symbol: saved.computers.contains(true) ? "person.crop.square" : "person.2.fill", needsMove: true) { resume(saved) }
-                }
-            } else {
-                Text("Start a race with a friend. Come back here whenever it's your move.").fixedSize(horizontal: false, vertical: true)
-                    .font(.subheadline).multilineTextAlignment(.center).frame(maxWidth: .infinity).padding(.vertical, 8)
-            }
-            if !library.finished.isEmpty || !friends.finished.isEmpty {
-                DisclosureGroup("Finished games") {
-                    ForEach(friends.finished) { race in
-                        MountainMatchRow(title: race.title, subtitle: "Finished · Game Center", scores: race.challenge?.game.scores, symbol: "flag.checkered") { Task { await friends.open(race.id) } }
-                    }
-                    ForEach(library.finished) { saved in
-                        MountainMatchRow(title: saved.title, subtitle: "Finished · Local", scores: saved.game.scores, symbol: "flag.checkered") { resume(saved) }.accessibilityIdentifier("finished-local-" + saved.id.uuidString)
-                    }
-                }.padding(.top, 12)
-            }
-            if let error = library.error { Text(error).font(.footnote).foregroundStyle(MountainStyle.gold) }
-        }.frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: computerLevel) ?? .level6 }
     private var names: [String] { [clean(firstName, fallback: "Player 1"), clean(secondName, fallback: "Player 2")] }
     private func clean(_ name: String, fallback: String) -> String {
         let result = name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -311,105 +326,128 @@ struct MountainHome: View {
     private func refreshHistory() {
         history = [0, 1].map { MountainExperience.defaults.integer(forKey: "\(names[$0])vvv\(names[1 - $0])") }
     }
-    private var playerOptions: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    Text("Who's climbing?").font(MountainStyle.display(32))
-                    playerEditor(name: $firstName, computer: $firstAI, index: 0)
-                    playerEditor(name: $secondName, computer: $secondAI, index: 1)
-                    if firstAI || secondAI {
-                        VStack(alignment: .leading, spacing: 16) {
-                            HStack(spacing: 16) {
-                                OpponentPortrait(difficulty: difficulty, size: 80)
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text(difficulty.name).font(MountainStyle.display(28))
-                                    Text(difficulty.detail).font(.subheadline)
-                                }
-                            }
-                            Stepper(value: $computerLevel, in: 0...15) {
-                                Text("Difficulty · \(difficulty.title) of 16").font(.headline).monospacedDigit()
-                            }.accessibilityIdentifier("computer-difficulty")
-                            Picker("Choose an opponent", selection: $computerLevel) {
-                                ForEach(ComputerDifficulty.allCases) { profile in
-                                    Text("\(profile.title) · \(profile.name)").tag(profile.rawValue)
-                                }
-                            }.pickerStyle(.menu)
-                            Text("A little tougher after you win, a little gentler after you lose. Your selected level stays the same.").font(.footnote)
-                            Toggle("Opponent chat", isOn: $computerDialogue)
-                                .accessibilityIdentifier("opponent-chat")
-                            Text("Optional phrases from your rival. Off by default.").font(.footnote)
-                        }
-                        Divider().overlay(MountainStyle.cream.opacity(0.2))
-                    }
-                    Stepper(value: $size, in: 4...14) {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("Board size").font(.headline)
-                            Text("\(size) × \(size)").font(.title2.bold()).monospacedDigit().foregroundStyle(MountainStyle.gold)
-                        }
-                    }
-                    .accessibilityIdentifier("board-size-setting")
-                    Text("Bigger board, more possibilities. Classic rules, every time.").font(.subheadline)
-                    MountainExperienceOptions()
-                    HStack {
-                        Text("Head to head").font(.headline)
-                        Spacer()
-                        Text("\(history[0]) : \(history[1])").monospacedDigit().foregroundStyle(MountainStyle.gold)
-                    }
-                    Link("Privacy Policy", destination: URL(string: "https://nathanfennel.com/race-to-dog-mountain/privacy.html")!).font(.footnote).frame(minHeight: 44)
-                }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
-            }
-            .background(MountainStyle.ink).navigationTitle("Players & board").mountainInlineTitle()
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { options = false } } }
-        }.tint(MountainStyle.gold).foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
-            .onChange(of: computerLevel) { computerAdjustment = 0 }
-    }
-    private func playerEditor(name: Binding<String>, computer: Binding<Bool>, index: Int) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Label(index == 0 ? "Row player" : "Column player", systemImage: index == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
-                .font(.headline).foregroundStyle(MountainStyle.player(index))
-            TextField(index == 0 ? "First player" : "Second player", text: name)
-                .font(.title3.weight(.semibold)).padding(16)
-                .background(MountainStyle.cream.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
-                .accessibilityLabel(index == 0 ? "First player name" : "Second player name")
-            Toggle("Computer player", isOn: computer).tint(MountainStyle.player(index))
-        }
-    }
+    private var playerOptions: some View { MountainSettings() }
 }
 
+
 private struct MountainRules: View {
+    var onPlay: () -> Void
+    @State private var lesson = MountainTutorial()
+    @State private var feedback: [MountainMoveFeedback] = []
+    @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private let titles = ["Follow the gold row", "Now try the mint column", "Think one move ahead", "Leave a good path", "Ready for the mountain"]
+    private let details = ["Tap a gold number. It adds to your score.", "Your choice set this column. Tap a mint number.", "Pick a gold number. Notice which column you leave.", "Take a mint number. Used tiles stay empty.", "When the next player has no moves, the higher score wins."]
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    Text("Small moves.\nBig decisions.").font(MountainStyle.display(36))
-                    instruction("arrow.left.and.right", "Pick from your row", "The gold player chooses a number from the highlighted row. That number is added to their score.", MountainStyle.gold)
-                    instruction("arrow.up.and.down", "Send your rival down a column", "Your tile sets the mint player's column. Their choice then sets your next row.", MountainStyle.mint)
-                    instruction("flag.checkered", "Finish on top", "Used tiles stay empty. When the next player has no moves, the higher score wins. You move first against the computer. Computer-only games wait until you tap Play.", MountainStyle.cream)
-                    Text("The biggest number isn't always the best move. Think about what you leave behind.").font(.title3.weight(.medium))
-                    Button("Got it") { dismiss() }.buttonStyle(MountainButton(prominent: true))
-                }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        MountainReservedText(lines: typeSize.isAccessibilitySize ? 4 : 2) { Text(titles[lesson.step]).id(lesson.step).transition(pageTransition) }
+                            .font(.title2.bold()).multilineTextAlignment(.center)
+                            .accessibilityAddTraits(.isHeader).accessibilityIdentifier("tutorial-heading")
+                            .animation(pageAnimation, value: lesson.step)
+                            .contentShape(Rectangle()).gesture(pageSwipe)
+                        HStack(spacing: 16) { score(0); score(1) }
+                        MountainBoard(game: lesson.game, availableWidth: boardSide(geometry.size), fitAllSizes: true,
+                                      interactive: !lesson.finished, lastMove: lesson.lastMove,
+                                      lastPoints: lesson.lastPoints) { choose($0) }
+                            .accessibilityIdentifier("tutorial-board")
+                        MountainReservedText(lines: typeSize.isAccessibilitySize ? 9 : 3) { Text(details[lesson.step]).id(lesson.step).transition(pageTransition) }
+                            .font(.body).multilineTextAlignment(.center)
+                            .animation(pageAnimation, value: lesson.step)
+                            .contentShape(Rectangle()).gesture(pageSwipe)
+                        HStack(spacing: 16) {
+                            Button { navigate(lesson.step - 1) } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }
+                                .disabled(lesson.step == 0).accessibilityLabel("Previous step").accessibilityIdentifier("tutorial-back")
+                            HStack(spacing: 8) {
+                                ForEach(0...MountainTutorial.lastStep, id: \.self) { page in
+                                    Circle().fill(page == lesson.step ? MountainStyle.gold : MountainStyle.cream.opacity(0.25)).frame(width: 7, height: 7)
+                                }
+                            }.frame(maxWidth: .infinity).accessibilityElement(children: .ignore)
+                                .accessibilityLabel("Step \(lesson.step + 1) of \(MountainTutorial.lastStep + 1)")
+                            Button { navigate(lesson.step + 1) } label: { Image(systemName: "chevron.right").frame(width: 44, height: 44) }
+                                .disabled(!lesson.canGoForward).accessibilityLabel("Next completed step").accessibilityIdentifier("tutorial-next")
+                        }
+                        Button(action: onPlay) { Text("Play").frame(maxWidth: .infinity) }
+                            .buttonStyle(MountainButton(prominent: true))
+                            .opacity(lesson.finished ? 1 : 0).disabled(!lesson.finished).accessibilityHidden(!lesson.finished)
+                            .accessibilityIdentifier("tutorial-finish")
+                    }.padding(16).frame(maxWidth: 520).frame(maxWidth: .infinity)
+                }.scrollIndicators(.hidden)
+                    .overlayPreferenceValue(MountainMoveAnchors.self) { anchors in
+                        MountainMoveEffects(events: $feedback, anchors: anchors, reduceMotion: reduceMotion || !animationsEnabled)
+                    }
             }.background(MountainStyle.ink).navigationTitle("How to play").mountainInlineTitle()
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button { dismiss() } label: { Image(systemName: "xmark").frame(minWidth: 44, minHeight: 44) }
+                            .accessibilityLabel("Close guide").accessibilityIdentifier("close-tutorial")
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        if !lesson.finished {
+                            Button(action: onPlay) { Label("Play", systemImage: "play.fill").frame(minHeight: 44) }
+                                .accessibilityIdentifier("tutorial-play")
+                        }
+                    }
+                }
         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
     }
-    private func instruction(_ symbol: String, _ title: String, _ text: String, _ color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label(title, systemImage: symbol).font(.headline).foregroundStyle(color)
-            Text(text).font(.body).lineSpacing(4)
+    private var pageAnimation: Animation? { reduceMotion || !animationsEnabled ? nil : .easeInOut(duration: 0.25) }
+    private var pageTransition: AnyTransition { reduceMotion || !animationsEnabled ? .identity : .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .move(edge: .leading).combined(with: .opacity)) }
+    private var pageSwipe: some Gesture {
+        DragGesture(minimumDistance: 35).onEnded { value in
+            guard abs(value.translation.width) > abs(value.translation.height) else { return }
+            navigate(lesson.step + (value.translation.width < 0 ? 1 : -1))
         }
+    }
+    private func boardSide(_ size: CGSize) -> CGFloat { min(max(176, size.height * 0.44), min(400, size.width - 32)) }
+    private func navigate(_ step: Int) { feedback.removeAll(); lesson.navigate(to: step) }
+    private func choose(_ tile: Int) {
+        let before = lesson.game
+        guard lesson.choose(tile) else { return }
+        if !reduceMotion && animationsEnabled {
+            feedback = MountainMoveFeedback(id: lesson.step, tile: tile, player: before.turn,
+                                            points: before.tiles[tile].value, maximum: 16).adding(to: feedback)
+        }
+    }
+    private func score(_ player: Int) -> some View {
+        HStack(spacing: 12) {
+            Text(player == 0 ? "You" : "Friend").font(.subheadline.bold())
+            Spacer(minLength: 4)
+            MountainReservedText { MountainScoreNumber(value: Double(lesson.game.scores[player])) }
+                .font(.title2.bold()).frame(width: 48)
+                .anchorPreference(key: MountainMoveAnchors.self, value: .bounds) { [.score(player): $0] }
+        }.padding(12).foregroundStyle(MountainStyle.player(player))
+            .background(MountainStyle.player(player).opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
+            .overlay { MountainPlayerHighlight(player: player, active: lesson.game.turn == player && !lesson.finished) }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(player == 0 ? "You" : "Friend"), \(lesson.game.scores[player]) points. \(player == 0 ? "Row" : "Column") player")
     }
 }
 
 private struct MountainGameView: View {
     let names: [String]
-    let difficulty: ComputerDifficulty
+    @AppStorage("humanProfiles.v1", store: MountainExperience.defaults) private var humanProfiles = Data()
+    @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var hapticsEnabled = true
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var displayHub = MountainDisplayHub.shared
+    @State private var customizing: MountainHumanSelection?
+    @State private var resultPresented = false
+    @State private var pendingResult = false
+    @State private var feedback: [MountainMoveFeedback] = []
+    @State private var moveIntensity = 0.2
+    @State private var difficulty: ComputerDifficulty
+    let learningStore: MountainLearningStore?
     let onLeave: (() -> Void)?
     let onSave: ((SavedMountainGame) -> Void)?
     @State private var savedID: UUID
-    @AppStorage("computerAdjustment", store: MountainExperience.defaults) private var computerAdjustment = 0
-    @AppStorage("computerDialogue", store: MountainExperience.defaults) private var computerDialogue = false
+    @AppStorage("adaptiveDifficulty", store: MountainExperience.defaults) private var adaptiveDifficulty = true
+    @AppStorage("computerLevel", store: MountainExperience.defaults) private var computerLevel = 5
+    @State private var learning: MountainLearningContext?
+    @State private var boardTop: CGFloat = 0
     @State private var matchAdjustment: Int
     @State private var rolesChanged = false
     @State private var computerStarted = false
@@ -418,310 +456,340 @@ private struct MountainGameView: View {
     @State private var computers: [Bool]
     @State private var game: MountainGame
     @State private var recorded = false
-    @State private var confirmExit = false
+    @State private var leavingGame = false
     @State private var foregroundNonce = 0
     @State private var lastMove: Int?
     @State private var lastPoints = 0
     @State private var history: MountainHistory?
     @State private var resolution: UUID?
     @State private var sharing = false
-    @Environment(\.scenePhase) private var scenePhase
+    @State private var gameHelp = false
+    @State private var gameSettings = false
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     @Environment(\.dynamicTypeSize) private var typeSize
 
-    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, saved: SavedMountainGame? = nil, onSave: ((SavedMountainGame) -> Void)? = nil, onLeave: (() -> Void)? = nil) {
+    init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, saved: SavedMountainGame? = nil, learningStore: MountainLearningStore? = nil, onSave: ((SavedMountainGame) -> Void)? = nil, onLeave: (() -> Void)? = nil) {
         self.names = saved?.names ?? names
         self.onLeave = onLeave; self.onSave = onSave
-        self.difficulty = saved?.difficulty ?? difficulty
+        self.learningStore = learningStore
+        _difficulty = State(initialValue: saved?.difficulty ?? difficulty)
+        _learning = State(initialValue: saved?.learning)
         _savedID = State(initialValue: saved?.id ?? UUID())
         _recorded = State(initialValue: saved?.recorded ?? false)
-        _computerStarted = State(initialValue: saved?.computerStarted ?? false)
+        _computerStarted = State(initialValue: saved?.computerStarted ?? computers.contains(false))
         _rolesChanged = State(initialValue: saved?.rolesChanged ?? false)
         _lastComputerMove = State(initialValue: saved?.replay)
         _matchAdjustment = State(initialValue: saved?.adjustment ?? adjustment)
         // Each presentation owns a fresh game and a snapshot of player settings.
-        let initial = saved?.game ?? MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers))
+        let initial = saved?.game ?? MountainGame(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
         _game = State(initialValue: initial)
         _history = State(initialValue: saved == nil ? MountainHistory(initial: initial) : saved?.history)
         _computers = State(initialValue: saved?.computers ?? computers)
     }
 
-    var body: some View {
+    private var gameContent: some View {
         GeometryReader { geometry in
             ZStack {
-                MountainScenery(active: !replaying && !confirmExit, celebration: game.isOver)
+                MountainScenery(active: !replaying && !leavingGame, celebration: humanVictory)
                 MountainStyle.ink.opacity(0.60).ignoresSafeArea()
                 ScrollView {
                     VStack(spacing: 24) {
                         header
-#if os(visionOS)
-                        if geometry.size.width >= 1040 && !typeSize.isAccessibilitySize {
-                            turnLabel
-                            HStack(alignment: .center, spacing: 24) {
-                                score(player: 0).frame(width: 180).offset(z: 24)
-                                board(width: min(geometry.size.width - 472, 740)).offset(z: 12)
-                                score(player: 1).frame(width: 180).offset(z: 24)
-                            }
-                            startComputerButton
-                            matchControls.frame(maxWidth: 520)
-                        } else {
-                            verticalGame(width: min(geometry.size.width - 64, 740))
-                        }
-#elseif os(macOS)
-                        if geometry.size.width >= 900 {
+                        if usesSideControls(width: geometry.size.width, height: geometry.size.height) && !typeSize.isAccessibilitySize {
                             HStack(alignment: .top, spacing: 24) {
                                 VStack(spacing: 18) {
                                     score(player: 0)
                                     score(player: 1)
-                                    turnLabel
-                                    startComputerButton
+
                                     matchControls
-                                }.frame(width: 260)
-                                board(width: min(geometry.size.width - 316, 760))
+                                }.frame(width: 240)
+                                board(width: max(160, min(min(geometry.size.width, 1268) - gameHorizontalPadding - 264, geometry.size.height - 128)), fitAllSizes: geometry.size.width >= 900 && geometry.size.height >= 600)
+                                    .frame(maxWidth: .infinity)
                             }
                         } else {
-                            verticalGame(width: min(geometry.size.width - 32, 760))
+                            verticalGame(width: min(geometry.size.width - 32, 760), maxHeight: geometry.size.width >= 600 && !typeSize.isAccessibilitySize ? max(160, geometry.size.height - boardTop - gameHorizontalPadding) : nil)
                         }
-#else
-                        verticalGame(width: min(geometry.size.width - 32, 760))
-#endif
                     }
+                    .coordinateSpace(name: "mountain-game-content")
+                    .onPreferenceChange(MountainBoardTop.self) { boardTop = $0 }
 #if os(visionOS)
                     .padding(32).frame(maxWidth: 1268)
 #else
                     .padding(16)
 #endif
-#if os(macOS)
-                        .frame(maxWidth: 1076)
-#elseif os(iOS)
-                        .frame(maxWidth: 792)
-#endif
+                        .frame(maxWidth: 1268)
                         .frame(maxWidth: .infinity)
                 }.scrollIndicators(.hidden)
             }
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                if game.isOver && resolution == nil { finishActions }
+            .overlayPreferenceValue(MountainMoveAnchors.self) { anchors in
+                MountainMoveEffects(events: $feedback, anchors: anchors, reduceMotion: reduceMotion)
             }
-            .confirmationDialog("Leave this game?", isPresented: $confirmExit, titleVisibility: .visible) {
-                Button("Back to games") { leaveGame() }
-            } message: { Text("Your progress is saved. You can finish this game later.") }
+            .onChange(of: geometry.size) { _, _ in feedback.removeAll() }
+            .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() }; publishDisplay() }
+            .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
+            .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], profiles: $humanProfiles, computer: $computers[player.id], difficulty: $difficulty, adaptive: $adaptiveDifficulty, canResetLearning: computers.contains(false), onResetLearning: { if let human = computers[player.id] ? computers.firstIndex(of: false) : player.id { learningStore?.reset(key: MountainLearningStore.key(name: names[human], size: game.size, seat: human)) } }, onDifficultyChanged: { rolesChanged = true; learning = nil; computerLevel = difficulty.rawValue; persist() }).mountainSheetSize() }
+            .sheet(isPresented: $resultPresented) { resultPanel.mountainSheetSize() }
+            .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay() }
+            .onChange(of: humanProfiles) { publishDisplay() }
+            .onChange(of: customizing?.id) { publishDisplay(); presentPendingResult() }
+            .onChange(of: replaying) { publishDisplay() }
+
+        }
+    }
+    var body: some View {
+        gameContent
             .onReceive(NotificationCenter.default.publisher(for: MountainPlatform.didBecomeActive)) { _ in foregroundNonce += 1 }
-            .task(id: "\(savedID)-\(game.moves)-\(computers)-\(confirmExit)-\(foregroundNonce)-\(computerStarted)-\(replaying)-\(resolution?.uuidString ?? "ready")-\(scenePhase)") {
-                guard MountainPlatform.isActive, !confirmExit, !replaying, resolution == nil, !waitingForStart, !game.isOver, computers[game.turn] else { return }
+            .task(id: "\(savedID)-\(gameSettings)-\(gameHelp)-\(game.moves)-\(computers)-\(leavingGame)-\(foregroundNonce)-\(computerStarted)-\(replaying)-\(customizing?.id ?? -1)-\(resultPresented)-\(resolution?.uuidString ?? "ready")-\(scenePhase)") {
+                guard scenePhase == .active, MountainPlatform.isActive, !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil, !resultPresented, resolution == nil, !waitingForStart, !game.isOver, computers[game.turn] else { return }
                 do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
                 let snapshot = game, profile = difficulty, skill = matchAdjustment
                 let next = await Task.detached(priority: .userInitiated) {
                     snapshot.computerMove(difficulty: profile, adjustment: skill)
                 }.value
-                guard !Task.isCancelled, !confirmExit, !replaying, resolution == nil, MountainPlatform.isActive, game.moves == snapshot.moves, computers[game.turn] else { return }
+                guard !Task.isCancelled, !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil, !resultPresented, resolution == nil, scenePhase == .active, MountainPlatform.isActive, game.moves == snapshot.moves, computers[game.turn] else { return }
                 if let next { move(next, computer: true) }
             }
+            .onChange(of: game.isOver) { _, over in if over { recordWin(); pendingResult = true; presentPendingResult() } }
+            .onChange(of: computers) { if computers.contains(false) { computerStarted = true }; rolesChanged = true; MountainExperience.defaults.set(computers[0], forKey: "player1AI"); MountainExperience.defaults.set(computers[1], forKey: "player2AI"); persist() }
+            .onChange(of: adaptiveDifficulty) { learning = nil; persist() }
+            .onChange(of: computerStarted) { persist() }
+            .onDisappear { retireDisplay() }
             .task(id: resolution) {
                 guard let token = resolution else { return }
                 do { try await Task.sleep(for: .seconds(MountainExperience.computerDuration)) } catch { return }
                 guard !Task.isCancelled, resolution == token else { return }
                 resolution = nil
             }
-            .onChange(of: scenePhase) { _, phase in if phase != .active { resolution = nil } }
-            .onChange(of: confirmExit) { _, opened in if opened { resolution = nil } }
-            .onChange(of: replaying) { _, opened in if opened { resolution = nil } }
-            .onChange(of: game.isOver) { _, over in if over { recordWin() } }
-            .onChange(of: computers) { rolesChanged = true; persist() }
-            .onChange(of: computerStarted) { persist() }
-            .onDisappear { resolution = nil; persist() }
+            .onChange(of: resolution) { _, _ in presentPendingResult() }
+            .onChange(of: scenePhase) { _, phase in if phase != .active { resolution = nil } else { presentPendingResult() } }
+            .onChange(of: replaying) { _, opened in if opened { resolution = nil } else { presentPendingResult() } }
+            .sheet(isPresented: $gameSettings) { MountainSettings().mountainSheetSize() }
+            .onChange(of: gameSettings) { _, opened in if opened { resolution = nil; feedback.removeAll() } else { presentPendingResult() }; publishDisplay() }
+            .sheet(isPresented: $gameHelp) { MountainRules { gameHelp = false }.mountainSheetSize() }
+            .onChange(of: gameHelp) { _, opened in if opened { resolution = nil; feedback.removeAll() } else { presentPendingResult() }; publishDisplay() }
             .sheet(isPresented: $sharing) { MountainFinishShare(game: game, names: [playerName(0), playerName(1)], history: history) }
             .sheet(isPresented: $replaying) {
                 if let replay = lastComputerMove { MountainReplayView(replay: replay).mountainSheetSize() }
             }
-        }
         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
-        .mountainGameFeedback(moves: game.moves, over: game.isOver)
+        .mountainGameFeedback(moves: game.moves, over: humanVictory, enabled: hapticsEnabled, intensity: 0.2 + moveIntensity * 0.8)
+        .offeringMountainDisplay()
 #if os(macOS)
-        .focusedSceneValue(\.mountainActions, MountainActions(newGame: { restart() }, replay: lastComputerMove == nil ? nil : { replaying = true }, close: { if game.isOver { leaveGame() } else { confirmExit = true } }))
+        .focusedSceneValue(\.mountainActions, MountainActions(newGame: { restart() }, options: { gameSettings = true }, rules: { gameHelp = true }, replay: lastComputerMove == nil ? nil : { replaying = true }, close: { leaveGame() }))
 #endif
     }
-    private func board(width: CGFloat) -> some View {
-        MountainBoard(game: game, availableWidth: width, interactive: !computers[game.turn] && resolution == nil, lastMove: lastMove, lastPoints: lastPoints, selected: resolution == nil ? nil : lastComputerMove?.tileID) { move($0) }
+    private func usesSideControls(width: CGFloat, height: CGFloat) -> Bool {
+#if os(macOS)
+        width >= 620
+#else
+        width >= 650 && width > height
+#endif
     }
-    private func verticalGame(width: CGFloat) -> some View {
+    private var gameHorizontalPadding: CGFloat {
+#if os(visionOS)
+        64
+#else
+        32
+#endif
+    }
+    private func board(width: CGFloat, maxHeight: CGFloat? = nil, fitAllSizes: Bool = false) -> some View {
+        MountainBoard(game: game, availableWidth: width, availableHeight: maxHeight, fitAllSizes: fitAllSizes, interactive: !computers[game.turn] && resolution == nil, lastMove: lastMove, lastPoints: lastPoints, selected: resolution == nil ? nil : lastComputerMove?.tileID) { move($0) }
+            .background { GeometryReader { proxy in
+                Color.clear.preference(key: MountainBoardTop.self, value: proxy.frame(in: .named("mountain-game-content")).minY)
+            } }
+    }
+    private func verticalGame(width: CGFloat, maxHeight: CGFloat? = nil) -> some View {
         VStack(spacing: 24) {
             if typeSize.isAccessibilitySize {
                 VStack(spacing: 14) { score(player: 0); score(player: 1) }
             } else {
                 HStack(spacing: 14) { score(player: 0); score(player: 1) }
             }
-            turnLabel
-            startComputerButton
-            board(width: width)
+
+            board(width: width, maxHeight: maxHeight)
             matchControls
         }
     }
-    @ViewBuilder private var startComputerButton: some View {
-        if waitingForStart {
-            Button { computerStarted = true } label: {
-                Label("Play · Start computer", systemImage: "play.fill").frame(maxWidth: .infinity)
-            }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-computer")
-        }
+    private var startComputerButton: some View {
+        Button { computerStarted = true } label: {
+            Image(systemName: "play.fill").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
+                .foregroundStyle(MountainStyle.ink).background(MountainStyle.gold, in: Circle())
+        }.buttonStyle(.plain).opacity(waitingForStart ? 1 : 0).disabled(!waitingForStart).accessibilityHidden(!waitingForStart)
+            .accessibilityLabel("Start computers").accessibilityIdentifier("start-computer")
     }
     private var matchControls: some View {
-        VStack(spacing: 24) {
-            Button { replaying = true } label: {
-                Label("Replay computer move", systemImage: "play.rectangle").frame(maxWidth: .infinity)
-            }.buttonStyle(MountainButton()).disabled(lastComputerMove == nil)
-                .opacity(lastComputerMove == nil ? 0.5 : 1)
-                .accessibilityIdentifier("replay-computer")
-                .keyboardShortcut("r", modifiers: .command)
-            if lastComputerMove == nil {
-                Text("Replay will be ready after the computer's first move.").font(.footnote).multilineTextAlignment(.center)
-            }
-            if game.isOver {
-                EmptyView()
-            } else {
-                Label("Every choice sets your rival’s next move.", systemImage: "point.topleft.down.to.point.bottomright.curvepath").font(.footnote)
-            }
-        }
+        HStack(spacing: 24) {
+            Button { replaying = true } label: { Image(systemName: "play.rectangle").frame(width: 48, height: 48) }
+                .buttonStyle(.plain).disabled(lastComputerMove == nil).opacity(lastComputerMove == nil ? 0.4 : 1)
+                .accessibilityLabel("Replay computer move").accessibilityIdentifier("replay-computer").keyboardShortcut("r", modifiers: .command)
+            Button { pendingResult = false; resultPresented = true } label: { Image(systemName: "flag.checkered").frame(width: 48, height: 48) }
+                .buttonStyle(.plain).disabled(!game.isOver).opacity(game.isOver ? 1 : 0.4)
+                .accessibilityLabel("Results").accessibilityIdentifier("game-results")
+        }.font(.title2).frame(maxWidth: .infinity)
     }
-    private var finishActions: some View {
-        VStack(spacing: 10) {
-            Text(result).font(.headline).multilineTextAlignment(.center).accessibilityIdentifier("game-result")
-            Text("\(playerName(0)) \(game.scores[0]) · \(playerName(1)) \(game.scores[1])").font(.caption).multilineTextAlignment(.center)
-            HStack(spacing: 12) {
-                    Button { restart() } label: { Label("Race again", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
-                        .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("race-again")
-                Button { sharing = true } label: { Image(systemName: "square.and.arrow.up") }
-                    .buttonStyle(MountainButton()).accessibilityLabel("Share").accessibilityIdentifier("share-result")
-            }
-        }.padding(16).frame(maxWidth: 792).frame(maxWidth: .infinity)
-            .background(MountainStyle.ink.opacity(0.98))
+    private func presentPendingResult() {
+        guard pendingResult, game.isOver, resolution == nil, scenePhase == .active,
+              !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil else { return }
+        pendingResult = false; resultPresented = true
     }
-    private func leaveGame() { persist(); if let onLeave { onLeave() } else { dismiss() } }
+    private func leaveGame() { leavingGame = true; resolution = nil; feedback.removeAll(); persist(); if let onLeave { onLeave() } else { dismiss() } }
     private var waitingForStart: Bool { game.moves == 0 && computers[game.turn] && !computerStarted }
-    private func playerName(_ index: Int) -> String { computers[index] ? difficulty.name : names[index] }
+    private func playerName(_ index: Int) -> String { computers[index] ? difficulty.displayName : MountainHumanProfile.read(identity: names[index], data: humanProfiles).displayName }
     private var header: some View {
         HStack {
-            Button { if game.isOver { leaveGame() } else { confirmExit = true } } label: {
+            Button { leaveGame() } label: {
                 Image(systemName: "xmark").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
                     .background(MountainStyle.cream.opacity(0.1), in: Circle())
             }.accessibilityLabel("Close game").accessibilityIdentifier("close-game")
                 .keyboardShortcut(.cancelAction)
                 .mountainHover()
             Spacer()
-            Label("Dog Mountain", systemImage: "pawprint.fill").font(.headline)
+            startComputerButton
             Spacer()
-            Menu {
-                Toggle("Computer: \(names[0])", isOn: $computers[0])
-                Toggle("Computer: \(names[1])", isOn: $computers[1])
-                Toggle("Opponent chat", isOn: $computerDialogue)
-            } label: {
-                Image(systemName: "person.2.fill").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
+            Button { gameHelp = true } label: {
+                Image(systemName: "questionmark").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
                     .background(MountainStyle.cream.opacity(0.1), in: Circle())
-            }.accessibilityLabel("Player controls").mountainHover()
+            }.accessibilityLabel("How to play").accessibilityIdentifier("game-help")
+            Spacer()
+            Button { gameSettings = true } label: {
+                Image(systemName: "gearshape.fill").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
+                    .background(MountainStyle.cream.opacity(0.1), in: Circle())
+            }.accessibilityLabel("Settings").accessibilityIdentifier("play-settings").mountainHover()
         }.buttonStyle(.plain)
     }
-    private var turnLabel: some View {
-        VStack(spacing: 8) {
-            if resolution != nil {
-                Label("\(difficulty.name) takes \(lastPoints) points", systemImage: "hand.point.up.left.fill")
-                    .font(.headline).foregroundStyle(MountainStyle.gold)
-                    .transition(.identity).transaction { $0.animation = nil }
-                    .accessibilityIdentifier("computer-resolving")
-            } else if game.isOver {
-                Image(systemName: "flag.checkered").font(.largeTitle).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
-                Text(result).font(MountainStyle.display(30)).multilineTextAlignment(.center)
-                Text(game.scores[0] == game.scores[1] ? "An even climb. Go again?" : "The mountain has a winner.").font(.subheadline)
-                if computerDialogue, computers.filter({ $0 }).count == 1, game.scores[0] != game.scores[1] {
-                    Text("“\(difficulty.resultPhrase(humanWon: !computers[game.scores[0] > game.scores[1] ? 0 : 1]))”").font(.subheadline.italic()).multilineTextAlignment(.center)
-                }
-            } else {
-                Label("\(playerName(game.turn))'s \(game.turn == 0 ? "row" : "column")", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
-                    .font(.title2.bold()).foregroundStyle(MountainStyle.player(game.turn)).multilineTextAlignment(.center)
-                    .contentTransition(.opacity)
-                Text(waitingForStart ? "Select Play when you’re ready." : computers[game.turn] ? "\(difficulty.name) is choosing…" : "Choose a \(game.turn == 0 ? "gold" : "mint") tile. Take its points.")
-                    .font(.subheadline).multilineTextAlignment(.center)
-                if computerDialogue, computers.contains(true) {
-                    Text("“\(lastComputerMove == nil ? difficulty.greeting : difficulty.phrase(move: lastComputerMove!.after.moves))”")
-                        .font(.subheadline.italic()).multilineTextAlignment(.center)
-                }
-            }
-        }.frame(maxWidth: .infinity).accessibilityElement(children: .combine)
+    private var humanVictory: Bool {
+        game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1]
+    }
+    private var resultPanel: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    Image(systemName: humanVictory ? "pawprint.fill" : "mountain.2.fill")
+                        .font(.system(size: 56)).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
+                    Text(result).font(MountainStyle.display(36)).multilineTextAlignment(.center).accessibilityAddTraits(.isHeader)
+                    Text("\(playerName(0)) \(game.scores[0]) · \(playerName(1)) \(game.scores[1])")
+                        .font(.title3.bold()).multilineTextAlignment(.center)
+                    Button("Race again") { restart() }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("result-rematch")
+                    NavigationLink { MountainFinishShare(game: game, names: [playerName(0), playerName(1)], history: history) } label: {
+                        Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                    }.buttonStyle(MountainButton()).accessibilityIdentifier("share-result")
+                    Button("Back to mountain") { resultPresented = false; leaveGame() }.buttonStyle(MountainButton()).accessibilityIdentifier("result-home")
+                }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
+            }.background(MountainStyle.ink).navigationTitle("Game over").mountainInlineTitle()
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("View board") { resultPresented = false } } }
+        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
     }
     private var result: String {
         game.scores[0] == game.scores[1] ? "A tie!" : "\(playerName(game.scores[0] > game.scores[1] ? 0 : 1)) wins!"
     }
     private func score(player: Int) -> some View {
+        Button { customizing = MountainHumanSelection(id: player) } label: { scoreContents(player: player) }
+            .buttonStyle(.plain).accessibilityIdentifier("player-profile-\(player)")
+            .accessibilityLabel(scoreDescription(player) + " Customize player")
+    }
+    private func scoreContents(player: Int) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            if computers[player] {
-                HStack(spacing: 10) {
-                    OpponentPortrait(difficulty: difficulty, size: 48, thinking: game.turn == player && !game.isOver && !waitingForStart && !replaying && !confirmExit, reaction: lastComputerMove?.after.moves ?? 0)
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(difficulty.name).font(.subheadline.weight(.semibold))
-                        Text(difficulty.title).font(.caption)
-                    }
+            HStack(spacing: 10) {
+                let profile = MountainHumanProfile.read(identity: names[player], data: humanProfiles)
+                if computers[player] && profile.resolvedStyle != "photo" && profile.resolvedStyle != "symbol" {
+                    OpponentPortrait(difficulty: difficulty, size: 48, thinking: game.turn == player && !game.isOver && !waitingForStart && !replaying && !leavingGame, reaction: lastComputerMove?.after.moves ?? 0, activity: avatarActivity(player))
+                } else {
+                    MountainAvatar(name: computers[player] ? difficulty.name : profile.displayName, symbol: profile.symbol, style: profile.resolvedStyle, photoID: profile.photoID, activity: avatarActivity(player))
                 }
-            } else {
-                HStack(spacing: 10) {
-                    Image(systemName: "person.fill").frame(width: 48, height: 48)
-                        .background(MountainStyle.player(player).opacity(0.12), in: Circle()).accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(names[player]).font(.subheadline.weight(.semibold)).lineLimit(2)
-                        Text(player == 0 ? "Row player" : "Column player").font(.caption)
-                    }
+                VStack(alignment: .leading, spacing: 3) {
+                    MountainReservedText(lines: 2) { Text(playerName(player)) }.font(.subheadline.weight(.semibold))
                 }
             }
-            Text("\(game.scores[player])").font(MountainStyle.display(40)).monospacedDigit()
-                .contentTransition(reduceMotion ? .identity : .numericText())
-            HStack(spacing: 6) {
-                Image(systemName: player == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
-                Text(game.turn == player && !game.isOver ? computers[player] ? waitingForStart ? "Ready" : "Thinking" : "Your turn" : "Points")
-            }.font(.caption.weight(.semibold))
-                .transaction { $0.animation = nil }
+            MountainReservedText {
+                MountainScoreNumber(value: Double(game.scores[player])).font(MountainStyle.display(40))
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: game.scores[player])
+                .accessibilityLabel("\(game.scores[player])")
+                .anchorPreference(key: MountainMoveAnchors.self, value: .bounds) { [.score(player): $0] }
+            }.font(MountainStyle.display(40))
         }.frame(maxWidth: .infinity, alignment: .leading).padding(18)
             .foregroundStyle(MountainStyle.player(player))
             .background(MountainStyle.player(player).opacity(game.turn == player && !game.isOver ? 0.17 : 0.06), in: RoundedRectangle(cornerRadius: 16))
-            .overlay(alignment: .bottom) {
-                Capsule().fill(game.turn == player && !game.isOver ? MountainStyle.player(player) : .clear).frame(height: 3).padding(.horizontal, 18)
-            }
-            .accessibilityElement(children: .combine)
+            .overlay { MountainPlayerHighlight(player: player, active: game.turn == player && !game.isOver) }
+            .accessibilityElement(children: .ignore).accessibilityLabel(scoreDescription(player))
+    }
+    private func avatarActivity(_ player: Int) -> MountainAvatarActivity {
+        .init(game: game, player: player,
+            paused: replaying || leavingGame || gameHelp || gameSettings || customizing != nil || resultPresented || scenePhase != .active,
+            lastMove: lastMove)
+    }
+    private func scoreDescription(_ player: Int) -> String {
+        "\(playerName(player)), \(game.scores[player]) points. \(player == 0 ? "Row" : "Column") player. \(game.isOver ? result : game.turn == player ? computers[player] ? "Computer choosing" : "Your turn" : "Waiting")."
     }
     private func move(_ id: Int, computer: Bool = false) {
-        guard resolution == nil, computers[game.turn] == computer, game.canPlay(id) else { return }
+        guard resolution == nil, game.canPlay(id), computers[game.turn] == computer else { return }
+        let event = MountainMoveFeedback(id: game.moves + 1, tile: id, player: game.turn, points: game.tiles[id].value, maximum: game.size * game.size)
+        moveIntensity = event.intensity
+        if !reduceMotion { feedback = event.adding(to: feedback) }
         if computer { resolution = UUID() }
         _ = history?.record(id, before: game)
         if computer { lastComputerMove = MountainReplay(before: game, tileID: id, difficulty: difficulty) }
         lastPoints = game.tiles[id].value
         lastMove = id
-        withAnimation(reduceMotion ? nil : .easeInOut(duration: computer ? MountainExperience.computerDuration : 0.2)) {
-            _ = game.play(id)
-        }
+        // Model mutation never animates the page layout. Cell, score and flight own their effects.
+        _ = game.play(id)
         if game.isOver { recordWin() }
         persist()
     }
-    private func persist() {
+    private func publishDisplay() {
+#if os(iOS)
+        displayHub.publish(MountainDisplaySnapshot(owner: savedID, game: game,
+            names: [playerName(0), playerName(1)],
+            symbols: [0, 1].map { MountainHumanProfile.read(identity: names[$0], data: humanProfiles).symbol },
+            computers: computers, difficulty: difficulty, lastMove: lastMove, lastPoints: lastPoints,
+            paused: scenePhase != .active || replaying || leavingGame || customizing != nil || gameHelp || gameSettings,
+            avatarStyles: [0, 1].map { MountainHumanProfile.read(identity: names[$0], data: humanProfiles).resolvedStyle },
+            photoIDs: [0, 1].map { MountainHumanProfile.read(identity: names[$0], data: humanProfiles).photoID }))
+#endif
+    }
+    private func retireDisplay() {
+        feedback.removeAll(); resolution = nil
+        if displayHub.activeOwner == savedID { persist(publish: false); displayHub.clear(owner: savedID) }
+    }
+    private func persist(publish: Bool = true) {
+        if publish { publishDisplay() }
         var saved = SavedMountainGame(size: game.size, names: names, computers: computers, difficulty: difficulty, adjustment: matchAdjustment)
-        saved.id = savedID; saved.game = game; saved.replay = lastComputerMove; saved.history = history
+        saved.id = savedID; saved.game = game; saved.replay = lastComputerMove
+        saved.learning = learning
+        saved.history = history
         saved.recorded = recorded; saved.computerStarted = computerStarted; saved.rolesChanged = rolesChanged
         onSave?(saved)
     }
     private func restart() {
-        resolution = nil
+        feedback.removeAll(); resultPresented = false; pendingResult = false
         savedID = UUID()
-        game = MountainGame(size: game.size, firstPlayer: MountainGame.startingPlayer(computers: computers))
-        history = MountainHistory(initial: game)
+        displayHub.claim(owner: savedID)
+        game = MountainGame(size: game.size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
+        resolution = nil; history = MountainHistory(initial: game)
         recorded = false; lastMove = nil; lastPoints = 0; lastComputerMove = nil
-        computerStarted = false; rolesChanged = false; matchAdjustment = computerAdjustment
+        computerStarted = computers.contains(false); rolesChanged = false; matchAdjustment = 0
+        if adaptiveDifficulty, computers.filter({ $0 }).count == 1, let human = computers.firstIndex(of: false), let learningStore {
+            let key = MountainLearningStore.key(name: names[human], size: game.size, seat: human)
+            learning = learningStore.begin(key: key)
+            difficulty = learningStore.learning(for: key).difficulty
+        } else {
+            learning = nil
+            difficulty = ComputerDifficulty(rawValue: computerLevel) ?? .level1
+        }
         foregroundNonce += 1; persist()
     }
     private func recordWin() {
-        guard !recorded else { return }
+        guard game.isOver, !recorded else { return }
         recorded = true
+        if !rolesChanged, computers.filter({ $0 }).count == 1,
+           let human = computers.firstIndex(of: false), let learning {
+            let result: MountainLearning.Outcome = game.scores[0] == game.scores[1] ? .tie : game.scores[human] > game.scores[1 - human] ? .win : .loss
+            learningStore?.record(result, gameID: savedID, context: learning)
+        }
         guard game.scores[0] != game.scores[1] else { return }
         let winner = game.scores[0] > game.scores[1] ? 0 : 1
-        if !rolesChanged, computers.filter({ $0 }).count == 1 {
-            computerAdjustment = ComputerDifficulty.adjusted(matchAdjustment, humanWon: !computers[winner])
-        }
         let key = "\(names[winner])vvv\(names[1 - winner])"
         MountainExperience.defaults.set(MountainExperience.defaults.integer(forKey: key) + 1, forKey: key)
     }
@@ -732,20 +800,25 @@ private struct OpponentPortrait: View {
     var size: CGFloat = 64
     var thinking = false
     var reaction = 0
+    var activity = MountainAvatarActivity()
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage("aiUsesPictures", store: MountainExperience.defaults) private var pictures = false
 
     var body: some View {
-        Image(difficulty.portrait).resizable().scaledToFill()
+        Group {
+            if pictures { Image(difficulty.portrait).resizable().scaledToFill() }
+            else { MountainAvatar(name: difficulty.name, size: size, activity: activity) }
+        }
             .frame(width: size, height: size).clipShape(Circle())
             .overlay { Circle().strokeBorder(MountainStyle.gold.opacity(0.65), lineWidth: 2) }
             .phaseAnimator([false, true], trigger: reaction) { content, phase in
-                content.scaleEffect(!reduceMotion && phase ? 1.06 + Double(difficulty.rawValue % 4) * 0.01 : 1)
-                    .rotationEffect(.degrees(!reduceMotion && phase ? Double(difficulty.rawValue % 2 == 0 ? 4 : -4) : 0))
+                content.scaleEffect(pictures && !reduceMotion && phase ? 1.06 + Double(difficulty.rawValue % 4) * 0.01 : 1)
+                    .rotationEffect(.degrees(pictures && !reduceMotion && phase ? Double(difficulty.rawValue % 2 == 0 ? 4 : -4) : 0))
             } animation: { _ in reduceMotion ? nil : .spring(response: 0.3 + Double(difficulty.rawValue) * 0.015) }
-            .phaseAnimator(thinking && !reduceMotion && scenePhase == .active ? [false, true] : [false]) { content, phase in
+            .phaseAnimator(pictures && thinking && !reduceMotion && scenePhase == .active ? [false, true] : [false]) { content, phase in
                 content.offset(y: phase ? -2 - CGFloat(difficulty.rawValue % 3) : 0)
             } animation: { _ in .easeInOut(duration: 0.7 + Double(difficulty.rawValue) * 0.04) }
             .accessibilityHidden(true)
@@ -770,11 +843,10 @@ private struct MountainReplayView: View {
                         HStack(spacing: 14) {
                             OpponentPortrait(difficulty: replay.difficulty, size: 64, reaction: stage)
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("\(replay.difficulty.name)'s move").font(MountainStyle.display(28))
-                                Text(replay.difficulty.title).font(.subheadline)
+                                Text("\(replay.difficulty.displayName)'s move").font(MountainStyle.display(28))
                             }
                         }
-                        Text(stage == 0 ? "Before the move" : stage == 1 ? "Choosing \(replay.before.tiles[replay.tileID].value) points" : "\(replay.difficulty.name) takes \(replay.before.tiles[replay.tileID].value) points")
+                        Text(stage == 0 ? "Before the move" : stage == 1 ? "Choosing \(replay.before.tiles[replay.tileID].value) points" : "\(replay.difficulty.displayName) takes \(replay.before.tiles[replay.tileID].value) points")
                             .font(.title3.bold()).multilineTextAlignment(.center)
                         Text("Row player \(shown.scores[0]) · Column player \(shown.scores[1])").monospacedDigit()
                         MountainBoard(game: shown, availableWidth: min(geometry.size.width - 32, 760), lastMove: stage == 2 ? replay.tileID : nil, lastPoints: replay.before.tiles[replay.tileID].value, selected: stage > 0 ? replay.tileID : nil)
@@ -801,22 +873,271 @@ private struct MountainReplayView: View {
     }
 }
 
-private struct MountainExperienceOptions: View {
+private struct MountainBoardTop: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = max(value, nextValue()) }
+}
+
+private struct MountainHumanSelection: Identifiable { let id: Int }
+private struct MountainHumanEditor: View {
+    let identity: String
+    @Binding var profiles: Data
+    @Binding var computer: Bool
+    @Binding var difficulty: ComputerDifficulty
+    @Binding var adaptive: Bool
+    let canResetLearning: Bool
+    var onResetLearning: () -> Void
+    var onDifficultyChanged: () -> Void
+    @State private var name = ""
+    @State private var symbol = "person.fill"
+    @State private var style = "fonster"
+    @State private var photoID: String?
+    @State private var computerChoice = false
+    @State private var difficultyChoice = ComputerDifficulty.level1
+    @State private var adaptiveChoice = true
+    @State private var photoData: Data?
+    @State private var failure: String?
+    @State private var loading = false
+    @State private var loadingToken: UUID?
+    @State private var resetLearning = false
+#if canImport(PhotosUI)
+    @State private var photoItem: PhotosPickerItem?
+#endif
+    @Environment(\.dismiss) private var dismiss
+    private let labels = ["Person", "Paw print", "Leaf", "Sun", "Mountain", "Sparkles"]
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    HStack {
+                        Spacer()
+                        if let photoData, let source = CGImageSourceCreateWithData(photoData as CFData, nil), let image = CGImageSourceCreateImageAtIndex(source, 0, nil), style == "photo" {
+                            Image(decorative: image, scale: 1).resizable().scaledToFill().frame(width: 96, height: 96).clipShape(Circle()).accessibilityHidden(true)
+                        } else if computerChoice && style == "fonster" {
+                            OpponentPortrait(difficulty: difficultyChoice, size: 96)
+                        } else {
+                            MountainAvatar(name: computerChoice ? difficultyChoice.name : name, symbol: symbol, style: style, photoID: photoID, size: 96)
+                        }
+                        Spacer()
+                    }
+                    if !computerChoice { TextField("Display name", text: $name).textFieldStyle(.roundedBorder).accessibilityIdentifier("profile-display-name") }
+                    Toggle("Computer player", isOn: $computerChoice).accessibilityIdentifier("player-computer-toggle")
+                    if computerChoice {
+                        Picker("Opponent", selection: $difficultyChoice) {
+                            ForEach(ComputerDifficulty.allCases) { Text($0.displayName).tag($0) }
+                        }.accessibilityIdentifier("player-computer-level")
+                        HStack {
+                            Toggle("Adapt between games", isOn: $adaptiveChoice).accessibilityIdentifier("adaptive-difficulty")
+                            MountainInfoButton(title: "Adaptive difficulty", explanation: "Starts easy, then slowly gets harder after sustained wins and recovers faster after losses. Learning is separate for each named human, board size and role. Manually changing the opponent applies to this game.")
+                        }
+                    }
+                    HStack {
+                        Button("Reset learning") { resetLearning = true }.frame(minHeight: 44).disabled(!canResetLearning).accessibilityIdentifier("reset-learning")
+                        Spacer()
+                        MountainInfoButton(title: "Reset learning", explanation: "Restarts learning for the current human, board size and role. A game already in progress keeps its opponent level.")
+                    }
+                    Button { style = "fonster" } label: { Label("Name-based avatar", systemImage: "sparkles").frame(maxWidth: .infinity, minHeight: 44) }
+                        .buttonStyle(MountainButton(prominent: style == "fonster")).accessibilityIdentifier("profile-generated-avatar")
+#if canImport(PhotosUI)
+                    PhotosPicker(selection: $photoItem, matching: .images) {
+                        Label("Photo or saved Memoji", systemImage: "photo").frame(maxWidth: .infinity, minHeight: 44)
+                    }.buttonStyle(MountainButton()).accessibilityIdentifier("profile-photo")
+                        .task(id: photoItem) {
+                            guard let photoItem else { return }
+                            let token = UUID(); loadingToken = token; loading = true
+                            defer { if loadingToken == token { loading = false } }
+                            do {
+                                guard let data = try await photoItem.loadTransferable(type: Data.self) else { throw CocoaError(.fileReadCorruptFile) }
+                                let prepared = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.prepare(data) }.value
+                                guard !Task.isCancelled, loadingToken == token else { return }
+                                guard let prepared else { throw CocoaError(.fileReadCorruptFile) }
+                                photoData = prepared; style = "photo"
+                            } catch { if !Task.isCancelled { failure = "That image couldn't be opened. Try another photo." } }
+                        }
+#endif
+                    if loading { ProgressView().accessibilityLabel("Preparing photo") }
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))], spacing: 16) {
+                        ForEach(MountainHumanProfile.symbols, id: \.self) { choice in
+                            Button { symbol = choice; style = "symbol" } label: {
+                                Image(systemName: choice).font(.title2).frame(width: 60, height: 60)
+                                    .background(style == "symbol" && symbol == choice ? MountainStyle.gold : MountainStyle.cream.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                                    .foregroundStyle(style == "symbol" && symbol == choice ? MountainStyle.ink : MountainStyle.cream)
+                            }.buttonStyle(.plain).accessibilityLabel(labels[MountainHumanProfile.symbols.firstIndex(of: choice)!])
+                                .accessibilityAddTraits(style == "symbol" && symbol == choice ? .isSelected : [])
+                        }
+                    }
+                    if let failure { Text(failure).font(.callout).foregroundStyle(MountainStyle.gold) }
+                }.padding(24).frame(maxWidth: 620).frame(maxWidth: .infinity)
+            }.background(MountainStyle.ink).navigationTitle("Player").mountainInlineTitle()
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    ToolbarItem(placement: .confirmationAction) { Button("Save") { save() }.disabled(loading).accessibilityIdentifier("save-profile") }
+                }
+        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+            .confirmationDialog("Reset learning?", isPresented: $resetLearning, titleVisibility: .visible) { Button("Reset learning", role: .destructive) { onResetLearning() } }
+            .onAppear {
+                let profile = MountainHumanProfile.read(identity: identity, data: profiles)
+                name = profile.displayName; symbol = profile.symbol; style = profile.resolvedStyle; photoID = profile.photoID
+                computerChoice = computer; difficultyChoice = difficulty; adaptiveChoice = adaptive
+            }
+    }
+    private func save() {
+        do {
+            let selectedID = style == "photo" ? try photoData.map { try MountainAvatarPhotos.save($0) } ?? photoID : nil
+            guard let data = MountainHumanProfile.updating(identity: identity, displayName: name, symbol: symbol, data: profiles, avatarStyle: style, photoID: selectedID) else { throw CocoaError(.fileWriteUnknown) }
+            let changedDifficulty = difficulty != difficultyChoice
+            if !adaptiveChoice { MountainExperience.defaults.set(difficultyChoice.rawValue, forKey: "computerLevel") }
+            profiles = data; difficulty = difficultyChoice; adaptive = adaptiveChoice; computer = computerChoice
+            if changedDifficulty { onDifficultyChanged() }
+            dismiss()
+        } catch { failure = "Your profile couldn't be saved. Try again." }
+    }
+}
+
+#if os(iOS)
+@objc(DMExternalMountainSceneDelegate)
+final class MountainExternalSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = UIHostingController(rootView: MountainExternalScreen())
+        window.isUserInteractionEnabled = false
+        self.window = window
+        MountainDisplayHub.shared.connected(session.persistentIdentifier)
+        window.isHidden = false
+    }
+    func sceneDidDisconnect(_ scene: UIScene) {
+        MountainDisplayHub.shared.disconnected(scene.session.persistentIdentifier)
+        window?.isHidden = true; window = nil
+    }
+}
+
+private struct MountainExternalScreen: View {
+    @State private var hub = MountainDisplayHub.shared
+    var body: some View {
+        Group {
+            if let snapshot = hub.snapshot {
+                MountainExternalPresentation(snapshot: snapshot).id(snapshot.owner)
+            } else {
+                ZStack {
+                    MountainScenery().overlay(MountainStyle.ink.opacity(0.5)).ignoresSafeArea()
+                    VStack(spacing: 24) {
+                        Image(systemName: "mountain.2.fill").font(.system(size: 80)).foregroundStyle(MountainStyle.gold)
+                        Text("Race to Dog Mountain").font(MountainStyle.display(60)).multilineTextAlignment(.center)
+                        Text("Start a game on your iPhone or iPad").font(.title)
+                    }.padding(48)
+                }.foregroundStyle(MountainStyle.cream)
+            }
+        }.preferredColorScheme(.dark).statusBarHidden()
+    }
+}
+
+#if !targetEnvironment(macCatalyst)
+private struct MountainSceneAccessory: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> MountainAccessoryController { MountainAccessoryController() }
+    func updateUIViewController(_ controller: MountainAccessoryController, context: Context) {}
+}
+
+private final class MountainAccessoryController: UIViewController {
+    private var registration: AnyObject?
+    override func viewDidLoad() { super.viewDidLoad(); view.isUserInteractionEnabled = false }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 27, *), registration == nil {
+            let configuration = UISceneConfiguration(name: "Mountain Display", sessionRole: .windowExternalDisplayNonInteractive)
+            configuration.delegateClass = MountainExternalSceneDelegate.self
+            registration = registerSceneAccessory(.externalNonInteractive(sceneConfiguration: configuration))
+        }
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if #available(iOS 27, *), let registration = registration as? UISceneAccessoryRegistration {
+            unregisterSceneAccessory(registration)
+        }
+        registration = nil
+    }
+}
+#endif
+#endif
+
+private extension View {
+    @ViewBuilder func offeringMountainDisplay() -> some View {
+#if os(iOS) && !targetEnvironment(macCatalyst)
+        background { MountainSceneAccessory().frame(width: 0, height: 0) }
+#else
+        self
+#endif
+    }
+}
+
+private struct MountainSettings: View {
+    @AppStorage("aiUsesPictures", store: MountainExperience.defaults) private var pictures = false
+    @AppStorage("complexity", store: MountainExperience.defaults) private var size = 6
+    @AppStorage("boardScrollThreshold", store: MountainExperience.defaults) private var threshold = 7
+    @AppStorage("showStatusBar", store: MountainExperience.defaults) private var statusBar = false
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
     @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var haptics = true
     @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var duration = 0.7
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Game feedback").font(.headline)
-            Toggle("Animations", isOn: $animations).accessibilityIdentifier("animations-setting")
-            Toggle("Haptics", isOn: $haptics).accessibilityIdentifier("haptics-setting")
-            Picker("Computer move", selection: $duration) {
-                Text("Fast · 0.4 s").tag(0.4)
-                Text("Natural · 0.7 s").tag(0.7)
-                Text("Relaxed · 1.2 s").tag(1.2)
-            }.accessibilityIdentifier("computer-speed-setting")
-            Text("Reduce Motion keeps moves clear without movement. Haptics play on supported devices.").font(.footnote)
+        NavigationStack {
+            Form {
+                Section("Appearance") {
+                    withHelp("Player images", text: "Name-based Fonsters are the default. Pictures uses the existing portraits for computer players. Tap either player in a game to choose a personal photo or saved Memoji image.") {
+                        Picker("Player images", selection: $pictures) { Text("Avatars").tag(false); Text("Pictures").tag(true) }
+                            .accessibilityIdentifier("avatar-style-setting")
+                    }
+#if os(iOS)
+                    Toggle("Show status bar", isOn: $statusBar).accessibilityIdentifier("show-status-bar")
+#endif
+                }
+                Section("Board") {
+                    withHelp("Board size", text: "Applies to the next game. Current games keep their board.") {
+                        Stepper("Board size · \(size) × \(size)", value: $size, in: 4...14).accessibilityIdentifier("board-size-setting")
+                    }
+                    withHelp("Compact limit", text: "Compact boards up to this size fit the screen. Larger boards scroll horizontally. A higher limit makes tiles smaller. Roomier layouts fit the full board.") {
+                        Stepper("Compact limit · \(threshold) × \(threshold)", value: $threshold, in: 4...14).accessibilityIdentifier("board-scroll-threshold")
+                    }
+                }
+                Section("Game feedback") {
+                    Toggle("Haptics", isOn: $haptics).accessibilityIdentifier("haptics-setting")
+                    withHelp("Reduced motion", text: "Shows static score and turn changes instead of movement. Your device’s Reduce Motion setting is always respected.") {
+                        Toggle("Reduced motion", isOn: Binding(get: { !animations }, set: { animations = !$0 })).accessibilityIdentifier("reduced-motion-setting")
+                    }
+                    withHelp("Animation duration", text: "Sets the pace of point flights and computer-move animations.") {
+                        Picker("Animation duration", selection: $duration) {
+                            Text("Fast").tag(0.4); Text("Natural").tag(0.7); Text("Relaxed").tag(1.2)
+                        }.accessibilityIdentifier("computer-speed-setting")
+                    }
+                }
+            }.scrollContentBackground(.hidden).background(MountainStyle.ink)
+                .navigationTitle("Settings").mountainInlineTitle()
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+        }.tint(MountainStyle.gold).foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
+    }
+    private func withHelp<Content: View>(_ title: String, text: String, @ViewBuilder content: () -> Content) -> some View {
+        HStack(spacing: 12) {
+            content()
+            MountainInfoButton(title: title, explanation: text)
         }
+    }
+}
+private struct MountainInfoButton: View {
+    let title: String
+    let explanation: String
+    @State private var showing = false
+    var body: some View {
+        Button { showing = true } label: { Image(systemName: "questionmark.circle").frame(width: 44, height: 44) }
+            .buttonStyle(.plain).accessibilityLabel("About \(title)")
+            .popover(isPresented: $showing) {
+                ScrollView { VStack(alignment: .leading, spacing: 16) {
+                    Text(title).font(.headline)
+                    Text(explanation).font(.body).fixedSize(horizontal: false, vertical: true)
+                    Button("Done") { showing = false }.frame(minHeight: 44)
+                }.padding(24) }.frame(idealWidth: 320, maxWidth: 400, idealHeight: 300, maxHeight: 600)
+                    .foregroundStyle(MountainStyle.cream).presentationBackground(MountainStyle.ink)
+            }
     }
 }
 
@@ -916,7 +1237,11 @@ private struct MountainExportBoard: View {
                         .font(.system(size: game.size > 8 ? 12 : 19, weight: .bold)).monospacedDigit()
                         .frame(width: side, height: side)
                         .foregroundStyle(tile.value == 0 ? MountainStyle.cream : MountainStyle.ink)
-                        .background(tile.value == 0 ? MountainStyle.cream.opacity(0.08) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream, in: RoundedRectangle(cornerRadius: 5))
+                        .background {
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(tile.value == 0 ? MountainStyle.cream.opacity(0.08) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream)
+                                .overlay { MountainTileValueShading(value: tile.value, playable: game.canPlay(tile.id), player: game.turn, cornerRadius: 5) }
+                        }
                         .overlay { RoundedRectangle(cornerRadius: 5).strokeBorder(selected == tile.id ? MountainStyle.gold : .clear, lineWidth: 2) }
                 }
             }.frame(width: 448)
