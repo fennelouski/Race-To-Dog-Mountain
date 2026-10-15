@@ -9,6 +9,7 @@ struct WatchMatch: Codable, Sendable {
     let adjustment: Int
     private(set) var game: MountainGame
     private(set) var replay: MountainReplay?
+    private(set) var history: MountainHistory?
     private(set) var computerStarted = false
     private(set) var recorded = false
 
@@ -18,13 +19,14 @@ struct WatchMatch: Codable, Sendable {
         let match: UUID
     }
 
-    init(size: Int, difficulty: ComputerDifficulty, computers: [Bool], defaults: UserDefaults = .standard) {
+    init(size: Int, difficulty: ComputerDifficulty, computers: [Bool], defaults: UserDefaults = MountainExperience.defaults) {
         id = UUID()
         self.difficulty = difficulty
         self.computers = computers.count == 2 ? computers : [false, true]
         let skill = defaults.data(forKey: Self.skillKey).flatMap { try? JSONDecoder().decode(Skill.self, from: $0) }
         adjustment = skill?.difficulty == difficulty ? min(2, max(-2, skill!.adjustment)) : 0
         game = MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: self.computers))
+        history = MountainHistory(initial: game)
     }
 
     var waitingForStart: Bool { game.moves == 0 && computers[game.turn] && !computerStarted }
@@ -33,8 +35,9 @@ struct WatchMatch: Codable, Sendable {
     }
     mutating func startComputer() { computerStarted = true }
 
-    @discardableResult mutating func play(_ tile: Int, computer: Bool = false, defaults: UserDefaults = .standard) -> Bool {
+    @discardableResult mutating func play(_ tile: Int, computer: Bool = false, defaults: UserDefaults = MountainExperience.defaults) -> Bool {
         guard computers[game.turn] == computer, !waitingForStart, game.canPlay(tile) else { return false }
+        _ = history?.record(tile, before: game)
         if computer { replay = MountainReplay(before: game, tileID: tile, difficulty: difficulty) }
         game.play(tile)
         if game.isOver && !recorded {
@@ -51,13 +54,14 @@ struct WatchMatch: Codable, Sendable {
         save(defaults: defaults)
         return true
     }
-    func save(defaults: UserDefaults = .standard) {
+    func save(defaults: UserDefaults = MountainExperience.defaults) {
         if let data = try? JSONEncoder().encode(self) { defaults.set(data, forKey: Self.saveKey) }
     }
-    static func restore(defaults: UserDefaults = .standard) -> WatchMatch? {
+    static func restore(defaults: UserDefaults = MountainExperience.defaults) -> WatchMatch? {
         guard let data = defaults.data(forKey: saveKey), data.count < 262_144,
               let match = try? JSONDecoder().decode(Self.self, from: data),
               match.computers.count == 2, (-2...2).contains(match.adjustment), match.game.isValid,
+              match.history == nil || match.history!.matches(match.game),
               match.game.turn == (MountainGame.startingPlayer(computers: match.computers) + match.game.moves) % 2 else { return nil }
         if let replay = match.replay {
             guard replay.before.isValid, replay.before.canPlay(replay.tileID), replay.before.size == match.game.size,

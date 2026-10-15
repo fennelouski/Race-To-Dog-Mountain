@@ -1,0 +1,36 @@
+{
+  "recordedAtUTC": "2026-10-05T04:50:56.050602+00:00",
+  "checks": [
+    {
+      "phase": "finished",
+      "actualXCResult": "/tmp/racedog-driver-r4-finished-pad-20261005.xcresult",
+      "summary": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-05-release/r4-pad-finished-actual-summary.json",
+      "summarySHA256": "67cc392d4bbe8c91810dd65c163ce15c73c2949e2c426c2d3ce6645a03f7d633",
+      "privateUUID": "746C14A5-CD68-447D-99DF-83C4CF9F0026",
+      "driverOnlyCorrections": "Select observed in-window share dismissal; restore observed UI orientation class when XCTest enum unknown",
+      "genuineCompletedHistoryID": "C7D6F881-5AB4-4BDB-84BB-3340310BB357",
+      "historyProvenance": "Actually completed on Phone, transferred into private Pad suite; not claimed as Pad-played match"
+    },
+    {
+      "phase": "largest",
+      "actualXCResult": "/tmp/racedog-driver-r4-largest-pad-20261005.xcresult",
+      "summary": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-05-release/r4-pad-largest-actual-summary.json",
+      "summarySHA256": "d3e5271322818f1cb40a58decc9f35b8889170be43d32bddc6f0a95745f29968",
+      "privateUUID": "6F3BE9D3-1276-433E-9B4A-784742A4A1D9",
+      "driverOnlyCorrections": "Select observed in-window share dismissal; restore observed UI orientation class when XCTest enum unknown",
+      "genuineCompletedHistoryID": "C7D6F881-5AB4-4BDB-84BB-3340310BB357",
+      "historyProvenance": "Actually completed on Phone, transferred into private Pad suite; not claimed as Pad-played match"
+    }
+  ],
+  "nativeShippingFreezeAtRuntime": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-05-release/full-native-source-freeze.hit-area-successor.json",
+  "sourceVerifiedBeforeAndAfterEachRuntime": true,
+  "privateSessionsTerminatedAndOwnedPadShutdown": true,
+  "standardBundlePreferenceFileAbsentAfter": true,
+  "normalDataScope": "No normal bundle game-preference file; OS migration metadata, framework caches and private UUID suites are not claimed unchanged.",
+  "largestFramesReviewed": [
+    "EC4DB015-B8C2-46DD-BE1B-A83FBFA2A673.png",
+    "47EE3F1D-4BF7-467F-BF9E-A8E316B05160.png"
+  ],
+  "rootGUIOpened": false,
+  "noVisionOS": true
+}

@@ -1,0 +1,18 @@
+{
+  "errors" : [
+
+  ],
+  "values" : [
+    {
+      "disabledTests" : [
+
+      ],
+      "enabledTests" : [
+        {
+          "identifier" : "NativeFinishUITests/NativeFinishUITests/testActualNativeChooserAndObservedDismissalOnly()"
+        }
+      ],
+      "testPlan" : "PrivateRunner"
+    }
+  ]
+}

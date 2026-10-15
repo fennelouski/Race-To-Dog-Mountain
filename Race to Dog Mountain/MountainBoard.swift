@@ -2,7 +2,9 @@ import SwiftUI
 
 struct MountainButton: ButtonStyle {
     var prominent = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
@@ -22,7 +24,9 @@ struct MountainButton: ButtonStyle {
 }
 
 private struct MountainTileButton: ButtonStyle {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.9 : 1)
@@ -37,7 +41,7 @@ struct MountainBoard: View {
     var availableHeight: CGFloat? = nil
     var fitAllSizes = false
     var numberScale: CGFloat = 1
-    @AppStorage("boardScrollThreshold") private var scrollThreshold = 7
+    @AppStorage("boardScrollThreshold", store: MountainExperience.defaults) private var scrollThreshold = 7
 #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 #endif
@@ -52,7 +56,9 @@ struct MountainBoard: View {
     @ScaledMetric(relativeTo: .title3) private var minimumTile: CGFloat = 44
 #endif
     @Namespace private var selectionAnimation
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     @ScaledMetric(relativeTo: .title3) private var numberSize: CGFloat = 20
     @ScaledMetric(relativeTo: .caption) private var badgeSize: CGFloat = 12
     private var compact: Bool {
@@ -87,12 +93,15 @@ struct MountainBoard: View {
                             if tile.value == 0 {
                                 if lastMove == tile.id {
                                     Text("+\(lastPoints)").font(.system(size: min(badgeSize, max(1, (width - 4) / 2.8)), weight: .bold)).lineLimit(1).minimumScaleFactor(0.1).foregroundStyle(MountainStyle.cream)
+                                        .transition(.identity).transaction { $0.animation = nil }
                                 } else {
                                     Image(systemName: "pawprint.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
+                                        .transition(.identity).transaction { $0.animation = nil }
                                 }
                             } else {
                                 Text("\(tile.value)").font(.system(size: min(numberSize * numberScale, max(1, (width - 4) / 2.2)), weight: .heavy)).monospacedDigit()
                                     .lineLimit(1).minimumScaleFactor(0.1).padding(.horizontal, 2).foregroundStyle(MountainStyle.ink)
+                                    .transition(.identity).transaction { $0.animation = nil }
                             }
                         }.frame(width: width, height: width)
                             .overlay { RoundedRectangle(cornerRadius: 12).strokeBorder(playable ? MountainStyle.cream.opacity(0.75) : .clear, lineWidth: 2)
@@ -144,8 +153,8 @@ extension View {
     }
     @ViewBuilder func mountainGameFeedback(moves: Int, over: Bool, enabled: Bool = true, intensity: Double = 0.5) -> some View {
 #if os(iOS)
-        sensoryFeedback(.impact(weight: .medium, intensity: min(1, max(0, intensity))), trigger: moves) { old, new in enabled && new > old }
-            .sensoryFeedback(.success, trigger: over) { _, finished in enabled && finished }
+        sensoryFeedback(.impact(weight: .medium, intensity: min(1, max(0, intensity))), trigger: moves) { old, new in enabled && !MountainExperience.isQAActive && new > old }
+            .sensoryFeedback(.success, trigger: over) { _, finished in enabled && !MountainExperience.isQAActive && finished }
 #else
         self
 #endif
@@ -204,7 +213,9 @@ struct MountainScoreNumber: View, Animatable {
 
 /// The connected display is a presentation surface; this view cannot play a move or create an AI task.
 struct MountainExternalPresentation: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     @State private var feedback: [MountainMoveFeedback] = []
     let snapshot: MountainDisplaySnapshot
     var body: some View {

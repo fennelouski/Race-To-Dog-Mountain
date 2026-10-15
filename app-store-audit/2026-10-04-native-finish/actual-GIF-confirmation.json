@@ -1,0 +1,55 @@
+{
+  "actualGameID": "C7D6F881-5AB4-4BDB-84BB-3340310BB357",
+  "actualMoveChoices": [
+    12,
+    4,
+    5,
+    9,
+    8,
+    0,
+    1,
+    13,
+    14,
+    6,
+    7,
+    3,
+    2,
+    10,
+    11,
+    15
+  ],
+  "actualSavedScores": [
+    69,
+    67
+  ],
+  "actualSavedFinalMoves": 16,
+  "gifFile": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/mountain-share-A452F204-259C-48C0-947E-4ED6682C202D/Dog-Mountain-replay.gif",
+  "gifFrames": 17,
+  "size": [
+    512,
+    660
+  ],
+  "delaysMS": [
+    800,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    2000
+  ],
+  "distinctFrames": 17,
+  "bytes": 90485,
+  "boundBytes": 16777216,
+  "note": "GIF decoded from native exporter after actual XCTest legal moves, no fixture; initial/finish extracted from actual GIF"
+}

@@ -1,0 +1,122 @@
+Attributes: Application, 0x11683a440, pid: 3276, label: 'Race to Dog Mountain'
+Element subtree:
+ →Application, 0x11683a440, pid: 3276, label: 'Race to Dog Mountain'
+    Window (Main), 0x11683a580, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x11683a6c0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x11683a800, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x11683a940, {{-402.0, -874.0}, {1206.0, 2622.0}}
+          Other, 0x116839900, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x116838000, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x116838140, {{0.0, 0.0}, {402.0, 874.0}}
+              Image, 0x116838280, {{30.7, 89.0}, {22.7, 22.0}}, identifier: 'pawprint.fill', label: 'Pawprint'
+              Button, 0x1168383c0, {{339.0, 87.3}, {26.0, 25.3}}, identifier: 'questionmark.circle', label: 'How to play'
+              StaticText, 0x116838500, {{28.0, 138.0}, {228.3, 82.0}}, label: 'Race to Dog Mountain'
+              Button, 0x116839a40, {{28.0, 236.0}, {346.0, 56.3}}, identifier: 'start-game', label: 'Play'
+                Image, 0x116839b80, {{174.3, 256.7}, {13.3, 15.0}}, identifier: 'play.fill', label: 'Play'
+                StaticText, 0x116839cc0, {{174.3, 254.0}, {55.3, 20.3}}, label: 'Play'
+              ScrollView, 0x116839e00, {{28.0, 308.3}, {346.0, 515.7}}
+                Other, 0x116839f40, {{28.0, 308.3}, {346.0, 404.7}}
+                  StaticText, 0x11683aa80, {{48.7, 308.3}, {304.7, 24.0}}, label: 'Pick a number. Outsmart your rival.'
+                  Button, 0x11683abc0, {{28.0, 348.3}, {346.0, 56.3}}, identifier: 'play-friend', label: 'Play a friend'
+                    Image, 0x11683ad00, {{136.3, 368.7}, {24.3, 16.7}}, identifier: 'person.2.fill', label: 'person.2.fill'
+                    StaticText, 0x11683ae40, {{136.3, 366.3}, {131.5, 20.3}}, label: 'Play a friend'
+                  Button, 0x11683af80, {{86.0, 429.0}, {118.0, 19.3}}, identifier: 'pass-and-play', label: 'Pass & play'
+                    Image, 0x11683b0c0, {{87.3, 430.3}, {25.3, 16.7}}, identifier: 'iphone.gen3.radiowaves.left.and.right', label: 'iphone.gen3.radiowaves.left.and.right'
+                    StaticText, 0x11683b200, {{86.0, 429.0}, {118.0, 19.3}}, label: 'Pass & play'
+                  Button, 0x11683b340, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage'
+                    Image, 0x11683b480, {{221.3, 431.0}, {17.7, 15.0}}, identifier: 'message.fill', label: 'Message'
+                    StaticText, 0x11683b5c0, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage'
+                  StaticText, 0x11683b700, {{54.8, 484.7}, {292.3, 38.0}}, label: 'Start a race with a friend. Come back here whenever it's your move.'
+                  StaticText, 0x11683b840, {{119.3, 546.7}, {163.3, 48.0}}, label: 'Finn · Level 6'
+                    Image, 0x11683b980, {{119.3, 546.7}, {48.0, 48.0}}, label: 'Opponent6'
+                    StaticText, 0x11683bac0, {{179.3, 560.5}, {103.3, 20.3}}, label: 'Finn · Level 6'
+                  StaticText, 0x11683bc00, {{97.8, 610.7}, {206.3, 18.0}}, label: 'Classic · 6 × 6 · You move first'
+                  Button, 0x11683bd40, {{28.0, 644.7}, {346.0, 56.3}}, identifier: 'game-options', label: 'Players & board'
+                    Image, 0x11683be80, {{125.7, 665.3}, {17.7, 15.0}}, identifier: 'slider.horizontal.3', label: 'Edit'
+                    StaticText, 0x106596e40, {{125.7, 662.7}, {152.7, 20.3}}, label: 'Players & board'
+              StaticText, 0x106597d40, {{378.3, 0.0}, {23.7, 83.3}}, identifier: 'mountain-private-qa', label: 'Private Mountain QA'
+      Other, 0x106597e80, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x106596f80, {{-402.0, -874.0}, {1206.0, 2622.0}}
+        Other, 0x1065970c0, {{0.0, 62.0}, {402.0, 812.0}}
+          Other, 0x106597200, {{0.0, 62.0}, {402.0, 812.0}}
+            Other, 0x106597340, {{0.0, 62.0}, {402.0, 812.0}}
+              Other, 0x106597480, {{0.0, 62.0}, {402.0, 812.0}}
+                Other, 0x1065975c0, {{0.0, 62.0}, {402.0, 812.0}}
+                  Other, 0x106597700, {{0.0, 62.0}, {402.0, 812.0}}
+                    NavigationBar, 0x106597840, {{0.0, 78.0}, {402.0, 54.0}}, identifier: 'Players & board'
+                      StaticText, 0x106597980, {{138.3, 89.7}, {125.0, 20.7}}, label: 'Players & board'
+                      Other, 0x116c14000, {{316.3, 82.0}, {65.7, 36.0}}, label: 'Done'
+                        Other, 0x116c14140, {{316.3, 82.0}, {65.7, 36.0}}
+                          Button, 0x116c14280, {{316.3, 82.0}, {65.7, 36.0}}, label: 'Done'
+                    Other, 0x116c143c0, {{0.0, 62.0}, {402.0, 812.0}}
+                      Other, 0x116c14500, {{0.0, 62.0}, {402.0, 812.0}}
+                        Other, 0x116c14640, {{0.0, 62.0}, {402.0, 812.0}}
+                          Other, 0x116c14780, {{0.0, 62.0}, {402.0, 812.0}}
+                            ScrollView, 0x116c148c0, {{0.0, 62.0}, {402.0, 812.0}}
+                              Other, 0x116c14a00, {{0.0, -440.0}, {402.0, 1280.0}}
+                                StaticText, 0x116c14b40, {{28.0, -412.0}, {273.3, 36.7}}, label: 'Who's climbing?'
+                                StaticText, 0x116c14c80, {{30.0, -347.3}, {114.0, 20.3}}, label: 'Row player'
+                                TextField, 0x116c14dc0, {{28.0, -313.0}, {346.0, 57.7}}, label: 'First player name', placeholderValue: 'First player', value: Player 1
+                                Switch, 0x116c14f00, {{28.0, -241.3}, {346.0, 28.0}}, label: 'Computer player', value: 0
+                                  StaticText, 0x116c15040, {{28.0, -237.5}, {126.7, 20.3}}, label: 'Computer player'
+                                  Switch, 0x116c15180, {{313.0, -241.3}, {63.0, 28.0}}, value: 0
+                                StaticText, 0x116c152c0, {{30.0, -185.3}, {135.0, 20.3}}, label: 'Column player'
+                                TextField, 0x116c15400, {{28.0, -151.0}, {346.0, 57.7}}, label: 'Second player name', placeholderValue: 'Second player', value: Player 2
+                                Switch, 0x116c15540, {{28.0, -79.3}, {346.0, 28.0}}, label: 'Computer player', value: 1
+                                  StaticText, 0x116c15680, {{28.0, -75.5}, {126.7, 20.3}}, label: 'Computer player'
+                                  Switch, 0x116c157c0, {{313.0, -79.3}, {63.0, 28.0}}, value: 1
+                                StaticText, 0x116c15900, {{124.0, -10.8}, {67.7, 32.0}}, label: 'Finn'
+                                StaticText, 0x116c15a40, {{124.0, 26.2}, {138.0, 18.0}}, label: 'Adventurous thinker'
+                                Stepper, 0x116c15b80, {{28.0, 72.7}, {346.0, 32.0}}, identifier: 'computer-difficulty', label: 'Difficulty · Level 6 of 16', value: 5
+                                  Button, 0x116c15cc0, {{280.0, 72.7}, {47.0, 32.0}}, identifier: 'computer-difficulty-Decrement', label: 'Difficulty · Level 6 of 16, Decrement', value: 5
+                                  Button, 0x116c15e00, {{327.0, 72.7}, {47.0, 32.0}}, identifier: 'computer-difficulty-Increment', label: 'Difficulty · Level 6 of 16, Increment', value: 5
+                                Button, 0x116c15f40, {{28.0, 120.7}, {140.0, 34.3}}, label: 'Choose an opponent, Level 6 · Finn'
+                                  StaticText, 0x116c16080, {{40.0, 127.7}, {99.7, 20.3}}, label: 'Level 6 · Finn'
+                                StaticText, 0x116c161c0, {{28.0, 171.0}, {323.0, 33.7}}, label: 'A little tougher after you win, a little gentler after you lose. Your selected level stays the same.'
+                                Switch, 0x116c16300, {{28.0, 220.7}, {346.0, 28.0}}, identifier: 'opponent-chat', label: 'Opponent chat', value: 0
+                                  StaticText, 0x116c16440, {{28.0, 224.5}, {114.0, 20.3}}, label: 'Opponent chat'
+                                  Switch, 0x116c16580, {{313.0, 220.7}, {63.0, 28.0}}, value: 0
+                                StaticText, 0x116c166c0, {{28.0, 264.7}, {288.0, 15.7}}, label: 'Optional phrases from your rival. Off by default.'
+                                Stepper, 0x116c16800, {{28.0, 336.7}, {346.0, 52.7}}, identifier: 'board-size-setting', label: 'Board size, 6 × 6', value: 6
+                                  Button, 0x116c16940, {{280.0, 347.0}, {47.0, 32.0}}, identifier: 'board-size-setting-Decrement', label: 'Board size, 6 × 6, Decrement', value: 6
+                                  Button, 0x116c16a80, {{327.0, 347.0}, {47.0, 32.0}}, identifier: 'board-size-setting-Increment', label: 'Board size, 6 × 6, Increment', value: 6
+                                StaticText, 0x116c16bc0, {{28.0, 417.3}, {319.0, 38.0}}, label: 'Bigger board, more possibilities. Classic rules, every time.'
+                                StaticText, 0x116c16d00, {{28.0, 483.3}, {124.7, 20.3}}, label: 'Game feedback'
+                                Switch, 0x116c16e40, {{28.0, 519.7}, {346.0, 28.0}}, identifier: 'animations-setting', label: 'Animations', value: 1
+                                  StaticText, 0x116c16f80, {{28.0, 523.5}, {85.0, 20.3}}, label: 'Animations'
+                                  Switch, 0x116c170c0, {{313.0, 519.7}, {63.0, 28.0}}, value: 1
+                                Switch, 0x116c17200, {{28.0, 563.7}, {346.0, 28.0}}, identifier: 'haptics-setting', label: 'Haptics', value: 1
+                                  StaticText, 0x116c17340, {{28.0, 567.5}, {58.3, 20.3}}, label: 'Haptics'
+                                  Switch, 0x116c17480, {{313.0, 563.7}, {63.0, 28.0}}, value: 1
+                                Button, 0x116c175c0, {{28.0, 607.7}, {144.7, 34.3}}, identifier: 'computer-speed-setting', label: 'Computer move, Natural · 0.7 s'
+                                  StaticText, 0x116c17700, {{40.0, 614.7}, {104.3, 20.3}}, label: 'Natural · 0.7 s'
+                                StaticText, 0x116c17840, {{28.0, 658.0}, {330.0, 33.7}}, label: 'Reduce Motion keeps moves clear without movement. Haptics play on supported devices.'
+                                StaticText, 0x116c17980, {{28.0, 719.7}, {106.0, 20.3}}, label: 'Head to head'
+                                StaticText, 0x116c17ac0, {{340.0, 719.7}, {34.0, 20.3}}, label: '0 : 0'
+                                Button, 0x116c17c00, {{28.0, 782.3}, {84.0, 15.7}}, label: 'Privacy Policy'
+                              Other, 0x116c17d40, {{0.0, 62.0}, {402.0, 812.0}}
+                                Other, 0x116c17e80, {{0.0, 62.0}, {402.0, 124.8}}
+                              Other, 0x116c1c000, {{0.0, 62.0}, {402.0, 812.0}}
+                                Other, 0x116c1c140, {{0.0, 62.0}, {402.0, 124.8}}
+                                  Image, 0x116c1c280, {{-120.0, -58.0}, {642.0, 240.0}}, identifier: 'AdditionalDimmingOverlay'
+                                  Other, 0x116c1c3c0, {{0.0, 62.0}, {402.0, 60.0}}
+                                  Other, 0x116c1c500, {{0.0, 62.0}, {402.0, 124.8}}
+                                    Other, 0x116c1c640, {{0.0, 62.0}, {402.0, 124.8}}
+                                  Other, 0x116c1c780, {{0.0, 62.0}, {402.0, 124.8}}
+                                    Other, 0x116c1c8c0, {{0.0, 62.0}, {402.0, 124.8}}
+                                  Other, 0x116c1ca00, {{0.0, 62.0}, {402.0, 124.8}}
+                                    Other, 0x116c1cb40, {{0.0, 62.0}, {402.0, 124.8}}
+                                    Other, 0x116c1cc80, {{0.0, 62.0}, {402.0, 124.8}}
+                              Other, 0x116c1cdc0, {{369.0, 132.0}, {30.0, 680.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                                Other, 0x116c1cf00, {{396.0, 413.7}, {3.0, 395.3}}
+                              Other, 0x116c1d040, {{369.0, 132.0}, {30.0, 680.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                                Other, 0x116c1d180, {{396.0, 413.7}, {3.0, 395.3}}
+                    Other, 0x116c1d2c0, {{0.0, 62.0}, {402.0, 812.0}}
+                      Other, 0x116c1d400, {{0.0, 62.0}, {402.0, 812.0}}
+Path to element:
+ →Application, 0x11683a440, pid: 3276, label: 'Race to Dog Mountain'
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  Output: {
+    Application, 0x116c1d540, pid: 3276, label: 'Race to Dog Mountain'
+  }

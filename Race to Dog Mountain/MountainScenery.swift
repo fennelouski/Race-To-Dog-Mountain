@@ -20,7 +20,9 @@ enum MountainStyle {
 struct MountainScenery: View {
     var active = true
     var celebration = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {

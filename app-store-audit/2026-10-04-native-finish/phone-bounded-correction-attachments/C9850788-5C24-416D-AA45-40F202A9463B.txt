@@ -1,0 +1,5 @@
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  ↪︎Find: Descendants matching type Button
+    ↪︎Find: Elements matching predicate 'label IN {"Copy", "AirDrop", "Save to Files", "Add to Quick Note", "Open in", "Print"}'
+      ↪︎Find: First Match

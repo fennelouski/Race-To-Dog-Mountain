@@ -15,8 +15,12 @@ match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \
 assert match, 'Computer task extraction no longer matches production source'
 identity, body = match.groups()
 assert 'snapshot.computerMove' in body and 'waitingForStart' in body and 'customizing == nil' in body and '!resultPresented' in body, 'Must extract the production AI task, not visual cleanup'
+resolution_match = re.search(r'\.task\(id: resolution\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
+assert resolution_match, 'Must extract the production computer resolution task'
+resolution_body = resolution_match.group(1).replace('MountainExperience.computerDuration', 'duration')
+presentation_body = source.split('    private func presentPendingResult() {', 1)[1].split('\n    }', 1)[0]
 record = source.split('    private func recordWin() {', 1)[1].split('\n    }\n}', 1)[0]
-record = record.replace('UserDefaults.standard', 'preferences')
+record = record.replace('MountainExperience.defaults', 'preferences')
 harness = r'''
 import Foundation
 
@@ -36,6 +40,7 @@ struct HumanSelection { let id: Int }
     var scenePhase = ScenePhase.active
     var customizing: HumanSelection?
     var resultPresented = false
+    var resolution: UUID?
     var foregroundNonce = 0
     var confirmExit = false
     var computerStarted = false
@@ -67,6 +72,24 @@ RECORD
     }
     func runActualBody() async {
 BODY
+    }
+}
+
+@MainActor final class Resolution {
+    var resolution: UUID?
+    var duration = 0.4
+    var resultPresented = false
+    var pendingResult = false
+    var scenePhase = ScenePhase.active
+    var confirmExit = false
+    var replaying = false
+    var customizing: HumanSelection?
+    func presentPendingResult() {
+PRESENTATION_BODY
+    }
+    var game = MountainGame(size: 4)
+    func runActualBody() async {
+RESOLUTION_BODY
     }
 }
 
@@ -150,6 +173,36 @@ BODY
         require(scene.game.moves == 0, "Inactive controller scene began a new AI turn")
         scene.scenePhase = .active; scene.restartIfNeeded(); await scene.task?.value
         require(scene.game.moves == 1, "Reactivated controller scene did not resume once")
+        let resolution = Resolution()
+        resolution.resolution = UUID()
+        let start = ContinuousClock.now
+        let pending = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(350))
+        require(resolution.resolution != nil, "Resolution released before its configured interval")
+        await pending.value
+        require(resolution.resolution == nil && start.duration(to: .now) >= .milliseconds(400), "Resolution did not hold full bounded interval")
+        resolution.resolution = UUID()
+        let staleResolution = Task { await resolution.runActualBody() }
+        try await Task.sleep(for: .milliseconds(50))
+        let replacement = UUID(); resolution.resolution = replacement
+        await staleResolution.value
+        require(resolution.resolution == replacement, "Stale resolution cleared replacement token")
+        let canceled = Task { await resolution.runActualBody() }
+        resolution.resolution = nil; canceled.cancel(); await canceled.value
+        require(resolution.resolution == nil, "Canceled resolution recreated a token")
+        let presentation = Resolution()
+        while !presentation.game.isOver { presentation.game.play(presentation.game.legalMoves[0]) }
+        presentation.pendingResult = true; presentation.resolution = UUID()
+        presentation.presentPendingResult()
+        require(!presentation.resultPresented, "Result interrupted computer hold")
+        presentation.scenePhase = .background; presentation.resolution = nil; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Background lost pending result")
+        presentation.scenePhase = .active; presentation.confirmExit = true; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted exit dialog")
+        presentation.confirmExit = false; presentation.presentPendingResult()
+        require(presentation.resultPresented && !presentation.pendingResult, "Resume failed to present final result")
+        presentation.resultPresented = false; presentation.presentPendingResult()
+        require(!presentation.resultPresented, "View board unexpectedly reopened seen result")
         let result = Turns()
         result.game = MountainGame(size: 4, values: [100] + Array(2...16), firstPlayer: 0, startingLine: 0)
         while !result.game.isOver { result.game.play(result.game.legalMoves[0]) }
@@ -187,7 +240,7 @@ BODY
         print("Play gates computer starts; replay and exit dialog pause pending AI; Cancel resumes once; inactive/background/dismissed tasks cannot move: PASS")
     }
 }
-'''.replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
+'''.replace('PRESENTATION_BODY', presentation_body).replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
 with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
     swift = Path(tmp) / 'ComputerTurnChecks.swift'
     swift.write_text(harness)

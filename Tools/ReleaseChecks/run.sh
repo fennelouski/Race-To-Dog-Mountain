@@ -14,3 +14,5 @@ xcrun swiftc -parse-as-library -target "$(uname -m)-apple-macos14.0" "Race to Do
 "$output/adaptive-check"
 xcrun swiftc -parse-as-library "Race to Dog Mountain/MountainGame.swift" Tools/ReleaseChecks/board-layout-check.swift -o "$output/board-check"
 "$output/board-check"
+xcrun swiftc -parse-as-library -D DEBUG -target "$(uname -m)-apple-macos14.0" "Race to Dog Mountain/MountainGame.swift" "Race to Dog Mountain/MountainMatches.swift" Tools/ReleaseChecks/native-finish-check.swift -o "$output/native-finish-check"
+"$output/native-finish-check" -MountainUITests -MountainTestSession "$(uuidgen)"

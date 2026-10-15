@@ -1,0 +1,110 @@
+{
+  "observedAt": "2026-10-04T08:28:50.735083+00:00",
+  "status": "Held native candidate; bounded Phone gameplay/export/finish checks complete; no release performed",
+  "repo": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain",
+  "head": "be7b1505f7f48a24ab403806ffc0f9fc91d2ba7d",
+  "version": "2.1",
+  "build": "8",
+  "sourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "nativeInputCount": 177,
+  "preservedPreviousCandidate": "held-candidate-66d938.patch and held-66d938 Swift source; attempt3 receipts retained",
+  "visualCorrectionPassesUsed": 1,
+  "visualCorrectionPassCeiling": 2,
+  "changes": [
+    "Fixed first-viewport native Play/Continue, existing game library and options retained",
+    "Pinned completed result/score/Race Again/Share outside board scroll",
+    "Genuine bounded GIF from actual validated initial state + legal move history; legacy saves explicitly share actual final PNG only",
+    "Cancelable computer thinking and actual resolution/input interval >=400ms; saved0.4/0.7/1.2 choices",
+    "Independent persisted default-on motion/haptics honoring saved false and Reduce Motion; QA suppresses effects/accounts/Watch relay",
+    "First actual-frame correction: semantic points/selection/captions avoid interpolation while outer motion remains; full GIF identity/URL footer",
+    "Finished genuine friend transcript uses existing native Share and same exporter; Game Center/network/multiplayer identity/rules preserved"
+  ],
+  "builds": {
+    "matchingGenericIOSSimulatorDebug": "sim-build-status.json exit0, unsigned, serialjobs2, command-only SwiftDEBUG private guard",
+    "privateRunner": "runner-build-status.json exit0, blank host, actual method enumeration only current chooser check",
+    "matchingGenericRelease": "not performed for this candidate",
+    "macOS": "not built/run in this bounded handoff",
+    "WatchMessages": "dependencies compiled as part of simulator build; Watch meaningful retained checks, no Watch device run"
+  },
+  "realGameplay": {
+    "initialCompleteMatch": "Attempt3 actual16 legal moves,69\u201367; retained overall UI failure was dismissal driver invalid target, not completed-game evidence",
+    "sameCompletedID": "C7D6F881-5AB4-4BDB-84BB-3340310BB357",
+    "privateSuite": "com.codex.racedog.qa.ABEA31B0-4471-48C8-8613-925A357E3BD3",
+    "boundedCorrectionUI": "Actual same completed finish, largesttext first Play+completed pinned actions, genuine Race Again emptyboard, coldContinue freshboard, one legal human/computer pair5:9; overall testfailed solely wrong OS action element type Buttons vsCells",
+    "nativeChooserUITest": {
+      "summary": "native-chooser-test-summary.json",
+      "passedTests": 1,
+      "failedTests": 0,
+      "resultBundle": "/tmp/racedog-testActualNativeChooserAndObservedDismissalOnly-native-chooser-20261004.xcresult",
+      "actualDismissal": "Hittable native PopoverDismissRegion (center outside ActivityListView), then visible/hittable Done, actual completed race restored; no invalid taps/external destination"
+    },
+    "actualCPUSelectionSeconds": 1.2333333333333334,
+    "minimumAndCancellation": "Actual extracted unchanged resolution task harness400ms, stale token/cancellation PASS; runtime relaxed1.2s shown separately",
+    "fullRepeatMatch": false
+  },
+  "actualGIF": {
+    "actualGIF": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/mountain-share-D4DD2E6C-410B-4EFB-822E-E76A901DAA5B/Dog-Mountain-replay.gif",
+    "bytes": 91824,
+    "sha256": "aef379f47ff64943060c0a589f4a1b64d93408cbaa2e002da35d89de138d11b4",
+    "dimensions": [
+      512,
+      760
+    ],
+    "frames": 17,
+    "uniqueFrames": 17,
+    "actualLegalChoices": [
+      12,
+      4,
+      5,
+      9,
+      8,
+      0,
+      1,
+      13,
+      14,
+      6,
+      7,
+      3,
+      2,
+      10,
+      11,
+      15
+    ],
+    "actualFinalScores": [
+      69,
+      67
+    ],
+    "sameOriginalCompletedTranscript": true,
+    "firstAndFinalFramesReviewed": true
+  },
+  "retainedUnitEvidence": "retained-unit-evidence.json",
+  "device": {
+    "UUID": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "finally": "Shutdown",
+    "appearancePreserved": true,
+    "appearance": "light",
+    "shutdownExitCode": 0,
+    "normalPreferencesHash": "c952475653cef20dd7918805c97353555b8d223ba28cd0b7c4ba8d2f8a57895a",
+    "normalStoreUnchangedDuringPrivateRuns": true,
+    "originalFailedUnisolatedRun": "First app compile lacked SwiftDEBUG; no QA isolation, fresh standard prefs changed, no gameplay. Evidence/standard prefs preserved; not claimed isolated."
+  },
+  "limitations": [
+    "Current frozen candidate has no matching generic Release/macOS build, Pad/Watch/macOS actual runtime, signing/archive/upload or current ASC read by this agent",
+    "Hardware haptic delivery intentionally not exercised; independent saved settings and source effect predicates verified",
+    "Reduce Motion system choice read in source, no appearance/global accessibility setting mutations",
+    "Native network/Game Center/Watch hardware services intentionally suppressed in private QA; meaningful actual protocol/model command-line evidence retained",
+    "Largest text verifies first Play and pinned completed result/actions; board/player content remains scrollable at accessibilityXXX L",
+    "No Vision build/boot/run/capture; attached historical diagnostic paths are preserved logs only"
+  ],
+  "evidence": {
+    "CPU": "phone-bounded-correction-attachments/7F210C09-7D57-44E4-9753-BC1469CA0F37.png",
+    "firstGIFFrame": "corrected-export-initial.png",
+    "finalGIFFrame": "corrected-export-finish.png",
+    "largestFirstPlay": "phone-bounded-correction-attachments/126938E3-005E-40C7-8CBC-3E7F8EEBB371.png",
+    "largestFinish": "phone-bounded-correction-attachments/650B643B-4AA0-4DEB-8A6A-AF1D596CD2C6.png",
+    "OSChooser": "phone-native-chooser-attachments/FCEEBB62-C4AB-417A-86ED-31CE67ED63E1.png",
+    "dismissalBounds": "phone-native-chooser-attachments/B02225E8-CC24-4C5A-BB22-FE79FC202138.txt",
+    "actualCompletedAfterDismiss": "phone-native-chooser-attachments/14C5BCCF-2D53-402D-A8C6-6A016F240655.png"
+  },
+  "releaseStateProvenance": "Read-only audit saved root current-account card2026-10-04T06:49:03Z: app971329310 iOS2.1PrepareforSubmission/macOS2.1ReadyforDistribution. OlderOct1 processedbuild8 remains historical; no live ASC/browser by this agent. Root owns release readiness/metadata/gallery."
+}

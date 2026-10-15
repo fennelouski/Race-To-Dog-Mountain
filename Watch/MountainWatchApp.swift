@@ -2,20 +2,23 @@ import SwiftUI
 import WatchKit
 
 @main struct MountainWatchApp: App {
-    var body: some Scene { WindowGroup { WatchMountain() } }
+    var body: some Scene { WindowGroup { WatchMountain().defaultAppStorage(MountainExperience.defaults) } }
 }
 
 private struct WatchMountain: View {
-    @AppStorage("computerLevel") private var level = ComputerDifficulty.level6.rawValue
+    @AppStorage("computerLevel", store: MountainExperience.defaults) private var level = ComputerDifficulty.level6.rawValue
     @State private var match = WatchMatch.restore()
+    @State private var friends = MountainWatchFriends()
+    @State private var playing = false
     private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: level) ?? .level6 }
 
     var body: some View {
         NavigationStack {
-            if let match {
+            Group {
+            if let match, playing {
                 WatchGame(match: match) {
-                    UserDefaults.standard.removeObject(forKey: WatchMatch.saveKey)
-                    self.match = nil
+                    MountainExperience.defaults.removeObject(forKey: WatchMatch.saveKey)
+                    self.match = nil; playing = false
                 }.id(match.id)
             } else {
                 TabView {
@@ -23,10 +26,13 @@ private struct WatchMountain: View {
                         VStack(spacing: 12) {
                             Image(systemName: "mountain.2.fill").font(.system(size: 42)).accessibilityLabel("Race to Dog Mountain").accessibilityAddTraits(.isHeader)
                             Button {
-                                let next = WatchMatch(size: 4, difficulty: difficulty, computers: [false, true])
-                                next.save(); match = next
+                                if match == nil {
+                                    let next = WatchMatch(size: 4, difficulty: difficulty, computers: [false, true])
+                                    next.save(); match = next
+                                }
+                                playing = true
                             } label: { Image(systemName: "play.fill").font(.title2).frame(maxWidth: .infinity) }
-                                .buttonStyle(WatchButton(prominent: true)).accessibilityIdentifier("start-game").accessibilityLabel("Play")
+                                .buttonStyle(WatchButton(prominent: true)).accessibilityIdentifier("start-game").accessibilityLabel(match == nil ? "Play" : "Continue")
                         }.padding(.horizontal, 8)
                     }.background {
                         MountainScenery(active: false).overlay(MountainStyle.ink.opacity(0.65)).ignoresSafeArea()
@@ -35,13 +41,102 @@ private struct WatchMountain: View {
                 }.tabViewStyle(.verticalPage)
 
             }
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    NavigationLink { WatchFriendsInbox(friends: friends) } label: { Image(systemName: "person.2.fill") }
+                        .accessibilityLabel("Friend games").accessibilityIdentifier("friend-games")
+                }
+            }
         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+            .task { friends.activate() }
+    }
+}
+
+private struct WatchFriendsInbox: View {
+    let friends: MountainWatchFriends
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Friend games").font(.headline).accessibilityAddTraits(.isHeader)
+                Button { friends.refresh() } label: { Label("Refresh", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+                    .buttonStyle(WatchButton()).disabled(friends.sending)
+                if friends.sending || friends.awaitingSnapshot { ProgressView("Updating games") }
+                if !friends.reachable { Text("Connect to your paired iPhone to play.").font(.caption) }
+                if let error = friends.error { Text(error).font(.caption).foregroundStyle(MountainStyle.gold) }
+                ForEach(friends.active) { race in row(race) }
+                if !friends.finished.isEmpty {
+                    Text("Finished").font(.headline).accessibilityAddTraits(.isHeader)
+                    ForEach(friends.finished) { race in row(race) }
+                }
+                if friends.active.isEmpty && friends.finished.isEmpty {
+                    Text("Start a friend game on iPhone, iPad, Mac or Vision Pro. Watch connects through your paired iPhone.")
+                        .font(.caption).fixedSize(horizontal: false, vertical: true)
+                }
+            }.padding(.horizontal, 8).padding(.bottom, 16)
+        }.background(MountainStyle.ink)
+    }
+    private func row(_ race: FriendRace) -> some View {
+        NavigationLink { WatchFriendGame(id: race.id, friends: friends) } label: {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(race.title).fixedSize(horizontal: false, vertical: true)
+                Text(race.ended ? "Finished" : race.problem != nil ? "Refresh needed" : race.yourTurn ? "Your move" : "Friend's move").font(.caption)
+                if let game = race.challenge?.game { Text("\(game.scores[0]) : \(game.scores[1])").monospacedDigit() }
+            }.frame(maxWidth: .infinity, alignment: .leading)
+        }.buttonStyle(WatchButton()).accessibilityIdentifier("friend-\(race.id)")
+    }
+}
+
+private struct WatchFriendGame: View {
+    let id: String
+    let friends: MountainWatchFriends
+    private var race: FriendRace? { friends.inbox?.matches.first { $0.id == id } }
+    var body: some View {
+        TabView {
+            ScrollView {
+                VStack(spacing: 10) {
+                    if let race, let game = race.challenge?.game {
+                        Text(race.title).font(.headline).fixedSize(horizontal: false, vertical: true)
+                        HStack { Text("\(game.scores[0])"); Text(":"); Text("\(game.scores[1])") }.font(.title3.bold()).monospacedDigit()
+                            .accessibilityElement(children: .ignore).accessibilityLabel("\(race.names[0]), \(game.scores[0]) points. \(race.names[1]), \(game.scores[1]) points.")
+                        Text(game.isOver || race.ended ? "Finished" : race.yourTurn ? "Your move" : "Friend's move").font(.caption)
+                        if !game.isOver && !race.ended {
+                            Label("\(game.turn == 0 ? "Row" : "Column") \(game.turn == 0 ? game.row + 1 : game.column + 1)", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
+                                .font(.caption).foregroundStyle(MountainStyle.player(game.turn))
+                        }
+                        if friends.sending || friends.awaitingSnapshot { ProgressView("Confirming with iPhone") }
+                        if let problem = race.problem { Text(problem).font(.caption) }
+                        if race.yourTurn && !game.isOver && !race.ended {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                                ForEach(game.legalMoves, id: \.self) { tile in
+                                    Button { friends.play(tile, in: race) } label: {
+                                        Text("\(game.tiles[tile].value)").font(.title3.bold()).monospacedDigit().frame(maxWidth: .infinity)
+                                    }.buttonStyle(WatchButton(tileColor: MountainStyle.player(game.turn)))
+                                        .disabled(!friends.canMove || race.problem != nil)
+                                        .accessibilityLabel("\(game.tiles[tile].value) points, row \(tile / game.size + 1), column \(tile % game.size + 1)")
+                                        .accessibilityIdentifier("friend-tile-\(tile)")
+                                }
+                            }
+                        }
+                    } else { Text(race?.problem ?? "Refresh to open this game.").font(.caption) }
+                    if !friends.reachable { Text("Connect to your paired iPhone to send a move.").font(.caption) }
+                    if let error = friends.error { Text(error).font(.caption).foregroundStyle(MountainStyle.gold) }
+                    Button { friends.open(id) } label: { Image(systemName: "arrow.clockwise").frame(maxWidth: .infinity) }
+                        .buttonStyle(WatchButton()).disabled(friends.sending).accessibilityLabel("Refresh game")
+                }.padding(.horizontal, 8).padding(.bottom, 16)
+            }
+            if let game = race?.challenge?.game { ScrollView { WatchBoard(game: game).padding(.bottom, 18) } }
+        }.tabViewStyle(.verticalPage).background(MountainStyle.ink)
+            .task { friends.open(id) }
     }
 }
 
 private struct WatchSettings: View {
-    @AppStorage("computerLevel") private var level = ComputerDifficulty.level6.rawValue
+    @AppStorage("computerLevel", store: MountainExperience.defaults) private var level = ComputerDifficulty.level6.rawValue
     var onHome: (() -> Void)?
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
+    @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var haptics = true
+    @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var duration = 0.7
     private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: level) ?? .level6 }
     var body: some View {
         ScrollView {
@@ -50,6 +145,9 @@ private struct WatchSettings: View {
                 NavigationLink { WatchRivals(level: $level) } label: {
                     HStack { Image(systemName: "speedometer"); WatchPortrait(difficulty: difficulty, size: 28); Text("\(difficulty.rawValue + 1)").monospacedDigit() }
                 }.buttonStyle(WatchButton()).accessibilityLabel("Difficulty \(difficulty.rawValue + 1), \(difficulty.name)").accessibilityHint("Applies to the next game")
+                Toggle("Animations", isOn: $animations)
+                Toggle("Haptics", isOn: $haptics)
+                Picker("Computer move", selection: $duration) { Text("Fast").tag(0.4); Text("Natural").tag(0.7); Text("Relaxed").tag(1.2) }
                 if let onHome { Button(action: onHome) { Image(systemName: "xmark").frame(maxWidth: .infinity) }.buttonStyle(WatchButton()).accessibilityLabel("End game") }
             }.padding(.horizontal, 8).padding(.bottom, 18)
         }.background(MountainStyle.ink)
@@ -63,7 +161,7 @@ private struct WatchRivals: View {
         List(ComputerDifficulty.allCases) { rival in
             Button {
                 level = rival.rawValue
-                UserDefaults.standard.removeObject(forKey: "watchSkill.v1")
+                MountainExperience.defaults.removeObject(forKey: "watchSkill.v1")
                 dismiss()
             } label: {
                 HStack(spacing: 8) {
@@ -82,16 +180,21 @@ private struct WatchGame: View {
     @State private var replaying = false
     @State private var page = 0
     @State private var confirmExit = false
+    @State private var visible = false
     @Environment(\.scenePhase) private var phase
     @Environment(\.isLuminanceReduced) private var dimmed
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
+    private var reduceMotion: Bool { systemReduceMotion || !animations }
 
     init(match: WatchMatch, onLeave: @escaping () -> Void) {
         // The saved or newly created match seeds this screen once.
         _match = State(initialValue: match)
         self.onLeave = onLeave
     }
-    private var active: Bool { phase == .active && !dimmed }
+    @State private var resolution: UUID?
+    @State private var resolvedPoints = 0
+    private var active: Bool { visible && phase == .active && !dimmed }
     private var paused: Bool { replaying || page != 0 || confirmExit }
     private func name(_ player: Int) -> String {
         match.computers[player] ? match.difficulty.name : match.computers.contains(true) ? "You" : "Player \(player + 1)"
@@ -102,7 +205,9 @@ private struct WatchGame: View {
             VStack(spacing: 6) {
                 ScrollView {
                     VStack(spacing: 8) {
-                    if match.game.isOver {
+                    if resolution != nil {
+                        Label("+\(resolvedPoints)", systemImage: "hand.point.up.left.fill").font(.title3).accessibilityLabel("\(match.difficulty.name) takes \(resolvedPoints) points")
+                    } else if match.game.isOver {
                         Button { page = 2 } label: { Image(systemName: "trophy.fill").font(.title2).frame(maxWidth: .infinity) }.buttonStyle(WatchButton(prominent: true)).accessibilityLabel("See final score")
                     } else {
                         HStack(spacing: 6) {
@@ -142,7 +247,18 @@ private struct WatchGame: View {
                 if match.game.isOver { onLeave() } else { confirmExit = true }
             }).tag(3)
         }.tabViewStyle(.verticalPage).background(MountainStyle.ink)
-        .onChange(of: match.game.isOver) { _, over in if over { page = 2 } }
+        .onAppear { visible = true }
+        .onDisappear { visible = false }
+        .onChange(of: match.game.isOver) { _, over in if over && resolution == nil { page = 2 } }
+        .onChange(of: resolution) { _, value in if value == nil && match.game.isOver { page = 2 } }
+        .onChange(of: dimmed) { _, value in if value { resolution = nil } }
+        .onChange(of: paused) { _, value in if value { resolution = nil } }
+        .onChange(of: phase) { _, value in if value != .active { resolution = nil } }
+        .task(id: resolution) {
+            guard let token = resolution else { return }
+            do { try await Task.sleep(for: .seconds(MountainExperience.computerDuration)) } catch { return }
+            if !Task.isCancelled && resolution == token { resolution = nil }
+        }
         .confirmationDialog("End this game?", isPresented: $confirmExit, titleVisibility: .visible) {
             Button("End game", role: .destructive, action: onLeave)
         } message: { Text("Your unfinished game will be discarded.") }
@@ -155,8 +271,8 @@ private struct WatchGame: View {
             }
         }
 
-        .task(id: "\(match.id)-\(match.game.moves)-\(phase)-\(dimmed)-\(paused)-\(match.computerStarted)") {
-            guard match.canComputerMove(active: active, paused: paused) else { return }
+        .task(id: "\(match.id)-\(match.game.moves)-\(phase)-\(dimmed)-\(paused)-\(visible)-\(match.computerStarted)-\(resolution?.uuidString ?? "ready")") {
+            guard resolution == nil, match.canComputerMove(active: active, paused: paused) else { return }
             do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
             let snapshot = match
             let tile = await Task.detached(priority: .userInitiated) { snapshot.game.computerMove(difficulty: snapshot.difficulty, adjustment: snapshot.adjustment) }.value
@@ -166,7 +282,8 @@ private struct WatchGame: View {
         }
     }
     private func restart() {
-        let level = UserDefaults.standard.object(forKey: "computerLevel") as? Int ?? ComputerDifficulty.level6.rawValue
+        let level = MountainExperience.defaults.object(forKey: "computerLevel") as? Int ?? ComputerDifficulty.level6.rawValue
+        resolution = nil
         match = WatchMatch(size: 4, difficulty: ComputerDifficulty(rawValue: level) ?? .level6, computers: [false, true])
         match.save(); page = 0
     }
@@ -183,8 +300,10 @@ private struct WatchGame: View {
         }
     }
     private func play(_ tile: Int, computer: Bool = false) {
-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-            if match.play(tile, computer: computer) { WKInterfaceDevice.current().play(match.game.isOver ? .success : .click) }
+        guard resolution == nil, match.game.canPlay(tile) else { return }
+        if computer { resolvedPoints = match.game.tiles[tile].value; resolution = UUID() }
+        withAnimation(reduceMotion ? nil : .easeOut(duration: computer ? MountainExperience.computerDuration : 0.2)) {
+            if match.play(tile, computer: computer), MountainExperience.hapticsEnabled, !MountainExperience.isQAActive { WKInterfaceDevice.current().play(match.game.isOver ? .success : .click) }
         }
     }
     private func score(_ player: Int) -> some View {
@@ -248,7 +367,9 @@ private struct WatchReplay: View {
     let replay: MountainReplay
     @State private var step = 0
     @State private var repeatCount = 0
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
+    private var reduceMotion: Bool { systemReduceMotion || !animations }
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
@@ -284,7 +405,9 @@ private struct WatchPortrait: View {
 private struct WatchButton: ButtonStyle {
     var prominent = false
     var tileColor: Color?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
+    private var reduceMotion: Bool { systemReduceMotion || !animations }
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.headline).padding(.horizontal, 10).padding(.vertical, 8)
             .frame(maxWidth: .infinity, minHeight: 44)

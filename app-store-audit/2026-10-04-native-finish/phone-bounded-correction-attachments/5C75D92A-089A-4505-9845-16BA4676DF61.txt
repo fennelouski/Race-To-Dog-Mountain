@@ -1,0 +1,4 @@
+Human choice: tile-4
+Observed computer label: Finn takes 9 points
+Observed label date: 2026-10-04 08:17:21 +0000
+Input disabled during resolving.

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "xcodebuild",
+    "-project",
+    "/tmp/racedog-private-ui-20261004/PrivateRunner.xcodeproj",
+    "-scheme",
+    "PrivateRunner",
+    "-configuration",
+    "Debug",
+    "-sdk",
+    "iphonesimulator",
+    "-destination",
+    "generic/platform=iOS Simulator",
+    "-derivedDataPath",
+    "/tmp/racedog-private-ui-products-20261004",
+    "-jobs",
+    "2",
+    "CODE_SIGNING_ALLOWED=NO",
+    "build-for-testing"
+  ],
+  "startedAt": "2026-10-04T08:22:26.564438+00:00",
+  "change": "runner-only actual ActivityListView/Copy Cell/PopoverDismissRegion and hittable native Done; unchanged native5e7d freeze",
+  "boundedCorrection": "observed feedback semantics/footer; targeted same completed UUID driver",
+  "sourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033"
+}

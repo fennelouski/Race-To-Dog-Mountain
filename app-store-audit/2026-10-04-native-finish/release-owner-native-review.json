@@ -1,0 +1,37 @@
+{
+  "recordedAtUTC": "2026-10-04T08:36:29.036009+00:00",
+  "reviewer": "root release owner",
+  "nativeSourceAggregateSHA256": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "verdict": "Phone normal and largest text, actual computer semantic feedback and replay GIF approved; remaining platforms and release compile pending",
+  "actualReviewed": [
+    "7F210C computer actual +9, previous human used paw",
+    "corrected-export-initial.png",
+    "corrected-export-finish.png",
+    "650B largest text pinned finish/Race again/Share",
+    "14C5 normal genuine completed result after native chooser dismissal"
+  ],
+  "fixed": [
+    "Prior human tile relabeling and overlapping feedback",
+    "Truncated GIF identity/app URL footer"
+  ],
+  "suppressed": [],
+  "leftStanding": [
+    "Largest-text board/player content intentionally scrolls while result/primary action remain pinned",
+    "Pad/Mac/Watch runtime and Release archive not yet verified",
+    "Physical effects/network/social flows retain stated limits"
+  ],
+  "GIF": {
+    "frames": 17,
+    "dimensions": [
+      512,
+      760
+    ],
+    "bytes": 91824,
+    "actualScores": [
+      69,
+      67
+    ]
+  },
+  "computerVisibleIntervalMeasuredSeconds": 1.233,
+  "sourceMinimumSeconds": 0.4
+}

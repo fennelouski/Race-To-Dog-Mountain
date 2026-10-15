@@ -1,0 +1,146 @@
+{
+  "sourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "actualGIF": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/mountain-share-D4DD2E6C-410B-4EFB-822E-E76A901DAA5B/Dog-Mountain-replay.gif",
+  "bytes": 91824,
+  "sha256": "aef379f47ff64943060c0a589f4a1b64d93408cbaa2e002da35d89de138d11b4",
+  "dimensions": [
+    512,
+    760
+  ],
+  "frames": 17,
+  "uniqueFrames": 17,
+  "delaysMs": [
+    800,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    450,
+    2000
+  ],
+  "loop": 0,
+  "actualCompletedGameID": "C7D6F881-5AB4-4BDB-84BB-3340310BB357",
+  "actualLegalChoices": [
+    12,
+    4,
+    5,
+    9,
+    8,
+    0,
+    1,
+    13,
+    14,
+    6,
+    7,
+    3,
+    2,
+    10,
+    11,
+    15
+  ],
+  "actualFinalScores": [
+    69,
+    67
+  ],
+  "actualInitialState": {
+    "moves": 0,
+    "row": 3,
+    "tiles": [
+      {
+        "value": 3,
+        "id": 0
+      },
+      {
+        "value": 8,
+        "id": 1
+      },
+      {
+        "value": 13,
+        "id": 2
+      },
+      {
+        "value": 10,
+        "id": 3
+      },
+      {
+        "value": 12,
+        "id": 4
+      },
+      {
+        "value": 11,
+        "id": 5
+      },
+      {
+        "value": 15,
+        "id": 6
+      },
+      {
+        "value": 16,
+        "id": 7
+      },
+      {
+        "value": 6,
+        "id": 8
+      },
+      {
+        "value": 7,
+        "id": 9
+      },
+      {
+        "value": 5,
+        "id": 10
+      },
+      {
+        "value": 9,
+        "id": 11
+      },
+      {
+        "value": 4,
+        "id": 12
+      },
+      {
+        "value": 1,
+        "id": 13
+      },
+      {
+        "value": 2,
+        "id": 14
+      },
+      {
+        "value": 14,
+        "id": 15
+      }
+    ],
+    "column": 3,
+    "size": 4,
+    "scores": [
+      0,
+      0
+    ],
+    "turn": 0
+  },
+  "sameOriginalCompletedTranscript": true,
+  "nativeOSChooser": "Confirmed in separate passing 1/1 native chooser/dismissal test; no external destination selected",
+  "newActualGames": [
+    [
+      "3F6A8E2B-E95C-40EA-8392-78BC10463EE6",
+      2,
+      [
+        5,
+        9
+      ]
+    ]
+  ],
+  "firstAndFinalFramesReviewed": true,
+  "footerReview": "Full Race to Dog Mountain title and apps.apple.com/app/id971329310 visible without truncation in actual initial/final512x760 GIF frames"
+}

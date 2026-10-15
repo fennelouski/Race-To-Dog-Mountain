@@ -1,0 +1,46 @@
+{
+  "video": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/phone-bounded-correction-actual-ui.mp4",
+  "method": "RGB threshold of exact left gold selection stroke at x120..135,y1700..2299; 60fps decoded sampling; preserves original video. Raw pixel classification reviewed against actual screenshot and opening history, not a general motion benchmark.",
+  "allIntervals": [
+    {
+      "startVideoSeconds": 63.68333333333333,
+      "endVideoSeconds": 70.2,
+      "durationSeconds": 6.516666666666667,
+      "sampleCount": 391,
+      "minimumGoldPixels": 544,
+      "maximumGoldPixels": 5216
+    },
+    {
+      "startVideoSeconds": 77.01666666666667,
+      "endVideoSeconds": 77.25,
+      "durationSeconds": 0.23333333333333334,
+      "sampleCount": 14,
+      "minimumGoldPixels": 524,
+      "maximumGoldPixels": 1817
+    },
+    {
+      "startVideoSeconds": 79.45,
+      "endVideoSeconds": 80.68333333333334,
+      "durationSeconds": 1.2333333333333334,
+      "sampleCount": 74,
+      "minimumGoldPixels": 2882,
+      "maximumGoldPixels": 3071
+    }
+  ],
+  "interpretation": "Select the final interval matching actual opening computer tile12 and its visual capture; older large-text gold content elsewhere can create earlier positives.",
+  "sourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "reviewedFinalActualComputerInterval": {
+    "startVideoSeconds": 79.45,
+    "endVideoSeconds": 80.68333333333334,
+    "durationSeconds": 1.2333333333333334,
+    "sampleCount": 74,
+    "minimumGoldPixels": 2882,
+    "maximumGoldPixels": 3071
+  },
+  "reviewedFrames": [
+    "actual-computer-video-early.png",
+    "actual-computer-video-late.png",
+    "actual-computer-video-released.png"
+  ],
+  "verifiedInterpretation": "Gold selected actual computer tile12 remains for1.233s; first/late full captured frames reviewed. Exactly one +9/current selection, prior actual human tile4/value5 is paw. The saved Relaxed speed is1.2s. This does not claim every speed/runtime/frame-count under other devices."
+}

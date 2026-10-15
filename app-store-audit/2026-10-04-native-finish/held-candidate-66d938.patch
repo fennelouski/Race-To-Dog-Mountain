@@ -1,0 +1,1235 @@
+diff --git a/Race to Dog Mountain/AppDelegate.m b/Race to Dog Mountain/AppDelegate.m
+index fa9f802..31f6370 100644
+--- a/Race to Dog Mountain/AppDelegate.m	
++++ b/Race to Dog Mountain/AppDelegate.m	
+@@ -20,7 +20,7 @@ - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(
+     // Override point for customization after application launch.
+ 
+     //set Motion Gesture
+-    [application setApplicationSupportsShakeToEdit:YES];
++    if (![MountainQARuntime isActive]) { [application setApplicationSupportsShakeToEdit:YES]; }
+     [MountainPhoneCoordinator activate];
+ 
+     return YES;
+@@ -41,6 +41,9 @@ - (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<
+ }
+ 
+ - (void)applicationWillResignActive:(UIApplication *)application {
++#if DEBUG
++    if ([MountainQARuntime isActive]) { return; }
++#endif
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"closingScreenBrightness"];
+     [defaults setObject:[NSDate date] forKey:@"lastClosedDate"];
+@@ -54,6 +57,9 @@ - (void)applicationWillResignActive:(UIApplication *)application {
+ }
+ 
+ - (void)applicationDidEnterBackground:(UIApplication *)application {
++#if DEBUG
++    if ([MountainQARuntime isActive]) { return; }
++#endif
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"closingScreenBrightness"];
+     [defaults setObject:[NSDate date] forKey:@"lastClosedDate"];
+@@ -72,6 +78,9 @@ - (void)applicationWillEnterForeground:(UIApplication *)application {
+ }
+ 
+ - (void)applicationDidBecomeActive:(UIApplication *)application {
++#if DEBUG
++    if ([MountainQARuntime isActive]) { return; }
++#endif
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+     [defaults setObject:[NSNumber numberWithFloat:[[UIScreen mainScreen] brightness]] forKey:@"originalScreenBrightness"];
+ 
+diff --git a/Race to Dog Mountain/MountainBoard.swift b/Race to Dog Mountain/MountainBoard.swift
+index 50f45a8..d173320 100644
+--- a/Race to Dog Mountain/MountainBoard.swift	
++++ b/Race to Dog Mountain/MountainBoard.swift	
+@@ -2,7 +2,9 @@ import SwiftUI
+ 
+ struct MountainButton: ButtonStyle {
+     var prominent = false
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
++    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
+     func makeBody(configuration: Configuration) -> some View {
+         configuration.label
+             .font(.headline)
+@@ -22,7 +24,9 @@ struct MountainButton: ButtonStyle {
+ }
+ 
+ private struct MountainTileButton: ButtonStyle {
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
++    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
+     func makeBody(configuration: Configuration) -> some View {
+         configuration.label
+             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.9 : 1)
+@@ -110,8 +114,8 @@ extension View {
+     }
+     @ViewBuilder func mountainGameFeedback(moves: Int, over: Bool) -> some View {
+ #if os(iOS)
+-        sensoryFeedback(.selection, trigger: moves)
+-            .sensoryFeedback(.success, trigger: over) { _, finished in finished }
++        sensoryFeedback(.selection, trigger: moves) { _, _ in MountainExperience.hapticsEnabled && !MountainExperience.isQAActive }
++            .sensoryFeedback(.success, trigger: over) { _, finished in finished && MountainExperience.hapticsEnabled && !MountainExperience.isQAActive }
+ #else
+         self
+ #endif
+diff --git a/Race to Dog Mountain/MountainFriends.swift b/Race to Dog Mountain/MountainFriends.swift
+index 203d19c..0309128 100644
+--- a/Race to Dog Mountain/MountainFriends.swift	
++++ b/Race to Dog Mountain/MountainFriends.swift	
+@@ -37,7 +37,7 @@ struct MountainGameCenterSheet: Identifiable {
+     @ObservationIgnored var inboxChanged: (() -> Void)?
+ #endif
+ 
+-    init(defaults: UserDefaults = .standard) {
++    init(defaults: UserDefaults = MountainExperience.defaults) {
+         self.defaults = defaults
+         cachedInbox = defaults.data(forKey: "friendRaces.v1").flatMap { try? MountainFriendInbox.decode($0) }
+         requestedSize = min(14, max(4, defaults.object(forKey: "complexity") as? Int ?? 6))
+@@ -48,15 +48,18 @@ struct MountainGameCenterSheet: Identifiable {
+     var finished: [FriendRace] { matches.filter(\.ended).sorted { $0.updated > $1.updated } }
+ 
+     func resume() async {
++        guard !MountainExperience.isQAActive else { return }
+         if checkAuthentication() { await refresh() }
+-        else if UserDefaults.standard.bool(forKey: "usedGameCenter") { authenticate() }
++        else if MountainExperience.defaults.bool(forKey: "usedGameCenter") { authenticate() }
+     }
+     func invite(size: Int) {
++        guard !MountainExperience.isQAActive else { return }
+         requestedSize = min(14, max(4, size)); wantsMatch = true
+         if checkAuthentication() { showMatchmaker() }
+         else { authenticate() }
+     }
+     func authenticate() {
++        guard !MountainExperience.isQAActive else { return }
+         guard !signingIn else { return }
+         signingIn = true; error = nil
+         GKLocalPlayer.local.authenticateHandler = { [weak self] controller, failure in
+@@ -66,7 +69,7 @@ struct MountainGameCenterSheet: Identifiable {
+                 self.signingIn = false
+                 self.authenticationResolved = true
+                 if self.checkAuthentication() {
+-                    UserDefaults.standard.set(true, forKey: "usedGameCenter")
++                    MountainExperience.defaults.set(true, forKey: "usedGameCenter")
+                     await self.refresh()
+                     if self.wantsMatch { self.showMatchmaker() }
+                 } else {
+@@ -89,6 +92,7 @@ struct MountainGameCenterSheet: Identifiable {
+         presentation = MountainGameCenterSheet(controller: controller)
+     }
+     @discardableResult private func checkAuthentication() -> Bool {
++        guard !MountainExperience.isQAActive else { return false }
+         let local = GKLocalPlayer.local
+         let player = local.isAuthenticated ? local.teamPlayerID : nil
+         if player != nil || registeredPlayer != nil { authenticationResolved = true }
+@@ -113,6 +117,7 @@ struct MountainGameCenterSheet: Identifiable {
+         defaults.set(data, forKey: "friendRaces.v1"); cachedInbox = next
+     }
+     func refresh() async {
++        guard !MountainExperience.isQAActive else { return }
+         guard checkAuthentication() else { return }
+         if loading { refreshAgain = true; return }
+         loading = true
+diff --git a/Race to Dog Mountain/MountainGame.swift b/Race to Dog Mountain/MountainGame.swift
+index a0bbc52..067f902 100644
+--- a/Race to Dog Mountain/MountainGame.swift	
++++ b/Race to Dog Mountain/MountainGame.swift	
+@@ -141,6 +141,70 @@ struct MountainReplay: Sendable, Codable {
+     }
+ }
+ 
++
++// Only a DEBUG launch with an explicit valid UUID may use the private QA store.
++enum MountainExperience {
++    static let qaSession: UUID? = {
++        #if DEBUG
++        let args = ProcessInfo.processInfo.arguments
++        guard args.contains("-MountainUITests") else { return nil }
++        guard let flag = args.firstIndex(of: "-MountainTestSession"),
++              args.indices.contains(flag + 1), let id = UUID(uuidString: args[flag + 1]) else {
++            fatalError("Private Mountain QA requires a valid session UUID")
++        }
++        return id
++        #else
++        return nil
++        #endif
++    }()
++    static var isQAActive: Bool { qaSession != nil }
++    static let defaults: UserDefaults = {
++        guard let id = qaSession else { return .standard }
++        return UserDefaults(suiteName: "com.codex.racedog.qa." + id.uuidString)!
++    }()
++    static var animationsEnabled: Bool { defaults.object(forKey: "animationsEnabled") as? Bool ?? true }
++    static var hapticsEnabled: Bool { defaults.object(forKey: "hapticsEnabled") as? Bool ?? true }
++    static var computerDuration: Double {
++        let value = defaults.object(forKey: "computerMoveDuration") as? Double ?? 0.7
++        return value.isFinite ? min(1.2, max(0.4, value)) : 0.7
++    }
++}
++
++#if canImport(ObjectiveC)
++@objc(MountainQARuntime) public final class MountainQARuntime: NSObject {
++    @objc public static var isActive: Bool { MountainExperience.isQAActive }
++}
++#endif
++
++/// The initial board and successful legal choices are enough to reproduce a game.
++/// Optional on legacy saves: missing moves must never be invented.
++struct MountainHistory: Codable, Sendable {
++    let initial: MountainGame
++    private(set) var choices: [Int] = []
++    init(initial: MountainGame) { self.initial = initial }
++    var states: [MountainGame]? {
++        guard initial.isValid, initial.moves == 0, choices.count <= initial.size * initial.size else { return nil }
++        var game = initial
++        var result = [game]
++        for tile in choices {
++            guard game.play(tile) else { return nil }
++            result.append(game)
++        }
++        return result
++    }
++    func matches(_ game: MountainGame) -> Bool {
++        guard let last = states?.last else { return false }
++        return last.size == game.size && last.turn == game.turn && last.moves == game.moves &&
++            last.row == game.row && last.column == game.column && last.scores == game.scores &&
++            last.tiles.map(\.value) == game.tiles.map(\.value)
++    }
++    @discardableResult mutating func record(_ tile: Int, before: MountainGame) -> Bool {
++        guard matches(before), before.canPlay(tile), choices.count < initial.size * initial.size else { return false }
++        choices.append(tile)
++        return true
++    }
++}
++
+ #if DOGMOUNTAIN_CHECKS
+ @main enum MountainGameCheck {
+     static func main() {
+diff --git a/Race to Dog Mountain/MountainLibrary.swift b/Race to Dog Mountain/MountainLibrary.swift
+index 41bfa4e..212ccd8 100644
+--- a/Race to Dog Mountain/MountainLibrary.swift	
++++ b/Race to Dog Mountain/MountainLibrary.swift	
+@@ -7,7 +7,7 @@ import Observation
+     private let defaults: UserDefaults
+     private static let key = "mountainGames.v1"
+ 
+-    init(defaults: UserDefaults = .standard) {
++    init(defaults: UserDefaults = MountainExperience.defaults) {
+         self.defaults = defaults
+         if let data = defaults.data(forKey: Self.key) {
+             if data.count <= 4_194_304, let saved = try? JSONDecoder().decode([SavedMountainGame].self, from: data),
+diff --git a/Race to Dog Mountain/MountainMatches.swift b/Race to Dog Mountain/MountainMatches.swift
+index df71326..af1e95e 100644
+--- a/Race to Dog Mountain/MountainMatches.swift	
++++ b/Race to Dog Mountain/MountainMatches.swift	
+@@ -214,6 +214,7 @@ struct SavedMountainGame: Codable, Identifiable {
+     var adjustment: Int
+     var game: MountainGame
+     var replay: MountainReplay?
++    var history: MountainHistory?
+     var recorded = false
+     var computerStarted = false
+     var rolesChanged = false
+@@ -222,11 +223,27 @@ struct SavedMountainGame: Codable, Identifiable {
+         self.names = names; self.computers = computers; self.difficulty = difficulty
+         self.adjustment = min(2, max(-2, adjustment))
+         game = MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers))
++        history = MountainHistory(initial: game)
+     }
+     var title: String { computers.contains(true) ? "You & \(difficulty.name)" : names.joined(separator: " & ") }
+     var isValid: Bool {
+         names.count == 2 && names.allSatisfy { !$0.isEmpty && $0.utf8.count <= 240 } &&
+         computers.count == 2 && (-2...2).contains(adjustment) && game.isValid &&
++        (history == nil || history!.matches(game)) &&
+         (replay == nil || (replay!.before.isValid && replay!.before.canPlay(replay!.tileID) && replay!.before.size == game.size && replay!.before.moves < game.moves))
+     }
+ }
++
++// Friend transcripts already contain the genuine initial board and each legal choice.
++extension MountainHistory {
++    init?(challenge: MountainChallenge) {
++        guard challenge.isValid else { return nil }
++        let initial = MountainGame(size: challenge.size, values: challenge.values, startingLine: challenge.startingLine)
++        self.init(initial: initial)
++        var state = initial
++        for tile in challenge.moves {
++            guard record(tile, before: state), state.play(tile) else { return nil }
++        }
++        guard matches(challenge.game) else { return nil }
++    }
++}
+diff --git a/Race to Dog Mountain/MountainScenery.swift b/Race to Dog Mountain/MountainScenery.swift
+index 79564f6..a4b5727 100644
+--- a/Race to Dog Mountain/MountainScenery.swift	
++++ b/Race to Dog Mountain/MountainScenery.swift	
+@@ -20,7 +20,9 @@ enum MountainStyle {
+ struct MountainScenery: View {
+     var active = true
+     var celebration = false
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
++    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
+     @Environment(\.scenePhase) private var scenePhase
+ 
+     var body: some View {
+diff --git a/Race to Dog Mountain/MountainSocialViews.swift b/Race to Dog Mountain/MountainSocialViews.swift
+index 1406bff..9a16e53 100644
+--- a/Race to Dog Mountain/MountainSocialViews.swift	
++++ b/Race to Dog Mountain/MountainSocialViews.swift	
+@@ -53,6 +53,7 @@ struct MountainChallengeBoard: View {
+ struct MountainFriendGame: View {
+     @Bindable var friends: MountainFriends
+     @Environment(\.dismiss) private var dismiss
++    @State private var sharing = false
+     var body: some View {
+         NavigationStack {
+             ZStack {
+@@ -64,14 +65,25 @@ struct MountainFriendGame: View {
+                                                busy: friends.sending, ended: race.ended) { tile in Task { await friends.play(tile) } }
+                         if let problem = race.problem { Text(problem).font(.footnote).padding(.horizontal, 16) }
+                         if race.ended && race.problem == nil {
+-                            Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+-                                .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending).padding(.horizontal, 16).padding(.bottom, 16)
++                            HStack(spacing: 12) {
++                                Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
++                                    .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending)
++                                if challenge.game.isOver, MountainHistory(challenge: challenge) != nil {
++                                    Button { sharing = true } label: { Image(systemName: "square.and.arrow.up") }
++                                        .buttonStyle(MountainButton()).accessibilityLabel("Share")
++                                }
++                            }.padding(.horizontal, 16).padding(.bottom, 16)
+                         }
+                     }
+                 } else if let problem = friends.opened?.problem {
+                     Text(problem).padding(24).fixedSize(horizontal: false, vertical: true)
+                 }
+             }
++            .sheet(isPresented: $sharing) {
++                if let race = friends.opened, let challenge = race.challenge, let history = MountainHistory(challenge: challenge) {
++                    MountainFinishShare(game: challenge.game, names: race.names, history: history)
++                }
++            }
+             .navigationTitle("Friend game").mountainInlineTitle()
+             .toolbar {
+                 ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
+diff --git a/Race to Dog Mountain/MountainViews.swift b/Race to Dog Mountain/MountainViews.swift
+index 7682062..5a6156e 100644
+--- a/Race to Dog Mountain/MountainViews.swift	
++++ b/Race to Dog Mountain/MountainViews.swift	
+@@ -1,4 +1,6 @@
+ import SwiftUI
++import ImageIO
++import UniformTypeIdentifiers
+ #if os(macOS)
+ import AppKit
+ #else
+@@ -39,14 +41,14 @@ final class MountainSceneDelegate: UIResponder, UIWindowSceneDelegate {
+ #endif
+ 
+ struct MountainHome: View {
+-    @AppStorage("player1Name") private var firstName = "Player 1"
+-    @AppStorage("player2Name") private var secondName = "Player 2"
+-    @AppStorage("player1AI") private var firstAI = false
+-    @AppStorage("player2AI") private var secondAI = true
+-    @AppStorage("complexity") private var size = 6
+-    @AppStorage("computerLevel") private var computerLevel = 5
+-    @AppStorage("computerAdjustment") private var computerAdjustment = 0
+-    @AppStorage("computerDialogue") private var computerDialogue = false
++    @AppStorage("player1Name", store: MountainExperience.defaults) private var firstName = "Player 1"
++    @AppStorage("player2Name", store: MountainExperience.defaults) private var secondName = "Player 2"
++    @AppStorage("player1AI", store: MountainExperience.defaults) private var firstAI = false
++    @AppStorage("player2AI", store: MountainExperience.defaults) private var secondAI = true
++    @AppStorage("complexity", store: MountainExperience.defaults) private var size = 6
++    @AppStorage("computerLevel", store: MountainExperience.defaults) private var computerLevel = 5
++    @AppStorage("computerAdjustment", store: MountainExperience.defaults) private var computerAdjustment = 0
++    @AppStorage("computerDialogue", store: MountainExperience.defaults) private var computerDialogue = false
+     @State private var playing = false
+     @State private var selection: SavedMountainGame?
+     @State private var library = MountainLibrary()
+@@ -82,6 +84,13 @@ struct MountainHome: View {
+             }
+ #endif
+         }
++        .defaultAppStorage(MountainExperience.defaults)
++        .overlay(alignment: .topTrailing) {
++            if MountainExperience.isQAActive {
++                Text("QA").font(.caption2).padding(4).background(MountainStyle.ink)
++                    .accessibilityLabel("Private Mountain QA").accessibilityIdentifier("mountain-private-qa")
++            }
++        }
+         .sheet(isPresented: $options, onDismiss: refreshHistory) { playerOptions.mountainSheetSize() }
+         .sheet(isPresented: $rules) { MountainRules().mountainSheetSize() }
+ #if os(iOS)
+@@ -103,36 +112,30 @@ struct MountainHome: View {
+         GeometryReader { geometry in
+             ZStack {
+                 MountainScenery(active: !playing && !options && !rules).overlay(MountainStyle.ink.opacity(0.5))
+-                ScrollView {
+-                    VStack(alignment: .leading, spacing: 24) {
+-                        HStack {
+-                            Image(systemName: "pawprint.fill").font(.title).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
+-                            Spacer()
+-                            Button { rules = true } label: {
+-                                if typeSize.isAccessibilitySize {
+-                                    Image(systemName: "questionmark.circle").font(.title2)
+-                                } else {
+-                                    Label("How to play", systemImage: "questionmark.circle")
+-                                }
+-                            }.accessibilityLabel("How to play")
+-                                .font(.subheadline.weight(.semibold)).frame(minHeight: 44)
+-                        }
+-                        VStack(alignment: .leading, spacing: 16) {
+-                            Text("Race to\nDog Mountain")
+-                                .font(MountainStyle.display(typeSize.isAccessibilitySize ? 32 : !library.active.isEmpty || !friends.active.isEmpty ? 36 : geometry.size.width > 600 ? 76 : 52))
+-                                .tracking(typeSize.isAccessibilitySize || !library.active.isEmpty || !friends.active.isEmpty ? -1 : -2).fixedSize(horizontal: false, vertical: true)
+-                                .accessibilityAddTraits(.isHeader)
+-                            if !typeSize.isAccessibilitySize {
+-                                Text("Pick a number.\nOutsmart your rival.")
+-                                    .font(.title3.weight(.medium)).lineSpacing(4)
+-                            }
+-                        }
+-                        if library.active.isEmpty && friends.active.isEmpty { Spacer(minLength: 24) }
++                VStack(alignment: .leading, spacing: 16) {
++                    HStack {
++                        Image(systemName: "pawprint.fill").font(.title2).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
++                        Spacer()
++                        Button { rules = true } label: { Image(systemName: "questionmark.circle").font(.title2) }
++                            .frame(minWidth: 44, minHeight: 44).accessibilityLabel("How to play")
++                    }
++                    Text("Race to Dog Mountain")
++                        .font(MountainStyle.display(typeSize.isAccessibilitySize || geometry.size.height < 500 ? 24 : geometry.size.width > 600 ? 52 : 36))
++                        .lineLimit(2).accessibilityAddTraits(.isHeader)
++                    Button {
++                        if let saved = library.active.first { resume(saved) } else { startLocal() }
++                    } label: {
++                        Label(library.active.isEmpty ? "Play" : "Continue", systemImage: "play.fill")
++                            .frame(maxWidth: .infinity)
++                    }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
++                        .keyboardShortcut("n", modifiers: .command)
++                    ScrollView {
+                         VStack(spacing: 16) {
+-                            Button { startLocal() } label: {
+-                                HStack { Text("New local game"); Spacer(); Image(systemName: "arrow.right") }.frame(maxWidth: .infinity)
+-                            }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("start-game")
+-                                .keyboardShortcut("n", modifiers: .command)
++                            if !library.active.isEmpty {
++                                Button { startLocal() } label: { Label("New local game", systemImage: "plus").frame(maxWidth: .infinity) }
++                                    .buttonStyle(MountainButton()).accessibilityIdentifier("new-local-game")
++                            }
++                            if !typeSize.isAccessibilitySize { Text("Pick a number. Outsmart your rival.").font(.title3) }
+                             socialActions
+                             gamesInbox
+                             if firstAI || secondAI {
+@@ -150,12 +153,11 @@ struct MountainHome: View {
+                                     .font(.footnote).multilineTextAlignment(.center)
+                                     .accessibilityLabel("Head to head. \(names[0]), \(history[0]) wins. \(names[1]), \(history[1]) wins.")
+                             }
+-                        }
+-                    }
+-                    .padding(.horizontal, geometry.size.width > 600 ? 48 : 28).padding(.vertical, 20)
+-                    .frame(maxWidth: 760, minHeight: geometry.size.height, alignment: .leading)
+-                    .frame(maxWidth: .infinity)
+-                }.scrollIndicators(.hidden)
++                        }.padding(.bottom, 12)
++                    }.scrollIndicators(.hidden)
++                }
++                .padding(.horizontal, geometry.size.width > 600 ? 48 : 28).padding(.vertical, 16)
++                .frame(maxWidth: 760).frame(maxWidth: .infinity)
+             }
+         }
+         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+@@ -277,7 +279,7 @@ struct MountainHome: View {
+                         MountainMatchRow(title: race.title, subtitle: "Finished · Game Center", scores: race.challenge?.game.scores, symbol: "flag.checkered") { Task { await friends.open(race.id) } }
+                     }
+                     ForEach(library.finished) { saved in
+-                        MountainMatchRow(title: saved.title, subtitle: "Finished · Local", scores: saved.game.scores, symbol: "flag.checkered") { resume(saved) }
++                        MountainMatchRow(title: saved.title, subtitle: "Finished · Local", scores: saved.game.scores, symbol: "flag.checkered") { resume(saved) }.accessibilityIdentifier("finished-local-" + saved.id.uuidString)
+                     }
+                 }.padding(.top, 12)
+             }
+@@ -292,7 +294,7 @@ struct MountainHome: View {
+         return result.isEmpty ? fallback : String(result.prefix(60))
+     }
+     private func refreshHistory() {
+-        history = [0, 1].map { UserDefaults.standard.integer(forKey: "\(names[$0])vvv\(names[1 - $0])") }
++        history = [0, 1].map { MountainExperience.defaults.integer(forKey: "\(names[$0])vvv\(names[1 - $0])") }
+     }
+     private var playerOptions: some View {
+         NavigationStack {
+@@ -331,7 +333,9 @@ struct MountainHome: View {
+                             Text("\(size) × \(size)").font(.title2.bold()).monospacedDigit().foregroundStyle(MountainStyle.gold)
+                         }
+                     }
++                    .accessibilityIdentifier("board-size-setting")
+                     Text("Bigger board, more possibilities. Classic rules, every time.").font(.subheadline)
++                    MountainExperienceOptions()
+                     HStack {
+                         Text("Head to head").font(.headline)
+                         Spacer()
+@@ -389,8 +393,8 @@ private struct MountainGameView: View {
+     let onLeave: (() -> Void)?
+     let onSave: ((SavedMountainGame) -> Void)?
+     @State private var savedID: UUID
+-    @AppStorage("computerAdjustment") private var computerAdjustment = 0
+-    @AppStorage("computerDialogue") private var computerDialogue = false
++    @AppStorage("computerAdjustment", store: MountainExperience.defaults) private var computerAdjustment = 0
++    @AppStorage("computerDialogue", store: MountainExperience.defaults) private var computerDialogue = false
+     @State private var matchAdjustment: Int
+     @State private var rolesChanged = false
+     @State private var computerStarted = false
+@@ -403,8 +407,14 @@ private struct MountainGameView: View {
+     @State private var foregroundNonce = 0
+     @State private var lastMove: Int?
+     @State private var lastPoints = 0
++    @State private var history: MountainHistory?
++    @State private var resolution: UUID?
++    @State private var sharing = false
++    @Environment(\.scenePhase) private var scenePhase
+     @Environment(\.dismiss) private var dismiss
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
++    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
+     @Environment(\.dynamicTypeSize) private var typeSize
+ 
+     init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, saved: SavedMountainGame? = nil, onSave: ((SavedMountainGame) -> Void)? = nil, onLeave: (() -> Void)? = nil) {
+@@ -418,7 +428,9 @@ private struct MountainGameView: View {
+         _lastComputerMove = State(initialValue: saved?.replay)
+         _matchAdjustment = State(initialValue: saved?.adjustment ?? adjustment)
+         // Each presentation owns a fresh game and a snapshot of player settings.
+-        _game = State(initialValue: saved?.game ?? MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers)))
++        let initial = saved?.game ?? MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: computers))
++        _game = State(initialValue: initial)
++        _history = State(initialValue: saved == nil ? MountainHistory(initial: initial) : saved?.history)
+         _computers = State(initialValue: saved?.computers ?? computers)
+     }
+ 
+@@ -475,24 +487,37 @@ private struct MountainGameView: View {
+                         .frame(maxWidth: .infinity)
+                 }.scrollIndicators(.hidden)
+             }
++            .safeAreaInset(edge: .bottom, spacing: 0) {
++                if game.isOver && resolution == nil { finishActions }
++            }
+             .confirmationDialog("Leave this game?", isPresented: $confirmExit, titleVisibility: .visible) {
+                 Button("Back to games") { leaveGame() }
+             } message: { Text("Your progress is saved. You can finish this game later.") }
+             .onReceive(NotificationCenter.default.publisher(for: MountainPlatform.didBecomeActive)) { _ in foregroundNonce += 1 }
+-            .task(id: "\(game.moves)-\(computers)-\(confirmExit)-\(foregroundNonce)-\(computerStarted)-\(replaying)") {
+-                guard MountainPlatform.isActive, !confirmExit, !replaying, !waitingForStart, !game.isOver, computers[game.turn] else { return }
++            .task(id: "\(savedID)-\(game.moves)-\(computers)-\(confirmExit)-\(foregroundNonce)-\(computerStarted)-\(replaying)-\(resolution?.uuidString ?? "ready")-\(scenePhase)") {
++                guard MountainPlatform.isActive, !confirmExit, !replaying, resolution == nil, !waitingForStart, !game.isOver, computers[game.turn] else { return }
+                 do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
+                 let snapshot = game, profile = difficulty, skill = matchAdjustment
+                 let next = await Task.detached(priority: .userInitiated) {
+                     snapshot.computerMove(difficulty: profile, adjustment: skill)
+                 }.value
+-                guard !Task.isCancelled, !confirmExit, !replaying, MountainPlatform.isActive else { return }
++                guard !Task.isCancelled, !confirmExit, !replaying, resolution == nil, MountainPlatform.isActive, game.moves == snapshot.moves, computers[game.turn] else { return }
+                 if let next { move(next, computer: true) }
+             }
++            .task(id: resolution) {
++                guard let token = resolution else { return }
++                do { try await Task.sleep(for: .seconds(MountainExperience.computerDuration)) } catch { return }
++                guard !Task.isCancelled, resolution == token else { return }
++                resolution = nil
++            }
++            .onChange(of: scenePhase) { _, phase in if phase != .active { resolution = nil } }
++            .onChange(of: confirmExit) { _, opened in if opened { resolution = nil } }
++            .onChange(of: replaying) { _, opened in if opened { resolution = nil } }
+             .onChange(of: game.isOver) { _, over in if over { recordWin() } }
+             .onChange(of: computers) { rolesChanged = true; persist() }
+             .onChange(of: computerStarted) { persist() }
+-            .onDisappear { persist() }
++            .onDisappear { resolution = nil; persist() }
++            .sheet(isPresented: $sharing) { MountainFinishShare(game: game, names: [playerName(0), playerName(1)], history: history) }
+             .sheet(isPresented: $replaying) {
+                 if let replay = lastComputerMove { MountainReplayView(replay: replay).mountainSheetSize() }
+             }
+@@ -504,7 +529,7 @@ private struct MountainGameView: View {
+ #endif
+     }
+     private func board(width: CGFloat) -> some View {
+-        MountainBoard(game: game, availableWidth: width, interactive: !computers[game.turn], lastMove: lastMove, lastPoints: lastPoints) { move($0) }
++        MountainBoard(game: game, availableWidth: width, interactive: !computers[game.turn] && resolution == nil, lastMove: lastMove, lastPoints: lastPoints, selected: resolution == nil ? nil : lastMove) { move($0) }
+     }
+     private func verticalGame(width: CGFloat) -> some View {
+         VStack(spacing: 24) {
+@@ -538,17 +563,25 @@ private struct MountainGameView: View {
+                 Text("Replay will be ready after the computer's first move.").font(.footnote).multilineTextAlignment(.center)
+             }
+             if game.isOver {
+-                VStack(spacing: 12) {
+-                    Button { restart() } label: { Label("Race again", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+-                        .buttonStyle(MountainButton(prominent: true))
+-                    Button("Back to mountain") { leaveGame() }.buttonStyle(MountainButton())
+-                }.transition(.opacity)
++                EmptyView()
+             } else {
+-                Label("Every choice sets your rival's next move.", systemImage: "point.topleft.down.to.point.bottomright.curvepath")
+-                    .font(.footnote).multilineTextAlignment(.center)
++                Label("Every choice sets your rival’s next move.", systemImage: "point.topleft.down.to.point.bottomright.curvepath").font(.footnote)
+             }
+         }
+     }
++    private var finishActions: some View {
++        VStack(spacing: 10) {
++            Text(result).font(.headline).multilineTextAlignment(.center).accessibilityIdentifier("game-result")
++            Text("\(playerName(0)) \(game.scores[0]) · \(playerName(1)) \(game.scores[1])").font(.caption).multilineTextAlignment(.center)
++            HStack(spacing: 12) {
++                    Button { restart() } label: { Label("Race again", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
++                        .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("race-again")
++                Button { sharing = true } label: { Image(systemName: "square.and.arrow.up") }
++                    .buttonStyle(MountainButton()).accessibilityLabel("Share").accessibilityIdentifier("share-result")
++            }
++        }.padding(16).frame(maxWidth: 792).frame(maxWidth: .infinity)
++            .background(MountainStyle.ink.opacity(0.98))
++    }
+     private func leaveGame() { persist(); if let onLeave { onLeave() } else { dismiss() } }
+     private var waitingForStart: Bool { game.moves == 0 && computers[game.turn] && !computerStarted }
+     private func playerName(_ index: Int) -> String { computers[index] ? difficulty.name : names[index] }
+@@ -575,7 +608,11 @@ private struct MountainGameView: View {
+     }
+     private var turnLabel: some View {
+         VStack(spacing: 8) {
+-            if game.isOver {
++            if resolution != nil {
++                Label("\(difficulty.name) takes \(lastPoints) points", systemImage: "hand.point.up.left.fill")
++                    .font(.headline).foregroundStyle(MountainStyle.gold)
++                    .accessibilityIdentifier("computer-resolving")
++            } else if game.isOver {
+                 Image(systemName: "flag.checkered").font(.largeTitle).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
+                 Text(result).font(MountainStyle.display(30)).multilineTextAlignment(.center)
+                 Text(game.scores[0] == game.scores[1] ? "An even climb. Go again?" : "The mountain has a winner.").font(.subheadline)
+@@ -633,10 +670,12 @@ private struct MountainGameView: View {
+             .accessibilityElement(children: .combine)
+     }
+     private func move(_ id: Int, computer: Bool = false) {
+-        guard game.canPlay(id) else { return }
++        guard resolution == nil, computers[game.turn] == computer, game.canPlay(id) else { return }
++        if computer { resolution = UUID() }
++        _ = history?.record(id, before: game)
+         if computer { lastComputerMove = MountainReplay(before: game, tileID: id, difficulty: difficulty) }
+         lastPoints = game.tiles[id].value
+-        withAnimation(reduceMotion ? nil : .spring(response: 0.34, dampingFraction: 0.8)) {
++        withAnimation(reduceMotion ? nil : .easeInOut(duration: computer ? MountainExperience.computerDuration : 0.2)) {
+             lastMove = id
+             _ = game.play(id)
+         }
+@@ -645,13 +684,15 @@ private struct MountainGameView: View {
+     }
+     private func persist() {
+         var saved = SavedMountainGame(size: game.size, names: names, computers: computers, difficulty: difficulty, adjustment: matchAdjustment)
+-        saved.id = savedID; saved.game = game; saved.replay = lastComputerMove
++        saved.id = savedID; saved.game = game; saved.replay = lastComputerMove; saved.history = history
+         saved.recorded = recorded; saved.computerStarted = computerStarted; saved.rolesChanged = rolesChanged
+         onSave?(saved)
+     }
+     private func restart() {
++        resolution = nil
+         savedID = UUID()
+         game = MountainGame(size: game.size, firstPlayer: MountainGame.startingPlayer(computers: computers))
++        history = MountainHistory(initial: game)
+         recorded = false; lastMove = nil; lastPoints = 0; lastComputerMove = nil
+         computerStarted = false; rolesChanged = false; matchAdjustment = computerAdjustment
+         foregroundNonce += 1; persist()
+@@ -665,7 +706,7 @@ private struct MountainGameView: View {
+             computerAdjustment = ComputerDifficulty.adjusted(matchAdjustment, humanWon: !computers[winner])
+         }
+         let key = "\(names[winner])vvv\(names[1 - winner])"
+-        UserDefaults.standard.set(UserDefaults.standard.integer(forKey: key) + 1, forKey: key)
++        MountainExperience.defaults.set(MountainExperience.defaults.integer(forKey: key) + 1, forKey: key)
+     }
+ }
+ 
+@@ -674,7 +715,9 @@ private struct OpponentPortrait: View {
+     var size: CGFloat = 64
+     var thinking = false
+     var reaction = 0
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
++    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
+     @Environment(\.scenePhase) private var scenePhase
+ 
+     var body: some View {
+@@ -695,7 +738,9 @@ private struct OpponentPortrait: View {
+ private struct MountainReplayView: View {
+     let replay: MountainReplay
+     @Environment(\.dismiss) private var dismiss
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
++    private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
+     @State private var stage = 0
+     @State private var playback = 0
+     private var shown: MountainGame { stage == 2 ? replay.after : replay.before }
+@@ -738,3 +783,127 @@ private struct MountainReplayView: View {
+         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+     }
+ }
++
++private struct MountainExperienceOptions: View {
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
++    @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var haptics = true
++    @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var duration = 0.7
++    var body: some View {
++        VStack(alignment: .leading, spacing: 16) {
++            Text("Game feedback").font(.headline)
++            Toggle("Animations", isOn: $animations).accessibilityIdentifier("animations-setting")
++            Toggle("Haptics", isOn: $haptics).accessibilityIdentifier("haptics-setting")
++            Picker("Computer move", selection: $duration) {
++                Text("Fast · 0.4 s").tag(0.4)
++                Text("Natural · 0.7 s").tag(0.7)
++                Text("Relaxed · 1.2 s").tag(1.2)
++            }.accessibilityIdentifier("computer-speed-setting")
++            Text("Reduce Motion keeps moves clear without movement. Haptics play on supported devices.").font(.footnote)
++        }
++    }
++}
++
++struct MountainFinishShare: View {
++    let game: MountainGame
++    let names: [String]
++    let history: MountainHistory?
++    @Environment(\.dismiss) private var dismiss
++    @State private var exported: URL?
++    @State private var failure: String?
++    var body: some View {
++        NavigationStack {
++            ScrollView {
++                VStack(spacing: 20) {
++                    Image(systemName: "flag.checkered").font(.largeTitle).foregroundStyle(MountainStyle.gold)
++                    Text("Share your climb").font(MountainStyle.display(28))
++                    if let exported {
++                        ShareLink(item: exported, subject: Text("Race to Dog Mountain"), message: Text("Race to Dog Mountain · https://apps.apple.com/app/id971329310")) {
++                            Label(history == nil ? "Share final board" : "Share replay GIF", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
++                        }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("share-export")
++                    } else if let failure { Text(failure).font(.body) }
++                    else { ProgressView("Preparing your actual game…") }
++                    Text(history == nil ? "This older save has no full move history. Its actual final board is shared as an image." : "Every frame follows the numbers played in this game.")
++                        .font(.subheadline).multilineTextAlignment(.center)
++                }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
++            }.background(MountainStyle.ink)
++                .navigationTitle("Share").mountainInlineTitle()
++                .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() }.accessibilityIdentifier("close-share") } }
++        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
++            .task {
++                do { exported = try await MountainGameExporter.export(game: game, names: names, history: history) }
++                catch { if !Task.isCancelled { failure = "The replay couldn't be prepared. Your saved game is unchanged." } }
++            }
++    }
++}
++
++@MainActor private enum MountainGameExporter {
++    enum ExportError: Error { case invalidHistory, render, fileLimit }
++    static func export(game: MountainGame, names: [String], history: MountainHistory?) async throws -> URL {
++        guard game.isValid, game.isOver, names.count == 2 else { throw ExportError.invalidHistory }
++        let states: [MountainGame]
++        if let history {
++            guard history.matches(game), let verified = history.states, verified.count <= 197 else { throw ExportError.invalidHistory }
++            states = verified
++        } else { states = [game] }
++        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("mountain-share-" + UUID().uuidString, isDirectory: true)
++        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
++        let url = folder.appendingPathComponent(history == nil ? "Dog-Mountain-final.png" : "Dog-Mountain-replay.gif")
++        var completed = false
++        defer { if !completed { try? FileManager.default.removeItem(at: folder) } }
++        guard let destination = CGImageDestinationCreateWithURL(url as CFURL, (history == nil ? UTType.png.identifier : UTType.gif.identifier) as CFString, states.count, nil) else { throw ExportError.render }
++        if history != nil {
++            CGImageDestinationSetProperties(destination, [kCGImagePropertyGIFDictionary: [kCGImagePropertyGIFLoopCount: 0]] as CFDictionary)
++        }
++        for (index, state) in states.enumerated() {
++            try Task.checkCancellation()
++            let selected = index > 0 ? history?.choices[index - 1] : nil
++            let points = selected.map { history!.initial.tiles[$0].value } ?? 0
++            let renderer = ImageRenderer(content: MountainExportBoard(game: state, names: names, selected: selected, points: points)
++                .environment(\.dynamicTypeSize, .medium).environment(\.colorScheme, .dark))
++            renderer.scale = 1
++            guard let pixels = renderer.cgImage else { throw ExportError.render }
++            let delay = index == states.count - 1 ? 2.0 : index == 0 ? 0.8 : 0.45
++            CGImageDestinationAddImage(destination, pixels, history == nil ? nil : [kCGImagePropertyGIFDictionary: [kCGImagePropertyGIFDelayTime: delay]] as CFDictionary)
++            await Task.yield()
++        }
++        guard CGImageDestinationFinalize(destination),
++              let bytes = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize, bytes <= 16 * 1024 * 1024 else { throw ExportError.fileLimit }
++        completed = true
++        return url
++    }
++}
++
++/// A native export of real game state, not a reconstruction of missing history.
++private struct MountainExportBoard: View {
++    let game: MountainGame
++    let names: [String]
++    let selected: Int?
++    let points: Int
++    private var side: CGFloat { (448 - CGFloat(game.size - 1) * 3) / CGFloat(game.size) }
++    var body: some View {
++        VStack(spacing: 12) {
++            Text("Race to Dog Mountain").font(MountainStyle.display(28))
++            HStack {
++                ForEach(0..<2, id: \.self) { player in
++                    VStack(spacing: 4) {
++                        Text(names[player]).font(.system(size: 15, weight: .semibold)).lineLimit(1)
++                        Text("\(game.scores[player])").font(.system(size: 24, weight: .bold)).monospacedDigit()
++                    }.frame(maxWidth: .infinity).foregroundStyle(MountainStyle.player(player))
++                }
++            }
++            Text(game.isOver ? game.scores[0] == game.scores[1] ? "A tie!" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" : selected == nil ? "The climb begins" : "+\(points) points · Move \(game.moves)")
++                .font(.system(size: 16, weight: .semibold)).lineLimit(1)
++            LazyVGrid(columns: Array(repeating: GridItem(.fixed(side), spacing: 3), count: game.size), spacing: 3) {
++                ForEach(game.tiles) { tile in
++                    Text(tile.value == 0 ? selected == tile.id ? "+\(points)" : "·" : "\(tile.value)")
++                        .font(.system(size: game.size > 8 ? 12 : 19, weight: .bold)).monospacedDigit()
++                        .frame(width: side, height: side)
++                        .foregroundStyle(tile.value == 0 ? MountainStyle.cream : MountainStyle.ink)
++                        .background(tile.value == 0 ? MountainStyle.cream.opacity(0.08) : game.canPlay(tile.id) ? MountainStyle.player(game.turn) : MountainStyle.cream, in: RoundedRectangle(cornerRadius: 5))
++                        .overlay { RoundedRectangle(cornerRadius: 5).strokeBorder(selected == tile.id ? MountainStyle.gold : .clear, lineWidth: 2) }
++                }
++            }.frame(width: 448)
++            Text("Classic · \(game.size) × \(game.size)\napps.apple.com/app/id971329310").font(.system(size: 11)).multilineTextAlignment(.center)
++        }.padding(24).frame(width: 512, height: 660).background(MountainStyle.ink).foregroundStyle(MountainStyle.cream)
++    }
++}
+diff --git a/Race to Dog Mountain/MountainWatchConnectivity.swift b/Race to Dog Mountain/MountainWatchConnectivity.swift
+index 13e0bf2..b725405 100644
+--- a/Race to Dog Mountain/MountainWatchConnectivity.swift	
++++ b/Race to Dog Mountain/MountainWatchConnectivity.swift	
+@@ -13,7 +13,7 @@ import GameKit
+ 
+     private override init() {
+         super.init()
+-        bridge = MountainPhoneBridge(friends: friends)
++        if !MountainExperience.isQAActive { bridge = MountainPhoneBridge(friends: friends) }
+     }
+     @objc public static func activate() { _ = shared }
+ }
+@@ -26,7 +26,7 @@ import GameKit
+     private var receipts: [MountainWatchReceipt]
+     private var publishedSequence: UInt64 = 0
+ 
+-    init(friends: MountainFriends, defaults: UserDefaults = .standard) {
++    init(friends: MountainFriends, defaults: UserDefaults = MountainExperience.defaults) {
+         self.friends = friends; self.defaults = defaults
+         inbox = defaults.data(forKey: "watchFriendInbox.v1").flatMap { try? MountainFriendInbox.decode($0) }
+         receipts = defaults.data(forKey: "watchMoveReceipts.v1").flatMap { data in
+@@ -128,7 +128,7 @@ import GameKit
+     private var awaitedSequence: UInt64 = 0
+     private var activated = false
+ 
+-    init(defaults: UserDefaults = .standard) {
++    init(defaults: UserDefaults = MountainExperience.defaults) {
+         self.defaults = defaults
+         inbox = defaults.data(forKey: "watchFriendInbox.v1").flatMap { try? MountainFriendInbox.decode($0) }
+         super.init()
+@@ -140,7 +140,7 @@ import GameKit
+     var canMove: Bool { reachable && inbox?.player != nil && !sending && !awaitingSnapshot }
+ 
+     func activate() {
+-        guard !activated, WCSession.isSupported() else { return }
++        guard !MountainExperience.isQAActive, !activated, WCSession.isSupported() else { return }
+         activated = true
+         WCSession.default.delegate = self
+         WCSession.default.activate()
+@@ -154,7 +154,7 @@ import GameKit
+                                  move: MountainMoveRequest(id: id, matchID: race.id, previous: previous, tile: tile)))
+     }
+     private func send(_ request: MountainWatchRequest) {
+-        guard !sending else { return }
++        guard !MountainExperience.isQAActive, !sending else { return }
+         reachable = WCSession.default.activationState == .activated && WCSession.default.isReachable
+         guard reachable else { error = "Connect to your paired iPhone to refresh or send a move."; return }
+         guard let data = try? JSONEncoder().encode(request) else { return }
+diff --git a/Race to Dog Mountain/SceneDelegate.m b/Race to Dog Mountain/SceneDelegate.m
+index dde0b82..6281b35 100644
+--- a/Race to Dog Mountain/SceneDelegate.m	
++++ b/Race to Dog Mountain/SceneDelegate.m	
+@@ -6,6 +6,7 @@
+ //
+ 
+ #import "SceneDelegate.h"
++#import "Race_to_Dog_Mountain-Swift.h"
+ 
+ @interface SceneDelegate ()
+ 
+@@ -36,6 +37,9 @@ - (void)sceneDidDisconnect:(UIScene *)scene {
+ }
+ 
+ - (void)sceneDidBecomeActive:(UIScene *)scene {
++#if DEBUG
++    if ([MountainQARuntime isActive]) { return; }
++#endif
+     // Called when the scene has moved from an inactive state to an active state.
+     // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+ 
+@@ -44,6 +48,9 @@ - (void)sceneDidBecomeActive:(UIScene *)scene {
+ }
+ 
+ - (void)sceneWillResignActive:(UIScene *)scene {
++#if DEBUG
++    if ([MountainQARuntime isActive]) { return; }
++#endif
+     // Called when the scene will move from an active state to an inactive state.
+     // This may occur due to temporary interruptions (ex. an incoming phone call).
+ 
+@@ -63,6 +70,9 @@ - (void)sceneWillEnterForeground:(UIScene *)scene {
+ }
+ 
+ - (void)sceneDidEnterBackground:(UIScene *)scene {
++#if DEBUG
++    if ([MountainQARuntime isActive]) { return; }
++#endif
+     // Called as the scene transitions from the foreground to the background.
+     // Use this method to save data, release shared resources, and store enough scene-specific state information
+     // to restore the scene back to its current state.
+diff --git a/Tools/ReleaseChecks/check-computer-turn.py b/Tools/ReleaseChecks/check-computer-turn.py
+index 4db24c0..283ccc8 100644
+--- a/Tools/ReleaseChecks/check-computer-turn.py
++++ b/Tools/ReleaseChecks/check-computer-turn.py
+@@ -11,11 +11,14 @@ import tempfile
+ 
+ root = Path(__file__).resolve().parents[2]
+ source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
+-match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
++match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.task\(id: resolution\)', source, re.S)
+ assert match, 'Computer task extraction no longer matches production source'
+ identity, body = match.groups()
++resolution_match = re.search(r'\.task\(id: resolution\) \{\n(.*?)\n            \}\n            \.onChange', source, re.S)
++assert resolution_match, 'Resolution task extraction no longer matches production source'
++resolution_body = resolution_match.group(1).replace('MountainExperience.computerDuration', 'duration')
+ record = source.split('    private func recordWin() {', 1)[1].split('\n    }\n}', 1)[0]
+-record = record.replace('UserDefaults.standard', 'preferences')
++record = record.replace('MountainExperience.defaults', 'preferences')
+ harness = r'''
+ import Foundation
+ 
+@@ -30,6 +33,9 @@ final class UIApplication {
+ }
+ 
+ @MainActor final class Turns {
++    let savedID = UUID()
++    var resolution: UUID?
++    var scenePhase = "active"
+     var foregroundNonce = 0
+     var confirmExit = false
+     var computerStarted = false
+@@ -62,6 +68,14 @@ BODY
+     }
+ }
+ 
++@MainActor final class Resolution {
++    var resolution: UUID?
++    let duration = 0.4
++    func runActualBody() async {
++RESOLUTION_BODY
++    }
++}
++
+ @main struct ComputerTurnChecks {
+     static func require(_ value: Bool, _ message: String) {
+         guard value else { print("FAIL: \(message)"); exit(1) }
+@@ -143,11 +157,30 @@ BODY
+         result.recorded = false; result.computers = [false, false]
+         result.recordWin()
+         require(result.computerAdjustment == 0, "Human-only game affected adaptation")
++        let resolution = Resolution()
++        resolution.resolution = UUID()
++        let start = ContinuousClock.now
++        let pending = Task { await resolution.runActualBody() }
++        try await Task.sleep(for: .milliseconds(350))
++        require(resolution.resolution != nil, "Computer resolution released input before 350ms")
++        await pending.value
++        require(resolution.resolution == nil && start.duration(to: .now) >= .milliseconds(400), "Actual production resolver must retain its full bounded interval")
++        resolution.resolution = UUID()
++        let stale = Task { await resolution.runActualBody() }
++        try await Task.sleep(for: .milliseconds(50))
++        let replacement = UUID(); resolution.resolution = replacement
++        await stale.value
++        require(resolution.resolution == replacement, "A stale resolver cleared a replacement game token")
++        let canceled = Task { await resolution.runActualBody() }
++        try await Task.sleep(for: .milliseconds(50))
++        resolution.resolution = nil; canceled.cancel(); await canceled.value
++        require(resolution.resolution == nil, "Exit cancellation recreated a resolution")
++        print("Actual resolution task holds input >=400ms; stale token and canceled exit cannot clear/recreate a new interval: PASS")
+         print("Win/loss adaptation applies once and ignores changed roles and demos: PASS")
+         print("Play gates computer starts; replay and exit dialog pause pending AI; Cancel resumes once; inactive/background/dismissed tasks cannot move: PASS")
+     }
+ }
+-'''.replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
++'''.replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
+ with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
+     swift = Path(tmp) / 'ComputerTurnChecks.swift'
+     swift.write_text(harness)
+diff --git a/Tools/ReleaseChecks/social-match-check.swift b/Tools/ReleaseChecks/social-match-check.swift
+index 4baec84..8157b5a 100644
+--- a/Tools/ReleaseChecks/social-match-check.swift
++++ b/Tools/ReleaseChecks/social-match-check.swift
+@@ -91,12 +91,17 @@ import Foundation
+         let separate = SavedMountainGame(size: 4, names: ["C", "D"], computers: [false, true], difficulty: .level8, adjustment: 1)
+         library.save(local); library.save(separate)
+         let tile = local.game.legalMoves[0]
++        assert(local.history!.record(tile, before: local.game))
+         local.game.play(tile); library.save(local)
+         let restored = MountainLibrary(defaults: defaults)
+         assert(restored.active.count == 2)
+         assert(restored.games.first { $0.id == local.id }!.game.moves == 1)
+         assert(restored.games.first { $0.id == separate.id }!.game.moves == 0)
+-        while !local.game.isOver { local.game.play(local.game.legalMoves[0]) }
++        while !local.game.isOver {
++            let next = local.game.legalMoves[0]
++            assert(local.history!.record(next, before: local.game))
++            local.game.play(next)
++        }
+         local.recorded = true; library.save(local)
+         assert(library.active.count == 1 && library.finished.count == 1)
+         assert(MountainLibrary(defaults: defaults).finished[0].recorded)
+diff --git a/Watch/MountainWatchApp.swift b/Watch/MountainWatchApp.swift
+index 36d76f7..683154a 100644
+--- a/Watch/MountainWatchApp.swift
++++ b/Watch/MountainWatchApp.swift
+@@ -2,22 +2,23 @@ import SwiftUI
+ import WatchKit
+ 
+ @main struct MountainWatchApp: App {
+-    var body: some Scene { WindowGroup { WatchMountain() } }
++    var body: some Scene { WindowGroup { WatchMountain().defaultAppStorage(MountainExperience.defaults) } }
+ }
+ 
+ private struct WatchMountain: View {
+-    @AppStorage("computerLevel") private var level = ComputerDifficulty.level6.rawValue
++    @AppStorage("computerLevel", store: MountainExperience.defaults) private var level = ComputerDifficulty.level6.rawValue
+     @State private var match = WatchMatch.restore()
+     @State private var friends = MountainWatchFriends()
++    @State private var playing = false
+     private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: level) ?? .level6 }
+ 
+     var body: some View {
+         NavigationStack {
+             Group {
+-            if let match {
++            if let match, playing {
+                 WatchGame(match: match) {
+-                    UserDefaults.standard.removeObject(forKey: WatchMatch.saveKey)
+-                    self.match = nil
++                    MountainExperience.defaults.removeObject(forKey: WatchMatch.saveKey)
++                    self.match = nil; playing = false
+                 }.id(match.id)
+             } else {
+                 TabView {
+@@ -25,10 +26,13 @@ private struct WatchMountain: View {
+                         VStack(spacing: 12) {
+                             Image(systemName: "mountain.2.fill").font(.system(size: 42)).accessibilityLabel("Race to Dog Mountain").accessibilityAddTraits(.isHeader)
+                             Button {
+-                                let next = WatchMatch(size: 4, difficulty: difficulty, computers: [false, true])
+-                                next.save(); match = next
++                                if match == nil {
++                                    let next = WatchMatch(size: 4, difficulty: difficulty, computers: [false, true])
++                                    next.save(); match = next
++                                }
++                                playing = true
+                             } label: { Image(systemName: "play.fill").font(.title2).frame(maxWidth: .infinity) }
+-                                .buttonStyle(WatchButton(prominent: true)).accessibilityIdentifier("start-game").accessibilityLabel("Play")
++                                .buttonStyle(WatchButton(prominent: true)).accessibilityIdentifier("start-game").accessibilityLabel(match == nil ? "Play" : "Continue")
+                         }.padding(.horizontal, 8)
+                     }.background {
+                         MountainScenery(active: false).overlay(MountainStyle.ink.opacity(0.65)).ignoresSafeArea()
+@@ -128,8 +132,11 @@ private struct WatchFriendGame: View {
+ }
+ 
+ private struct WatchSettings: View {
+-    @AppStorage("computerLevel") private var level = ComputerDifficulty.level6.rawValue
++    @AppStorage("computerLevel", store: MountainExperience.defaults) private var level = ComputerDifficulty.level6.rawValue
+     var onHome: (() -> Void)?
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
++    @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var haptics = true
++    @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var duration = 0.7
+     private var difficulty: ComputerDifficulty { ComputerDifficulty(rawValue: level) ?? .level6 }
+     var body: some View {
+         ScrollView {
+@@ -138,6 +145,9 @@ private struct WatchSettings: View {
+                 NavigationLink { WatchRivals(level: $level) } label: {
+                     HStack { Image(systemName: "speedometer"); WatchPortrait(difficulty: difficulty, size: 28); Text("\(difficulty.rawValue + 1)").monospacedDigit() }
+                 }.buttonStyle(WatchButton()).accessibilityLabel("Difficulty \(difficulty.rawValue + 1), \(difficulty.name)").accessibilityHint("Applies to the next game")
++                Toggle("Animations", isOn: $animations)
++                Toggle("Haptics", isOn: $haptics)
++                Picker("Computer move", selection: $duration) { Text("Fast").tag(0.4); Text("Natural").tag(0.7); Text("Relaxed").tag(1.2) }
+                 if let onHome { Button(action: onHome) { Image(systemName: "xmark").frame(maxWidth: .infinity) }.buttonStyle(WatchButton()).accessibilityLabel("End game") }
+             }.padding(.horizontal, 8).padding(.bottom, 18)
+         }.background(MountainStyle.ink)
+@@ -151,7 +161,7 @@ private struct WatchRivals: View {
+         List(ComputerDifficulty.allCases) { rival in
+             Button {
+                 level = rival.rawValue
+-                UserDefaults.standard.removeObject(forKey: "watchSkill.v1")
++                MountainExperience.defaults.removeObject(forKey: "watchSkill.v1")
+                 dismiss()
+             } label: {
+                 HStack(spacing: 8) {
+@@ -173,13 +183,17 @@ private struct WatchGame: View {
+     @State private var visible = false
+     @Environment(\.scenePhase) private var phase
+     @Environment(\.isLuminanceReduced) private var dimmed
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
++    private var reduceMotion: Bool { systemReduceMotion || !animations }
+ 
+     init(match: WatchMatch, onLeave: @escaping () -> Void) {
+         // The saved or newly created match seeds this screen once.
+         _match = State(initialValue: match)
+         self.onLeave = onLeave
+     }
++    @State private var resolution: UUID?
++    @State private var resolvedPoints = 0
+     private var active: Bool { visible && phase == .active && !dimmed }
+     private var paused: Bool { replaying || page != 0 || confirmExit }
+     private func name(_ player: Int) -> String {
+@@ -191,7 +205,9 @@ private struct WatchGame: View {
+             VStack(spacing: 6) {
+                 ScrollView {
+                     VStack(spacing: 8) {
+-                    if match.game.isOver {
++                    if resolution != nil {
++                        Label("+\(resolvedPoints)", systemImage: "hand.point.up.left.fill").font(.title3).accessibilityLabel("\(match.difficulty.name) takes \(resolvedPoints) points")
++                    } else if match.game.isOver {
+                         Button { page = 2 } label: { Image(systemName: "trophy.fill").font(.title2).frame(maxWidth: .infinity) }.buttonStyle(WatchButton(prominent: true)).accessibilityLabel("See final score")
+                     } else {
+                         HStack(spacing: 6) {
+@@ -233,7 +249,16 @@ private struct WatchGame: View {
+         }.tabViewStyle(.verticalPage).background(MountainStyle.ink)
+         .onAppear { visible = true }
+         .onDisappear { visible = false }
+-        .onChange(of: match.game.isOver) { _, over in if over { page = 2 } }
++        .onChange(of: match.game.isOver) { _, over in if over && resolution == nil { page = 2 } }
++        .onChange(of: resolution) { _, value in if value == nil && match.game.isOver { page = 2 } }
++        .onChange(of: dimmed) { _, value in if value { resolution = nil } }
++        .onChange(of: paused) { _, value in if value { resolution = nil } }
++        .onChange(of: phase) { _, value in if value != .active { resolution = nil } }
++        .task(id: resolution) {
++            guard let token = resolution else { return }
++            do { try await Task.sleep(for: .seconds(MountainExperience.computerDuration)) } catch { return }
++            if !Task.isCancelled && resolution == token { resolution = nil }
++        }
+         .confirmationDialog("End this game?", isPresented: $confirmExit, titleVisibility: .visible) {
+             Button("End game", role: .destructive, action: onLeave)
+         } message: { Text("Your unfinished game will be discarded.") }
+@@ -246,8 +271,8 @@ private struct WatchGame: View {
+             }
+         }
+ 
+-        .task(id: "\(match.id)-\(match.game.moves)-\(phase)-\(dimmed)-\(paused)-\(visible)-\(match.computerStarted)") {
+-            guard match.canComputerMove(active: active, paused: paused) else { return }
++        .task(id: "\(match.id)-\(match.game.moves)-\(phase)-\(dimmed)-\(paused)-\(visible)-\(match.computerStarted)-\(resolution?.uuidString ?? "ready")") {
++            guard resolution == nil, match.canComputerMove(active: active, paused: paused) else { return }
+             do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
+             let snapshot = match
+             let tile = await Task.detached(priority: .userInitiated) { snapshot.game.computerMove(difficulty: snapshot.difficulty, adjustment: snapshot.adjustment) }.value
+@@ -257,7 +282,8 @@ private struct WatchGame: View {
+         }
+     }
+     private func restart() {
+-        let level = UserDefaults.standard.object(forKey: "computerLevel") as? Int ?? ComputerDifficulty.level6.rawValue
++        let level = MountainExperience.defaults.object(forKey: "computerLevel") as? Int ?? ComputerDifficulty.level6.rawValue
++        resolution = nil
+         match = WatchMatch(size: 4, difficulty: ComputerDifficulty(rawValue: level) ?? .level6, computers: [false, true])
+         match.save(); page = 0
+     }
+@@ -274,8 +300,10 @@ private struct WatchGame: View {
+         }
+     }
+     private func play(_ tile: Int, computer: Bool = false) {
+-        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+-            if match.play(tile, computer: computer) { WKInterfaceDevice.current().play(match.game.isOver ? .success : .click) }
++        guard resolution == nil, match.game.canPlay(tile) else { return }
++        if computer { resolvedPoints = match.game.tiles[tile].value; resolution = UUID() }
++        withAnimation(reduceMotion ? nil : .easeOut(duration: computer ? MountainExperience.computerDuration : 0.2)) {
++            if match.play(tile, computer: computer), MountainExperience.hapticsEnabled, !MountainExperience.isQAActive { WKInterfaceDevice.current().play(match.game.isOver ? .success : .click) }
+         }
+     }
+     private func score(_ player: Int) -> some View {
+@@ -339,7 +367,9 @@ private struct WatchReplay: View {
+     let replay: MountainReplay
+     @State private var step = 0
+     @State private var repeatCount = 0
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
++    private var reduceMotion: Bool { systemReduceMotion || !animations }
+     var body: some View {
+         ScrollView {
+             VStack(spacing: 8) {
+@@ -375,7 +405,9 @@ private struct WatchPortrait: View {
+ private struct WatchButton: ButtonStyle {
+     var prominent = false
+     var tileColor: Color?
+-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
++    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
++    private var reduceMotion: Bool { systemReduceMotion || !animations }
+     func makeBody(configuration: Configuration) -> some View {
+         configuration.label.font(.headline).padding(.horizontal, 10).padding(.vertical, 8)
+             .frame(maxWidth: .infinity, minHeight: 44)
+diff --git a/Watch/WatchMatch.swift b/Watch/WatchMatch.swift
+index 1c90cdf..43b6cb0 100644
+--- a/Watch/WatchMatch.swift
++++ b/Watch/WatchMatch.swift
+@@ -9,6 +9,7 @@ struct WatchMatch: Codable, Sendable {
+     let adjustment: Int
+     private(set) var game: MountainGame
+     private(set) var replay: MountainReplay?
++    private(set) var history: MountainHistory?
+     private(set) var computerStarted = false
+     private(set) var recorded = false
+ 
+@@ -18,13 +19,14 @@ struct WatchMatch: Codable, Sendable {
+         let match: UUID
+     }
+ 
+-    init(size: Int, difficulty: ComputerDifficulty, computers: [Bool], defaults: UserDefaults = .standard) {
++    init(size: Int, difficulty: ComputerDifficulty, computers: [Bool], defaults: UserDefaults = MountainExperience.defaults) {
+         id = UUID()
+         self.difficulty = difficulty
+         self.computers = computers.count == 2 ? computers : [false, true]
+         let skill = defaults.data(forKey: Self.skillKey).flatMap { try? JSONDecoder().decode(Skill.self, from: $0) }
+         adjustment = skill?.difficulty == difficulty ? min(2, max(-2, skill!.adjustment)) : 0
+         game = MountainGame(size: size, firstPlayer: MountainGame.startingPlayer(computers: self.computers))
++        history = MountainHistory(initial: game)
+     }
+ 
+     var waitingForStart: Bool { game.moves == 0 && computers[game.turn] && !computerStarted }
+@@ -33,8 +35,9 @@ struct WatchMatch: Codable, Sendable {
+     }
+     mutating func startComputer() { computerStarted = true }
+ 
+-    @discardableResult mutating func play(_ tile: Int, computer: Bool = false, defaults: UserDefaults = .standard) -> Bool {
++    @discardableResult mutating func play(_ tile: Int, computer: Bool = false, defaults: UserDefaults = MountainExperience.defaults) -> Bool {
+         guard computers[game.turn] == computer, !waitingForStart, game.canPlay(tile) else { return false }
++        _ = history?.record(tile, before: game)
+         if computer { replay = MountainReplay(before: game, tileID: tile, difficulty: difficulty) }
+         game.play(tile)
+         if game.isOver && !recorded {
+@@ -51,13 +54,14 @@ struct WatchMatch: Codable, Sendable {
+         save(defaults: defaults)
+         return true
+     }
+-    func save(defaults: UserDefaults = .standard) {
++    func save(defaults: UserDefaults = MountainExperience.defaults) {
+         if let data = try? JSONEncoder().encode(self) { defaults.set(data, forKey: Self.saveKey) }
+     }
+-    static func restore(defaults: UserDefaults = .standard) -> WatchMatch? {
++    static func restore(defaults: UserDefaults = MountainExperience.defaults) -> WatchMatch? {
+         guard let data = defaults.data(forKey: saveKey), data.count < 262_144,
+               let match = try? JSONDecoder().decode(Self.self, from: data),
+               match.computers.count == 2, (-2...2).contains(match.adjustment), match.game.isValid,
++              match.history == nil || match.history!.matches(match.game),
+               match.game.turn == (MountainGame.startingPlayer(computers: match.computers) + match.game.moves) % 2 else { return nil }
+         if let replay = match.replay {
+             guard replay.before.isValid, replay.before.canPlay(replay.tileID), replay.before.size == match.game.size,

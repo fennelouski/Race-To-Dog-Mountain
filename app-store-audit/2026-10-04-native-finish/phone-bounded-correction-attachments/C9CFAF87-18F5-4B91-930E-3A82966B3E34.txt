@@ -1,0 +1,65 @@
+Attributes: Button, 0x11a1e3200, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+Element subtree:
+ →Button, 0x11a1e3200, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+Path to element:
+ →Application, 0x119954f00, pid: 9564, label: 'Race to Dog Mountain'
+  ↳Window, 0x119954a00, {{0.0, 0.0}, {402.0, 874.0}}
+   ↳Other, 0x119954dc0, {{0.0, 0.0}, {402.0, 874.0}}
+    ↳Other, 0x119954c80, {{0.0, 72.0}, {402.0, 802.0}}
+     ↳Other, 0x119954b40, {{0.0, 72.0}, {402.0, 802.0}}
+      ↳Other, 0x119954000, {{0.0, 72.0}, {402.0, 802.0}}
+       ↳Other, 0x119954640, {{0.0, 72.0}, {402.0, 802.0}}
+        ↳Other, 0x119954140, {{0.0, 72.0}, {402.0, 802.0}}
+         ↳Other, 0x119954500, {{0.0, 72.0}, {402.0, 802.0}}
+          ↳NavigationBar, 0x1199543c0, {{0.0, 88.0}, {402.0, 54.0}}, identifier: 'Share'
+           ↳Other, 0x119954280, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+            ↳Other, 0x119933200, {{20.0, 92.0}, {64.3, 36.0}}
+             ↳Button, 0x11a1e3200, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  Output: {
+    Application, 0x11761fe80, pid: 9564, label: 'Race to Dog Mountain'
+  }
+  ↪︎Find: Descendants matching type Button
+    Output: {
+      Button, 0x1175a0b40, {{16.0, 765.7}, {294.7, 57.3}}, identifier: 'race-again', label: 'Race again'
+      Button, 0x11994db80, {{322.7, 764.7}, {63.3, 59.3}}, identifier: 'share-result', label: 'Share'
+      Button, 0x1175aef80, {{339.0, 87.3}, {26.0, 25.3}}, identifier: 'questionmark.circle', label: 'How to play'
+      Button, 0x1175af840, {{28.0, 236.0}, {346.0, 56.3}}, identifier: 'start-game', label: 'Play'
+      Button, 0x1175ac500, {{16.0, 78.0}, {48.0, 48.0}}, identifier: 'close-game', label: 'Close game'
+      Button, 0x1175ac280, {{338.0, 78.0}, {48.0, 48.0}}, label: 'Player controls'
+      Button, 0x1175a0640, {{16.0, 837.7}, {370.0, 56.3}}, identifier: 'replay-computer', label: 'Replay computer move'
+      Button, 0x1175ae580, {{28.0, 348.3}, {346.0, 56.3}}, identifier: 'play-friend', label: 'Play a friend'
+      Button, 0x1175aed00, {{86.0, 429.0}, {118.0, 19.3}}, identifier: 'pass-and-play', label: 'Pass & play'
+      Button, 0x1175aea80, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage'
+      Button, 0x1175ae440, {{28.0, 550.7}, {346.0, 28.3}}, label: 'Finished games'
+      Button, 0x1175ae1c0, {{41.0, 591.0}, {332.0, 66.3}}, identifier: 'finished-local-C7D6F881-5AB4-4BDB-84BB-3340310BB357', label: 'You & Finn, Finished · Local, 69 : 67'
+      Button, 0x1175ad540, {{28.0, 783.3}, {346.0, 56.3}}, identifier: 'game-options', label: 'Players & board'
+      Button, 0x1175a0dc0, {{338.0, 78.0}, {48.0, 48.0}}
+      Button, 0x1175a2e40, {{40.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-0', label: 'Row 1, column 1, used', Disabled
+      Button, 0x1175a2d00, {{122.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-1', label: 'Row 1, column 2, used', Disabled
+      Button, 0x1175a26c0, {{204.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-2', label: 'Row 1, column 3, used', Disabled
+      Button, 0x1175a0f00, {{286.0, 479.7}, {76.0, 76.0}}, identifier: 'tile-3', label: 'Row 1, column 4, used', Disabled
+      Button, 0x1175a08c0, {{40.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-4', label: 'Row 2, column 1, used', Disabled
+      Button, 0x1175a1540, {{122.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-5', label: 'Row 2, column 2, used', Disabled
+      Button, 0x1175a1400, {{204.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-6', label: 'Row 2, column 3, used', Disabled
+      Button, 0x1175a1680, {{286.0, 561.7}, {76.0, 76.0}}, identifier: 'tile-7', label: 'Row 2, column 4, used', Disabled
+      Button, 0x1175a17c0, {{40.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-8', label: 'Row 3, column 1, used', Disabled
+      Button, 0x1175a2080, {{122.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-9', label: 'Row 3, column 2, used', Disabled
+      Button, 0x1175a1900, {{204.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-10', label: 'Row 3, column 3, used', Disabled
+      Button, 0x1175a1a40, {{286.0, 643.7}, {76.0, 76.0}}, identifier: 'tile-11', label: 'Row 3, column 4, used', Disabled
+      Button, 0x1175a12c0, {{40.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-12', label: 'Row 4, column 1, used', Disabled
+      Button, 0x1175a0a00, {{122.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-13', label: 'Row 4, column 2, used', Disabled
+      Button, 0x1175a3480, {{204.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-14', label: 'Row 4, column 3, used', Disabled
+      Button, 0x1175a3ac0, {{286.0, 725.7}, {76.0, 76.0}}, identifier: 'tile-15', label: 'Row 4, column 4, used', Disabled
+      Button, 0x11994d680, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+      Button, 0x117614000, {{28.0, 279.3}, {346.0, 59.3}}, identifier: 'share-export', label: 'Share replay GIF'
+    }
+    ↪︎Find: Elements matching predicate '"close-share" IN identifiers'
+      Output: {
+        Button, 0x1175bbe80, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+      }
+      ↪︎Find: First Match
+        Output: {
+          Button, 0x119928780, {{20.0, 92.0}, {64.3, 36.0}}, identifier: 'close-share', label: 'Done'
+        }

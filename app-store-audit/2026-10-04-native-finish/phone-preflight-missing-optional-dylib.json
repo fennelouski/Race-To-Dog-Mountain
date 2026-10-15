@@ -1,0 +1,80 @@
+{
+  "startedAt": "2026-10-04T07:41:33.546769+00:00",
+  "deviceUUID": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+  "headless": true,
+  "nativeSourceFreeze": "51d3c14f222f19b298add0aed02de33a6fb568e0da0c0df45cd6022658aaaee9",
+  "privateQA": {
+    "sessionUUID": "1191C836-8635-49C4-84AB-7427A90AFBF6",
+    "suite": "com.codex.racedog.qa.1191C836-8635-49C4-84AB-7427A90AFBF6",
+    "appBundle": "com.nathanfennel.RacetoDogMountain",
+    "blankHostBundle": "com.codex.RacedogQABlank",
+    "device": "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+  },
+  "runtimeTests": [],
+  "sourceBeforeVerified": true,
+  "beforeDevice": {
+    "lastBootedAt": "2026-10-03T21:27:20Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2127286272,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 364544,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "exception": "[Errno 2] No such file or directory: '/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app/Race to Dog Mountain.debug.dylib'",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/run-private-phone.py\", line 31, in <module>\n    status['executedInputs']=[{'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in binaries]\n  File \"/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/run-private-phone.py\", line 31, in <listcomp>\n    status['executedInputs']=[{'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in binaries]\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1249, in read_bytes\n    with self.open(mode='rb') as f:\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1242, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1110, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app/Race to Dog Mountain.debug.dylib'\n",
+  "appearanceBeforeShutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "unknown",
+    "stderr": ""
+  },
+  "appearancePreserved": false,
+  "shutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "shutdown",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+    ],
+    "exitCode": 149,
+    "stdout": "",
+    "stderr": "An error was encountered processing the command (domain=com.apple.CoreSimulator.SimError, code=405):\nUnable to shutdown device in current state: Shutdown"
+  },
+  "afterDevice": {
+    "lastBootedAt": "2026-10-03T21:27:20Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2127286272,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 364544,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "appearanceAfterShutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "unknown",
+    "stderr": ""
+  },
+  "finishedAt": "2026-10-04T07:41:34.003484+00:00"
+}

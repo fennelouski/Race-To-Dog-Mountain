@@ -1,0 +1,54 @@
+{
+  "head": "be7b1505f7f48a24ab403806ffc0f9fc91d2ba7d",
+  "recorded_at": "2026-10-04T07:18:49.621657+00:00",
+  "inputs": [
+    {
+      "path": "Race to Dog Mountain/MountainGame.swift",
+      "sha256": "1641c3366bd9795c9164318c9236f7a87e7f686afd7bdb44d617a0e3e47c07ff"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainViews.swift",
+      "sha256": "0bef96e876482292f3d06d85657705de7c27c01c663898743228f93fa190d9e5"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainBoard.swift",
+      "sha256": "fd1fc08d0797f670915c9da6a528b77d8cd90e82c13a8d4eef37dcaaa85f11fd"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainScenery.swift",
+      "sha256": "706bd6cd49b74eede1eb91182e2d79493fdbcf4b35ab1ad7c088d3cd8d0182bc"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainMatches.swift",
+      "sha256": "4d0ce38ef8eb64490cb79a77bb29927c633943231088b2e25ce269bd22d8f406"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainLibrary.swift",
+      "sha256": "0c51e361210581f47ca34d8cf8b1caf067bcd9598b10389fc2150015171bb2d1"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainFriends.swift",
+      "sha256": "b669225781eac298342ea5f0dfc22f21956be5c5b850ec506010731633eaa483"
+    },
+    {
+      "path": "Race to Dog Mountain/MountainWatchConnectivity.swift",
+      "sha256": "88be85ce4d76ee839af546908f7636bed527eb3265fd9e688e6774ecadefb46b"
+    },
+    {
+      "path": "Race to Dog Mountain/AppDelegate.m",
+      "sha256": "e693de82b3c56b90b6ae252a72ed669d975f814c2495b00ff2ace0f31863efbb"
+    },
+    {
+      "path": "Watch/MountainWatchApp.swift",
+      "sha256": "cfa1b8b4494af11d199a4cf7c48a4a1ec33afe70f7c22842fcc274da80d45063"
+    },
+    {
+      "path": "Watch/WatchMatch.swift",
+      "sha256": "a93034b6ac47ab2f440a11338fdec596e7e0cf7cce7609a43fa2c36b25aef2ad"
+    },
+    {
+      "path": "Tools/ReleaseChecks/check-computer-turn.py",
+      "sha256": "f4d6cad84b44e9140d4e6f952e4a9755a255c85e2eee269782405fcca1968767"
+    }
+  ]
+}

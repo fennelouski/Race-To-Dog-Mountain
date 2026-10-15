@@ -1,0 +1,33 @@
+Application, 0x106996f80, pid: 99789, label: 'Race to Dog Mountain' <App element pid: 99789>
+  Window (Main), 0x1069970c0, {{0.0, 0.0}, {402.0, 874.0}} <AX element pid: 99789, elementOrHash.elementID: 4402070528.4>
+    Other, 0x106997200, {{0.0, 0.0}, {402.0, 874.0}} <AX element pid: 99789, elementOrHash.elementID: 4459120128.5>
+      Other, 0x106997340, {{0.0, 0.0}, {402.0, 874.0}} <AX element pid: 99789, elementOrHash.elementID: 4458917760.6>
+        Other, 0x106997480, {{0.0, 0.0}, {402.0, 874.0}} <AX element pid: 99789, elementOrHash.elementID: 4402003968.7>
+          Other, 0x1069975c0, {{0.0, 0.0}, {402.0, 874.0}} <AX element pid: 99789, elementOrHash.elementID: 4402457984.8>
+            Other, 0x106997700, {{0.0, 0.0}, {402.0, 874.0}}, identifier: 'mountain-app' <AX element pid: 99789, elementOrHash.elementID: 4403904512.9>
+            Image, 0x106997840, {{30.7, 89.0}, {22.7, 22.0}}, identifier: 'mountain-app', label: 'Pawprint' <AX element pid: 99789, elementOrHash.elementID: 4403909440.10>
+            Button, 0x106997980, {{339.0, 87.3}, {26.0, 25.3}}, identifier: 'mountain-app', label: 'How to play' <AX element pid: 99789, elementOrHash.elementID: 4403909888.11>
+            StaticText, 0x106997ac0, {{28.0, 138.0}, {228.3, 82.0}}, identifier: 'mountain-app', label: 'Race to Dog Mountain' <AX element pid: 99789, elementOrHash.elementID: 4403910336.12>
+            Button, 0x106997c00, {{28.0, 236.0}, {346.0, 56.3}}, identifier: 'mountain-app', label: 'Play' <AX element pid: 99789, elementOrHash.elementID: 4403912128.13>
+              Image, 0x106997d40, {{174.3, 256.7}, {13.3, 15.0}}, identifier: 'play.fill', label: 'Play' <AX element pid: 99789, elementOrHash.elementID: 4403911232.15>
+              StaticText, 0x106997e80, {{174.3, 254.0}, {55.3, 20.3}}, label: 'Play' <AX element pid: 99789, elementOrHash.elementID: 4403911680.16>
+            ScrollView, 0x117008000, {{28.0, 308.3}, {346.0, 515.7}}, identifier: 'mountain-app' <AX element pid: 99789, elementOrHash.elementID: 4401856512.14>
+              Other, 0x117008140, {{28.0, 308.3}, {346.0, 404.7}} <AX element pid: 99789, elementOrHash.elementID: 4459125248.17>
+                StaticText, 0x117008280, {{48.7, 308.3}, {304.7, 24.0}}, label: 'Pick a number. Outsmart your rival.' <AX element pid: 99789, elementOrHash.elementID: 4403912576.18>
+                Button, 0x1170083c0, {{28.0, 348.3}, {346.0, 56.3}}, identifier: 'play-friend', label: 'Play a friend' <AX element pid: 99789, elementOrHash.elementID: 4403913920.19>
+                  Image, 0x117008500, {{136.3, 368.7}, {24.3, 16.7}}, identifier: 'person.2.fill', label: 'person.2.fill' <AX element pid: 99789, elementOrHash.elementID: 4403913024.26>
+                  StaticText, 0x117008640, {{136.3, 366.3}, {131.5, 20.3}}, label: 'Play a friend' <AX element pid: 99789, elementOrHash.elementID: 4403913472.27>
+                Button, 0x117008780, {{86.0, 429.0}, {118.0, 19.3}}, identifier: 'pass-and-play', label: 'Pass & play' <AX element pid: 99789, elementOrHash.elementID: 4403915712.20>
+                  Image, 0x1170088c0, {{87.3, 430.3}, {25.3, 16.7}}, identifier: 'iphone.gen3.radiowaves.left.and.right', label: 'iphone.gen3.radiowaves.left.and.right' <AX element pid: 99789, elementOrHash.elementID: 4403914816.28>
+                  StaticText, 0x117008a00, {{86.0, 429.0}, {118.0, 19.3}}, label: 'Pass & play' <AX element pid: 99789, elementOrHash.elementID: 4403915264.29>
+                Button, 0x117008b40, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage' <AX element pid: 99789, elementOrHash.elementID: 4403917056.21>
+                  Image, 0x117008c80, {{221.3, 431.0}, {17.7, 15.0}}, identifier: 'message.fill', label: 'Message' <AX element pid: 99789, elementOrHash.elementID: 4403916160.30>
+                  StaticText, 0x117008dc0, {{220.0, 429.7}, {96.3, 18.0}}, label: 'iMessage' <AX element pid: 99789, elementOrHash.elementID: 4403916608.31>
+                StaticText, 0x117008f00, {{54.8, 484.7}, {292.3, 38.0}}, label: 'Start a race with a friend. Come back here whenever it's your move.' <AX element pid: 99789, elementOrHash.elementID: 4403917504.22>
+                StaticText, 0x117009040, {{119.3, 546.7}, {163.3, 48.0}}, label: 'Finn · Level 6' <AX element pid: 99789, elementOrHash.elementID: 4403919296.23>
+                  Image, 0x117009180, {{119.3, 546.7}, {48.0, 48.0}}, label: 'Opponent6' <AX element pid: 99789, elementOrHash.elementID: 4403917952.32>
+                  StaticText, 0x1170092c0, {{179.3, 560.5}, {103.3, 20.3}}, label: 'Finn · Level 6' <AX element pid: 99789, elementOrHash.elementID: 4403918848.33>
+                StaticText, 0x117009400, {{97.8, 610.7}, {206.3, 18.0}}, label: 'Classic · 6 × 6 · You move first' <AX element pid: 99789, elementOrHash.elementID: 4403919744.24>
+                Button, 0x117009540, {{28.0, 644.7}, {346.0, 56.3}}, identifier: 'game-options', label: 'Players & board' <AX element pid: 99789, elementOrHash.elementID: 4403870144.25>
+                  Image, 0x117009680, {{125.7, 665.3}, {17.7, 15.0}}, identifier: 'slider.horizontal.3', label: 'Edit' <AX element pid: 99789, elementOrHash.elementID: 4403920192.34>
+                  StaticText, 0x1170097c0, {{125.7, 662.7}, {152.7, 20.3}}, label: 'Players & board' <AX element pid: 99789, elementOrHash.elementID: 4403864768.35>

@@ -155,6 +155,70 @@ struct MountainReplay: Sendable, Codable {
     }
 }
 
+
+// Only a DEBUG launch with an explicit valid UUID may use the private QA store.
+enum MountainExperience {
+    static let qaSession: UUID? = {
+        #if DEBUG
+        let args = ProcessInfo.processInfo.arguments
+        guard args.contains("-MountainUITests") else { return nil }
+        guard let flag = args.firstIndex(of: "-MountainTestSession"),
+              args.indices.contains(flag + 1), let id = UUID(uuidString: args[flag + 1]) else {
+            fatalError("Private Mountain QA requires a valid session UUID")
+        }
+        return id
+        #else
+        return nil
+        #endif
+    }()
+    static var isQAActive: Bool { qaSession != nil }
+    static let defaults: UserDefaults = {
+        guard let id = qaSession else { return .standard }
+        return UserDefaults(suiteName: "com.codex.racedog.qa." + id.uuidString)!
+    }()
+    static var animationsEnabled: Bool { defaults.object(forKey: "animationsEnabled") as? Bool ?? true }
+    static var hapticsEnabled: Bool { defaults.object(forKey: "hapticsEnabled") as? Bool ?? true }
+    static var computerDuration: Double {
+        let value = defaults.object(forKey: "computerMoveDuration") as? Double ?? 0.7
+        return value.isFinite ? min(1.2, max(0.4, value)) : 0.7
+    }
+}
+
+#if canImport(ObjectiveC)
+@objc(MountainQARuntime) public final class MountainQARuntime: NSObject {
+    @objc public static var isActive: Bool { MountainExperience.isQAActive }
+}
+#endif
+
+/// The initial board and successful legal choices are enough to reproduce a game.
+/// Optional on legacy saves: missing moves must never be invented.
+struct MountainHistory: Codable, Sendable {
+    let initial: MountainGame
+    private(set) var choices: [Int] = []
+    init(initial: MountainGame) { self.initial = initial }
+    var states: [MountainGame]? {
+        guard initial.isValid, initial.moves == 0, choices.count <= initial.size * initial.size else { return nil }
+        var game = initial
+        var result = [game]
+        for tile in choices {
+            guard game.play(tile) else { return nil }
+            result.append(game)
+        }
+        return result
+    }
+    func matches(_ game: MountainGame) -> Bool {
+        guard let last = states?.last else { return false }
+        return last.size == game.size && last.turn == game.turn && last.moves == game.moves &&
+            last.row == game.row && last.column == game.column && last.scores == game.scores &&
+            last.tiles.map(\.value) == game.tiles.map(\.value)
+    }
+    @discardableResult mutating func record(_ tile: Int, before: MountainGame) -> Bool {
+        guard matches(before), before.canPlay(tile), choices.count < initial.size * initial.size else { return false }
+        choices.append(tile)
+        return true
+    }
+}
+
 #if DOGMOUNTAIN_CHECKS
 @main enum MountainGameCheck {
     static func main() {

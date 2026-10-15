@@ -1,0 +1,53 @@
+{
+  "preparedAt": "2026-10-04T08:52:42.362104+00:00",
+  "readOnly": true,
+  "buildsOrDevicesInvoked": false,
+  "version": "2.1(8)",
+  "heldNativeSourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "nativeInputs": 177,
+  "heldFilesChanged": [],
+  "existingEvidence": "Matching unsigned iOS Simulator Debug and bounded real Phone start/completion/replay/GIF/native chooser already confirmed; matching iOS Release/Mac build and actual Pad/Mac runtime remain pending.",
+  "allocation": "No Pad allocated to this task and no Mac runtime allocated. Parent must allocate exact UUID/idle native host and serialized jobs2 build slot before dependent work.",
+  "matchingBuildPlan": [
+    {
+      "platform": "generic iOS Release",
+      "scheme": "Race to Dog Mountain",
+      "configuration": "Release",
+      "destination": "generic/platform=iOS",
+      "jobs": 2,
+      "signing": false,
+      "executeNow": false
+    },
+    {
+      "platform": "macOS",
+      "scheme": "Race to Dog Mountain Mac",
+      "configuration": "Release",
+      "destination": "platform=macOS",
+      "jobs": 2,
+      "signing": false,
+      "executeNow": false
+    }
+  ],
+  "padPlan": [
+    "Verify assigned full UUID Shutdown and read-only appearance; preserve standard app preference snapshot/hash and all system crash logs",
+    "Use existing private DEBUG app only with -MountainUITests and valid -MountainTestSession UUID; require actual mountain-private-qa marker before interaction. No account/Watch/network/hardware haptics or system appearance changes",
+    "Confirm actual first-viewport Play at portrait/landscape and largest text; make one real opening human/computer pair only, record perceptible selection and input lock at least400ms; cold relaunch actual Continue",
+    "Transfer the preserved genuine C7D6F881-5AB4-4BDB-84BB-3340310BB357 transcript into a new private QA suite only with explicit source/hash provenance; label transferred actual Phone history, not an actual Pad-played match",
+    "On that genuine completed transcript confirm pinned actual69:67 result, Race Again/Share within viewport portrait/landscape/largest text, actual GIF first/final frames, native popover presentation and hittable observed dismissal; no destination or fabricated result",
+    "Race Again must create a truly fresh board. Preserve completed-session history and avoid another complete match. Verify normal preferences unchanged and finally Shutdown"
+  ],
+  "macPlan": [
+    "Current Mac scheme has one explicit Mac target, min620x660/default1000x820 and native focused commands CmdN/CmdR/CmdComma/ShiftCmdW; no current build/runtime claim",
+    "After allocation compile one matching Mac Release with no Vision scheme/dependency, no signing or project changes",
+    "Actual native runtime requires allocated idle owned host and permission to use its UI; do not foreground apps on the currently used Mac under existing headless boundary",
+    "Use separate private DEBUG UUID suite with marker-before-interaction and normal preference preservation, same genuine transferred transcript provenance; exercise first Play/Continue, completed pinned Race Again/Share and native Mac chooser/dismissal at minimum/default window size",
+    "Check existing focused command availability against actual game states and one opening computer transition >=400ms without repeat full match; saved independent settings retain false; system Reduce Motion read only",
+    "Quit private native process; preserve logs and exact source receipt; no native account/network/services test or submission"
+  ],
+  "limits": [
+    "No inferred Mac/Pad pass from Phone screenshot",
+    "No Vision actions",
+    "Legacy saves with no move history retain genuine final PNG only",
+    "Hardware haptic delivery and Game Center/Watch/network integration remain excluded from private QA"
+  ]
+}

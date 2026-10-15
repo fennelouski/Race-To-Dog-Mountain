@@ -1,0 +1,112 @@
+Attributes: Application, 0x10a7f6f80, pid: 10089, label: 'Race to Dog Mountain'
+Element subtree:
+ →Application, 0x10a7f6f80, pid: 10089, label: 'Race to Dog Mountain'
+    Window (Main), 0x10a7f4280, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x10a7f4b40, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x10a7f4a00, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x10a7f7980, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x10a7f48c0, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x10a7f4c80, {{0.0, 0.0}, {402.0, 874.0}}
+              Image, 0x10a7f5400, {{30.7, 89.0}, {22.7, 22.0}}, identifier: 'pawprint.fill', label: 'Pawprint'
+              Button, 0x10a7f5180, {{339.0, 87.3}, {26.0, 25.3}}, identifier: 'questionmark.circle', label: 'How to play'
+              StaticText, 0x10a7f5680, {{28.0, 138.0}, {228.3, 82.0}}, label: 'Race to Dog Mountain'
+              Button, 0x10a7f52c0, {{28.0, 236.0}, {346.0, 56.3}}, identifier: 'start-game', label: 'Continue'
+                Image, 0x10a7f6940, {{155.3, 256.7}, {13.3, 15.0}}, identifier: 'play.fill', label: 'Play'
+                StaticText, 0x10a7f6e40, {{155.3, 254.0}, {93.5, 20.3}}, label: 'Continue'
+              ScrollView, 0x10a7f7d40, {{28.0, 308.3}, {346.0, 515.7}}
+                Other, 0x10a7f7e80, {{28.0, 308.3}, {346.0, 627.7}}
+                  Button, 0x10a7f7200, {{28.0, 308.3}, {346.0, 56.3}}, identifier: 'new-local-game', label: 'New local game'
+                    Image, 0x10a7f6a80, {{127.3, 329.3}, {14.3, 14.3}}, identifier: 'plus', label: 'Add'
+                    StaticText, 0x10a7f5f40, {{127.3, 326.3}, {149.5, 20.3}}, label: 'New local game'
+                  StaticText, 0x10a7f5040, {{48.7, 380.7}, {304.7, 24.0}}, label: 'Pick a number. Outsmart your rival.'
+                  Button, 0x10a7f6800, {{28.0, 420.7}, {346.0, 56.3}}, identifier: 'play-friend', label: 'Play a friend'
+                    Image, 0x10a7f6080, {{136.3, 441.0}, {24.3, 16.7}}, identifier: 'person.2.fill', label: 'person.2.fill'
+                    StaticText, 0x10a7f5540, {{136.3, 438.7}, {131.5, 20.3}}, label: 'Play a friend'
+                  Button, 0x10a7f6d00, {{86.0, 501.3}, {118.0, 19.3}}, identifier: 'pass-and-play', label: 'Pass & play'
+                    Image, 0x10a7f7c00, {{87.3, 502.7}, {25.3, 16.7}}, identifier: 'iphone.gen3.radiowaves.left.and.right', label: 'iphone.gen3.radiowaves.left.and.right'
+                    StaticText, 0x10a7f7ac0, {{86.0, 501.3}, {118.0, 19.3}}, label: 'Pass & play'
+                  Button, 0x10a7f70c0, {{220.0, 502.0}, {96.3, 18.0}}, label: 'iMessage'
+                    Image, 0x10a7f6bc0, {{221.3, 503.3}, {17.7, 15.0}}, identifier: 'message.fill', label: 'Message'
+                    StaticText, 0x119957e80, {{220.0, 502.0}, {96.3, 18.0}}, label: 'iMessage'
+                  StaticText, 0x119933e80, {{28.0, 549.0}, {120.7, 26.3}}, label: 'Your games'
+                  Button, 0x11a1e3e80, {{40.0, 595.3}, {333.0, 66.3}}, label: 'You & Finn, Level 6 · 4 × 4, 5 : 9'
+                    Image, 0x1175a7e80, {{40.0, 618.7}, {20.0, 20.0}}, identifier: 'person.crop.square', label: 'Selfie'
+                    StaticText, 0x117627e80, {{86.0, 595.3}, {83.7, 20.3}}, label: 'You & Finn'
+                    StaticText, 0x117549b80, {{86.0, 620.7}, {97.3, 18.0}}, label: 'Level 6 · 4 × 4'
+                    StaticText, 0x11754b0c0, {{86.0, 643.7}, {31.7, 18.0}}, label: '5 : 9'
+                    Image, 0x11754bd40, {{364.7, 621.3}, {8.3, 14.7}}, identifier: 'chevron.right', label: 'Forward'
+                  Button, 0x11754a580, {{28.0, 693.7}, {346.0, 28.3}}, label: 'Finished games'
+                    StaticText, 0x11754a080, {{28.0, 693.7}, {346.0, 28.3}}, label: 'Finished games'
+                    Image, 0x11754a940, {{366.3, 702.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                  StaticText, 0x11754a440, {{119.3, 738.0}, {163.3, 48.0}}, label: 'Finn · Level 6'
+                    Image, 0x11754b700, {{119.3, 738.0}, {48.0, 48.0}}, label: 'Opponent6'
+                    StaticText, 0x117548c80, {{179.3, 751.8}, {103.3, 20.3}}, label: 'Finn · Level 6'
+                  StaticText, 0x117548a00, {{97.7, 802.0}, {206.7, 18.0}}, label: 'Classic · 4 × 4 · You move first'
+                  Button, 0x117549040, {{28.0, 836.0}, {346.0, 56.3}}, identifier: 'game-options', label: 'Players & board'
+                    Image, 0x11754bc00, {{125.7, 856.7}, {17.7, 15.0}}, identifier: 'slider.horizontal.3', label: 'Edit'
+                    StaticText, 0x11754a800, {{125.7, 854.0}, {152.7, 20.3}}, label: 'Players & board'
+                  StaticText, 0x117548000, {{133.7, 908.3}, {134.7, 15.7}}, label: 'Head to head. Player 1, 1 wins. Player 2, 0 wins.'
+              StaticText, 0x11754a300, {{378.3, 0.0}, {23.7, 83.3}}, identifier: 'mountain-private-qa', label: 'Private Mountain QA'
+      Other, 0x117548280, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x11754b340, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x11754ae40, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x117549f40, {{0.0, 0.0}, {402.0, 874.0}}
+            ScrollView, 0x11754ad00, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x11754aa80, {{0.0, 62.0}, {402.0, 834.7}}
+                Button, 0x11754abc0, {{16.0, 78.0}, {48.0, 48.0}}, identifier: 'close-game', label: 'Close game'
+                StaticText, 0x11754af80, {{132.3, 91.8}, {139.3, 20.3}}, label: 'Dog Mountain'
+                Button, 0x11754b480, {{338.0, 78.0}, {48.0, 48.0}}, label: 'Player controls'
+                  Button, 0x11754b840, {{338.0, 78.0}, {48.0, 48.0}}
+                    Image, 0x117549680, {{350.7, 93.7}, {24.0, 16.3}}, identifier: 'person.2.fill', label: 'person.2.fill'
+                StaticText, 0x11754be80, {{16.0, 150.0}, {178.0, 164.0}}, label: 'Player 1, Row player, 5, Your turn'
+                  Image, 0x117549cc0, {{34.0, 168.0}, {48.0, 48.0}}, identifier: 'person.fill', label: 'person.fill'
+                  StaticText, 0x117548f00, {{92.0, 174.3}, {55.7, 18.0}}, label: 'Player 1'
+                  StaticText, 0x117549540, {{92.0, 195.3}, {61.7, 14.3}}, label: 'Row player'
+                  StaticText, 0x117549900, {{34.0, 226.0}, {24.0, 45.7}}, label: '5'
+                  Image, 0x1175492c0, {{35.3, 285.0}, {12.0, 7.7}}, identifier: 'arrow.left.and.right', label: 'arrow.left.and.right'
+                  StaticText, 0x117548dc0, {{54.7, 281.6}, {54.7, 14.3}}, label: 'Your turn'
+                StaticText, 0x11754bac0, {{208.0, 150.0}, {178.0, 164.0}}, label: 'Finn, Level 6, 9, Points'
+                  Image, 0x11754a1c0, {{226.0, 168.0}, {48.0, 48.0}}, label: 'Opponent6'
+                  StaticText, 0x117548b40, {{284.0, 174.3}, {30.3, 18.0}}, label: 'Finn'
+                  StaticText, 0x117549a40, {{284.0, 195.3}, {40.7, 14.3}}, label: 'Level 6'
+                  StaticText, 0x117548140, {{226.0, 226.0}, {26.0, 45.7}}, label: '9'
+                  Image, 0x117548780, {{227.3, 282.7}, {7.7, 12.0}}, identifier: 'arrow.up.and.down', label: 'arrow.up.and.down'
+                  StaticText, 0x11754b980, {{242.3, 281.6}, {37.0, 14.3}}, label: 'Points'
+                StaticText, 0x1175483c0, {{84.2, 338.0}, {233.7, 52.3}}, label: 'Player 1's row, Choose a gold tile. Take its points.'
+                  Image, 0x117548640, {{115.7, 344.0}, {22.0, 14.3}}, identifier: 'arrow.left.and.right', label: 'arrow.left.and.right'
+                  StaticText, 0x117549e00, {{115.7, 338.0}, {173.5, 26.3}}, label: 'Player 1's row'
+                  StaticText, 0x1175488c0, {{84.2, 372.3}, {233.7, 18.0}}, label: 'Choose a gold tile. Take its points.'
+                ScrollView, 0x117548500, {{16.0, 414.3}, {370.0, 346.0}}
+                  Other, 0x117549180, {{16.0, 414.3}, {370.0, 346.0}}
+                    Other, 0x11754b200, {{40.0, 426.3}, {322.0, 322.0}}
+                      Button, 0x117549400, {{40.0, 426.3}, {76.0, 76.0}}, identifier: 'tile-0', label: 'Row 1, column 1, 11', Disabled
+                      Button, 0x11754a6c0, {{122.0, 426.3}, {76.0, 76.0}}, identifier: 'tile-1', label: 'Row 1, column 2, 8', Disabled
+                      Button, 0x1175497c0, {{204.0, 426.3}, {76.0, 76.0}}, identifier: 'tile-2', label: 'Row 1, column 3, 2', Disabled
+                      Button, 0x11992be80, {{286.0, 426.3}, {76.0, 76.0}}, identifier: 'tile-3', label: 'Row 1, column 4, 10', Disabled
+                      Button, 0x11761fe80, {{40.0, 508.3}, {76.0, 76.0}}, identifier: 'tile-4', label: 'Row 2, column 1, used', Disabled
+                      Button, 0x11760fd40, {{122.0, 508.3}, {76.0, 76.0}}, identifier: 'tile-5', label: 'Row 2, column 2, 16', Disabled
+                      Button, 0x11760fe80, {{204.0, 508.3}, {76.0, 76.0}}, identifier: 'tile-6', label: 'Row 2, column 3, 7', Disabled
+                      Button, 0x1175a1040, {{286.0, 508.3}, {76.0, 76.0}}, identifier: 'tile-7', label: 'Row 2, column 4, 12', Disabled
+                      Button, 0x1175a3840, {{40.0, 590.3}, {76.0, 76.0}}, identifier: 'tile-8', label: 'Row 3, column 1, 15', Disabled
+                      Button, 0x1175a0a00, {{122.0, 590.3}, {76.0, 76.0}}, identifier: 'tile-9', label: 'Row 3, column 2, 14', Disabled
+                      Button, 0x1175a12c0, {{204.0, 590.3}, {76.0, 76.0}}, identifier: 'tile-10', label: 'Row 3, column 3, 1', Disabled
+                      Button, 0x1175a3d40, {{286.0, 590.3}, {76.0, 76.0}}, identifier: 'tile-11', label: 'Row 3, column 4, 13', Disabled
+                      Button, 0x1175a2bc0, {{40.0, 672.3}, {76.0, 76.0}}, identifier: 'tile-12', label: 'Row 4, column 1, used', Disabled
+                      Button, 0x1175a2940, {{122.0, 672.3}, {76.0, 76.0}}, identifier: 'tile-13', label: 'Row 4, column 2, 4'
+                      Button, 0x1175a03c0, {{204.0, 672.3}, {76.0, 76.0}}, identifier: 'tile-14', label: 'Row 4, column 3, 3'
+                      Button, 0x1175a1e00, {{286.0, 672.3}, {76.0, 76.0}}, identifier: 'tile-15', label: 'Row 4, column 4, 6'
+                  Other, 0x1175a1680, {{16.0, 727.3}, {370.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x1175a3200, {{19.0, 754.3}, {364.0, 3.0}}
+                  Other, 0x1175a26c0, {{16.0, 727.3}, {370.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x1175a2580, {{19.0, 754.3}, {364.0, 3.0}}
+                Button, 0x1175a35c0, {{16.0, 784.3}, {370.0, 56.3}}, identifier: 'replay-computer', label: 'Replay computer move'
+                  Image, 0x1175a1f40, {{96.0, 805.0}, {20.0, 15.7}}, identifier: 'play.rectangle', label: 'Slideshow'
+                  StaticText, 0x1175a0140, {{96.0, 802.3}, {212.0, 20.3}}, label: 'Replay computer move'
+                StaticText, 0x1175a0b40, {{69.0, 865.0}, {265.7, 15.7}}, label: 'Every choice sets your rival’s next move.'
+Path to element:
+ →Application, 0x10a7f6f80, pid: 10089, label: 'Race to Dog Mountain'
+Query chain:
+ →Find: Application 'com.nathanfennel.RacetoDogMountain'
+  Output: {
+    Application, 0x1175a21c0, pid: 10089, label: 'Race to Dog Mountain'
+  }

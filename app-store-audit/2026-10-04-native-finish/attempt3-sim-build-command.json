@@ -1,0 +1,26 @@
+{
+  "command": [
+    "xcodebuild",
+    "-project",
+    "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/Race to Dog Mountain.xcodeproj",
+    "-scheme",
+    "Race to Dog Mountain",
+    "-configuration",
+    "Debug",
+    "-sdk",
+    "iphonesimulator",
+    "-destination",
+    "generic/platform=iOS Simulator",
+    "-derivedDataPath",
+    "/tmp/racedog-native-finish-20261004",
+    "-jobs",
+    "2",
+    "CODE_SIGNING_ALLOWED=NO",
+    "OTHER_SWIFT_FLAGS=$(inherited) -D DEBUG",
+    "build"
+  ],
+  "startedAt": "2026-10-04T07:49:39.579219+00:00",
+  "privateQAFlag": "command-only Swift -D DEBUG; existing active conditions retained",
+  "signed": false,
+  "runtime": false
+}

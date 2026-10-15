@@ -130,6 +130,7 @@ struct SeededRandom: RandomNumberGenerator {
         let secondGame = SavedMountainGame(size: 4, names: ["C", "D"], computers: [false, false], difficulty: .level1, adjustment: 0)
         libraryA.save(firstGame); libraryB.save(secondGame)
         let staleGame = firstGame
+        _ = firstGame.history?.record(firstGame.game.legalMoves[0], before: firstGame.game)
         firstGame.game.play(firstGame.game.legalMoves[0]); libraryA.save(firstGame); libraryB.save(staleGame)
         let freshLibrary = MountainLibrary(defaults: defaults)
         assert(freshLibrary.games.count == 2 && freshLibrary.games.first(where: { $0.id == firstGame.id })?.game.moves == 1, "Interleaved saves preserve both games and newer moves")

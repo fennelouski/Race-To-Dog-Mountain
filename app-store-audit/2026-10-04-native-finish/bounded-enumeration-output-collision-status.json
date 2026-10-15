@@ -1,0 +1,448 @@
+{
+  "startedAt": "2026-10-04T08:14:46.448760+00:00",
+  "deviceUUID": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+  "headless": true,
+  "nativeSourceFreeze": "5e7d5f1d0713f1395574e2f88ad54cdf59230b01a67cf551113b9162817d2033",
+  "privateQA": {
+    "sessionUUID": "ABEA31B0-4471-48C8-8613-925A357E3BD3",
+    "suite": "com.codex.racedog.qa.ABEA31B0-4471-48C8-8613-925A357E3BD3",
+    "appBundle": "com.nathanfennel.RacetoDogMountain",
+    "blankHostBundle": "com.codex.RacedogQABlank",
+    "device": "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+  },
+  "runtimeTests": [],
+  "sourceBeforeVerified": true,
+  "beforeDevice": {
+    "lastBootedAt": "2026-10-04T07:58:13Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2247815168,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 413696,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "executedInputs": [
+    {
+      "path": "/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app/Info.plist",
+      "sha256": "44ddafee60f719ed25c7d3c5ac13f0d3e5d2caf960ca638f437556bc62e22425"
+    },
+    {
+      "path": "/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app/Race to Dog Mountain",
+      "sha256": "3df9e8690f1ba894687b33f705e0023dcb49abe17253eb14fa68110306275fd0"
+    },
+    {
+      "path": "/tmp/racedog-private-ui-products-20261004/Build/Products/Debug-iphonesimulator/NativeFinishUITests-Runner.app/PlugIns/NativeFinishUITests.xctest/NativeFinishUITests",
+      "sha256": "9a8d66dfc40b928647b598487895f91e19f36f072c94c59ac91e724978b2cdbc"
+    }
+  ],
+  "boot": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "boot",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "bootstatus": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "bootstatus",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "-b"
+    ],
+    "exitCode": 0,
+    "stdout": "Monitoring boot status for Games Math QA Phone 20261003 (4051F719-157D-4697-AED1-FEFBB7E99CA1).\n[2026-10-04 08:14:47 +0000] Status=2, isTerminal=NO, Elapsed=00:01.\n\tWaiting on Data Migration\n\t\tReason:(null)\n\t\tMigration Elapsed:00:00 seconds\n\n[2026-10-04 08:14:48 +0000] Status=4, isTerminal=NO, Elapsed=00:01.\n\tWaiting on System App\n\n[2026-10-04 08:14:49 +0000] Status=4, isTerminal=NO, Elapsed=00:02.\n\tWaiting on System App\n\n[2026-10-04 08:14:50 +0000] Status=4, isTerminal=NO, Elapsed=00:03.\n\tWaiting on System App\n\n[2026-10-04 08:14:51 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.\n\tFinished",
+    "stderr": ""
+  },
+  "appearanceBefore": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "light",
+    "stderr": ""
+  },
+  "productionBeforeInstall": {
+    "installed": true,
+    "container": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data/Containers/Data/Application/C9054A3E-DCEB-42C2-A139-351A54635BEF",
+    "files": {
+      "Library/Preferences/com.nathanfennel.RacetoDogMountain.plist": "c952475653cef20dd7918805c97353555b8d223ba28cd0b7c4ba8d2f8a57895a",
+      "Library/Application Support": null
+    }
+  },
+  "install": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "install",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "/tmp/racedog-native-finish-20261004/Build/Products/Debug-iphonesimulator/Race to Dog Mountain.app"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "productionBeforeRuntime": {
+    "installed": true,
+    "container": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data/Containers/Data/Application/740BA88A-6C68-4DAF-A9B2-E7F70D1329A6",
+    "files": {
+      "Library/Preferences/com.nathanfennel.RacetoDogMountain.plist": "c952475653cef20dd7918805c97353555b8d223ba28cd0b7c4ba8d2f8a57895a",
+      "Library/Application Support": null
+    }
+  },
+  "actualCompletedTranscriptBefore": {
+    "rolesChanged": false,
+    "adjustment": 0,
+    "updatedAt": 812793570.520452,
+    "recorded": true,
+    "history": {
+      "initial": {
+        "tiles": [
+          {
+            "id": 0,
+            "value": 3
+          },
+          {
+            "id": 1,
+            "value": 8
+          },
+          {
+            "value": 13,
+            "id": 2
+          },
+          {
+            "value": 10,
+            "id": 3
+          },
+          {
+            "value": 12,
+            "id": 4
+          },
+          {
+            "value": 11,
+            "id": 5
+          },
+          {
+            "value": 15,
+            "id": 6
+          },
+          {
+            "value": 16,
+            "id": 7
+          },
+          {
+            "value": 6,
+            "id": 8
+          },
+          {
+            "value": 7,
+            "id": 9
+          },
+          {
+            "value": 5,
+            "id": 10
+          },
+          {
+            "value": 9,
+            "id": 11
+          },
+          {
+            "value": 4,
+            "id": 12
+          },
+          {
+            "value": 1,
+            "id": 13
+          },
+          {
+            "value": 2,
+            "id": 14
+          },
+          {
+            "value": 14,
+            "id": 15
+          }
+        ],
+        "row": 3,
+        "column": 3,
+        "scores": [
+          0,
+          0
+        ],
+        "turn": 0,
+        "moves": 0,
+        "size": 4
+      },
+      "choices": [
+        12,
+        4,
+        5,
+        9,
+        8,
+        0,
+        1,
+        13,
+        14,
+        6,
+        7,
+        3,
+        2,
+        10,
+        11,
+        15
+      ]
+    },
+    "difficulty": 5,
+    "computers": [
+      false,
+      true
+    ],
+    "names": [
+      "Player 1",
+      "Player 2"
+    ],
+    "game": {
+      "column": 3,
+      "turn": 0,
+      "tiles": [
+        {
+          "id": 0,
+          "value": 0
+        },
+        {
+          "id": 1,
+          "value": 0
+        },
+        {
+          "id": 2,
+          "value": 0
+        },
+        {
+          "id": 3,
+          "value": 0
+        },
+        {
+          "id": 4,
+          "value": 0
+        },
+        {
+          "id": 5,
+          "value": 0
+        },
+        {
+          "id": 6,
+          "value": 0
+        },
+        {
+          "id": 7,
+          "value": 0
+        },
+        {
+          "id": 8,
+          "value": 0
+        },
+        {
+          "id": 9,
+          "value": 0
+        },
+        {
+          "value": 0,
+          "id": 10
+        },
+        {
+          "value": 0,
+          "id": 11
+        },
+        {
+          "value": 0,
+          "id": 12
+        },
+        {
+          "value": 0,
+          "id": 13
+        },
+        {
+          "value": 0,
+          "id": 14
+        },
+        {
+          "value": 0,
+          "id": 15
+        }
+      ],
+      "moves": 16,
+      "scores": [
+        69,
+        67
+      ],
+      "row": 3,
+      "size": 4
+    },
+    "replay": {
+      "difficulty": 5,
+      "tileID": 15,
+      "before": {
+        "size": 4,
+        "tiles": [
+          {
+            "value": 0,
+            "id": 0
+          },
+          {
+            "value": 0,
+            "id": 1
+          },
+          {
+            "value": 0,
+            "id": 2
+          },
+          {
+            "value": 0,
+            "id": 3
+          },
+          {
+            "value": 0,
+            "id": 4
+          },
+          {
+            "value": 0,
+            "id": 5
+          },
+          {
+            "value": 0,
+            "id": 6
+          },
+          {
+            "value": 0,
+            "id": 7
+          },
+          {
+            "value": 0,
+            "id": 8
+          },
+          {
+            "value": 0,
+            "id": 9
+          },
+          {
+            "value": 0,
+            "id": 10
+          },
+          {
+            "value": 0,
+            "id": 11
+          },
+          {
+            "id": 12,
+            "value": 0
+          },
+          {
+            "id": 13,
+            "value": 0
+          },
+          {
+            "id": 14,
+            "value": 0
+          },
+          {
+            "value": 14,
+            "id": 15
+          }
+        ],
+        "column": 3,
+        "moves": 15,
+        "scores": [
+          69,
+          53
+        ],
+        "row": 2,
+        "turn": 1
+      }
+    },
+    "computerStarted": false,
+    "id": "C7D6F881-5AB4-4BDB-84BB-3340310BB357"
+  },
+  "privatePreferencesBeforeSHA256": "1250021b48013cbd6fd10a882fd548725d5110eb9632d16cebdedc825de0a291",
+  "enumerationExitCode": 64,
+  "enumeration": {
+    "errors": [],
+    "values": [
+      {
+        "disabledTests": [],
+        "enabledTests": [
+          {
+            "identifier": "NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()"
+          },
+          {
+            "identifier": "NativeFinishUITests/NativeFinishUITests/testBLargestTextFirstViewportAndActualSavedFinish()"
+          }
+        ],
+        "testPlan": "PrivateRunner"
+      }
+    ]
+  },
+  "exception": "{'errors': [], 'values': [{'disabledTests': [], 'enabledTests': [{'identifier': 'NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()'}, {'identifier': 'NativeFinishUITests/NativeFinishUITests/testBLargestTextFirstViewportAndActualSavedFinish()'}], 'testPlan': 'PrivateRunner'}]}",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-04-native-finish/run-private-phone.py\", line 42, in <module>\n    text=json.dumps(enumerated);assert r.returncode==0 and not enumerated.get('errors') and 'testTargetedActualCompletedShareLargestTextAgainAndFeedback' in text,enumerated\nAssertionError: {'errors': [], 'values': [{'disabledTests': [], 'enabledTests': [{'identifier': 'NativeFinishUITests/NativeFinishUITests/testARealPhoneStartContinueCompletionExportAndEffects()'}, {'identifier': 'NativeFinishUITests/NativeFinishUITests/testBLargestTextFirstViewportAndActualSavedFinish()'}], 'testPlan': 'PrivateRunner'}]}\n",
+  "appearanceBeforeShutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "light",
+    "stderr": ""
+  },
+  "appearancePreserved": true,
+  "shutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "shutdown",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "afterDevice": {
+    "lastBootedAt": "2026-10-04T08:14:46Z",
+    "dataPath": "/Users/nathan/Library/Developer/CoreSimulator/Devices/4051F719-157D-4697-AED1-FEFBB7E99CA1/data",
+    "dataPathSize": 2271236096,
+    "logPath": "/Users/nathan/Library/Logs/CoreSimulator/4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "udid": "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+    "isAvailable": true,
+    "logPathSize": 544768,
+    "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro",
+    "state": "Shutdown",
+    "name": "Games Math QA Phone 20261003",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "appearanceAfterShutdown": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "ui",
+      "4051F719-157D-4697-AED1-FEFBB7E99CA1",
+      "appearance"
+    ],
+    "exitCode": 0,
+    "stdout": "unknown",
+    "stderr": ""
+  },
+  "finishedAt": "2026-10-04T08:14:59.592969+00:00"
+}

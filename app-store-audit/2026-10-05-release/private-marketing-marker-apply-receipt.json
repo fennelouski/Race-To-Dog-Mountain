@@ -1,0 +1,11 @@
+{
+  "recordedAtUTC": "2026-10-05T04:50:21.572876+00:00",
+  "sourceFreeze": "/Users/nathan/Documents/GitHub/Race-To-Dog-Mountain/app-store-audit/2026-10-05-release/full-native-source-freeze.clean-marketing-successor.json",
+  "sourceFreezeSHA256": "2f07579f15618c6c250b7e08b69c9aa6442c9245fe0775b7a838077c68102ce7",
+  "177InputsMatch": true,
+  "aggregateSHA256": "8c0bf23743a98ecb63229110ee658398ad2980688152761c529aede3457dd5dc",
+  "previousNativeChecksCoverReleaseRuntime": true,
+  "newDebugMarkerActualCaptureVerification": "pending",
+  "noVisionOS": true,
+  "rootOwnedPadShutdownBeforeApply": true
+}

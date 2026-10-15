@@ -1,0 +1,189 @@
+- log
+- log
+- banner "App Store Connect":
+  - heading "App Store Connect" [level=1]:
+    - link "App Store Connect":
+      - /url: /
+  - navigation "Global":
+    - list:
+      - link "Apps":
+        - /url: /apps
+      - link "Xcode Cloud":
+        - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/xcode-cloud
+      - link "Trends":
+        - /url: /trends
+      - link "Reports":
+        - /url: /itc/payments_and_financial_reports
+      - link "Business":
+        - /url: /business
+      - link "Users and Access":
+        - /url: /access/users
+  - button "Nathan Fennel Nathan Fennel Account name menu":
+    - generic: Nathan Fennel
+    - generic: Nathan Fennel
+- button "Apps menu, Race To Dog Mountain, selected":
+  - generic "Race To Dog Mountain":
+    - img "Race To Dog Mountain"
+  - generic: Race To Dog Mountain
+- navigation "Apps":
+  - list:
+    - link "Distribution":
+      - /url: /apps/971329310/distribution
+    - link "Analytics":
+      - /url: /apps/971329310/analytics
+    - link "TestFlight" [active]:
+      - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight
+- main:
+  - navigation "TestFlight":
+    - list:
+      - heading "Builds" [level=2]
+      - list:
+        - link "iOS":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/ios
+          - generic: iOS
+        - link "macOS":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/macos
+          - generic: macOS
+        - link "visionOS":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/visionos
+          - generic: visionOS
+      - separator
+      - heading "Feedback" [level=2]
+      - list:
+        - link "Crashes":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/crashes
+          - generic: Crashes
+        - link "Screenshots":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/screenshots
+          - generic: Screenshots
+      - separator
+      - heading "Testers" [level=2]
+      - list:
+        - link "All":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/testers
+          - generic: All
+      - heading "Internal Testing" [level=3]
+      - button "New Group":
+      - list:
+        - link "AC App Store Connect Users":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/groups/c1f13bdf-5308-413f-b40f-09793944e179
+          - generic: AC
+          - generic: App Store Connect Users
+        - button "Delete":
+          - generic: Delete
+      - heading "External Testing" [level=3]
+      - button "New Group":
+      - list
+      - separator
+      - heading "Additional" [level=2]
+      - list:
+        - link "Test Information":
+          - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/test-info
+          - generic: Test Information
+        - generic: About TestFlight Data
+        - button: "?"
+  - heading "iOS Builds" [level=2]
+  - paragraph:
+    - text: The following builds are available to test.
+    - link "Learn more about build status and metrics":
+      - /url: https://developer.apple.com/help/app-store-connect/test-a-beta-version/view-build-status-and-metrics
+    - text: .
+  - separator
+  - button "Build Uploads":
+    - heading "Build Uploads" [level=3]
+  - button "Version 2.1" [expanded]:
+    - heading "Version 2.1" [level=3]
+  - region "Version 2.1":
+    - grid "Builds":
+      - rowgroup:
+        - row "Build Status Groups Invites Installs Sessions Crashes Feedback":
+          - columnheader "Build":
+            - button "Build":
+              - generic: Build
+          - columnheader "Status":
+            - generic: Status
+          - columnheader "Groups":
+            - generic: Groups
+          - columnheader "Invites":
+            - generic: Invites
+          - columnheader "Installs":
+            - generic: Installs
+          - columnheader "Sessions":
+            - generic: Sessions
+          - columnheader "Crashes":
+            - generic: Crashes
+          - columnheader "Feedback":
+            - generic: Feedback
+      - rowgroup:
+        - row "Build 8":
+          - rowheader "Build 8":
+            - link "Build 8":
+              - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/ios/63c411ed-dd59-4f55-9bc8-fed0414953f8
+              - generic: Build
+              - text: "8"
+          - gridcell "Ready to Submit Expires in 87 days":
+            - text: Ready to Submit
+            - generic: Expires in 87 days
+          - gridcell "App Store Connect Users Add Group":
+            - generic "App Store Connect Users":
+              - generic: AC
+              - generic: App Store Connect Users
+            - button "Add Group":
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+        - row "Build 7":
+          - rowheader "Build 7":
+            - link "Build 7":
+              - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/ios/85889f67-a517-4c60-804d-f2e0e6330386
+              - generic: Build
+              - text: "7"
+          - gridcell "Ready to Submit Expires in 87 days":
+            - text: Ready to Submit
+            - generic: Expires in 87 days
+          - gridcell "App Store Connect Users Add Group":
+            - generic "App Store Connect Users":
+              - generic: AC
+              - generic: App Store Connect Users
+            - button "Add Group":
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+          - gridcell "–":
+            - paragraph: –
+  - button "Version 2.0":
+    - heading "Version 2.0" [level=3]
+  - button "Version 1.1":
+    - heading "Version 1.1" [level=3]
+  - button "Version 1.0.2":
+    - heading "Version 1.0.2" [level=3]
+  - button "Version 1.0.1":
+    - heading "Version 1.0.1" [level=3]
+  - button "Version 1.0":
+    - heading "Version 1.0" [level=3]
+- contentinfo:
+  - list:
+    - link "App Store Connect":
+      - /url: /apps
+  - list:
+    - listitem: Copyright © 2026 Apple Inc. All rights reserved. |
+    - link "Terms of Service":
+      - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+    - text: "|"
+    - link "Privacy Policy":
+      - /url: https://www.apple.com/legal/privacy
+    - text: "|"
+    - link "Contact Us":
+      - /url: /contact-us

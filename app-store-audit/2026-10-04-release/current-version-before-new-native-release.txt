@@ -1,0 +1,332 @@
+- banner "App Store Connect":
+  - heading "App Store Connect" [level=1]:
+    - link "App Store Connect":
+      - /url: /
+  - navigation "Global":
+    - list:
+      - link "Apps":
+        - /url: /apps
+      - link "Xcode Cloud":
+        - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/xcode-cloud
+      - link "Trends":
+        - /url: /trends
+      - link "Reports":
+        - /url: /itc/payments_and_financial_reports
+      - link "Business":
+        - /url: /business
+      - link "Users and Access":
+        - /url: /access/users
+  - button "Nathan Fennel Nathan Fennel Account name menu":
+    - generic: Nathan Fennel
+    - generic: Nathan Fennel
+- button "Apps menu, Race To Dog Mountain, selected":
+  - generic "Race To Dog Mountain":
+    - img "Race To Dog Mountain"
+  - generic: Race To Dog Mountain
+- navigation "Apps":
+  - list:
+    - link "Distribution":
+      - /url: /apps/971329310/distribution
+    - link "Analytics":
+      - /url: /apps/971329310/analytics
+    - link "TestFlight":
+      - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight
+- main:
+  - navigation "Distribution":
+    - list:
+      - heading "iOS App" [level=2]
+      - list:
+        - link "2.1 Prepare for Submission":
+          - /url: /apps/971329310/distribution/ios/version/inflight
+          - text: 2.1 Prepare for Submission
+        - link "2.0 Ready for Distribution":
+          - /url: /apps/971329310/distribution/ios/version/deliverable
+          - text: 2.0 Ready for Distribution
+      - heading "macOS App" [level=2]
+      - button:
+      - list:
+        - link "2.1 Ready for Distribution":
+          - /url: /apps/971329310/distribution/macos/version/deliverable
+          - text: 2.1 Ready for Distribution
+      - heading "visionOS App" [level=2]
+      - button:
+      - list:
+        - link "2.1 Ready for Distribution":
+          - /url: /apps/971329310/distribution/visionos/version/deliverable
+          - text: 2.1 Ready for Distribution
+      - button "Add Platform"
+      - separator
+      - heading "General" [level=2]
+      - list:
+        - link "App Information":
+          - /url: /apps/971329310/distribution/info
+          - generic: App Information
+        - link "App Review":
+          - /url: /apps/971329310/distribution/reviewsubmissions
+          - generic: App Review
+        - link "History":
+          - /url: /apps/971329310/distribution/activity/ios/versions
+          - generic: History
+      - separator
+      - heading "App Store" [level=2]
+      - heading "Trust & Safety" [level=3]
+      - list:
+        - link "App Privacy":
+          - /url: /apps/971329310/distribution/privacy
+          - generic: App Privacy
+        - link "App Accessibility":
+          - /url: /apps/971329310/distribution/accessibility
+          - generic: App Accessibility
+        - link "Ratings and Reviews":
+          - /url: /apps/971329310/distribution/ratings/ios
+          - generic: Ratings and Reviews
+      - heading "Growth & Marketing" [level=3]
+      - list:
+        - link "In-App Events":
+          - /url: /apps/971329310/distribution/events
+          - generic: In-App Events
+        - link "Custom Product Pages":
+          - /url: /apps/971329310/distribution/productpages
+          - generic: Custom Product Pages
+        - link "Product Page Optimization":
+          - /url: /apps/971329310/distribution/optimization
+          - generic: Product Page Optimization
+        - link "Promo Codes":
+          - /url: /apps/971329310/distribution/promo_codes/generate
+          - generic: Promo Codes
+        - link "Game Center":
+          - /url: /apps/971329310/distribution/gamecenter
+          - generic: Game Center
+      - heading "Monetization" [level=3]
+      - list:
+        - link "Pricing and Availability":
+          - /url: /apps/971329310/distribution/pricing
+          - generic: Pricing and Availability
+        - link "In-App Purchases":
+          - /url: /apps/971329310/distribution/iaps
+          - generic: In-App Purchases
+        - link "Subscriptions":
+          - /url: /apps/971329310/distribution/subscriptions
+          - generic: Subscriptions
+      - heading "Featuring" [level=3]
+      - list:
+        - link "Nominations":
+          - /url: /apps/971329310/distribution/nominations
+          - generic: Nominations
+  - heading "iOS App Version 2.1" [level=2]
+  - button "Save" [disabled]
+  - button "Add for Review"
+  - separator
+  - paragraph: The assets and metadata below appear on your app’s product page, when users install your app, and will be used for web engine search results once you release your app.
+  - button "English (U.S.)":
+    - text: English (U.S.)
+  - button "?"
+  - separator
+  - heading "Previews and Screenshots" [level=3]
+  - button "More information": "?"
+  - paragraph: Adding accurate screenshots of your app on the newest devices can help you represent the app's user experience. Keep in mind that we'll use these screenshots for all display sizes and localizations. Screenshots are only required for iOS apps, and only the first 3 will be used on the app installation sheets.
+  - tablist:
+    - tab "iPhone" [selected]:
+      - generic: iPhone
+    - tab "iPad":
+      - generic: iPad
+    - tab "Apple Watch":
+      - generic: Apple Watch
+  - paragraph:
+    - link "View All Sizes in Media Manager":
+      - /url: /apps/971329310/distribution/ios/version/inflight/media-manager/iphone
+  - alert
+  - tabpanel "iPhone":
+    - generic: iPhone
+    - generic: 6.5" Display
+    - region:
+      - tabpanel:
+        - paragraph: Using 6.9" Display
+        - paragraph:
+          - button "Edit"
+        - list "App Previews from English (U.S.) 6.9\" Display"
+        - list "Screenshots from English (U.S.) 6.9\" Display":
+          - img "Screenshot phone-lobby.png":
+          - img "Screenshot phone-01-game.png":
+          - img "Screenshot phone-03-replay.png":
+        - paragraph: 0 of 3 App Previews
+        - paragraph: 3 of 10 Screenshots
+        - paragraph:
+          - button "Choose File" [disabled]
+        - paragraph:
+          - button "Delete All" [disabled]
+  - generic: Promotional Text
+  - button "More information": "?"
+  - textbox "Promotional Text"
+  - status "Characters remaining": "170"
+  - separator
+  - generic: Description
+  - button "More information": "?"
+  - textbox "Description": Pick a number. Outsmart your rival. Race to Dog Mountain is a two-player number strategy game set against an animated alpine landscape. Choose a number from the highlighted row or column. Each choice sets your rival's next line. Plan ahead and finish with the higher score. Practice against 16 named human computer rivals, each with an illustrated portrait and a different difficulty. You move first by default. Replay the computer's last move, and let its accuracy adjust slightly after your wins and losses. Rival phrases are optional and start off. Pass your device to a friend, play asynchronous Game Center races, or take turns in a two-person iMessage conversation. Keep several games going from the opening lobby and resume local games after relaunch. Game Center requires internet and Game Center sign-in. iMessage games require iMessage. Solo and pass-and-play games work offline. Choose boards from 4 × 4 to 14 × 14 on iPhone and iPad. iMessage races use 4 × 4 boards and one move per message. The independent Apple Watch edition also uses 4 × 4 boards, with large number buttons, a thin points bar and separate pages for the board, scores, replay and rival difficulty. It runs without your phone. Local progress stays on each device. Native Mac and Apple Vision Pro editions bring Classic to a desktop window and a resizable floating alpine window. No ads or in-app purchases.
+  - status "Characters remaining": 2,607
+  - generic: What's New in This Version
+  - button "More information": "?"
+  - textbox "What's New in This Version": A new multi-game lobby keeps your races in one place. Save and resume separate local games, pass your device to a friend, and play asynchronous Game Center turns and rematches. A new iMessage extension brings independent 4 × 4 races to two-person conversations. Classic now comes to Apple Watch, Mac and Apple Vision Pro. The Watch has a simple wrist layout, large move buttons, separate board/score/settings pages and a thin points bar clear of the clock. Mac has native keyboard commands and a wide board layout; Vision Pro has a resizable floating alpine window. The colorful alpine redesign, 16 named human rivals, human-first defaults, adaptive computer accuracy and paused computer-move replay are included.
+  - status "Characters remaining": 3,285
+  - generic: Keywords
+  - button "More information": "?"
+  - textbox "Keywords": numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle
+  - status "Characters remaining": "12"
+  - generic: Support URL
+  - button "More information": "?"
+  - textbox "Support URL": https://nathanfennel.com/contact
+  - generic: Marketing URL
+  - button "More information": "?"
+  - textbox "Marketing URL"
+  - generic: Version
+  - button "More information": "?"
+  - textbox "Version": "2.1"
+  - generic: Copyright
+  - button "More information": "?"
+  - textbox "Copyright": 2026 Nathan Fennel
+  - status "Characters remaining": "182"
+  - generic: Routing App Coverage File
+  - button "More information": "?"
+  - button "Choose File"
+  - generic: Choose File
+  - separator
+  - button "App Clip":
+    - text: App Clip
+  - heading "iMessage App" [level=3]:
+    - button "iMessage App":
+      - text: iMessage App
+  - button "More information": "?"
+  - heading "Build" [level=3]
+  - table:
+    - rowgroup:
+      - row "Build Version Has App Clip":
+        - columnheader "Build":
+          - generic: Build
+        - columnheader "Version":
+          - generic: Version
+        - columnheader "Has App Clip":
+          - generic: Has App Clip
+        - columnheader
+    - rowgroup:
+      - row "App Icon 8 2.1 No Delete":
+        - cell "App Icon 8":
+          - link "App Icon":
+            - /url: /apps/971329310/testflight/ios/63c411ed-dd59-4f55-9bc8-fed0414953f8/metadata
+            - generic "App Icon":
+              - img "App Icon"
+          - link "8":
+            - /url: /apps/971329310/testflight/ios/63c411ed-dd59-4f55-9bc8-fed0414953f8/metadata
+        - cell "2.1":
+          - generic: "2.1"
+        - cell "No":
+          - paragraph: "No"
+        - cell "Delete":
+          - button "Delete":
+  - paragraph: Included Assets
+  - button "App Icon":
+    - generic "App Icon":
+      - img "App Icon"
+  - paragraph: App Icon
+  - button "App Icon":
+    - generic "App Icon":
+      - img "App Icon"
+  - paragraph: Apple Watch
+  - button "App Icon":
+    - generic "App Icon":
+      - img "App Icon"
+  - paragraph: iMessage
+  - checkbox "Game Center" [checked]
+  - text: Game Center
+  - paragraph:
+    - text: To enable Game Center for your app, you must add the com.apple.developer.game-center entitlement in Xcode.
+    - link "Learn More":
+      - /url: https://developer.apple.com/documentation/gamekit/enabling_and_configuring_game_center
+  - heading "Multiplayer Compatibility" [level=3]
+  - generic: 
+  - text: 
+  - grid:
+    - row "App Name Type Earliest Compatible Version":
+      - columnheader "App Name"
+      - columnheader "Type"
+      - columnheader "Earliest Compatible Version"
+      - columnheader
+    - rowgroup "grid":
+      - row "icon Race To Dog Mountain iOS App 2.1":
+        - row "icon Race To Dog Mountain iOS App 2.1":
+          - gridcell "icon Race To Dog Mountain":
+            - img "icon"
+            - generic: Race To Dog Mountain
+          - gridcell "iOS App":
+            - generic: iOS App
+          - gridcell "2.1":
+            - generic: "2.1"
+          - gridcell
+  - separator
+  - heading "App Review Information" [level=3]
+  - generic: Sign-In Information
+  - button "More information": "?"
+  - paragraph: Provide a user name and password so we can sign in to your app. We’ll need this to complete your app review.
+  - checkbox "Sign-in required"
+  - generic: Sign-in required
+  - generic: Contact Information
+  - button "More information": "?"
+  - textbox "First name": Nathan
+  - textbox "Last name": Fennel
+  - textbox "Phone number": <redacted>
+  - textbox "Email": <redacted>
+  - generic: Notes
+  - button "More information": "?"
+  - textbox "Notes": Version 2.1, build 8 replaces the prior build 7 submission. iOS app embeds an independently running watchOS app and a Messages extension. No app-specific login, ads or in-app purchases. New local game starts Classic, human first against computer player 2. Pass & play starts a two-human game. Your games resumes independently saved local games after relaunch. Players & board offers 16 named human rivals and optional phrases, off by default. Replay pauses live computer play. Play a friend opens the native two-player Game Center turn-based matchmaker; system Game Center sign-in and internet are required for that feature. Watch is solo 4 × 4, human first; swipe vertically between Moves, Board, Score/replay and Settings. It runs without an iPhone and stores progress on Watch. In a two-person iMessage conversation, tap + and choose Race to Dog Mountain. Start a race, choose one number, prepare the board bubble, then tap the native Send control; each new race has its own session. Group conversations are excluded. Shared rules, bounded transcript validation, independent saves, archive signatures and packaging were checked. Live two-account Game Center delivery and Messages host/composer remain unverified.
+  - status "Characters remaining": 2,785
+  - generic: Attachment
+  - button "More information": "?"
+  - button "Choose File (Optional)"
+  - generic: Choose File (Optional)
+  - separator
+  - heading "App Store Version Release" [level=3]
+  - paragraph: To make your app available on the App Store, you can automatically release it after it’s been approved by App Review. You can also manually release it on the App Store at a later date.
+  - radio "Manually release this version"
+  - generic: Manually release this version
+  - radio "Automatically release this version" [checked]
+  - generic: Automatically release this version
+  - radio "Automatically release this version after App Review, no earlier than"
+  - generic: Automatically release this version after App Review, no earlier than
+  - paragraph: Your local date and time.
+  - textbox "Automatically release this version after App Review, no earlier than" [disabled]: Oct 4, 2026 11:00 AM
+  - text: GMT+2
+  - separator
+  - heading "Phased Release for App Store Automatic Updates" [level=3]
+  - paragraph:
+    - text: Phased release for automatic updates lets you gradually release this update over a 7-day period to users who have turned on automatic updates from the App Store. Keep in mind that this version will still be available to all users as a manual update from the App Store. You can pause the phased release for up to 30 days or release this update to all users at any time.
+    - link "Learn More":
+      - /url: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
+  - radio "Release update to all users immediately" [checked]
+  - generic: Release update to all users immediately
+  - radio "Release update over 7-day period using phased release"
+  - generic: Release update over 7-day period using phased release
+  - separator
+  - heading "Reset iOS App Store Summary Rating Edit" [level=3]:
+    - text: Reset iOS App Store Summary Rating
+    - button "Edit"
+  - paragraph:
+    - text: You can reset your app’s App Store summary rating for all countries or regions when you release this version. Keep in mind that once this version is released, you won’t be able to restore the rating. Your app’s existing customer reviews will still appear on the App Store.
+    - link "View Ratings and Reviews":
+      - /url: /apps/971329310/distribution/ratings/ios
+  - radio "Keep existing rating" [checked] [disabled]
+  - generic: Keep existing rating
+  - radio "Reset rating when this version is released" [disabled]
+  - generic: Reset rating when this version is released
+- contentinfo:
+  - list:
+    - link "App Store Connect":
+      - /url: /apps
+  - list:
+    - listitem: Copyright © 2026 Apple Inc. All rights reserved. |
+    - link "Terms of Service":
+      - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+    - text: "|"
+    - link "Privacy Policy":
+      - /url: https://www.apple.com/legal/privacy
+    - text: "|"
+    - link "Contact Us":
+      - /url: /contact-us

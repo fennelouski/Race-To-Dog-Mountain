@@ -5,6 +5,7 @@ struct MountainChallengeBoard: View {
     let names: [String]
     var canPlay: Bool
     var busy = false
+    var ended = false
     var select: (Int) -> Void
     @Environment(\.dynamicTypeSize) private var typeSize
     private var game: MountainGame { challenge.game }
@@ -18,9 +19,9 @@ struct MountainChallengeBoard: View {
                         VStack(spacing: 12) { score(0); score(1) }
                     }
                     VStack(spacing: 8) {
-                        Label(status, systemImage: game.isOver ? "flag.checkered" : canPlay ? "hand.point.up.left.fill" : "hourglass")
+                        Label(status, systemImage: game.isOver || ended ? "flag.checkered" : canPlay ? "hand.point.up.left.fill" : "hourglass")
                             .font(.title2.bold()).multilineTextAlignment(.center)
-                        if !game.isOver {
+                        if !game.isOver && !ended {
                             Label("\(names[game.turn])'s \(game.turn == 0 ? "row" : "column")", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
                                 .foregroundStyle(MountainStyle.player(game.turn)).font(.subheadline)
                         }
@@ -34,6 +35,7 @@ struct MountainChallengeBoard: View {
     }
     private var status: String {
         if game.isOver { return game.scores[0] == game.scores[1] ? "An even climb" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" }
+        if ended { return "Game ended" }
         return busy ? "Passing the turn" : canPlay ? "Your move" : "Your friend's move"
     }
     private func score(_ player: Int) -> some View {
@@ -51,6 +53,7 @@ struct MountainChallengeBoard: View {
 struct MountainFriendGame: View {
     @Bindable var friends: MountainFriends
     @Environment(\.dismiss) private var dismiss
+    @State private var sharing = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -58,13 +61,27 @@ struct MountainFriendGame: View {
                 MountainStyle.ink.opacity(0.65).ignoresSafeArea()
                 if let race = friends.opened, let challenge = race.challenge {
                     VStack(spacing: 12) {
-                        MountainChallengeBoard(challenge: challenge, names: race.names, canPlay: race.yourTurn && !race.ended,
-                                               busy: friends.sending) { tile in Task { await friends.play(tile) } }
-                        if race.ended {
-                            Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
-                                .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending).padding(.horizontal, 16).padding(.bottom, 16)
+                        MountainChallengeBoard(challenge: challenge, names: race.names, canPlay: race.yourTurn && !race.ended && race.problem == nil,
+                                               busy: friends.sending, ended: race.ended) { tile in Task { await friends.play(tile) } }
+                        if let problem = race.problem { Text(problem).font(.footnote).padding(.horizontal, 16) }
+                        if race.ended && race.problem == nil {
+                            HStack(spacing: 12) {
+                                Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+                                    .buttonStyle(MountainButton(prominent: true)).disabled(friends.sending)
+                                if challenge.game.isOver, MountainHistory(challenge: challenge) != nil {
+                                    Button { sharing = true } label: { Image(systemName: "square.and.arrow.up") }
+                                        .buttonStyle(MountainButton()).accessibilityLabel("Share")
+                                }
+                            }.padding(.horizontal, 16).padding(.bottom, 16)
                         }
                     }
+                } else if let problem = friends.opened?.problem {
+                    Text(problem).padding(24).fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .sheet(isPresented: $sharing) {
+                if let race = friends.opened, let challenge = race.challenge, let history = MountainHistory(challenge: challenge) {
+                    MountainFinishShare(game: challenge.game, names: race.names, history: history)
                 }
             }
             .navigationTitle("Friend game").mountainInlineTitle()
@@ -100,6 +117,7 @@ struct MountainMatchRow: View {
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.right").accessibilityHidden(true)
             }.padding(.vertical, 12)
+                .contentShape(Rectangle())
         }.buttonStyle(.plain).mountainHover().accessibilityElement(children: .combine)
     }
 }
