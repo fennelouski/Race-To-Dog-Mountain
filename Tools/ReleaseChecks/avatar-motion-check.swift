@@ -30,10 +30,17 @@ import Foundation
                 if cue != .enter { precondition(abs(pose.position.x) < 0.3 && pose.position.y < 0.2) }
             }
         }
-        let before = scored
-        while let tile = game.legalMoves.first { precondition(game.play(tile)) }
+        var outcomeGame = MountainGame(size: 4,
+            values: [11, 15, 6, 2, 10, 3, 4, 12, 14, 8, 9, 5, 1, 7, 16, 13],
+            startingLine: 0)
+        let before = MountainAvatarActivity(game: outcomeGame, player: 0)
+        while let tile = outcomeGame.legalMoves.max(by: {
+            outcomeGame.tiles[$0].value < outcomeGame.tiles[$1].value
+        }) { precondition(outcomeGame.play(tile)) }
+        precondition(outcomeGame.isOver && outcomeGame.scores == [74, 62],
+            "The deterministic outcome fixture must produce a winner")
         for player in 0...1 {
-            let final = MountainAvatarActivity(game: game, player: player)
+            let final = MountainAvatarActivity(game: outcomeGame, player: player)
             precondition(final.cue(after: before) == (final.outcome == .won ? .win : .finish))
         }
         precondition(original.moves == 0 && original.scores == [0, 0], "Sampling animation cannot mutate a game")

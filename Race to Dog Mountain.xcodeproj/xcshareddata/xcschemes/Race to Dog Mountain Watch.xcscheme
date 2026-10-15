@@ -45,7 +45,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AC5000000000000000000009"
             BuildableName = "Race to Dog Mountain Watch.app"
-            BlueprintName = "Race to Dog Mountain Watch"
             ReferencedContainer = "container:Race to Dog Mountain.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,7 +61,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AC5000000000000000000009"
             BuildableName = "Race to Dog Mountain Watch.app"
-            BlueprintName = "Race to Dog Mountain Watch"
             ReferencedContainer = "container:Race to Dog Mountain.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -1563,7 +1563,7 @@ enum MountainPortraitCreatureSceneLighting {
     private let renderer: RealityRenderer
     private let texture: any MTLTexture
     private let output: RealityRenderer.CameraOutput
-    private let side: Int
+    let side: Int
     private var contactShadow: ModelEntity?
     private var rendering = false
     private(set) var pose = MountainAvatarPose()
@@ -1711,7 +1711,7 @@ struct MountainFonsterWindow: View {
     private func respond(to request: MountainFonsterRenderRequest) async {
         guard request.active else { return }
         do {
-            if scene?.seed != request.seed {
+            if scene?.seed != request.seed || scene?.side != request.side {
                 image = nil; previous = nil; failed = false
                 let built = try await MountainLiveFonsterScene.make(seed: request.seed, side: request.side)
                 try Task.checkCancellation()
