@@ -110,10 +110,10 @@ final class MessagesViewController: MSMessagesAppViewController {
             let renderer = ImageRenderer(content: card.frame(width: 600, height: 420))
             renderer.scale = 2
             layout.image = renderer.uiImage
-            layout.caption = "Race to Dog Mountain"
+            layout.caption = "Tally Tangle"
             layout.subcaption = challenge.game.isOver ? "Finished · \(challenge.game.scores[0]) : \(challenge.game.scores[1])" : "Your move · \(challenge.game.scores[0]) : \(challenge.game.scores[1])"
             message.layout = layout; message.url = try challenge.messageURL()
-            message.summaryText = challenge.game.isOver ? "The race is finished." : "Your turn on Dog Mountain."
+            message.summaryText = challenge.game.isOver ? "The game is finished." : "Your turn in Tally Tangle."
             conversation.insert(message) { [weak self] failure in
                 Task { @MainActor in
                     guard let self else { return }
@@ -143,14 +143,14 @@ private struct MountainMessagesView: View {
             if !state.twoPlayers {
                 VStack(spacing: 16) {
                     Image(systemName: "person.2.fill").font(.largeTitle).foregroundStyle(MountainStyle.mint)
-                    Text("Open a conversation with one friend to start a race.").multilineTextAlignment(.center)
+                    Text("Open a conversation with one friend to start a game.").multilineTextAlignment(.center)
                 }.padding(24)
             } else if let challenge = state.challenge {
                 VStack(spacing: 12) {
                     if state.expanded {
                         MountainChallengeBoard(challenge: challenge, names: state.names, canPlay: state.canMove, busy: state.busy, select: state.choose)
                     } else {
-                        Text(state.staged ? "Tap Send to pass your move" : challenge.game.isOver ? "Race finished" : state.canMove ? "Your move" : "Waiting for your friend")
+                        Text(state.staged ? "Tap Send to pass your move" : challenge.game.isOver ? "Game finished" : state.canMove ? "Your move" : "Waiting for your friend")
                             .font(.headline).padding(.top, 12)
                         Button { state.expand?() } label: { Label("Open board", systemImage: "square.grid.3x3.fill").frame(maxWidth: .infinity) }.buttonStyle(MountainButton(prominent: true))
                     }
@@ -159,11 +159,11 @@ private struct MountainMessagesView: View {
                             .buttonStyle(MountainButton(prominent: true)).disabled(state.busy)
                         Button("Undo choice") { state.challenge = state.original }.frame(minHeight: 44).disabled(state.busy)
                     } else if challenge.game.isOver || (!state.canMove && !state.staged) {
-                        Button("Start another race") { state.newRace?() }.frame(minHeight: 44)
+                        Button("Start another game") { state.newRace?() }.frame(minHeight: 44)
                     }
                 }.padding(.horizontal, 16).padding(.bottom, 12)
             } else {
-                Button("Start a new race") { state.newRace?() }.buttonStyle(MountainButton(prominent: true))
+                Button("Start a new game") { state.newRace?() }.buttonStyle(MountainButton(prominent: true))
             }
         }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
             .alert("Messages game", isPresented: Binding(get: { state.error != nil }, set: { if !$0 { state.error = nil } })) {
@@ -180,8 +180,8 @@ private struct MountainMessageCard: View {
             MountainStyle.ink.opacity(0.6)
             HStack(spacing: 36) {
                 VStack(alignment: .leading, spacing: 20) {
-                    Image(systemName: "mountain.2.fill").font(.system(size: 48)).foregroundStyle(MountainStyle.gold)
-                    Text("Dog\nMountain").font(.custom("Georgia-Bold", size: 44))
+                    Image(systemName: "leaf.fill").font(.system(size: 48)).foregroundStyle(MountainStyle.gold)
+                    Text("Tally\nTangle").font(.custom("Georgia-Bold", size: 44))
                     Text("\(challenge.game.scores[0]) : \(challenge.game.scores[1])").font(.title.bold()).monospacedDigit()
                 }
                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(48), spacing: 6), count: challenge.size), spacing: 6) {

@@ -28,14 +28,36 @@ try pdf("LaunchSky") { context in
     }
 }
 try pdf("LaunchSun", width: 128, height: 128) { context in context.setFillColor(gold); context.fillEllipse(in: CGRect(x: 0, y: 0, width: 128, height: 128)) }
+// Asset keeps its historical name; it now holds the hedges and hanging vines.
 try pdf("LaunchRidges") { context in
-    let ridges: [[(Double, Double)]] = [[(0,0.69),(0.18,0.51),(0.32,0.64),(0.62,0.47),(0.86,0.66),(1,0.59)], [(0,0.78),(0.24,0.59),(0.39,0.72),(0.70,0.58),(1,0.78)], [(0,0.81),(0.15,0.76),(0.38,0.83),(0.62,0.72),(0.83,0.82),(1,0.75)]]
-    for (layer, points) in ridges.enumerated() {
-        context.beginPath(); context.move(to: CGPoint(x: 0, y: h))
-        for point in points { context.addLine(to: CGPoint(x: point.0 * w, y: point.1 * h)) }
-        context.addLine(to: CGPoint(x: w, y: h)); context.closePath(); context.setFillColor([color(0.22,0.49,0.48),color(0.10,0.32,0.36),ink][layer]); context.fillPath()
+    let hedges: [(Double, Double, Double, CGColor)] = [(0.62, 0.05, 0.075, color(0.22,0.49,0.40)), (0.72, 0.04, 0.065, color(0.10,0.34,0.27)), (0.82, 0.03, 0.055, ink)]
+    for (layer, hedge) in hedges.enumerated() {
+        context.setFillColor(hedge.3)
+        let r = hedge.2 * w
+        var x = -r
+        while x < w + r {
+            let u = x / w, y = h * (hedge.0 + sin(u * 5 + Double(layer) * 2) * hedge.1)
+            let size = r * (0.8 + 0.4 * (sin(u * 31 + Double(layer)) + 1) / 2)
+            context.fillEllipse(in: CGRect(x: x - size, y: y - size, width: size * 2, height: size * 2)); x += r * 1.3
+        }
+        context.fill(CGRect(x: 0, y: h * hedge.0, width: w, height: h * (1 - hedge.0)))
     }
-    context.move(to: CGPoint(x: w * 0.62, y: h * 0.73)); context.addCurve(to: CGPoint(x: w * 0.43, y: h), control1: CGPoint(x: w * 0.2, y: h * 0.82), control2: CGPoint(x: w * 0.95, y: h * 0.90))
-    context.setStrokeColor(color(1,0.73,0.28,0.14)); context.setLineWidth(2); context.setLineDash(phase: 0, lengths: [4,9]); context.strokePath()
+    for vine in 0..<7 {
+        let anchor = (Double(vine) + 0.5) / 7, length = h * (0.09 + Double((vine * 37) % 5) * 0.035)
+        func point(_ t: Double) -> CGPoint { CGPoint(x: anchor * w + sin(t * 7 + Double(vine) * 2.1) * w * 0.035 * t, y: -4 + t * length) }
+        context.beginPath(); context.move(to: point(0))
+        for i in 1...28 { context.addLine(to: point(Double(i) / 28)) }
+        context.setStrokeColor(color(0.18,0.48,0.27,0.9)); context.setLineWidth(3); context.setLineCap(.round); context.strokePath()
+        for i in stride(from: 3, through: 28, by: 3) {
+            let p = point(Double(i) / 28), q = point(Double(i + 1) / 28)
+            context.saveGState(); context.translateBy(x: p.x, y: p.y)
+            context.rotate(by: atan2(q.y - p.y, q.x - p.x) + (i % 6 == 0 ? 0.9 : -0.9))
+            context.setFillColor(color(0.42,0.74,0.36,0.9)); context.fillEllipse(in: CGRect(x: 0, y: -3.5, width: 14, height: 7)); context.restoreGState()
+        }
+    }
+    context.beginPath()
+    context.addArc(center: CGPoint(x: w * 0.66, y: h * 0.70), radius: w * 0.04, startAngle: -.pi / 2, endAngle: .pi, clockwise: false)
+    context.addCurve(to: CGPoint(x: w * 0.43, y: h), control1: CGPoint(x: w * 0.2, y: h * 0.82), control2: CGPoint(x: w * 0.95, y: h * 0.90))
+    context.setStrokeColor(color(1,0.73,0.28,0.18)); context.setLineWidth(2); context.setLineDash(phase: 0, lengths: [4,9]); context.strokePath()
 }
-print("Generated three static vector layers from MountainScenery geometry.")
+print("Generated three static vector layers from the Tally Tangle scenery geometry.")

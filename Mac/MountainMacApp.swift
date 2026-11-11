@@ -21,7 +21,7 @@ extension FocusedValues {
 
 @main struct MountainMacApp: App {
     var body: some Scene {
-        WindowGroup("Race to Dog Mountain") {
+        WindowGroup("Tally Tangle") {
             MountainHome().frame(minWidth: 620, minHeight: 660)
         }
         .defaultSize(width: 1000, height: 820)

@@ -24,7 +24,7 @@ private struct WatchMountain: View {
                 TabView {
                     ScrollView {
                         VStack(spacing: 12) {
-                            Image(systemName: "mountain.2.fill").font(.system(size: 42)).accessibilityLabel("Race to Dog Mountain").accessibilityAddTraits(.isHeader)
+                            Image(systemName: "leaf.fill").font(.system(size: 42)).accessibilityLabel("Tally Tangle").accessibilityAddTraits(.isHeader)
                             Button {
                                 if match == nil {
                                     let next = WatchMatch(size: 4, difficulty: difficulty, computers: [false, true])

@@ -93,6 +93,7 @@ BODY
     var gameHelp = false
     var gameSettings = false
     var customizing: HumanSelection?
+    var feedback: [Int] = []
     func presentPendingResult() {
 PRESENTATION_BODY
     }
@@ -224,7 +225,9 @@ RESOLUTION_BODY
         require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted immediate close")
         presentation.leavingGame = false; presentation.gameHelp = true; presentation.presentPendingResult()
         require(!presentation.resultPresented && presentation.pendingResult, "Result interrupted Help")
-        presentation.gameHelp = false; presentation.presentPendingResult()
+        presentation.gameHelp = false; presentation.feedback = [1]; presentation.presentPendingResult()
+        require(!presentation.resultPresented && presentation.pendingResult, "Result appeared before final points landed")
+        presentation.feedback = []; presentation.presentPendingResult()
         require(presentation.resultPresented && !presentation.pendingResult, "Resume failed to present final result")
         presentation.resultPresented = false; presentation.presentPendingResult()
         require(!presentation.resultPresented, "View board unexpectedly reopened seen result")

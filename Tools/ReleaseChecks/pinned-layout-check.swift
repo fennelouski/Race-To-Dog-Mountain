@@ -29,7 +29,8 @@ private struct ProbeMarker: View {
                         } }
                     let renderer = ImageRenderer(content: content); renderer.scale = 1
                     guard renderer.cgImage != nil, let frame = probe.frame else { fatalError("No actual board frame rendered") }
-                    if let baseline { precondition(abs(baseline.minY-frame.minY) < 0.01 && abs(baseline.width-frame.width) < 0.01 && abs(baseline.minX-frame.minX) < 0.01, "Board reflowed") }
+                    // A finished game intentionally steps the board back for the result layout.
+                    if let baseline, !game.isOver { precondition(abs(baseline.minY-frame.minY) < 0.01 && abs(baseline.width-frame.width) < 0.01 && abs(baseline.minX-frame.minX) < 0.01, "Board reflowed") }
                     else { baseline = frame }
                     rows.append(["width":width,"height":height,"type":String(describing:type),"moves":game.moves,"scores":game.scores,"scoreDisplayFixture":LayoutProbe.scoreFixture ?? -1,"concurrentEffects":LayoutProbe.events.count,"tileX":frame.minX,"tileY":frame.minY,"tileWidth":frame.width])
 

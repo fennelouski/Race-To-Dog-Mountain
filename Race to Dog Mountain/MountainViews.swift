@@ -78,6 +78,8 @@ final class MountainSceneDelegate: UIResponder, UIWindowSceneDelegate {
 #endif
 
 struct MountainHome: View {
+    @Environment(\.accessibilityReduceMotion) private var homeReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var homeAnimations = true
     @AppStorage("boardScrollThreshold", store: MountainExperience.defaults) private var boardScrollThreshold = 7
     @AppStorage("showStatusBar", store: MountainExperience.defaults) private var showStatusBar = false
     @AppStorage("player1Name", store: MountainExperience.defaults) private var firstName = "Player 1"
@@ -186,7 +188,7 @@ struct MountainHome: View {
                 ScrollView {
                     VStack(spacing: 32) {
                         Spacer(minLength: 16)
-                        Text("Race to\nDog Mountain")
+                        Text("Tally\nTangle")
                             .font(MountainStyle.display(typeSize.isAccessibilitySize ? 36 : geometry.size.width > 600 ? 76 : 48))
                             .tracking(-1).multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
@@ -199,6 +201,13 @@ struct MountainHome: View {
                         .buttonStyle(MountainButton(prominent: true))
                         .accessibilityIdentifier("start-game")
                         .keyboardShortcut("n", modifiers: .command)
+                        // Game Center carries each turn between friends over the internet.
+                        Button { friends.invite(size: size) } label: {
+                            Label("Invite a friend", systemImage: "person.badge.plus").frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(MountainButton()).disabled(friends.sending)
+                        .accessibilityHint("Pick a Game Center friend. You take turns online.")
+                        .accessibilityIdentifier("home-invite-friend")
                         HStack(spacing: 24) {
                             homeControl("How to play", symbol: "questionmark", identifier: "help") { rules = true }
                             Spacer(minLength: 0)
@@ -213,6 +222,7 @@ struct MountainHome: View {
                     .frame(maxWidth: .infinity)
                 }.scrollIndicators(.hidden)
             }
+            .modifier(MountainTouchBlooms(enabled: !homeReduceMotion && homeAnimations))
         }
     }
 
@@ -265,7 +275,7 @@ struct MountainHome: View {
             if gameCategory == .messages || categoryGames.isEmpty {
                 Image(systemName: gameCategory == .messages ? "message.fill" : gameCategory == .ai ? "sparkles" : "person.2.fill")
                     .font(.largeTitle).foregroundStyle(MountainStyle.gold).frame(maxWidth: .infinity).accessibilityHidden(true)
-                Text(gameCategory == .messages ? "Your iMessage games live in their conversations. Open a conversation, tap +, then choose Race to Dog Mountain." : gameCategory == .ai ? "Play a computer on this device. Tap its player card to choose a level." : "Share this device with a friend and take turns on the same board.")
+                Text(gameCategory == .messages ? "Your iMessage games live in their conversations. Open a conversation, tap +, then choose Tally Tangle." : gameCategory == .ai ? "Play a computer on this device. Tap its player card to choose a level." : "Share this device with a friend and take turns on the same board.")
                     .font(.body).multilineTextAlignment(.center).frame(maxWidth: .infinity)
             }
             Button { startCategoryGame() } label: { Label(gameCategory == .messages ? "Open Messages" : "New \(gameCategory.title) game", systemImage: gameCategory == .messages ? "message.fill" : "play.fill").frame(maxWidth: .infinity) }
@@ -346,7 +356,7 @@ private struct MountainRules: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
-    private let titles = ["Follow the gold row", "Now try the mint column", "Think one move ahead", "Leave a good path", "Ready for the mountain"]
+    private let titles = ["Follow the gold row", "Now try the mint column", "Think one move ahead", "Leave a good path", "Ready to tangle"]
     private let details = ["Tap a gold number. It adds to your score.", "Your choice set this column. Tap a mint number.", "Pick a gold number. Notice which column you leave.", "Take a mint number. Used tiles stay empty.", "When the next player has no moves, the higher score wins."]
     var body: some View {
         NavigationStack {
@@ -513,18 +523,23 @@ private struct MountainGameView: View {
                         if usesSideControls(width: geometry.size.width, height: geometry.size.height) && !typeSize.isAccessibilitySize {
                             HStack(alignment: .top, spacing: 24) {
                                 VStack(spacing: 18) {
-                                    score(player: 0)
-                                    score(player: 1)
-
-                                    matchControls
-                                }.frame(width: 240)
-                                board(width: max(160, min(min(geometry.size.width, 1268) - gameHorizontalPadding - 264, geometry.size.height - 128)), fitAllSizes: geometry.size.width >= 900 && geometry.size.height >= 600)
+                                    if finished {
+                                        finishPanel.transition(finishTransition)
+                                        finishActions.transition(finishTransition)
+                                    } else {
+                                        score(player: 0)
+                                        score(player: 1)
+                                        matchControls
+                                    }
+                                }.frame(width: finished ? 320 : 240)
+                                board(width: max(160, min(min(geometry.size.width, 1268) - gameHorizontalPadding - (finished ? 344 : 264), geometry.size.height - 128)) * (finished ? 0.86 : 1), fitAllSizes: geometry.size.width >= 900 && geometry.size.height >= 600)
                                     .frame(maxWidth: .infinity)
                             }
                         } else {
                             verticalGame(width: min(geometry.size.width - 32, 760), maxHeight: geometry.size.width >= 600 && !typeSize.isAccessibilitySize ? max(160, geometry.size.height - boardTop - gameHorizontalPadding) : nil)
                         }
                     }
+                    .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.82), value: resultPresented)
                     .coordinateSpace(name: "mountain-game-content")
                     .onPreferenceChange(MountainBoardTop.self) { boardTop = $0 }
 #if os(visionOS)
@@ -540,13 +555,14 @@ private struct MountainGameView: View {
                 MountainMoveEffects(events: $feedback, anchors: anchors, reduceMotion: reduceMotion)
             }
             .overlay { MountainVineSweep(trigger: vines).ignoresSafeArea() }
+            .modifier(MountainTouchBlooms(enabled: !reduceMotion))
             .onChange(of: geometry.size) { _, _ in feedback.removeAll() }
             .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() }; publishDisplay() }
             .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
             .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], seat: player.id, profiles: $humanProfiles, computer: $computers[player.id], difficulty: $difficulty, adaptive: $adaptiveDifficulty, canResetLearning: computers.contains(false), onResetLearning: { if let human = computers[player.id] ? computers.firstIndex(of: false) : player.id { learningStore?.reset(key: MountainLearningStore.key(name: names[human], size: game.size, seat: human)) } }, onDifficultyChanged: { rolesChanged = true; learning = nil; computerLevel = difficulty.rawValue; persist() }).mountainSheetSize() }
-            .sheet(isPresented: $resultPresented) { resultPanel.mountainSheetSize() }
             .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay() }
             .onChange(of: humanProfiles) { publishDisplay() }
+            .onChange(of: feedback.isEmpty) { presentPendingResult() }
             .onChange(of: customizing?.id) { publishDisplay(); presentPendingResult() }
             .onChange(of: replaying) { publishDisplay() }
 
@@ -588,7 +604,7 @@ private struct MountainGameView: View {
                 if let replay = lastComputerMove { MountainReplayView(replay: replay).mountainSheetSize() }
             }
         .foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
-        .mountainGameFeedback(moves: game.moves, over: humanVictory, enabled: hapticsEnabled, intensity: 0.2 + moveIntensity * 0.8)
+        .mountainGameFeedback(moves: game.moves, over: humanVictory && resultPresented, enabled: hapticsEnabled, intensity: 0.2 + moveIntensity * 0.8)
         .offeringMountainDisplay()
 #if os(macOS)
         .focusedSceneValue(\.mountainActions, MountainActions(newGame: { restart() }, options: { gameSettings = true }, rules: { gameHelp = true }, replay: lastComputerMove == nil ? nil : { replaying = true }, close: { leaveGame() }))
@@ -616,14 +632,17 @@ private struct MountainGameView: View {
     }
     private func verticalGame(width: CGFloat, maxHeight: CGFloat? = nil) -> some View {
         VStack(spacing: 24) {
-            if typeSize.isAccessibilitySize {
+            if finished {
+                finishPanel.transition(finishTransition)
+            } else if typeSize.isAccessibilitySize {
                 VStack(spacing: 14) { score(player: 0); score(player: 1) }
             } else {
                 HStack(spacing: 14) { score(player: 0); score(player: 1) }
             }
-
-            board(width: width, maxHeight: maxHeight)
-            matchControls
+            // The finished board steps back so the result and actions share the space evenly.
+            board(width: finished ? width * 0.72 : width, maxHeight: maxHeight.map { finished ? $0 * 0.6 : $0 })
+                .opacity(finished ? 0.8 : 1)
+            if finished { finishActions.transition(finishTransition) } else { matchControls }
         }
     }
     private var startComputerButton: some View {
@@ -638,14 +657,15 @@ private struct MountainGameView: View {
             Button { replaying = true } label: { Image(systemName: "play.rectangle").frame(width: 48, height: 48) }
                 .buttonStyle(.plain).disabled(lastComputerMove == nil).opacity(lastComputerMove == nil ? 0.4 : 1)
                 .accessibilityLabel("Replay computer move").accessibilityIdentifier("replay-computer").keyboardShortcut("r", modifiers: .command)
-            Button { pendingResult = false; resultPresented = true } label: { Image(systemName: "flag.checkered").frame(width: 48, height: 48) }
+            Button { pendingResult = true; presentPendingResult() } label: { Image(systemName: "flag.checkered").frame(width: 48, height: 48) }
                 .buttonStyle(.plain).disabled(!game.isOver).opacity(game.isOver ? 1 : 0.4)
                 .accessibilityLabel("Results").accessibilityIdentifier("game-results")
         }.font(.title2).frame(maxWidth: .infinity)
     }
     private func presentPendingResult() {
         guard pendingResult, game.isOver, resolution == nil, scenePhase == .active,
-              !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil else { return }
+              !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil,
+              feedback.isEmpty else { return } // Let the final points land on the score first.
         pendingResult = false; resultPresented = true
     }
     private func leaveGame() { leavingGame = true; resolution = nil; feedback.removeAll(); persist(); if let onLeave { onLeave() } else { dismiss() } }
@@ -670,7 +690,7 @@ private struct MountainGameView: View {
             Button { swapSeats() } label: {
                 Image(systemName: "arrow.left.arrow.right").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
                     .background(MountainStyle.cream.opacity(0.1), in: Circle())
-            }.accessibilityLabel(game.moves == 0 ? "Switch player 1 and player 2" : "Switch player 1 and player 2 and start a new race")
+            }.accessibilityLabel(game.moves == 0 ? "Switch player 1 and player 2" : "Switch player 1 and player 2 and start a new game")
                 .accessibilityIdentifier("swap-players").mountainHover()
             Spacer()
             startComputerButton
@@ -689,24 +709,23 @@ private struct MountainGameView: View {
     private var humanVictory: Bool {
         game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1]
     }
-    private var resultPanel: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    Image(systemName: humanVictory ? "pawprint.fill" : "mountain.2.fill")
-                        .font(.system(size: 56)).foregroundStyle(MountainStyle.gold).accessibilityHidden(true)
-                    Text(result).font(MountainStyle.display(36)).multilineTextAlignment(.center).accessibilityAddTraits(.isHeader)
-                    Text("\(playerName(0)) \(game.scores[0]) · \(playerName(1)) \(game.scores[1])")
-                        .font(.title3.bold()).multilineTextAlignment(.center)
-                    Button("Race again") { restart() }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("result-rematch")
-                    NavigationLink { MountainFinishShare(game: game, names: [playerName(0), playerName(1)], history: history) } label: {
-                        Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                    }.buttonStyle(MountainButton()).accessibilityIdentifier("share-result")
-                    Button("Back to mountain") { resultPresented = false; leaveGame() }.buttonStyle(MountainButton()).accessibilityIdentifier("result-home")
-                }.padding(28).frame(maxWidth: 620).frame(maxWidth: .infinity)
-            }.background(MountainStyle.ink).navigationTitle("Game over").mountainInlineTitle()
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("View board") { resultPresented = false } } }
-        }.foregroundStyle(MountainStyle.cream).tint(MountainStyle.gold).preferredColorScheme(.dark)
+    private var finished: Bool { resultPresented && game.isOver }
+    private var finishTransition: AnyTransition { reduceMotion ? .opacity : .scale(scale: 0.9).combined(with: .opacity) }
+    private var finishPanel: some View {
+        MountainFinishPanel(result: result, names: [playerName(0), playerName(1)], scores: game.scores,
+                            humanVictory: humanVictory, reduceMotion: reduceMotion, haptics: hapticsEnabled)
+    }
+    private var finishActions: some View {
+        VStack(spacing: 12) {
+            Button { restart() } label: { Label("Play again", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
+                .buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("result-rematch")
+            HStack(spacing: 12) {
+                Button { sharing = true } label: { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                    .buttonStyle(MountainButton()).accessibilityIdentifier("share-result")
+                Button { leaveGame() } label: { Label("Home", systemImage: "house.fill").frame(maxWidth: .infinity) }
+                    .buttonStyle(MountainButton()).accessibilityIdentifier("result-home")
+            }
+        }.frame(maxWidth: 520)
     }
     private var result: String {
         game.scores[0] == game.scores[1] ? "A tie!" : "\(playerName(game.scores[0] > game.scores[1] ? 0 : 1)) wins!"
@@ -743,7 +762,7 @@ private struct MountainGameView: View {
     }
     private func avatarActivity(_ player: Int) -> MountainAvatarActivity {
         .init(game: game, player: player,
-            paused: replaying || leavingGame || gameHelp || gameSettings || customizing != nil || resultPresented || scenePhase != .active,
+            paused: replaying || leavingGame || gameHelp || gameSettings || customizing != nil || scenePhase != .active,
             lastMove: lastMove)
     }
     private func scoreDescription(_ player: Int) -> String {
@@ -1119,8 +1138,8 @@ private struct MountainExternalScreen: View {
                 ZStack {
                     MountainScenery().overlay(MountainStyle.ink.opacity(0.5)).ignoresSafeArea()
                     VStack(spacing: 24) {
-                        Image(systemName: "mountain.2.fill").font(.system(size: 80)).foregroundStyle(MountainStyle.gold)
-                        Text("Race to Dog Mountain").font(MountainStyle.display(60)).multilineTextAlignment(.center)
+                        Image(systemName: "leaf.fill").font(.system(size: 80)).foregroundStyle(MountainStyle.gold)
+                        Text("Tally Tangle").font(MountainStyle.display(60)).multilineTextAlignment(.center)
                         Text("Start a game on your iPhone or iPad").font(.title)
                     }.padding(48)
                 }.foregroundStyle(MountainStyle.cream)
@@ -1249,9 +1268,9 @@ struct MountainFinishShare: View {
             ScrollView {
                 VStack(spacing: 20) {
                     Image(systemName: "flag.checkered").font(.largeTitle).foregroundStyle(MountainStyle.gold)
-                    Text("Share your climb").font(MountainStyle.display(28))
+                    Text("Share your tangle").font(MountainStyle.display(28))
                     if let exported {
-                        ShareLink(item: exported, subject: Text("Race to Dog Mountain"), message: Text("Race to Dog Mountain · https://apps.apple.com/app/id971329310")) {
+                        ShareLink(item: exported, subject: Text("Tally Tangle"), message: Text("Tally Tangle · https://apps.apple.com/app/id971329310")) {
                             Label(history == nil ? "Share final board" : "Share replay GIF", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                         }.buttonStyle(MountainButton(prominent: true)).accessibilityIdentifier("share-export")
                     } else if let failure { Text(failure).font(.body) }
@@ -1281,7 +1300,7 @@ struct MountainFinishShare: View {
         } else { states = [game] }
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent("mountain-share-" + UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let url = folder.appendingPathComponent(history == nil ? "Dog-Mountain-final.png" : "Dog-Mountain-replay.gif")
+        let url = folder.appendingPathComponent(history == nil ? "Tally-Tangle-final.png" : "Tally-Tangle-replay.gif")
         var completed = false
         defer { if !completed { try? FileManager.default.removeItem(at: folder) } }
         guard let destination = CGImageDestinationCreateWithURL(url as CFURL, (history == nil ? UTType.png.identifier : UTType.gif.identifier) as CFString, states.count, nil) else { throw ExportError.render }
@@ -1316,7 +1335,7 @@ private struct MountainExportBoard: View {
     private var side: CGFloat { (448 - CGFloat(game.size - 1) * 3) / CGFloat(game.size) }
     var body: some View {
         VStack(spacing: 12) {
-            Text("Race to Dog Mountain").font(MountainStyle.display(28))
+            Text("Tally Tangle").font(MountainStyle.display(28))
             HStack {
                 ForEach(0..<2, id: \.self) { player in
                     VStack(spacing: 4) {
@@ -1325,7 +1344,7 @@ private struct MountainExportBoard: View {
                     }.frame(maxWidth: .infinity).foregroundStyle(MountainStyle.player(player))
                 }
             }
-            Text(game.isOver ? game.scores[0] == game.scores[1] ? "A tie!" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" : selected == nil ? "The climb begins" : "+\(points) points · Move \(game.moves)")
+            Text(game.isOver ? game.scores[0] == game.scores[1] ? "A tie!" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" : selected == nil ? "The tangle begins" : "+\(points) points · Move \(game.moves)")
                 .font(.system(size: 16, weight: .semibold)).lineLimit(1)
             LazyVGrid(columns: Array(repeating: GridItem(.fixed(side), spacing: 3), count: game.size), spacing: 3) {
                 ForEach(game.tiles) { tile in
@@ -1344,5 +1363,94 @@ private struct MountainExportBoard: View {
             Text("Classic · \(game.size) × \(game.size)\napps.apple.com/app/id971329310").font(.system(size: 11)).multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
         }.padding(24).frame(width: 512, height: 760).background(MountainStyle.ink).foregroundStyle(MountainStyle.cream)
+    }
+}
+
+/// The end of a round, shown in place: both totals tally up, then the winner's card blooms.
+struct MountainFinishPanel: View {
+    let result: String
+    let names: [String]
+    let scores: [Int]
+    let humanVictory: Bool
+    let reduceMotion: Bool
+    let haptics: Bool
+    @State private var tally = 0.0
+    @State private var landed = false
+    private var winner: Int? { scores[0] == scores[1] ? nil : scores[0] > scores[1] ? 0 : 1 }
+    var body: some View {
+        VStack(spacing: 18) {
+            HStack(spacing: 10) {
+                Image(systemName: "laurel.leading")
+                Text(result).font(MountainStyle.display(34)).multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
+                Image(systemName: "laurel.trailing")
+            }
+            .font(.title).foregroundStyle(MountainStyle.gold)
+            .symbolEffect(.pulse, options: .repeating, isActive: landed && !reduceMotion)
+            HStack(spacing: 14) { card(0); card(1) }
+        }
+        .padding(20).frame(maxWidth: 620)
+        .background(MountainStyle.ink.opacity(0.55), in: RoundedRectangle(cornerRadius: 20))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(result) \(names[0]) \(scores[0]), \(names[1]) \(scores[1]).")
+        .sensoryFeedback(humanVictory ? .success : .impact(flexibility: .soft), trigger: landed) { _, done in haptics && done && !MountainExperience.isQAActive }
+        .onAppear {
+            guard !reduceMotion else { tally = 1; landed = true; return }
+            withAnimation(.easeOut(duration: 1.1).delay(0.25)) { tally = 1 } completion: {
+                withAnimation(.spring(response: 0.45, dampingFraction: 0.6)) { landed = true }
+            }
+        }
+    }
+    private func card(_ player: Int) -> some View {
+        let won = winner == player
+        return VStack(spacing: 6) {
+            Image(systemName: won ? "crown.fill" : winner == nil ? "leaf.fill" : "leaf")
+                .font(.title2).opacity(landed ? 1 : 0)
+            Text(names[player]).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            MountainScoreNumber(value: Double(scores[player]) * tally).font(MountainStyle.display(won && landed ? 52 : 40))
+        }
+        .frame(maxWidth: .infinity).padding(.vertical, 16).padding(.horizontal, 10)
+        .foregroundStyle(MountainStyle.player(player))
+        .background(MountainStyle.player(player).opacity(won && landed ? 0.22 : 0.07), in: RoundedRectangle(cornerRadius: 16))
+        .overlay { RoundedRectangle(cornerRadius: 16).strokeBorder(MountainStyle.player(player).opacity(won && landed ? 0.9 : 0.2), lineWidth: won && landed ? 2.5 : 1) }
+        .scaleEffect(won && landed && !reduceMotion ? 1.04 : 1)
+        .opacity(landed && winner != nil && !won ? 0.7 : 1)
+    }
+}
+
+/// A brief leaf bloom wherever the player touches the background. Decorative only.
+struct MountainTouchBlooms: ViewModifier {
+    let enabled: Bool
+    @State private var blooms: [(id: UUID, point: CGPoint)] = []
+    func body(content: Content) -> some View {
+        content
+            .simultaneousGesture(SpatialTapGesture().onEnded { tap in
+                guard enabled else { return }
+                let id = UUID()
+                blooms = Array((blooms + [(id, tap.location)]).suffix(6))
+                Task { try? await Task.sleep(for: .seconds(0.8)); blooms.removeAll { $0.id == id } }
+            })
+            .overlay(alignment: .topLeading) {
+                ForEach(blooms, id: \.id) { bloom in MountainBloom().position(bloom.point) }
+                    .allowsHitTesting(false).accessibilityHidden(true)
+            }
+    }
+}
+private struct MountainBloom: View {
+    @State private var open = false
+    var body: some View {
+        ZStack {
+            Circle().strokeBorder(MountainStyle.gold.opacity(0.5), lineWidth: 1.5)
+                .frame(width: 18, height: 18).scaleEffect(open ? 3 : 0.4)
+            ForEach(0..<6, id: \.self) { i in
+                Ellipse().fill(Color(red: 0.42, green: 0.74, blue: 0.36))
+                    .frame(width: 6, height: 12)
+                    .offset(y: open ? -26 : -4)
+                    .rotationEffect(.degrees(Double(i) * 60 + (open ? 40 : 0)))
+            }
+        }
+        .opacity(open ? 0 : 1)
+        .onAppear { withAnimation(.easeOut(duration: 0.7)) { open = true } }
     }
 }

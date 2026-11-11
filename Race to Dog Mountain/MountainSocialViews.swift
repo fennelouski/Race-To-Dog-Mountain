@@ -28,7 +28,7 @@ struct MountainChallengeBoard: View {
         }
     }
     private var status: String {
-        if game.isOver { return game.scores[0] == game.scores[1] ? "An even climb" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" }
+        if game.isOver { return game.scores[0] == game.scores[1] ? "An even tangle" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" }
         if ended { return "Game ended" }
         return busy ? "Passing the turn" : canPlay ? "Your move" : "Your friend's move"
     }
@@ -129,10 +129,10 @@ struct MountainMessagesHelp: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     Image(systemName: "message.fill").font(.largeTitle).foregroundStyle(MountainStyle.mint).accessibilityHidden(true)
-                    Text("Race in Messages").font(MountainStyle.display(36)).accessibilityAddTraits(.isHeader)
-                    Text("Open a conversation with a friend. Tap + and choose Race to Dog Mountain from your Messages apps.")
+                    Text("Tangle in Messages").font(MountainStyle.display(36)).accessibilityAddTraits(.isHeader)
+                    Text("Open a conversation with a friend. Tap + and choose Tally Tangle from your Messages apps.")
                     Text("Pick your first number and add the board to your message. Your friend taps the board to take their turn.")
-                    Text("Each new race has its own board in the conversation. You can keep several games going.")
+                    Text("Each new game has its own board in the conversation. You can keep several games going.")
                     Button { if let url = URL(string: "sms:") { UIApplication.shared.open(url) } } label: { Label("Open Messages", systemImage: "message.fill").frame(maxWidth: .infinity) }
                         .buttonStyle(MountainButton(prominent: true))
                 }.padding(28).frame(maxWidth: 600).frame(maxWidth: .infinity)

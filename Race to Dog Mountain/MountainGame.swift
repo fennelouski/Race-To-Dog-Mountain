@@ -18,38 +18,38 @@ enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     var displayName: String { "\(name) (\(rawValue + 1))" }
     var portrait: String { "Opponent\(rawValue + 1)" }
     var detail: String {
-        ["Curious beginner", "Easygoing explorer", "Enthusiastic newcomer", "Patient trail walker", "Careful route finder", "Adventurous thinker", "Observant challenger", "Steady tactician", "Playful strategist", "Quiet problem solver", "Focused planner", "Analytical navigator", "Confident climber", "Precise pathfinder", "Inventive expert", "Summit strategist"][rawValue]
+        ["Curious beginner", "Easygoing explorer", "Enthusiastic newcomer", "Patient gardener", "Careful vine finder", "Adventurous thinker", "Observant challenger", "Steady tactician", "Playful strategist", "Quiet problem solver", "Focused planner", "Analytical navigator", "Confident grower", "Precise pathfinder", "Inventive expert", "Canopy strategist"][rawValue]
     }
     var depth: Int { rawValue / 4 + 1 }
     var branches: Int { rawValue % 4 + 3 }
     var accuracy: Double { 0.10 + Double(rawValue) * (0.88 / 15) }
     var greeting: String {
-        ["Let's learn the trail together.", "No rush. Let's enjoy the climb.", "Ready to try a new route?", "One thoughtful step at a time.", "Let's see where the numbers take us.", "I have a good feeling about this climb.", "There's always another angle.", "Let's put our plans to the test.", "Care for a friendly challenge?", "I'll take a moment to think.", "Ready when you are.", "Every choice changes the possibilities.", "Let's find the cleanest route.", "The small details matter.", "Let's try something unexpected.", "A good climb starts with a good choice."][rawValue]
+        ["Let's learn the vines together.", "No rush. Let's enjoy the garden.", "Ready to try a new route?", "One thoughtful step at a time.", "Let's see where the numbers take us.", "I have a good feeling about this tangle.", "There's always another angle.", "Let's put our plans to the test.", "Care for a friendly challenge?", "I'll take a moment to think.", "Ready when you are.", "Every choice changes the possibilities.", "Let's find the cleanest vine.", "The small details matter.", "Let's try something unexpected.", "A good tangle starts with a good choice."][rawValue]
     }
     func phrase(move: Int) -> String {
         let phrases = [
             ["That looked promising!", "I'm still finding my feet.", "Your turn to explore."],
-            ["Nice and steady.", "Let's see what happens next.", "Plenty of trail ahead."],
+            ["Nice and steady.", "Let's see what happens next.", "Plenty of vine ahead."],
             ["Found a new path!", "Let's keep moving.", "I wonder what you'll choose."],
             ["A little patience goes a long way.", "One step, then the next.", "Take your time."],
             ["That opens a useful route.", "I've checked the next turn.", "What will you leave me?"],
             ["Let's follow this one.", "A bold step can pay off.", "Your adventure continues."],
             ["Did you notice that column?", "There's more than one way through.", "Look at the next row."],
             ["A steady route is still a route.", "Now we test the plan.", "Your next move matters."],
-            ["A little twist in the trail.", "This is getting interesting.", "Surprise me."],
+            ["A little twist in the vine.", "This is getting interesting.", "Surprise me."],
             ["I've thought through a few turns.", "No need to rush the choice.", "The next step is yours."],
             ["Keep an eye on what follows.", "This route has potential.", "Your move, your plan."],
             ["The possibilities just changed.", "I compared a few routes.", "Which reply do you prefer?"],
             ["A clean path through the numbers.", "I'll take the longer view.", "Think one turn beyond mine."],
-            ["A small detail can decide the climb.", "I weighed the next few steps.", "Choose your reply carefully."],
+            ["A small detail can decide the tangle.", "I weighed the next few steps.", "Choose your reply carefully."],
             ["An unexpected route can be useful.", "Let's change the shape of the game.", "I have another idea."],
-            ["Look beyond the next step.", "Every route has a tradeoff.", "The summit takes planning."]
+            ["Look beyond the next step.", "Every route has a tradeoff.", "The canopy takes planning."]
         ]
         return phrases[rawValue][move % 3]
     }
     func resultPhrase(humanWon: Bool) -> String {
-        humanWon ? ["You found the route!", "A lovely climb. Well played.", "That was a clever adventure!", "Your patience paid off.", "You spotted the better path.", "A bold finish. Nice work!", "You saw something I missed.", "Your plan held up. Well played.", "A delightful surprise!", "You gave me something to think about.", "A well-earned finish.", "Your choices made the difference.", "An excellent climb.", "You caught the decisive detail.", "A creative route to victory!", "A worthy ascent. You earned the summit."][rawValue]
-            : ["Another try? We'll learn together.", "There's always another trail.", "Next adventure, new possibilities.", "Take another steady climb.", "Let's find a different route.", "The next climb could be yours.", "Try another angle next time.", "A new plan, a new game.", "Let's play another friendly round.", "A fresh board gives us both a fresh start.", "Another chance to test your plan.", "The next game has new possibilities.", "Let's explore another path.", "There's another route waiting.", "Try something unexpected next time.", "The mountain will be here for another climb."][rawValue]
+        humanWon ? ["You found the route!", "A lovely tangle. Well played.", "That was a clever adventure!", "Your patience paid off.", "You spotted the better path.", "A bold finish. Nice work!", "You saw something I missed.", "Your plan held up. Well played.", "A delightful surprise!", "You gave me something to think about.", "A well-earned finish.", "Your choices made the difference.", "An excellent harvest.", "You caught the decisive detail.", "A creative route to victory!", "A worthy bloom. You earned the canopy."][rawValue]
+            : ["Another try? We'll learn together.", "There's always another vine.", "Next adventure, new possibilities.", "Take another steady tangle.", "Let's find a different route.", "The next tangle could be yours.", "Try another angle next time.", "A new plan, a new game.", "Let's play another friendly round.", "A fresh board gives us both a fresh start.", "Another chance to test your plan.", "The next game has new possibilities.", "Let's explore another path.", "There's another route waiting.", "Try something unexpected next time.", "The vines will be here for another tangle."][rawValue]
     }
     static func adjusted(_ current: Int, humanWon: Bool) -> Int {
         min(2, max(-2, current + (humanWon ? 1 : -1)))
@@ -468,7 +468,7 @@ struct MountainHumanProfile: Codable {
     var avatarStyle: String? = nil
     var photoID: String? = nil
     var resolvedStyle: String { avatarStyle ?? (symbol == "person.fill" ? "fonster" : "symbol") }
-    static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "mountain.2.fill", "sparkles",
+    static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "camera.macro", "sparkles",
                           "star.fill", "heart.fill", "bolt.fill", "flame.fill", "moon.stars.fill", "cloud.fill",
                           "snowflake", "tree.fill", "bird.fill", "fish.fill", "tortoise.fill", "hare.fill", "crown.fill", "music.note"]
     static let emoji = ["🐶", "🐱", "🦊", "🐻", "🐼", "🐸", "🦉", "🐢", "🦄", "🐙", "🌻", "🌵", "🍄", "🌈", "⭐️", "🔥", "🚀", "⚽️", "🎸", "🎨", "👑", "😎", "🤖", "👻"]

@@ -128,7 +128,7 @@ struct MountainBoard: View {
                                     Text("+\(lastPoints)").font(.system(size: min(badgeSize, max(1, (width - 4) / 2.8)), weight: .bold)).lineLimit(1).minimumScaleFactor(0.1).foregroundStyle(MountainStyle.cream)
                                         .transition(.identity).transaction { $0.animation = nil }
                                 } else {
-                                    Image(systemName: "pawprint.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
+                                    Image(systemName: "leaf.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
                                         .transition(.identity).transaction { $0.animation = nil }
                                 }
                             } else {
@@ -325,8 +325,8 @@ struct MountainExternalPresentation: View {
                 }.padding(inset)
                 if snapshot.game.isOver {
                     VStack(spacing: 18) {
-                        Image(systemName: snapshot.humanVictory ? "pawprint.fill" : "mountain.2.fill").font(.system(size: 56)).accessibilityHidden(true)
-                        Text(snapshot.game.scores[0] == snapshot.game.scores[1] ? "An even climb" : "\(snapshot.names[snapshot.game.scores[0] > snapshot.game.scores[1] ? 0 : 1]) wins!")
+                        Image(systemName: snapshot.humanVictory ? "crown.fill" : "leaf.fill").font(.system(size: 56)).accessibilityHidden(true)
+                        Text(snapshot.game.scores[0] == snapshot.game.scores[1] ? "An even tangle" : "\(snapshot.names[snapshot.game.scores[0] > snapshot.game.scores[1] ? 0 : 1]) wins!")
                             .font(MountainStyle.display(54)).multilineTextAlignment(.center)
                         Text("\(snapshot.game.scores[0]) : \(snapshot.game.scores[1])").font(.largeTitle.bold()).monospacedDigit()
                     }.padding(48).background(MountainStyle.ink.opacity(0.96), in: RoundedRectangle(cornerRadius: 32))

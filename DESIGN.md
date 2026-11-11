@@ -1,6 +1,6 @@
 ---
-name: Race to Dog Mountain
-description: An alpine poster for a local number strategy game.
+name: Tally Tangle
+description: A vine-tangled garden poster for a number strategy game.
 colors:
   pine-ink: "rgb(2.5% 12% 17%)"
   warm-cream: "rgb(100% 95% 82%)"
@@ -8,8 +8,8 @@ colors:
   column-mint: "rgb(42% 88% 81%)"
   sky-teal: "rgb(8% 32% 36%)"
   distant-mist: "rgb(32% 57% 53%)"
-  far-ridge: "rgb(22% 49% 48%)"
-  near-ridge: "rgb(10% 32% 36%)"
+  far-hedge: "rgb(22% 49% 48%)"
+  near-hedge: "rgb(10% 32% 36%)"
 typography:
   display:
     fontFamily: "Georgia-Bold, Georgia, serif"
@@ -180,22 +180,22 @@ components:
     size: "42px"
 ---
 
-# Design System: Race to Dog Mountain
+# Design System: Tally Tangle
 
 ## Overview
 
-**Creative North Star: "The Alpine Travel Poster"**
+**Creative North Star: "The Tangled Garden"**
 
-A cream serif title sits above geometric mountain ridges and an amber sun. Deep pine sky, drifting cloud lines, stars and a dotted climbing trail make the opening scene recognizable before any controls appear. The number board carries the same colors into play.
+A cream serif title sits beneath swaying vines hanging from the canopy, above layered leafy hedges and an amber sun. Deep pine sky, drifting cloud lines, stars and a curling gold tendril make the opening scene recognizable before any controls appear. Touches bloom into small leaf bursts, and finished games rain falling leaves. The number board carries the same colors into play.
 
-Classic is the only game. The home screen offers local and friend play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results remain inside the mountain scene.
+Classic is the only game. The home screen offers local and friend play immediately; player configuration stays behind a secondary action. Rules and player settings use a quiet pine background with the same typography and palette. Results animate in place inside the garden scene: final points land, then a winner panel tallies both totals.
 
-The native visionOS adaptation keeps the alpine scene inside one bounded floating window. Its invitation and named rival lead directly to Play. Glass surrounds the illustrated game; controls use native hover feedback and shallow depth offsets.
+The native visionOS adaptation keeps the garden scene inside one bounded floating window. Its invitation and named rival lead directly to Play. Glass surrounds the illustrated game; controls use native hover feedback and shallow depth offsets.
 
-The native watchOS adaptation keeps the alpine palette and human rivals in short, icon-led pages. System type, SF Symbols and numerals carry ordinary screens; full spoken labels retain their meaning. The scenery is static on home, and play uses plain pine behind large move buttons.
+The native watchOS adaptation keeps the garden palette and human rivals in short, icon-led pages. System type, SF Symbols and numerals carry ordinary screens; full spoken labels retain their meaning. The scenery is static on home, and play uses plain pine behind large move buttons.
 
 **Key Characteristics:**
-- Layered angular ridges, a circular sun and a winding dotted trail.
+- Layered leafy hedges, hanging tangled vines, a circular sun and a curling dotted tendril.
 - Cream Georgia display type with readable system text for controls.
 - Gold rows and mint columns, each also identified by words and arrows.
 - Background motion isolated from game state and controls.
@@ -214,7 +214,7 @@ The palette combines a dark pine world with warm cream, amber gold and cool mint
 
 ### Secondary
 - Column mint identifies the column player, their score and their legal moves.
-- Sky teal and distant mist form the sky gradient. Far ridge and near ridge separate mountain layers.
+- Sky teal and distant mist form the sky gradient. Far hedge and near hedge separate the leafy layers; hanging vines use stem green and leaf green.
 
 ### Neutral
 - Pine ink anchors backgrounds, board backing and dark text on filled tiles.
@@ -250,19 +250,19 @@ Watch uses native vertical pages inside NavigationStack, with Crown and swipe na
 
 ## Elevation & Depth
 
-Depth comes chiefly from overlapping ridges and darker board backing. The sun has a soft gold halo. A dark overlay quiets the scenery during play. Primary buttons have a low black shadow, and filled tiles have a short shadow that separates them from the board. Score panels use player-colored translucent fills and an active underline.
+Depth comes chiefly from overlapping hedges and darker board backing. The sun has a soft gold halo. A dark overlay quiets the scenery during play. Primary buttons have a low black shadow, and filled tiles have a short shadow that separates them from the board. Score panels use player-colored translucent fills and an active underline.
 
 iOS and macOS home place a half-opacity pine scrim over the scenery to protect the action and inbox text. Friend-game sheets use static scenery under a 0.65-opacity pine scrim. The interactive Messages board uses plain pine; its generated bubble uses static scenery with a 0.6-opacity pine scrim.
 
 The scenery alone redraws through Canvas and TimelineView at up to 30 frames per second. It pauses when covered or backgrounded. Reduce Motion freezes scenery and removes press springs and numeric score transitions. Winning adds gold and mint confetti; the calm alternative is static.
 
-visionOS clips the alpine scene to the vision window shape and applies native glass behind it. A half-opacity pine scrim protects home text contrast; play retains the shared darker scrim. The launch group sits 20 points forward. Wide game boards sit 12 points forward and score panes 24 points forward. These offsets describe implemented separation; headset comfort remains unverified.
+visionOS clips the garden scene to the vision window shape and applies native glass behind it. A half-opacity pine scrim protects home text contrast; play retains the shared darker scrim. The launch group sits 20 points forward. Wide game boards sit 12 points forward and score panes 24 points forward. These offsets describe implemented separation; headset comfort remains unverified.
 
 Watch controls are flat, without custom shadows. Home uses inactive shared scenery under a pine scrim at 0.65 opacity; game pages use plain pine. Press feedback scales to 96% over a 0.15-second ease-out. Move and replay changes use a 0.2-second ease-out. Reduce Motion removes these custom animations and press scaling.
 
 ## Shapes
 
-Mountains use angular paths, with a circular sun and curved dotted trail. Controls use comfortable rounded rectangles. Tiles stay square with the field-tile radius; buttons and score panels share the button-score radius. The board has the larger board radius. Game header actions use circular 48-point targets.
+Hedges use overlapping round leaf clumps; vines hang and sway from the top edge, with a circular sun and a curling dotted tendril. Controls use comfortable rounded rectangles. Tiles stay square with the field-tile radius; buttons and score panels share the button-score radius. The board has the larger board radius. Game header actions use circular 48-point targets.
 
 visionOS uses the vision window radius for clipping and its bounded glass background. Header actions use the vision header control size. Other platform shapes stay unchanged.
 
@@ -294,7 +294,7 @@ Legal cells take the active player's color and a cream border. Other available c
 
 ### Friend games and inbox
 
-The inbox reuses the alpine background and plain, full-width button rows. Each row has a 44-point symbol area, a leading name and written turn status, optional monospaced scores and a trailing chevron. The symbol is gold when a move is available and mint otherwise; the board retains its row/column color roles. Names and status wrap vertically, and the row combines its content for accessibility. Finished races sit inside a native disclosure.
+The inbox reuses the garden background and plain, full-width button rows. Each row has a 44-point symbol area, a leading name and written turn status, optional monospaced scores and a trailing chevron. The symbol is gold when a move is available and mint otherwise; the board retains its row/column color roles. Names and status wrap vertically, and the row combines its content for accessibility. Finished races sit inside a native disclosure.
 
 Friend games open in native navigation sheets. Their shared board follows the existing tile sizes and horizontal scrolling rules. Gold and mint score panels reflow from two columns to a vertical stack through ViewThatFits. A written status and direction label identify whose move it is. Saving shows native progress and disables move selection. Game Center sign-in and invitations use Apple's UI. On visionOS, the native gold Pass & play capsule uses pine text.
 
@@ -304,13 +304,13 @@ The Messages extension reuses the shared challenge board and primary button. Exp
 
 These rules describe implemented screens. Game Center delivery and cross-platform two-account play remain unverified. The Messages extension compiles and registers, but board/composer interaction, participant mapping and two-device delivery remain unverified. Lobby captures do not establish those behaviors or a release. Social review evidence is in `.impeccable/review/social`.
 
-### Mountain scenery
+### Garden scenery
 
-One reusable Canvas draws the sky, cloud lines, ridges, sun, trail, stars and result confetti. It ignores hit testing and stays hidden from accessibility. Keep the animation timeline inside this view so game state and controls do not redraw with the sky.
+One reusable Canvas draws the sky, cloud lines, hedges, hanging vines, sun, tendril, stars and falling result leaves. It ignores hit testing and stays hidden from accessibility. Keep the animation timeline inside this view so game state and controls do not redraw with the sky.
 
 ### Opponents
 
-Sixteen illustrated human hikers share the alpine palette and circular crop. Reuse `Opponent1` through `Opponent16` with the matching name and numeric level from `ComputerDifficulty`. Home and score panels use 48-point portraits, replay uses 64 points, and settings uses 80 points. A thin gold ring frames the portrait; the score panel's gold or mint still identifies the player's row or column.
+Sixteen illustrated human hikers share the garden palette and circular crop. Reuse `Opponent1` through `Opponent16` with the matching name and numeric level from `ComputerDifficulty`. Home and score panels use 48-point portraits, replay uses 64 points, and settings uses 80 points. A thin gold ring frames the portrait; the score panel's gold or mint still identifies the player's row or column.
 
 Keep names and levels beside portraits so identity does not depend on artwork. Portraits are hidden from VoiceOver because the adjacent text supplies their identity. Thinking adds a small vertical bob only in an active scene. Move reactions use a brief scale and tilt with profile-specific timing; Reduce Motion keeps portraits still. The native menu picker and stepper select the opponent in Players & board. Optional phrases use italic system text and start off.
 
@@ -322,13 +322,13 @@ Replay shows the board before the move, outlines the chosen tile in gold, then s
 
 ### App icon
 
-The canonical artwork is `Race to Dog Mountain/Images.xcassets/AppIcon.appiconset/AppIcon-1024.png`. Its central angular summit, large gold sun, teal ridges and cream snow echo the opening poster. A short trail of gold square tiles connects the mountain to the number game. Preserve the clear summit silhouette and full-bleed square composition when deriving smaller icons; the platform supplies the corner mask.
+The canonical artwork is `Race to Dog Mountain/Images.xcassets/AppIcon.appiconset/AppIcon-1024.png`. Two braided vines, gold for the row player and mint for the column player, climb over a leafy disc, with cream number tiles caught in the tangle. `Tools/generate-app-icon.swift` renders it and resizes every square iOS, Mac, Watch and Messages icon; run `Tools/export-messages-icons.swift` afterwards. Preserve the clear braid silhouette and full-bleed square composition when deriving smaller icons; the platform supplies the corner mask.
 
-The native visionOS icon uses three layers in `Vision/VisionAssets.xcassets/VisionIcon.solidimagestack`, each at the vision icon layer size. Back carries the opaque pine field and gold sun; Middle carries the mountain and snow; Front carries the near ridge and square trail. The original geometry and embedded PNG provenance come from `Tools/generate-vision-icon.swift`. Keep these native depth layers separate from the existing iOS/macOS icon.
+The native visionOS icon uses three layers in `Vision/VisionAssets.xcassets/VisionIcon.solidimagestack`, each at the vision icon layer size. Back carries the opaque pine field and leafy disc; Middle carries both full vines; Front carries the gold crossings, leaves and tiles. `Tools/generate-app-icon.swift` writes these layers. Keep these native depth layers separate from the existing iOS/macOS icon.
 
 ### Watch controls and pages
 
-The home mountain emblem and Play symbol lead directly to a fixed 4 × 4 game, with the human first against computer player 2. Move buttons show points only; a direction glyph and line number identify the current row or column. Their spoken labels include value, row, column and the next player's line. The read-only board uses watch-board-gap spacing and a 4-point inset, with cream available cells, player-colored legal cells and cream at 0.06 opacity for used cells. Replay adds a 3-point gold outline around the chosen cell.
+The home leaf emblem and Play symbol lead directly to a fixed 4 × 4 game, with the human first against computer player 2. Move buttons show points only; a direction glyph and line number identify the current row or column. Their spoken labels include value, row, column and the next player's line. The read-only board uses watch-board-gap spacing and a 4-point inset, with cream available cells, player-colored legal cells and cream at 0.06 opacity for used cells. Replay adds a 3-point gold outline around the chosen cell.
 
 The footer bar divides earned human points, earned computer points and remaining board points proportionally. Score/replay stays on its own page, with a person symbol, rival portrait and numeric totals. Replay opens a native sheet with close and repeat controls; live computer play pauses outside Moves, during replay or exit confirmation, and while inactive or dimmed. Every move saves for local resume.
 
@@ -339,7 +339,7 @@ Simulator captures at 40 mm and 42 mm show clock clearance, all four initial cho
 ## Do's and Don'ts
 
 ### Do:
-- Do reuse the mountain geometry, circular sun and dotted trail as the app's visual signature.
+- Do reuse the tangled vines, leafy hedges, circular sun and dotted tendril as the app's visual signature.
 - Do keep gold tied to rows and mint tied to columns, with arrows and labels.
 - Do preserve readable tiles, Dynamic Type, scroll access and 44-point minimum targets.
 - Do pause scenery offscreen and in the background, and freeze it for Reduce Motion.
@@ -347,9 +347,9 @@ Simulator captures at 40 mm and 42 mm show clock clearance, all four initial cho
 ### Don't:
 - Don't introduce another game mode; Classic is the game.
 - Don't open the app into player settings.
-- Don't replace the mountain world with stock list or form styling.
+- Don't replace the garden world with stock list or form styling.
 - Don't let scenery motion drive game state or interfere with reading the board.
 
 ## Native macOS
 
-The native macOS 14+ target shares the alpine art, Classic game and rival profiles. Windows open at 1000 × 820 points, with a 620 × 660 minimum. At widths of at least 900 points, game scores and replay form a 260-point column beside the board; compact windows retain the scrolling vertical game. Native Game/File menus expose New Game (⌘N), Replay (⌘R), player options (⌘,) and Leave Game (⇧⌘W), with Escape confirming exit. Player and replay sheets have desktop sizing. Only the visible home or game supplies menu actions and accessibility controls.
+The native macOS 14+ target shares the garden art, Classic game and rival profiles. Windows open at 1000 × 820 points, with a 620 × 660 minimum. At widths of at least 900 points, game scores and replay form a 260-point column beside the board; compact windows retain the scrolling vertical game. Native Game/File menus expose New Game (⌘N), Replay (⌘R), player options (⌘,) and Leave Game (⇧⌘W), with Escape confirming exit. Player and replay sheets have desktop sizing. Only the visible home or game supplies menu actions and accessibility controls.

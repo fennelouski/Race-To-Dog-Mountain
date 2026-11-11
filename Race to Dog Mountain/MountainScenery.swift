@@ -107,24 +107,53 @@ struct MountainScenery: View {
                     let cloud = CGRect(x: x, y: y, width: w * 0.38, height: 2 + CGFloat(i % 2) * 3)
                     context.fill(Path(roundedRect: cloud, cornerRadius: 3), with: .color(MountainStyle.cream.opacity(0.15)))
                 }
-                let ridges: [[CGPoint]] = [
-                    [CGPoint(x: 0, y: 0.69), CGPoint(x: 0.18, y: 0.51), CGPoint(x: 0.32, y: 0.64), CGPoint(x: 0.62, y: 0.47), CGPoint(x: 0.86, y: 0.66), CGPoint(x: 1, y: 0.59)],
-                    [CGPoint(x: 0, y: 0.78), CGPoint(x: 0.24, y: 0.59), CGPoint(x: 0.39, y: 0.72), CGPoint(x: 0.70, y: 0.58), CGPoint(x: 1, y: 0.78)],
-                    [CGPoint(x: 0, y: 0.81), CGPoint(x: 0.15, y: 0.76), CGPoint(x: 0.38, y: 0.83), CGPoint(x: 0.62, y: 0.72), CGPoint(x: 0.83, y: 0.82), CGPoint(x: 1, y: 0.75)]
+                // Leafy hedges: each layer is a run of overlapping leaf clumps on a gentle baseline.
+                let hedges: [(base: Double, wave: Double, radius: Double, color: Color)] = [
+                    (0.62, 0.05, 0.075, Color(red: 0.22, green: 0.49, blue: 0.40)),
+                    (0.72, 0.04, 0.065, Color(red: 0.10, green: 0.34, blue: 0.27)),
+                    (0.82, 0.03, 0.055, MountainStyle.ink)
                 ]
-                let colors = [Color(red: 0.22, green: 0.49, blue: 0.48), Color(red: 0.10, green: 0.32, blue: 0.36), MountainStyle.ink]
-                for layer in ridges.indices {
+                for (layer, hedge) in hedges.enumerated() {
                     var path = Path()
-                    path.move(to: CGPoint(x: 0, y: h))
-                    for point in ridges[layer] { path.addLine(to: CGPoint(x: point.x * w, y: point.y * h)) }
-                    path.addLine(to: CGPoint(x: w, y: h)); path.closeSubpath()
-                    context.fill(path, with: .color(colors[layer]))
+                    let r = hedge.radius * w, step = r * 1.3
+                    var x = -r
+                    while x < w + r {
+                        let u = Double(x / w)
+                        let y = h * (hedge.base + sin(u * 5 + Double(layer) * 2) * hedge.wave)
+                        let size = r * (0.8 + 0.4 * (sin(u * 31 + Double(layer)) + 1) / 2)
+                        path.addEllipse(in: CGRect(x: x - size, y: y - size, width: size * 2, height: size * 2))
+                        x += step
+                    }
+                    path.addRect(CGRect(x: 0, y: h * hedge.base, width: w, height: h * (1 - hedge.base)))
+                    context.fill(path, with: .color(hedge.color))
                 }
-                // An exact geometric trail, echoed by the game's row/column path.
-                var trail = Path()
-                trail.move(to: CGPoint(x: w * 0.62, y: h * 0.73))
-                trail.addCurve(to: CGPoint(x: w * 0.43, y: h), control1: CGPoint(x: w * 0.2, y: h * 0.82), control2: CGPoint(x: w * 0.95, y: h * 0.90))
-                context.stroke(trail, with: .color(MountainStyle.gold.opacity(0.14)), style: StrokeStyle(lineWidth: 2, dash: [4, 9], dashPhase: reduceMotion ? 0 : -time * 3))
+                // Tangled vines hang from the canopy; neighbours cross as they sway.
+                let stem = Color(red: 0.18, green: 0.48, blue: 0.27), leafColor = Color(red: 0.42, green: 0.74, blue: 0.36)
+                for vine in 0..<7 {
+                    let anchor = (Double(vine) + 0.5) / 7
+                    let length = h * (0.09 + Double((vine * 37) % 5) * 0.035)
+                    let sway = sin(time * 0.5 + Double(vine) * 1.3) * w * 0.02
+                    let samples = 28
+                    func point(_ t: Double) -> CGPoint {
+                        let curl = sin(t * 7 + Double(vine) * 2.1) * w * 0.035 * t
+                        return CGPoint(x: anchor * w + curl + sway * t, y: -4 + t * length)
+                    }
+                    var path = Path(); path.move(to: point(0))
+                    for i in 1...samples { path.addLine(to: point(Double(i) / Double(samples))) }
+                    context.stroke(path, with: .color(stem.opacity(0.9)), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                    for i in stride(from: 3, through: samples, by: 3) {
+                        let p = point(Double(i) / Double(samples)), q = point(Double(i + 1) / Double(samples))
+                        var leaf = context
+                        leaf.translateBy(x: p.x, y: p.y)
+                        leaf.rotate(by: .radians(atan2(q.y - p.y, q.x - p.x) + (i % 6 == 0 ? 0.9 : -0.9)))
+                        leaf.fill(Path(ellipseIn: CGRect(x: 0, y: -3.5, width: 14, height: 7)), with: .color(leafColor.opacity(0.9)))
+                    }
+                }
+                // A curling gold tendril, echoed by the game's row/column path.
+                var tendril = Path()
+                tendril.addArc(center: CGPoint(x: w * 0.66, y: h * 0.70), radius: w * 0.04, startAngle: .degrees(-90), endAngle: .degrees(180), clockwise: false)
+                tendril.addCurve(to: CGPoint(x: w * 0.43, y: h), control1: CGPoint(x: w * 0.2, y: h * 0.82), control2: CGPoint(x: w * 0.95, y: h * 0.90))
+                context.stroke(tendril, with: .color(MountainStyle.gold.opacity(0.18)), style: StrokeStyle(lineWidth: 2, dash: [4, 9], dashPhase: reduceMotion ? 0 : -time * 3))
                 for i in 0..<30 {
                     let x = (CGFloat((i * 73 + 17) % 307) / 307) * w
                     let y = (CGFloat((i * 47 + 11) % 271) / 271) * h * 0.65
@@ -136,7 +165,11 @@ struct MountainScenery: View {
                         let phase = (time * 0.12 + Double(i) / 36).truncatingRemainder(dividingBy: 1)
                         let x = CGFloat((i * 83) % 347) / 347 * w
                         let y = reduceMotion ? CGFloat(i % 8) * h / 8 : phase * h
-                        context.fill(Path(roundedRect: CGRect(x: x, y: y, width: 4, height: 8), cornerRadius: 1), with: .color(MountainStyle.player(i % 2).opacity(0.7)))
+                        // Falling leaves that tumble as they drift down.
+                        var leaf = context
+                        leaf.translateBy(x: x + sin(time * 1.3 + Double(i)) * 14, y: y)
+                        leaf.rotate(by: .radians(time * (1 + Double(i % 3) * 0.4) + Double(i)))
+                        leaf.fill(Path(ellipseIn: CGRect(x: -3, y: -6, width: 6, height: 12)), with: .color(MountainStyle.player(i % 2).opacity(0.7)))
                     }
                 }
             }

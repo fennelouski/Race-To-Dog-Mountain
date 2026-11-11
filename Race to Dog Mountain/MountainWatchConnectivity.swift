@@ -93,7 +93,7 @@ import GameKit
             }
             if let id = request.matchID { try await friends.loadForWatch(id) }
             await friends.refresh()
-            if !friends.authenticated && !accepted { failure = "Open Race on your paired iPhone and sign in to Game Center." }
+            if !friends.authenticated && !accepted { failure = "Open Tally Tangle on your paired iPhone and sign in to Game Center." }
         } catch { failure = String(error.localizedDescription.prefix(1_024)) }
         let current = snapshot()
         publish(force: true)

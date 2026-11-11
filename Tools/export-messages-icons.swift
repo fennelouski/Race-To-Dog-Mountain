@@ -1,4 +1,4 @@
-// Export the approved mountain artwork to Apple's Messages icon dimensions.
+// Export the approved Tally Tangle artwork to Apple's Messages icon dimensions.
 import Foundation
 import CoreGraphics
 import ImageIO
