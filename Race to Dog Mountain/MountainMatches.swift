@@ -230,7 +230,7 @@ struct SavedMountainGame: Codable, Identifiable {
         self.names = names; self.computers = computers; self.difficulty = difficulty
         self.adjustment = min(2, max(-2, adjustment))
         computerStarted = computers.contains(false)
-        game = MountainGame(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers, coin: startingPlayer))
+        game = MountainBoardDeck.next(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers, coin: startingPlayer))
         history = MountainHistory(initial: game)
     }
     var hasScore: Bool { game.scores.contains { $0 > 0 } }

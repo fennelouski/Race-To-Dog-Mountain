@@ -106,6 +106,8 @@ struct MountainHome: View {
     @AppStorage("humanProfiles.v1", store: MountainExperience.defaults) private var humanProfiles = Data()
     @State private var history = [0, 0]
     @Environment(\.dynamicTypeSize) private var typeSize
+    @AppStorage("hasPlayed", store: MountainExperience.defaults) private var hasPlayed = false
+    @State private var launching = true
 
     var body: some View {
         Group {
@@ -149,7 +151,8 @@ struct MountainHome: View {
         .sheet(isPresented: $rules, onDismiss: { if startAfterGuide { startAfterGuide = false; startLocal() } }) {
             MountainRules { startAfterGuide = true; rules = false }.mountainSheetSize()
         }
-        .onAppear { size = min(max(size, 4), 14); refreshHistory() }
+        .overlay { if launching { MountainVineSweep(curtain: true, duration: 1.8) { launching = false }.ignoresSafeArea() } }
+        .onAppear { size = min(max(size, 4), 14); refreshHistory(); MountainBoardDeck.refill() }
         .task { await friends.resume() }
         .onChange(of: phase) { _, phase in if phase == .active { Task { await friends.refresh() } } }
         .sheet(item: $friends.presentation, onDismiss: friends.presentationDismissed) { MountainGameCenterPresenter(controller: $0.controller).mountainSheetSize() }
@@ -189,7 +192,7 @@ struct MountainHome: View {
                             .fixedSize(horizontal: false, vertical: true)
                             .accessibilityAddTraits(.isHeader)
                         Spacer(minLength: 40)
-                        Button { startLocal() } label: {
+                        Button { firstPlay() } label: {
                             Text("Play").font(.largeTitle.bold())
                                 .frame(maxWidth: .infinity, minHeight: 64)
                         }
@@ -305,6 +308,11 @@ struct MountainHome: View {
         var next = SavedMountainGame(size: size, names: names, computers: computers, difficulty: profile, adjustment: 0)
         next.learning = context
         library.save(next); selection = next; playing = true
+    }
+    /// A first-time player gets the short guide and a 6 × 6 board before their first race.
+    private func firstPlay() {
+        guard !hasPlayed else { startLocal(); return }
+        hasPlayed = true; size = 6; rules = true
     }
     private func resume(_ game: SavedMountainGame) { selection = game; playing = true }
     private var manualDifficulty: ComputerDifficulty { ComputerDifficulty(rawValue: computerLevel) ?? .level1 }
@@ -429,7 +437,11 @@ private struct MountainRules: View {
 }
 
 private struct MountainGameView: View {
-    let names: [String]
+    @State private var names: [String]
+    @AppStorage("player1Color", store: MountainExperience.defaults) private var firstColor = 0
+    @AppStorage("player2Color", store: MountainExperience.defaults) private var secondColor = 1
+    @State private var swapping = false
+    @State private var vines = 0
     @AppStorage("humanProfiles.v1", store: MountainExperience.defaults) private var humanProfiles = Data()
     @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var hapticsEnabled = true
     @Environment(\.scenePhase) private var scenePhase
@@ -472,7 +484,7 @@ private struct MountainGameView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
 
     init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, saved: SavedMountainGame? = nil, learningStore: MountainLearningStore? = nil, onSave: ((SavedMountainGame) -> Void)? = nil, onLeave: (() -> Void)? = nil) {
-        self.names = saved?.names ?? names
+        _names = State(initialValue: saved?.names ?? names)
         self.onLeave = onLeave; self.onSave = onSave
         self.learningStore = learningStore
         _difficulty = State(initialValue: saved?.difficulty ?? difficulty)
@@ -484,7 +496,7 @@ private struct MountainGameView: View {
         _lastComputerMove = State(initialValue: saved?.replay)
         _matchAdjustment = State(initialValue: saved?.adjustment ?? adjustment)
         // Each presentation owns a fresh game and a snapshot of player settings.
-        let initial = saved?.game ?? MountainGame(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
+        let initial = saved?.game ?? MountainBoardDeck.next(size: size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
         _game = State(initialValue: initial)
         _history = State(initialValue: saved == nil ? MountainHistory(initial: initial) : saved?.history)
         _computers = State(initialValue: saved?.computers ?? computers)
@@ -527,10 +539,11 @@ private struct MountainGameView: View {
             .overlayPreferenceValue(MountainMoveAnchors.self) { anchors in
                 MountainMoveEffects(events: $feedback, anchors: anchors, reduceMotion: reduceMotion)
             }
+            .overlay { MountainVineSweep(trigger: vines).ignoresSafeArea() }
             .onChange(of: geometry.size) { _, _ in feedback.removeAll() }
             .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() }; publishDisplay() }
             .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
-            .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], profiles: $humanProfiles, computer: $computers[player.id], difficulty: $difficulty, adaptive: $adaptiveDifficulty, canResetLearning: computers.contains(false), onResetLearning: { if let human = computers[player.id] ? computers.firstIndex(of: false) : player.id { learningStore?.reset(key: MountainLearningStore.key(name: names[human], size: game.size, seat: human)) } }, onDifficultyChanged: { rolesChanged = true; learning = nil; computerLevel = difficulty.rawValue; persist() }).mountainSheetSize() }
+            .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], seat: player.id, profiles: $humanProfiles, computer: $computers[player.id], difficulty: $difficulty, adaptive: $adaptiveDifficulty, canResetLearning: computers.contains(false), onResetLearning: { if let human = computers[player.id] ? computers.firstIndex(of: false) : player.id { learningStore?.reset(key: MountainLearningStore.key(name: names[human], size: game.size, seat: human)) } }, onDifficultyChanged: { rolesChanged = true; learning = nil; computerLevel = difficulty.rawValue; persist() }).mountainSheetSize() }
             .sheet(isPresented: $resultPresented) { resultPanel.mountainSheetSize() }
             .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay() }
             .onChange(of: humanProfiles) { publishDisplay() }
@@ -553,7 +566,7 @@ private struct MountainGameView: View {
                 if let next { move(next, computer: true) }
             }
             .onChange(of: game.isOver) { _, over in if over { recordWin(); pendingResult = true; presentPendingResult() } }
-            .onChange(of: computers) { if computers.contains(false) { computerStarted = true }; rolesChanged = true; MountainExperience.defaults.set(computers[0], forKey: "player1AI"); MountainExperience.defaults.set(computers[1], forKey: "player2AI"); persist() }
+            .onChange(of: computers) { MountainExperience.defaults.set(computers[0], forKey: "player1AI"); MountainExperience.defaults.set(computers[1], forKey: "player2AI"); if swapping { swapping = false; restart(); return }; if computers.contains(false) { computerStarted = true }; rolesChanged = true; persist() }
             .onChange(of: adaptiveDifficulty) { learning = nil; persist() }
             .onChange(of: computerStarted) { persist() }
             .onDisappear { retireDisplay() }
@@ -636,6 +649,13 @@ private struct MountainGameView: View {
         pendingResult = false; resultPresented = true
     }
     private func leaveGame() { leavingGame = true; resolution = nil; feedback.removeAll(); persist(); if let onLeave { onLeave() } else { dismiss() } }
+    /// Seats carry the row/column role, so a switch starts a fresh, balanced race.
+    private func swapSeats() {
+        names.swapAt(0, 1)
+        MountainExperience.defaults.set(names[0], forKey: "player1Name"); MountainExperience.defaults.set(names[1], forKey: "player2Name")
+        (firstColor, secondColor) = (secondColor, firstColor)
+        if computers[0] != computers[1] { swapping = true; computers.swapAt(0, 1) } else { restart() }
+    }
     private var waitingForStart: Bool { game.moves == 0 && computers[game.turn] && !computerStarted }
     private func playerName(_ index: Int) -> String { computers[index] ? difficulty.displayName : MountainHumanProfile.read(identity: names[index], data: humanProfiles).displayName }
     private var header: some View {
@@ -646,6 +666,12 @@ private struct MountainGameView: View {
             }.accessibilityLabel("Close game").accessibilityIdentifier("close-game")
                 .keyboardShortcut(.cancelAction)
                 .mountainHover()
+            Spacer()
+            Button { swapSeats() } label: {
+                Image(systemName: "arrow.left.arrow.right").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
+                    .background(MountainStyle.cream.opacity(0.1), in: Circle())
+            }.accessibilityLabel(game.moves == 0 ? "Switch player 1 and player 2" : "Switch player 1 and player 2 and start a new race")
+                .accessibilityIdentifier("swap-players").mountainHover()
             Spacer()
             startComputerButton
             Spacer()
@@ -694,7 +720,7 @@ private struct MountainGameView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 10) {
                 let profile = MountainHumanProfile.read(identity: names[player], data: humanProfiles)
-                if computers[player] && profile.resolvedStyle != "photo" && profile.resolvedStyle != "symbol" {
+                if computers[player] {
                     OpponentPortrait(difficulty: difficulty, size: 48, thinking: game.turn == player && !game.isOver && !waitingForStart && !replaying && !leavingGame, reaction: lastComputerMove?.after.moves ?? 0, activity: avatarActivity(player))
                 } else {
                     MountainAvatar(name: computers[player] ? difficulty.name : profile.displayName, symbol: profile.symbol, style: profile.resolvedStyle, photoID: profile.photoID, activity: avatarActivity(player))
@@ -766,7 +792,8 @@ private struct MountainGameView: View {
         feedback.removeAll(); resultPresented = false; pendingResult = false
         savedID = UUID()
         displayHub.claim(owner: savedID)
-        game = MountainGame(size: game.size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
+        game = MountainBoardDeck.next(size: game.size, firstPlayer: MountainGame.randomStartingPlayer(computers: computers))
+        vines += 1
         resolution = nil; history = MountainHistory(initial: game)
         recorded = false; lastMove = nil; lastPoints = 0; lastComputerMove = nil
         computerStarted = computers.contains(false); rolesChanged = false; matchAdjustment = 0
@@ -806,20 +833,27 @@ private struct OpponentPortrait: View {
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("aiUsesPictures", store: MountainExperience.defaults) private var pictures = false
+    private var bobbing: Bool { pictures && thinking && !reduceMotion && scenePhase == .active }
 
-    var body: some View {
-        Group {
-            if pictures { Image(difficulty.portrait).resizable().scaledToFill() }
-            else { MountainAvatar(name: difficulty.name, size: size, activity: activity) }
-        }
-            .frame(width: size, height: size).clipShape(Circle())
+    @ViewBuilder private var face: some View {
+        if pictures { Image(difficulty.portrait).resizable().scaledToFill() }
+        else { MountainAvatar(name: difficulty.name, size: size, activity: activity) }
+    }
+    private var framed: some View {
+        face.frame(width: size, height: size).clipShape(Circle())
             .overlay { Circle().strokeBorder(MountainStyle.gold.opacity(0.65), lineWidth: 2) }
+    }
+    var body: some View {
+        framed
             .phaseAnimator([false, true], trigger: reaction) { content, phase in
-                content.scaleEffect(pictures && !reduceMotion && phase ? 1.06 + Double(difficulty.rawValue % 4) * 0.01 : 1)
-                    .rotationEffect(.degrees(pictures && !reduceMotion && phase ? Double(difficulty.rawValue % 2 == 0 ? 4 : -4) : 0))
+                let react = pictures && !reduceMotion && phase
+                let scale: Double = react ? 1.06 + Double(difficulty.rawValue % 4) * 0.01 : 1
+                let tilt: Double = react ? (difficulty.rawValue % 2 == 0 ? 4 : -4) : 0
+                return content.scaleEffect(scale).rotationEffect(.degrees(tilt))
             } animation: { _ in reduceMotion ? nil : .spring(response: 0.3 + Double(difficulty.rawValue) * 0.015) }
-            .phaseAnimator(pictures && thinking && !reduceMotion && scenePhase == .active ? [false, true] : [false]) { content, phase in
-                content.offset(y: phase ? -2 - CGFloat(difficulty.rawValue % 3) : 0)
+            .phaseAnimator(bobbing ? [false, true] : [false]) { content, phase in
+                let lift: CGFloat = phase ? -2 - CGFloat(difficulty.rawValue % 3) : 0
+                return content.offset(y: lift)
             } animation: { _ in .easeInOut(duration: 0.7 + Double(difficulty.rawValue) * 0.04) }
             .accessibilityHidden(true)
     }
@@ -881,6 +915,7 @@ private struct MountainBoardTop: PreferenceKey {
 private struct MountainHumanSelection: Identifiable { let id: Int }
 private struct MountainHumanEditor: View {
     let identity: String
+    let seat: Int
     @Binding var profiles: Data
     @Binding var computer: Bool
     @Binding var difficulty: ComputerDifficulty
@@ -900,11 +935,13 @@ private struct MountainHumanEditor: View {
     @State private var loading = false
     @State private var loadingToken: UUID?
     @State private var resetLearning = false
+    @State private var colorChoice = 0
+    @State private var customEmoji = ""
+    @FocusState private var nameFocused: Bool
 #if canImport(PhotosUI)
     @State private var photoItem: PhotosPickerItem?
 #endif
     @Environment(\.dismiss) private var dismiss
-    private let labels = ["Person", "Paw print", "Leaf", "Sun", "Mountain", "Sparkles"]
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -913,15 +950,16 @@ private struct MountainHumanEditor: View {
                         Spacer()
                         if let photoData, let source = CGImageSourceCreateWithData(photoData as CFData, nil), let image = CGImageSourceCreateImageAtIndex(source, 0, nil), style == "photo" {
                             Image(decorative: image, scale: 1).resizable().scaledToFill().frame(width: 96, height: 96).clipShape(Circle()).accessibilityHidden(true)
-                        } else if computerChoice && style == "fonster" {
+                        } else if computerChoice {
                             OpponentPortrait(difficulty: difficultyChoice, size: 96)
                         } else {
                             MountainAvatar(name: computerChoice ? difficultyChoice.name : name, symbol: symbol, style: style, photoID: photoID, size: 96)
                         }
                         Spacer()
                     }
-                    if !computerChoice { TextField("Display name", text: $name).textFieldStyle(.roundedBorder).accessibilityIdentifier("profile-display-name") }
                     Toggle("Computer player", isOn: $computerChoice).accessibilityIdentifier("player-computer-toggle")
+                        .onChange(of: computerChoice) { _, computer in if !computer { nameFocused = true } }
+                    nameChoices
                     if computerChoice {
                         Picker("Opponent", selection: $difficultyChoice) {
                             ForEach(ComputerDifficulty.allCases) { Text($0.displayName).tag($0) }
@@ -936,36 +974,8 @@ private struct MountainHumanEditor: View {
                         Spacer()
                         MountainInfoButton(title: "Reset learning", explanation: "Restarts learning for the current human, board size and role. A game already in progress keeps its opponent level.")
                     }
-                    Button { style = "fonster" } label: { Label("Name-based avatar", systemImage: "sparkles").frame(maxWidth: .infinity, minHeight: 44) }
-                        .buttonStyle(MountainButton(prominent: style == "fonster")).accessibilityIdentifier("profile-generated-avatar")
-#if canImport(PhotosUI)
-                    PhotosPicker(selection: $photoItem, matching: .images) {
-                        Label("Photo or saved Memoji", systemImage: "photo").frame(maxWidth: .infinity, minHeight: 44)
-                    }.buttonStyle(MountainButton()).accessibilityIdentifier("profile-photo")
-                        .task(id: photoItem) {
-                            guard let photoItem else { return }
-                            let token = UUID(); loadingToken = token; loading = true
-                            defer { if loadingToken == token { loading = false } }
-                            do {
-                                guard let data = try await photoItem.loadTransferable(type: Data.self) else { throw CocoaError(.fileReadCorruptFile) }
-                                let prepared = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.prepare(data) }.value
-                                guard !Task.isCancelled, loadingToken == token else { return }
-                                guard let prepared else { throw CocoaError(.fileReadCorruptFile) }
-                                photoData = prepared; style = "photo"
-                            } catch { if !Task.isCancelled { failure = "That image couldn't be opened. Try another photo." } }
-                        }
-#endif
-                    if loading { ProgressView().accessibilityLabel("Preparing photo") }
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))], spacing: 16) {
-                        ForEach(MountainHumanProfile.symbols, id: \.self) { choice in
-                            Button { symbol = choice; style = "symbol" } label: {
-                                Image(systemName: choice).font(.title2).frame(width: 60, height: 60)
-                                    .background(style == "symbol" && symbol == choice ? MountainStyle.gold : MountainStyle.cream.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
-                                    .foregroundStyle(style == "symbol" && symbol == choice ? MountainStyle.ink : MountainStyle.cream)
-                            }.buttonStyle(.plain).accessibilityLabel(labels[MountainHumanProfile.symbols.firstIndex(of: choice)!])
-                                .accessibilityAddTraits(style == "symbol" && symbol == choice ? .isSelected : [])
-                        }
-                    }
+                    colorChoices
+                    pictureChoices
                     if let failure { Text(failure).font(.callout).foregroundStyle(MountainStyle.gold) }
                 }.padding(24).frame(maxWidth: 620).frame(maxWidth: .infinity)
             }.background(MountainStyle.ink).navigationTitle("Player").mountainInlineTitle()
@@ -978,8 +988,93 @@ private struct MountainHumanEditor: View {
             .onAppear {
                 let profile = MountainHumanProfile.read(identity: identity, data: profiles)
                 name = profile.displayName; symbol = profile.symbol; style = profile.resolvedStyle; photoID = profile.photoID
+                colorChoice = MountainStyle.colorIndex(seat)
                 computerChoice = computer; difficultyChoice = difficulty; adaptiveChoice = adaptive
             }
+    }
+    @ViewBuilder private var nameChoices: some View {
+        if !computerChoice {
+            TextField("Player name", text: $name).textFieldStyle(.roundedBorder).focused($nameFocused)
+                .accessibilityIdentifier("profile-display-name")
+            let known = MountainHumanProfile.knownNames(data: profiles).filter { $0 != name }
+            if !known.isEmpty {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 8) {
+                        ForEach(known, id: \.self) { choice in
+                            Button(choice) { name = choice }.font(.subheadline.weight(.semibold))
+                                .padding(.horizontal, 14).frame(minHeight: 44)
+                                .background(MountainStyle.cream.opacity(0.12), in: Capsule()).buttonStyle(.plain)
+                                .accessibilityHint("Use this name")
+                        }
+                    }
+                }.scrollIndicators(.hidden).accessibilityIdentifier("known-player-names")
+            }
+        }
+    }
+    @ViewBuilder private var colorChoices: some View {
+        Text("Color").font(.headline)
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 12) {
+            ForEach(MountainStyle.palette.indices, id: \.self) { index in
+                let taken = index == MountainStyle.colorIndex(1 - seat)
+                Button { colorChoice = index } label: {
+                    Circle().fill(MountainStyle.swatch(index)).frame(width: 40, height: 40)
+                        .overlay { if colorChoice == index { Image(systemName: "checkmark").font(.headline).foregroundStyle(MountainStyle.ink) } }
+                        .overlay { Circle().strokeBorder(colorChoice == index ? MountainStyle.cream : .clear, lineWidth: 3) }
+                        .opacity(taken ? 0.25 : 1).frame(width: 44, height: 44)
+                }.buttonStyle(.plain).disabled(taken)
+                    .accessibilityLabel(MountainStyle.palette[index].name + (taken ? ", used by the other player" : ""))
+                    .accessibilityAddTraits(colorChoice == index ? .isSelected : [])
+            }
+        }.accessibilityIdentifier("player-colors")
+    }
+    @ViewBuilder private var pictureChoices: some View {
+        if !computerChoice {
+        Text("Picture").font(.headline)
+        Button { style = "fonster" } label: { Label("Name-based avatar", systemImage: "sparkles").frame(maxWidth: .infinity, minHeight: 44) }
+            .buttonStyle(MountainButton(prominent: style == "fonster")).accessibilityIdentifier("profile-generated-avatar")
+#if canImport(PhotosUI)
+        PhotosPicker(selection: $photoItem, matching: .images) {
+            Label("Photo or saved Memoji", systemImage: "photo").frame(maxWidth: .infinity, minHeight: 44)
+        }.buttonStyle(MountainButton()).accessibilityIdentifier("profile-photo")
+            .task(id: photoItem) {
+                guard let photoItem else { return }
+                let token = UUID(); loadingToken = token; loading = true
+                defer { if loadingToken == token { loading = false } }
+                do {
+                    guard let data = try await photoItem.loadTransferable(type: Data.self) else { throw CocoaError(.fileReadCorruptFile) }
+                    let prepared = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.prepare(data) }.value
+                    guard !Task.isCancelled, loadingToken == token else { return }
+                    guard let prepared else { throw CocoaError(.fileReadCorruptFile) }
+                    photoData = prepared; style = "photo"
+                } catch { if !Task.isCancelled { failure = "That image couldn't be opened. Try another photo." } }
+            }
+#endif
+        if loading { ProgressView().accessibilityLabel("Preparing photo") }
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))], spacing: 16) {
+            ForEach(MountainHumanProfile.symbols, id: \.self) { choice in
+                Button { symbol = choice; style = "symbol" } label: {
+                    Image(systemName: choice).font(.title2).frame(width: 60, height: 60)
+                        .background(style == "symbol" && symbol == choice ? MountainStyle.gold : MountainStyle.cream.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                        .foregroundStyle(style == "symbol" && symbol == choice ? MountainStyle.ink : MountainStyle.cream)
+                }.buttonStyle(.plain).accessibilityLabel(MountainHumanProfile.label(symbol: choice))
+                    .accessibilityAddTraits(style == "symbol" && symbol == choice ? .isSelected : [])
+            }
+        }
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 52))], spacing: 12) {
+            ForEach(MountainHumanProfile.emoji, id: \.self) { choice in
+                Button { symbol = choice; style = "emoji" } label: {
+                    Text(choice).font(.title).frame(width: 52, height: 52)
+                        .background(style == "emoji" && symbol == choice ? MountainStyle.gold : MountainStyle.cream.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                }.buttonStyle(.plain).accessibilityAddTraits(style == "emoji" && symbol == choice ? .isSelected : [])
+            }
+        }.accessibilityIdentifier("player-emoji")
+        TextField("Or type any emoji", text: $customEmoji).textFieldStyle(.roundedBorder)
+            .accessibilityIdentifier("custom-emoji")
+            .onChange(of: customEmoji) { _, typed in
+                guard let last = typed.last.map(String.init), MountainHumanProfile.isEmoji(last) else { return }
+                symbol = last; style = "emoji"
+            }
+        }
     }
     private func save() {
         do {
@@ -987,6 +1082,7 @@ private struct MountainHumanEditor: View {
             guard let data = MountainHumanProfile.updating(identity: identity, displayName: name, symbol: symbol, data: profiles, avatarStyle: style, photoID: selectedID) else { throw CocoaError(.fileWriteUnknown) }
             let changedDifficulty = difficulty != difficultyChoice
             if !adaptiveChoice { MountainExperience.defaults.set(difficultyChoice.rawValue, forKey: "computerLevel") }
+            MountainExperience.defaults.set(colorChoice, forKey: MountainStyle.colorKey(seat))
             profiles = data; difficulty = difficultyChoice; adaptive = adaptiveChoice; computer = computerChoice
             if changedDifficulty { onDifficultyChanged() }
             dismiss()

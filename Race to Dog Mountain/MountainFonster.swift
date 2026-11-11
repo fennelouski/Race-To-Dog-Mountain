@@ -1036,6 +1036,8 @@ struct MountainAvatar: View {
                 }
             } else if style == "symbol" {
                 Image(systemName: symbol).resizable().scaledToFit().padding(size * 0.2)
+            } else if style == "emoji" {
+                Text(symbol).font(.system(size: size * 0.58)).minimumScaleFactor(0.2)
             } else if #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) {
                 MountainFonsterWindow(seed: name, size: size, activity: activity)
                     .id(name)
@@ -1046,7 +1048,7 @@ struct MountainAvatar: View {
             .clipShape(Circle()).accessibilityHidden(true)
             .task(id: [name, style, photoID ?? ""]) {
                 photo = nil
-                guard style != "symbol" else { return }
+                guard style != "symbol", style != "emoji" else { return }
                 if style == "photo", let photoID {
                     let loaded = await Task.detached(priority: .userInitiated) { MountainAvatarPhotos.read(photoID) }.value
                     guard !Task.isCancelled, self.photoID == photoID, style == "photo" else { return }

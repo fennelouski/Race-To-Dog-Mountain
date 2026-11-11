@@ -270,12 +270,17 @@ struct MountainMoveFlight: View, Animatable {
                 for index in 0..<event.particleCount {
                     let point = MountainPointParticle.sample(index: index, count: event.particleCount, progress: progress,
                         startX: start.x, startY: start.y, endX: end.x, endY: end.y, spread: event.spread)
+                    // Flower petals: each tumbles at its own rate on the way to the score.
                     let radius = 2.5 + event.intensity * 1.5
-                    let core = CGRect(x: point.x - radius, y: point.y - radius, width: radius * 2, height: radius * 2)
-                    context.opacity = point.opacity * 0.18
-                    context.fill(Path(ellipseIn: core.insetBy(dx: -radius, dy: -radius)), with: .color(MountainStyle.player(event.player)))
-                    context.opacity = point.opacity
-                    context.fill(Path(ellipseIn: core), with: .color(MountainStyle.player(event.player)))
+                    var petal = context
+                    petal.translateBy(x: point.x, y: point.y)
+                    petal.rotate(by: .radians(Double(index) * 2.39996 + progress * .pi * (3 + Double(index % 3))))
+                    let shape = Path(ellipseIn: CGRect(x: -radius * 0.7, y: -radius * 1.5, width: radius * 1.4, height: radius * 3))
+                    petal.opacity = point.opacity * 0.2
+                    petal.fill(shape.applying(.init(scaleX: 1.8, y: 1.4)), with: .color(MountainStyle.player(event.player)))
+                    petal.opacity = point.opacity
+                    petal.fill(shape, with: .color(MountainStyle.player(event.player)))
+                    petal.fill(Path(ellipseIn: CGRect(x: -radius * 0.2, y: radius * 0.6, width: radius * 0.4, height: radius * 0.8)), with: .color(MountainStyle.cream.opacity(0.7)))
                 }
             }
 
@@ -349,10 +354,13 @@ struct MountainExternalPresentation: View {
     }
     @ViewBuilder private func displayAvatar(_ player: Int, size: CGFloat) -> some View {
         let style = snapshot.avatarStyles.indices.contains(player) ? snapshot.avatarStyles[player] : "fonster"
-        if snapshot.computers[player] && pictures && style == "fonster" {
+        if snapshot.computers[player] && pictures {
             Image(snapshot.difficulty.portrait).resizable().scaledToFill().frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
+        } else if snapshot.computers[player] {
+            MountainAvatar(name: snapshot.difficulty.name, size: size,
+                           activity: .init(game: snapshot.game, player: player, paused: snapshot.paused, lastMove: snapshot.lastMove))
         } else {
-            MountainAvatar(name: snapshot.computers[player] ? snapshot.difficulty.name : snapshot.names[player], symbol: snapshot.symbols[player], style: style,
+            MountainAvatar(name: snapshot.names[player], symbol: snapshot.symbols[player], style: style,
                            photoID: snapshot.photoIDs.indices.contains(player) ? snapshot.photoIDs[player] : nil, size: size,
                            activity: .init(game: snapshot.game, player: player, paused: snapshot.paused, lastMove: snapshot.lastMove))
         }

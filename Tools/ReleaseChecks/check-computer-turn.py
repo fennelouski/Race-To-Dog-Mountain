@@ -50,6 +50,8 @@ struct HumanSelection { let id: Int }
     var gameSettings = false
     var recorded = false
     var rolesChanged = false
+    var swapping = false
+    func restart() {}
     var savedID = UUID()
     var learning: MountainLearningContext?
     lazy var learningStore: MountainLearningStore? = MountainLearningStore(defaults: preferences)

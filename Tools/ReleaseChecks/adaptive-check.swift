@@ -170,7 +170,9 @@ struct SeededRandom: RandomNumberGenerator {
                 assert(game.moves == before && game.canPlay(choice), "AI chooses legal moves without mutating rules")
                 assert(game.play(choice) && game.isValid)
             }
-            assert(initial.reduce(0,+) == game.scores.reduce(0,+) + game.tiles.map(\.value).reduce(0,+))
+            let remaining: Int = game.tiles.map(\.value).reduce(0, +)
+            let scored: Int = game.scores.reduce(0, +)
+            assert(initial.reduce(0, +) == scored + remaining)
             let outcome: MountainLearning.Outcome = game.scores[0] == game.scores[1] ? .tie : game.scores[0] > game.scores[1] ? .win : .loss
             if outcome == .win { wins += 1 }
             learning.record(outcome); assert(learning.isValid)

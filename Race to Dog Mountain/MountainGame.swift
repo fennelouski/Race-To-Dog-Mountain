@@ -341,6 +341,17 @@ struct MountainHistory: Codable, Sendable {
                 assert(game.isOver && game.scores.reduce(0, +) + game.tiles.map(\.value).reduce(0, +) == (side * side) * (side * side + 1) / 2)
             }
         }
+        for side in [4, 6] {
+            let fair = MountainGame.balanced(size: side, firstPlayer: 1, candidates: 8)
+            assert(fair.isValid && fair.turn == 1 && fair.moves == 0)
+            let samples = (0..<8).map { _ in abs(MountainGame(size: side, firstPlayer: 1).openingBias) }
+            assert(abs(fair.openingBias) <= samples.max()!)
+        }
+        let emojiData = MountainHumanProfile.updating(identity: "A", displayName: "Ana", symbol: "🦊", data: Data(), avatarStyle: "emoji")!
+        assert(MountainHumanProfile.read(identity: "A", data: emojiData).resolvedStyle == "emoji")
+        assert(MountainHumanProfile.updating(identity: "A", displayName: "Ana", symbol: "ab", data: Data(), avatarStyle: "emoji") == nil)
+        assert(MountainHumanProfile.knownNames(data: emojiData) == ["Ana"])
+        assert(MountainBoardDeck.next(size: 99, firstPlayer: 5).size == 14)
         print("Classic rules, human starts, replay isolation, bounded adaptation, sixteen AI levels and score conservation passed.")
     }
 }
@@ -457,14 +468,30 @@ struct MountainHumanProfile: Codable {
     var avatarStyle: String? = nil
     var photoID: String? = nil
     var resolvedStyle: String { avatarStyle ?? (symbol == "person.fill" ? "fonster" : "symbol") }
-    static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "mountain.2.fill", "sparkles"]
+    static let symbols = ["person.fill", "pawprint.fill", "leaf.fill", "sun.max.fill", "mountain.2.fill", "sparkles",
+                          "star.fill", "heart.fill", "bolt.fill", "flame.fill", "moon.stars.fill", "cloud.fill",
+                          "snowflake", "tree.fill", "bird.fill", "fish.fill", "tortoise.fill", "hare.fill", "crown.fill", "music.note"]
+    static let emoji = ["🐶", "🐱", "🦊", "🐻", "🐼", "🐸", "🦉", "🐢", "🦄", "🐙", "🌻", "🌵", "🍄", "🌈", "⭐️", "🔥", "🚀", "⚽️", "🎸", "🎨", "👑", "😎", "🤖", "👻"]
+    static let styles = ["fonster", "symbol", "photo", "emoji"]
+    static func label(symbol: String) -> String { symbol.replacingOccurrences(of: ".fill", with: "").replacingOccurrences(of: ".", with: " ") }
+    static func isEmoji(_ value: String) -> Bool {
+        value.count == 1 && value.unicodeScalars.contains { $0.properties.isEmojiPresentation || $0.value == 0xFE0F }
+    }
+    static func validIcon(_ symbol: String, style: String?) -> Bool { style == "emoji" ? isEmoji(symbol) : symbols.contains(symbol) }
+    /// Names people have already used on this device, for quick selection.
+    static func knownNames(data: Data) -> [String] {
+        let profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
+        let names = profiles.values.map { $0.displayName.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty && !["Player 1", "Player 2"].contains($0) }
+        return Array(Set(names)).sorted().prefix(24).map { $0 }
+    }
     static func read(identity: String, data: Data) -> Self {
         let profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
-        guard let profile = profiles[identity], symbols.contains(profile.symbol) else { return Self(displayName: identity, symbol: "person.fill") }
-        return Self(displayName: String(profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60)).isEmpty ? identity : String(profile.displayName.prefix(60)), symbol: profile.symbol, avatarStyle: ["fonster", "symbol", "photo"].contains(profile.resolvedStyle) ? profile.resolvedStyle : "fonster", photoID: profile.photoID.flatMap { UUID(uuidString: $0) == nil ? nil : $0 })
+        guard let profile = profiles[identity], validIcon(profile.symbol, style: profile.resolvedStyle) else { return Self(displayName: identity, symbol: "person.fill") }
+        return Self(displayName: String(profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60)).isEmpty ? identity : String(profile.displayName.prefix(60)), symbol: profile.symbol, avatarStyle: styles.contains(profile.resolvedStyle) ? profile.resolvedStyle : "fonster", photoID: profile.photoID.flatMap { UUID(uuidString: $0) == nil ? nil : $0 })
     }
     static func updating(identity: String, displayName: String, symbol: String, data: Data, avatarStyle: String? = nil, photoID: String? = nil) -> Data? {
-        guard symbols.contains(symbol), avatarStyle == nil || ["fonster", "symbol", "photo"].contains(avatarStyle!), photoID == nil || UUID(uuidString: photoID!) != nil else { return nil }
+        guard validIcon(symbol, style: avatarStyle), avatarStyle == nil || styles.contains(avatarStyle!), photoID == nil || UUID(uuidString: photoID!) != nil else { return nil }
         var profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
         let name = String(displayName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
         profiles[identity] = Self(displayName: name.isEmpty ? identity : name, symbol: symbol, avatarStyle: avatarStyle, photoID: photoID)
@@ -524,5 +551,50 @@ struct MountainDisplaySnapshot: Sendable {
         var game = MountainGame(size: 6, values: Array(1...36), startingLine: 2)
         for tile in [17, 35, 30, 0, 4, 28] { game.play(tile) }
         return Self(owner: UUID(uuidString: "00000000-0000-4000-8000-000000000001")!, game: game, names: ["Nathan", "Quinn"], symbols: ["leaf.fill", "pawprint.fill"], computers: [false, true], difficulty: .level1, lastMove: 28, lastPoints: 29, paused: false)
+    }
+}
+
+/// Random boards, nudged toward fairness: two equal computers play each candidate out,
+/// and the board whose first mover wins or loses by the least is kept.
+extension MountainGame {
+    var openingBias: Int {
+        var game = self
+        let first = turn
+        while let move = game.computerMove(difficulty: .level9, roll: 0) { game.play(move) }
+        return game.scores[first] - game.scores[1 - first]
+    }
+    // ponytail: best-of-N sampling, not a solver; raise candidates if bias still shows in play.
+    static func balanced(size: Int, firstPlayer: Int, candidates: Int = 12) -> MountainGame {
+        let boards = (0..<max(1, candidates)).map { _ in MountainGame(size: size, firstPlayer: firstPlayer) }
+        return boards.map { ($0, abs($0.openingBias)) }.min { $0.1 < $1.1 }!.0
+    }
+}
+
+/// One balanced board per size and first player, prepared in the background during play.
+enum MountainBoardDeck {
+    private static let lock = NSLock()
+    nonisolated(unsafe) private static var ready: [Int: MountainGame] = [:]
+    nonisolated(unsafe) private static var filling = false
+    private static func key(_ size: Int, _ first: Int) -> Int { size * 2 + first }
+
+    static func next(size: Int, firstPlayer: Int) -> MountainGame {
+        let side = min(max(size, 4), 14), first = min(max(firstPlayer, 0), 1)
+        let cached = lock.withLock { ready.removeValue(forKey: key(side, first)) }
+        refill()
+        return cached ?? MountainGame.balanced(size: side, firstPlayer: first, candidates: side > 8 ? 2 : 6)
+    }
+    static func refill() {
+        let start = lock.withLock { () -> Bool in
+            if filling { return false }
+            filling = true; return true
+        }
+        guard start else { return }
+        Task.detached(priority: .background) {
+            for size in 4...14 { for first in 0...1 where lock.withLock({ ready[key(size, first)] == nil }) {
+                let board = MountainGame.balanced(size: size, firstPlayer: first)
+                lock.withLock { ready[key(size, first)] = board }
+            } }
+            lock.withLock { filling = false }
+        }
     }
 }

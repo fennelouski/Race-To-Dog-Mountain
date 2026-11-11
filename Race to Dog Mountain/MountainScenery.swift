@@ -10,7 +10,29 @@ enum MountainStyle {
     static let cream = Color(red: 1, green: 0.95, blue: 0.82)
     static let gold = Color(red: 1, green: 0.73, blue: 0.28)
     static let mint = Color(red: 0.42, green: 0.88, blue: 0.81)
-    static func player(_ index: Int) -> Color { index == 0 ? gold : mint }
+    /// Light enough for ink numerals; gold and mint stay the defaults.
+    static let palette: [(name: String, red: Double, green: Double, blue: Double)] = [
+        ("Gold", 1, 0.73, 0.28), ("Mint", 0.42, 0.88, 0.81), ("Coral", 1, 0.5, 0.45), ("Rose", 1, 0.58, 0.72),
+        ("Lavender", 0.74, 0.62, 1), ("Sky", 0.45, 0.75, 1), ("Lime", 0.72, 0.9, 0.35), ("Tangerine", 1, 0.6, 0.2),
+        ("Lemon", 1, 0.88, 0.3), ("Seafoam", 0.5, 0.95, 0.65), ("Peach", 1, 0.72, 0.56), ("Lilac", 0.85, 0.62, 0.95),
+        ("Periwinkle", 0.6, 0.68, 1), ("Aqua", 0.3, 0.85, 0.95), ("Leaf", 0.5, 0.82, 0.4), ("Berry", 0.95, 0.45, 0.6),
+        ("Orchid", 0.9, 0.52, 0.86), ("Ice", 0.68, 0.9, 1), ("Pistachio", 0.78, 0.92, 0.6), ("Cherry", 0.98, 0.38, 0.42)
+    ]
+    static func colorKey(_ player: Int) -> String { "player\(player + 1)Color" }
+    static func colorIndex(_ player: Int) -> Int {
+        let stored = MountainExperience.defaults.object(forKey: colorKey(player)) as? Int ?? player
+        return palette.indices.contains(stored) ? stored : min(1, max(0, player))
+    }
+    static func swatch(_ index: Int) -> Color { let c = palette[index]; return Color(red: c.red, green: c.green, blue: c.blue) }
+    static func player(_ index: Int) -> Color { swatch(colorIndex(index)) }
+    /// Darker edge tint for a player's playable tiles.
+    static func shade(_ player: Int) -> Color {
+        switch colorIndex(player) {
+        case 0: Color(red: 0.82, green: 0.34, blue: 0.04)
+        case 1: Color(red: 0.04, green: 0.44, blue: 0.40)
+        case let i: Color(red: palette[i].red * 0.5, green: palette[i].green * 0.5, blue: palette[i].blue * 0.5)
+        }
+    }
     static func display(_ size: CGFloat) -> Font {
         .custom("Georgia-Bold", size: size, relativeTo: .largeTitle)
     }
@@ -25,8 +47,7 @@ struct MountainTileValueShading: View {
     var cornerRadius: CGFloat = 12
     private var tint: Color {
         guard playable else { return MountainStyle.gold }
-        return player == 0 ? Color(red: 0.82, green: 0.34, blue: 0.04)
-                           : Color(red: 0.04, green: 0.44, blue: 0.40)
+        return MountainStyle.shade(player)
     }
     var body: some View {
         if value > 0 {
@@ -121,5 +142,73 @@ struct MountainScenery: View {
             }
         }
         .ignoresSafeArea().allowsHitTesting(false).accessibilityHidden(true)
+    }
+}
+
+/// Tangled vines grow across the view, then unwind from their roots. Rows and
+/// columns of vines echo the board. Purely decorative and never hit-testable.
+struct MountainVineSweep: View {
+    var trigger = 0
+    /// Covers what's behind until the vines unwind (used at launch).
+    var curtain = false
+    var duration = 1.4
+    var onFinish: () -> Void = {}
+    @State private var progress = 1.0
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    var body: some View {
+        MountainVines(progress: progress, curtain: curtain)
+            .allowsHitTesting(false).accessibilityHidden(true)
+            .onAppear { if curtain { run() } }
+            .onChange(of: trigger) { run() }
+    }
+    private func run() {
+        guard !systemReduceMotion, animationsEnabled, !MountainExperience.isQAActive else { progress = 1; onFinish(); return }
+        progress = 0
+        withAnimation(.easeInOut(duration: duration)) { progress = 1 } completion: { onFinish() }
+    }
+}
+
+private struct MountainVines: View, Animatable {
+    var progress: Double
+    let curtain: Bool
+    var animatableData: Double { get { progress } set { progress = newValue } }
+    static let stem = Color(red: 0.18, green: 0.48, blue: 0.27)
+    static let leaf = Color(red: 0.42, green: 0.74, blue: 0.36)
+    var body: some View {
+        Canvas { context, size in
+            guard progress < 1 else { return }
+            if curtain {
+                context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(MountainStyle.ink.opacity(min(1, 2 - progress * 2))))
+            }
+            let head = min(1, progress * 2), tail = max(0, progress * 2 - 1)
+            let vines = 10, samples = 48
+            for vine in 0..<vines {
+                let across = vine % 2 == 0 // alternate rows and columns
+                let lane = (Double(vine / 2) + 0.5) / Double(vines / 2)
+                let phase = Double(vine) * 1.7
+                func point(_ t: Double) -> CGPoint {
+                    let wave = sin(t * 9 + phase) * 0.06 + sin(t * 23 + phase * 2) * 0.015
+                    return across ? CGPoint(x: t * size.width, y: (lane + wave) * size.height)
+                                  : CGPoint(x: (lane + wave) * size.width, y: t * size.height)
+                }
+                let from = Int(tail * Double(samples)), to = Int(head * Double(samples))
+                guard to > from else { continue }
+                var path = Path()
+                path.move(to: point(Double(from) / Double(samples)))
+                for i in (from + 1)...to { path.addLine(to: point(Double(i) / Double(samples))) }
+                context.stroke(path, with: .color(Self.stem), style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                for i in stride(from: from + 1, through: to, by: 1) where (i + vine) % 4 == 0 {
+                    let p = point(Double(i) / Double(samples)), q = point(Double(i + 1) / Double(samples))
+                    var leaf = context
+                    leaf.translateBy(x: p.x, y: p.y)
+                    leaf.rotate(by: .radians(atan2(q.y - p.y, q.x - p.x) + (i % 8 < 4 ? 0.9 : -0.9)))
+                    leaf.fill(Path(ellipseIn: CGRect(x: 0, y: -4, width: 16, height: 8)), with: .color(Self.leaf))
+                    if (i + vine) % 12 == 0 {
+                        leaf.fill(Path(ellipseIn: CGRect(x: -4, y: -4, width: 8, height: 8)), with: .color(MountainStyle.gold))
+                    }
+                }
+            }
+        }
     }
 }
