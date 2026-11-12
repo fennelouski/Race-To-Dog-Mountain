@@ -2021,6 +2021,10 @@ enum MountainShowcase {
         case 28: return Scene(game: versus(7, 29, moves: 12, rival: .level3))
         case 29: return Scene(game: versus(5, 30, moves: 6, rival: .level8))
         case 30: return Scene(game: versus(9, 31, rival: .level3, wanted: 0))
+        // 31–33: one game in sequence — your turn, the move you just made, and the finished board.
+        case 31: return Scene(game: versus(6, 32, moves: 8, rival: .level6))
+        case 32: return Scene(game: versus(6, 32, moves: 9, rival: .level6))
+        case 33: return Scene(game: versus(6, 32, rival: .level6))
         default: return nil
         }
     }()
