@@ -351,18 +351,24 @@ struct MountainVineTitle: View, Animatable {
             func at(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: x + inset, y: y + top) }
             // A vine capital T: a wavy crossbar, written from the side, then the stem.
             var bar = Stroke(smooth([(-4, 16), (6, 6), (20, 11), (34, 3), (50, 9), (56, 4)].map { at($0.0, $0.1) }))
-            if line == 1 { bar = Stroke(bar.points.reversed()) }
             bar.width = 5.2; bar.curlStart = true; bar.curlEnd = true
-            parts.append(Part(stroke: bar, from: line == 0 ? .leading : .trailing, order: 0))
+            // Both crossbars grow in from the left-hand edge.
+            parts.append(Part(stroke: bar, from: .leading, order: 0))
             // The cursive body, split at the top of each letter so a vine can land there and write it.
             var skeleton = [(27, 8), (25, 36), (24, 64), (28, 80), (38, 78)].map { at($0.0, $0.1) }
             var anchors = [0]
+            var rightArm: Int?
             var x: CGFloat = 38
             for character in rest {
                 guard let letter = letters[character] else { continue }
                 let points = letter.points.dropFirst().map { at($0.0 + x, $0.1) }
                 let top = points.indices.min { points[$0].y < points[$1].y } ?? 0
                 anchors.append(skeleton.count + top)
+                // The y's right arm is written by its own vine from the right-hand edge.
+                if character == "y", let arm = points.indices.last(where: { points[$0].y == points[top].y }), arm != top {
+                    rightArm = skeleton.count + arm
+                    anchors.append(skeleton.count + arm)
+                }
                 skeleton += points
                 x += letter.advance
             }
@@ -370,9 +376,15 @@ struct MountainVineTitle: View, Animatable {
             let cuts = anchors.map { $0 * 10 } + [dense.count - 1]
             for k in 0..<(cuts.count - 1) {
                 var stroke = Stroke(Array(dense[cuts[k]...cuts[k + 1]]))
-                stroke.curlEnd = k == cuts.count - 2
-                let middle = stroke.points[0].x
-                let from: Edge = line == 0 ? .top : middle < 60 ? .leading : .trailing
+                let last = k == cuts.count - 2
+                stroke.curlEnd = last
+                var from: Edge = line == 0 ? .top : stroke.points[0].x < 60 ? .leading : .trailing
+                if anchors[k] == rightArm { from = .trailing }
+                if line == 1 && last {
+                    // The e's tail is where its vine arrives from the right, so it writes the letter backwards.
+                    stroke = Stroke(stroke.points.reversed())
+                    from = .trailing
+                }
                 parts.append(Part(stroke: stroke, from: from, order: k + 1 + line))
             }
         }
