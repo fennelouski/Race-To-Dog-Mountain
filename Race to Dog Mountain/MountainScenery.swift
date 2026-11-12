@@ -69,6 +69,8 @@ struct MountainScenery: View {
     var active = true
     var celebration = false
     var followsLocalTime = false
+    /// The home screen's denser canopy: more, longer vines with blossoms and drifting fireflies.
+    var lush = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
@@ -129,10 +131,11 @@ struct MountainScenery: View {
                 }
                 // Tangled vines hang from the canopy; neighbours cross as they sway.
                 let stem = Color(red: 0.18, green: 0.48, blue: 0.27), leafColor = Color(red: 0.42, green: 0.74, blue: 0.36)
-                for vine in 0..<7 {
-                    let anchor = (Double(vine) + 0.5) / 7
-                    let length = h * (0.09 + Double((vine * 37) % 5) * 0.035)
-                    let sway = sin(time * 0.5 + Double(vine) * 1.3) * w * 0.02
+                let vineCount = lush ? 14 : 7
+                for vine in 0..<vineCount {
+                    let anchor = (Double(vine) + 0.5) / Double(vineCount) + (lush ? sin(Double(vine) * 2.7) * 0.02 : 0)
+                    let length = h * (lush ? 0.10 + Double((vine * 37) % 7) * 0.045 : 0.09 + Double((vine * 37) % 5) * 0.035)
+                    let sway = sin(time * (lush ? 0.4 + Double(vine % 3) * 0.12 : 0.5) + Double(vine) * 1.3) * w * (lush ? 0.03 : 0.02)
                     let samples = 28
                     func point(_ t: Double) -> CGPoint {
                         let curl = sin(t * 7 + Double(vine) * 2.1) * w * 0.035 * t
@@ -147,6 +150,27 @@ struct MountainScenery: View {
                         leaf.translateBy(x: p.x, y: p.y)
                         leaf.rotate(by: .radians(atan2(q.y - p.y, q.x - p.x) + (i % 6 == 0 ? 0.9 : -0.9)))
                         leaf.fill(Path(ellipseIn: CGRect(x: 0, y: -3.5, width: 14, height: 7)), with: .color(leafColor.opacity(0.9)))
+                    }
+                    if lush && vine % 3 != 1 {
+                        // A blossom at the tip that gently opens and closes.
+                        let tip = point(1), open = 4.5 + sin(time * 0.9 + Double(vine)) * 1.2
+                        let petal = [Color(red: 1, green: 0.58, blue: 0.72), MountainStyle.gold, Color(red: 0.74, green: 0.62, blue: 1)][vine % 3]
+                        for k in 0..<5 {
+                            let angle = Double(k) * 2 * .pi / 5 + time * 0.2
+                            context.fill(Path(ellipseIn: CGRect(x: tip.x + cos(angle) * open - 3.5, y: tip.y + sin(angle) * open - 3.5, width: 7, height: 7)), with: .color(petal))
+                        }
+                        context.fill(Path(ellipseIn: CGRect(x: tip.x - 2.5, y: tip.y - 2.5, width: 5, height: 5)), with: .color(MountainStyle.cream))
+                    }
+                }
+                if lush {
+                    // Fireflies wander through the middle of the screen.
+                    for i in 0..<12 {
+                        let seed = Double(i) * 1.618
+                        let x = w * (0.1 + 0.8 * ((seed * 0.37).truncatingRemainder(dividingBy: 1))) + sin(time * 0.3 + seed * 3) * w * 0.06
+                        let y = h * (0.25 + 0.5 * ((seed * 0.61).truncatingRemainder(dividingBy: 1))) + cos(time * 0.25 + seed * 2) * h * 0.04
+                        let glow = 0.25 + (sin(time * 1.4 + seed * 5) + 1) * 0.3
+                        context.fill(Path(ellipseIn: CGRect(x: x - 6, y: y - 6, width: 12, height: 12)), with: .color(MountainStyle.gold.opacity(glow * 0.18)))
+                        context.fill(Path(ellipseIn: CGRect(x: x - 2, y: y - 2, width: 4, height: 4)), with: .color(Color(red: 1, green: 0.9, blue: 0.6).opacity(glow)))
                     }
                 }
                 // A curling gold tendril, echoed by the game's row/column path.
@@ -184,13 +208,15 @@ struct MountainVineSweep: View {
     var trigger = 0
     /// Covers what's behind until the vines unwind (used at launch).
     var curtain = false
+    /// Dense enough to hide everything underneath at the halfway point, then recedes.
+    var cover = false
     var duration = 1.4
     var onFinish: () -> Void = {}
     @State private var progress = 1.0
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     var body: some View {
-        MountainVines(progress: progress, curtain: curtain)
+        MountainVines(progress: progress, curtain: curtain, cover: cover)
             .allowsHitTesting(false).accessibilityHidden(true)
             .onAppear { if curtain { run() } }
             .onChange(of: trigger) { run() }
@@ -205,6 +231,7 @@ struct MountainVineSweep: View {
 private struct MountainVines: View, Animatable {
     var progress: Double
     let curtain: Bool
+    var cover = false
     var animatableData: Double { get { progress } set { progress = newValue } }
     static let stem = Color(red: 0.18, green: 0.48, blue: 0.27)
     static let leaf = Color(red: 0.42, green: 0.74, blue: 0.36)
@@ -215,7 +242,12 @@ private struct MountainVines: View, Animatable {
                 context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(MountainStyle.ink.opacity(min(1, 2 - progress * 2))))
             }
             let head = min(1, progress * 2), tail = max(0, progress * 2 - 1)
-            let vines = 10, samples = 48
+            if cover {
+                // A leafy hedge thickens behind the vines until nothing shows through.
+                let density = min(head, 1 - tail)
+                context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Color(red: 0.08, green: 0.30, blue: 0.22).opacity(density * density * (3 - 2 * density))))
+            }
+            let vines = cover ? 18 : 10, samples = 48
             for vine in 0..<vines {
                 let across = vine % 2 == 0 // alternate rows and columns
                 let lane = (Double(vine / 2) + 0.5) / Double(vines / 2)
@@ -230,7 +262,7 @@ private struct MountainVines: View, Animatable {
                 var path = Path()
                 path.move(to: point(Double(from) / Double(samples)))
                 for i in (from + 1)...to { path.addLine(to: point(Double(i) / Double(samples))) }
-                context.stroke(path, with: .color(Self.stem), style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                context.stroke(path, with: .color(Self.stem), style: StrokeStyle(lineWidth: cover ? 8 : 5, lineCap: .round, lineJoin: .round))
                 for i in stride(from: from + 1, through: to, by: 1) where (i + vine) % 4 == 0 {
                     let p = point(Double(i) / Double(samples)), q = point(Double(i + 1) / Double(samples))
                     var leaf = context
@@ -245,3 +277,4 @@ private struct MountainVines: View, Animatable {
         }
     }
 }
+

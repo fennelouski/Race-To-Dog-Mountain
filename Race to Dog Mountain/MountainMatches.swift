@@ -225,6 +225,8 @@ struct SavedMountainGame: Codable, Identifiable {
     var computerStarted = false
     var rolesChanged = false
     var learning: MountainLearningContext?
+    /// Player 1's rival when both seats are computers; older saves have none.
+    var firstDifficulty: ComputerDifficulty?
 
     init(size: Int, names: [String], computers: [Bool], difficulty: ComputerDifficulty, adjustment: Int, startingPlayer: Int? = nil) {
         self.names = names; self.computers = computers; self.difficulty = difficulty
@@ -235,7 +237,8 @@ struct SavedMountainGame: Codable, Identifiable {
     }
     var hasScore: Bool { game.scores.contains { $0 > 0 } }
     var category: MountainGameCategory { computers.contains(true) ? .ai : .passAndPlay }
-    var title: String { names.enumerated().map { computers[$0.offset] ? difficulty.displayName : $0.element }.joined(separator: " & ") }
+    var title: String { names.enumerated().map { computers[$0.offset] ? rival($0.offset).displayName : $0.element }.joined(separator: " & ") }
+    func rival(_ seat: Int) -> ComputerDifficulty { seat == 0 && computers[1] ? firstDifficulty ?? difficulty : difficulty }
     var isValid: Bool {
         names.count == 2 && names.allSatisfy { !$0.isEmpty && $0.utf8.count <= 240 } &&
         computers.count == 2 && (-2...2).contains(adjustment) && game.isValid &&

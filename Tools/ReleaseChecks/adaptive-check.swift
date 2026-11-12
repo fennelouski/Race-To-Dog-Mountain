@@ -37,7 +37,7 @@ struct SeededRandom: RandomNumberGenerator {
         for _ in 0..<9 { learning.record(.win) }
         assert(learning.skill == 1 && learning.difficulty == .level2, "Slow easy-start ramp")
         for _ in 0..<500 { learning.record(.win); assert(learning.isValid) }
-        assert(learning.skill == 15 && learning.difficulty == .level16)
+        assert(learning.skill == MountainLearning.maximumSkill && learning.difficulty == .level18)
         let summit = learning.skill
         for _ in 0..<6 { learning.record(.loss) }
         assert(learning.skill < summit * 0.70, "Faster multiplicative recovery")

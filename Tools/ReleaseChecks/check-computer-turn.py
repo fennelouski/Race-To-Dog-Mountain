@@ -51,13 +51,14 @@ struct HumanSelection { let id: Int }
     var recorded = false
     var rolesChanged = false
     var swapping = false
-    func restart() {}
+    func restart(sweep: Bool = true) {}
     var savedID = UUID()
     var learning: MountainLearningContext?
     lazy var learningStore: MountainLearningStore? = MountainLearningStore(defaults: preferences)
     let names = ["Test first", "Test second"]
     let preferences = UserDefaults(suiteName: "dog-mountain-check-" + UUID().uuidString)!
     var difficulty = ComputerDifficulty.level6
+    func rival(_ seat: Int) -> ComputerDifficulty { difficulty }
     var matchAdjustment = 0
     var waitingForStart: Bool { game.moves == 0 && computers[game.turn] && !computerStarted }
     var computers = [true, true]

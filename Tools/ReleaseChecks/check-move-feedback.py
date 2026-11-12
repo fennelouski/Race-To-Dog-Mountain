@@ -20,6 +20,7 @@ import Foundation
     var lastPoints = 0
     var lastMove: Int?
     var difficulty = ComputerDifficulty.level1
+    func rival(_ seat: Int) -> ComputerDifficulty { difficulty }
     var saves = 0
     init() { history = MountainHistory(initial: game) }
     func recordWin() {}

@@ -103,12 +103,18 @@ struct MountainMatchRow: View {
     let scores: [Int]?
     let symbol: String
     var needsMove = false
+    /// A finished local game shows its final board, coloured by who took each square.
+    var history: MountainHistory? = nil
     var action: () -> Void
     var body: some View {
         Button(action: action) {
             HStack(spacing: 14) {
-                Image(systemName: symbol).font(.title2).foregroundStyle(needsMove ? MountainStyle.gold : MountainStyle.mint)
-                    .frame(width: 44, height: 44).accessibilityHidden(true)
+                if let history, let claims = MountainBoardThumbnail.claims(history), !claims.isEmpty {
+                    MountainBoardThumbnail(size: history.initial.size, claims: claims).frame(width: 56, height: 56).accessibilityHidden(true)
+                } else {
+                    Image(systemName: symbol).font(.title2).foregroundStyle(needsMove ? MountainStyle.gold : MountainStyle.mint)
+                        .frame(width: 44, height: 44).accessibilityHidden(true)
+                }
                 VStack(alignment: .leading, spacing: 5) {
                     Text(title).font(.headline).fixedSize(horizontal: false, vertical: true)
                     Text(subtitle).font(.subheadline).foregroundStyle(MountainStyle.cream.opacity(0.8)).fixedSize(horizontal: false, vertical: true)
@@ -142,3 +148,23 @@ struct MountainMessagesHelp: View {
     }
 }
 #endif
+
+struct MountainBoardThumbnail: View {
+    let size: Int
+    /// Tile → the seat that took it.
+    let claims: [Int: Int]
+    static func claims(_ history: MountainHistory) -> [Int: Int]? {
+        guard let states = history.states else { return nil }
+        return Dictionary(uniqueKeysWithValues: history.choices.enumerated().map { ($1, states[$0].turn) })
+    }
+    var body: some View {
+        Canvas { context, area in
+            let gap = 1.0, cell = (min(area.width, area.height) - gap * Double(size - 1)) / Double(size)
+            for tile in 0..<(size * size) {
+                let rect = CGRect(x: Double(tile % size) * (cell + gap), y: Double(tile / size) * (cell + gap), width: cell, height: cell)
+                let color = claims[tile].map { MountainStyle.player($0) } ?? MountainStyle.cream.opacity(0.15)
+                context.fill(Path(roundedRect: rect, cornerRadius: cell * 0.2), with: .color(color))
+            }
+        }
+    }
+}

@@ -407,7 +407,10 @@ private struct WatchPortrait: View {
     let difficulty: ComputerDifficulty
     let size: CGFloat
     var body: some View {
-        Image(difficulty.portrait).resizable().scaledToFill().frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
+        Group {
+            if let portrait = difficulty.portrait { Image(portrait).resizable().scaledToFill() }
+            else { Text(verbatim: String(difficulty.name.prefix(1))).font(.system(size: size * 0.5, weight: .bold)).foregroundStyle(MountainStyle.ink).frame(maxWidth: .infinity, maxHeight: .infinity).background(MountainStyle.mint) }
+        }.frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
     }
 }
 

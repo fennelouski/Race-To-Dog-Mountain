@@ -1038,11 +1038,9 @@ struct MountainAvatar: View {
                 Image(systemName: symbol).resizable().scaledToFit().padding(size * 0.2)
             } else if style == "emoji" {
                 Text(symbol).font(.system(size: size * 0.58)).minimumScaleFactor(0.2)
-            } else if #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) {
-                MountainFonsterWindow(seed: name, size: size, activity: activity)
-                    .id(name)
-            } else if let generated = MountainFonster.image(seed: name) {
-                Image(decorative: generated, scale: 1).resizable().scaledToFit().padding(size * 0.05)
+            } else {
+                // Fonsters are paused until they're polished; older "fonster" profiles show their icon.
+                Image(systemName: symbol).resizable().scaledToFit().padding(size * 0.2)
             }
         }.frame(width: size, height: size).background(MountainStyle.cream.opacity(0.12), in: Circle())
             .clipShape(Circle()).accessibilityHidden(true)

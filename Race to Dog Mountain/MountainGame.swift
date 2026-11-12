@@ -12,19 +12,25 @@ enum MountainTileIntensity {
 enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     case level1, level2, level3, level4, level5, level6, level7, level8
     case level9, level10, level11, level12, level13, level14, level15, level16
+    case level17, level18
     var id: Int { rawValue }
-    var name: String { ["Quinn", "Milo", "June", "Theo", "Amara", "Finn", "Leila", "Oscar", "Nia", "Hugo", "Sana", "Ezra", "Inez", "Kai", "Zuri", "Avery"][rawValue] }
+    /// Alphabetical from easiest to hardest, so a later letter always means a tougher rival.
+    var name: String { ["Amara", "Avery", "Ezra", "Finn", "Hugo", "Inez", "June", "Kai", "Leila", "Milo", "Nia", "Oscar", "Quinn", "Rosa", "Sana", "Theo", "Wren", "Zuri"][rawValue] }
     var title: String { String(localized: "Level \(rawValue + 1)") }
     var displayName: String { "\(name) (\(rawValue + 1))" }
-    var portrait: String { "Opponent\(rawValue + 1)" }
-    var detail: String {
-        [String(localized: "Curious beginner"), String(localized: "Easygoing explorer"), String(localized: "Enthusiastic newcomer"), String(localized: "Patient gardener"), String(localized: "Careful vine finder"), String(localized: "Adventurous thinker"), String(localized: "Observant challenger"), String(localized: "Steady tactician"), String(localized: "Playful strategist"), String(localized: "Quiet problem solver"), String(localized: "Focused planner"), String(localized: "Analytical navigator"), String(localized: "Confident grower"), String(localized: "Precise pathfinder"), String(localized: "Inventive expert"), String(localized: "Canopy strategist")][rawValue]
+    /// Painted portraits stay with their names. Rosa and Wren have no painting yet and use their Fonster.
+    var portrait: String? {
+        let painted = ["Quinn": 1, "Milo": 2, "June": 3, "Theo": 4, "Amara": 5, "Finn": 6, "Leila": 7, "Oscar": 8, "Nia": 9, "Hugo": 10, "Sana": 11, "Ezra": 12, "Inez": 13, "Kai": 14, "Zuri": 15, "Avery": 16]
+        return painted[name].map { "Opponent\($0)" }
     }
-    var depth: Int { rawValue / 4 + 1 }
-    var branches: Int { rawValue % 4 + 3 }
-    var accuracy: Double { 0.10 + Double(rawValue) * (0.88 / 15) }
+    var detail: String {
+        [String(localized: "Curious beginner"), String(localized: "Easygoing explorer"), String(localized: "Enthusiastic newcomer"), String(localized: "Patient gardener"), String(localized: "Careful vine finder"), String(localized: "Adventurous thinker"), String(localized: "Observant challenger"), String(localized: "Steady tactician"), String(localized: "Playful strategist"), String(localized: "Quiet problem solver"), String(localized: "Focused planner"), String(localized: "Analytical navigator"), String(localized: "Confident grower"), String(localized: "Precise pathfinder"), String(localized: "Inventive expert"), String(localized: "Canopy strategist"), String(localized: "Deep-root strategist"), String(localized: "Master of the tangle")][rawValue]
+    }
+    var depth: Int { rawValue < 16 ? rawValue / 4 + 1 : rawValue == 16 ? 8 : 10 }
+    var branches: Int { rawValue < 16 ? rawValue % 4 + 3 : rawValue == 16 ? 8 : 10 }
+    var accuracy: Double { min(1, 0.10 + Double(rawValue) * (0.88 / 15)) }
     var greeting: String {
-        [String(localized: "Let's learn the vines together."), String(localized: "No rush. Let's enjoy the garden."), String(localized: "Ready to try a new route?"), String(localized: "One thoughtful step at a time."), String(localized: "Let's see where the numbers take us."), String(localized: "I have a good feeling about this tangle."), String(localized: "There's always another angle."), String(localized: "Let's put our plans to the test."), String(localized: "Care for a friendly challenge?"), String(localized: "I'll take a moment to think."), String(localized: "Ready when you are."), String(localized: "Every choice changes the possibilities."), String(localized: "Let's find the cleanest vine."), String(localized: "The small details matter."), String(localized: "Let's try something unexpected."), String(localized: "A good tangle starts with a good choice.")][rawValue]
+        [String(localized: "Let's learn the vines together."), String(localized: "No rush. Let's enjoy the garden."), String(localized: "Ready to try a new route?"), String(localized: "One thoughtful step at a time."), String(localized: "Let's see where the numbers take us."), String(localized: "I have a good feeling about this tangle."), String(localized: "There's always another angle."), String(localized: "Let's put our plans to the test."), String(localized: "Care for a friendly challenge?"), String(localized: "I'll take a moment to think."), String(localized: "Ready when you are."), String(localized: "Every choice changes the possibilities."), String(localized: "Let's find the cleanest vine."), String(localized: "The small details matter."), String(localized: "Let's try something unexpected."), String(localized: "A good tangle starts with a good choice."), String(localized: "I've already traced every vine on this board."), String(localized: "Bring your best. I'll bring mine.")][rawValue]
     }
     func phrase(move: Int) -> String {
         let phrases = [
@@ -43,13 +49,15 @@ enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
             [String(localized: "A clean path through the numbers."), String(localized: "I'll take the longer view."), String(localized: "Think one turn beyond mine.")],
             [String(localized: "A small detail can decide the tangle."), String(localized: "I weighed the next few steps."), String(localized: "Choose your reply carefully.")],
             [String(localized: "An unexpected route can be useful."), String(localized: "Let's change the shape of the game."), String(localized: "I have another idea.")],
-            [String(localized: "Look beyond the next step."), String(localized: "Every route has a tradeoff."), String(localized: "The canopy takes planning.")]
+            [String(localized: "Look beyond the next step."), String(localized: "Every route has a tradeoff."), String(localized: "The canopy takes planning.")],
+            [String(localized: "I saw that coming a few turns ago."), String(localized: "Roots run deeper than they look."), String(localized: "Every vine leads somewhere.")],
+            [String(localized: "The whole board is one tangle to me."), String(localized: "I've counted to the very end."), String(localized: "Your move. Make it count.")]
         ]
         return phrases[rawValue][move % 3]
     }
     func resultPhrase(humanWon: Bool) -> String {
-        humanWon ? [String(localized: "You found the route!"), String(localized: "A lovely tangle. Well played."), String(localized: "That was a clever adventure!"), String(localized: "Your patience paid off."), String(localized: "You spotted the better path."), String(localized: "A bold finish. Nice work!"), String(localized: "You saw something I missed."), String(localized: "Your plan held up. Well played."), String(localized: "A delightful surprise!"), String(localized: "You gave me something to think about."), String(localized: "A well-earned finish."), String(localized: "Your choices made the difference."), String(localized: "An excellent harvest."), String(localized: "You caught the decisive detail."), String(localized: "A creative route to victory!"), String(localized: "A worthy bloom. You earned the canopy.")][rawValue]
-            : [String(localized: "Another try? We'll learn together."), String(localized: "There's always another vine."), String(localized: "Next adventure, new possibilities."), String(localized: "Take another steady tangle."), String(localized: "Let's find a different route."), String(localized: "The next tangle could be yours."), String(localized: "Try another angle next time."), String(localized: "A new plan, a new game."), String(localized: "Let's play another friendly round."), String(localized: "A fresh board gives us both a fresh start."), String(localized: "Another chance to test your plan."), String(localized: "The next game has new possibilities."), String(localized: "Let's explore another path."), String(localized: "There's another route waiting."), String(localized: "Try something unexpected next time."), String(localized: "The vines will be here for another tangle.")][rawValue]
+        humanWon ? [String(localized: "You found the route!"), String(localized: "A lovely tangle. Well played."), String(localized: "That was a clever adventure!"), String(localized: "Your patience paid off."), String(localized: "You spotted the better path."), String(localized: "A bold finish. Nice work!"), String(localized: "You saw something I missed."), String(localized: "Your plan held up. Well played."), String(localized: "A delightful surprise!"), String(localized: "You gave me something to think about."), String(localized: "A well-earned finish."), String(localized: "Your choices made the difference."), String(localized: "An excellent harvest."), String(localized: "You caught the decisive detail."), String(localized: "A creative route to victory!"), String(localized: "A worthy bloom. You earned the canopy."), String(localized: "You out-rooted me. Remarkable."), String(localized: "You untangled the master. Brilliant!")][rawValue]
+            : [String(localized: "Another try? We'll learn together."), String(localized: "There's always another vine."), String(localized: "Next adventure, new possibilities."), String(localized: "Take another steady tangle."), String(localized: "Let's find a different route."), String(localized: "The next tangle could be yours."), String(localized: "Try another angle next time."), String(localized: "A new plan, a new game."), String(localized: "Let's play another friendly round."), String(localized: "A fresh board gives us both a fresh start."), String(localized: "Another chance to test your plan."), String(localized: "The next game has new possibilities."), String(localized: "Let's explore another path."), String(localized: "There's another route waiting."), String(localized: "Try something unexpected next time."), String(localized: "The vines will be here for another tangle."), String(localized: "Deeper roots next time?"), String(localized: "The tangle is patient. Try again.")][rawValue]
     }
     static func adjusted(_ current: Int, humanWon: Bool) -> Int {
         min(2, max(-2, current + (humanWon ? 1 : -1)))
@@ -112,30 +120,58 @@ struct MountainGame: Sendable, Codable {
         return computerMove(difficulty: difficulty, adjustment: adjustment, roll: roll, using: &random)
     }
     func computerMove<R: RandomNumberGenerator>(difficulty: ComputerDifficulty, adjustment: Int = 0, roll: Double? = nil, using random: inout R) -> Int? {
+        // ponytail: the deepest rival narrows on big boards to keep a move near a second; iterative deepening if that's too coarse.
+        let branches = size > 8 ? min(8, difficulty.branches) : difficulty.branches
         let evaluatedMoves: [(id: Int, value: Int)] = legalMoves.map { id in
-            (id: id, value: evaluated(id, depth: difficulty.depth, branches: difficulty.branches))
+            (id: id, value: evaluated(id, depth: difficulty.depth, branches: branches))
         }
         let ranked = evaluatedMoves.sorted { left, right in
             if left.value == right.value { return left.id < right.id }
             return left.value > right.value
         }.map(\.id)
-        guard let best = ranked.first else { return nil }
+        // Only the easiest rival may close the game on a loss while another move keeps it going.
+        let safe = difficulty == .level1 ? ranked : ranked.filter { !endsInLoss($0) }
+        let choices = safe.isEmpty ? ranked : safe
+        guard let best = choices.first else { return nil }
         let accuracy = min(1, max(0, difficulty.accuracy + Double(min(2, max(-2, adjustment))) * 0.0125))
-        if (roll ?? Double.random(in: 0..<1, using: &random)) < accuracy || ranked.count == 1 { return best }
+        if (roll ?? Double.random(in: 0..<1, using: &random)) < accuracy || choices.count == 1 { return best }
         // A softer opponent sometimes picks another promising route, not an illegal move.
-        let alternatives = Array(ranked.dropFirst().prefix(difficulty.rawValue < 4 ? ranked.count : 3))
+        let alternatives = Array(choices.dropFirst().prefix(difficulty.rawValue < 4 ? choices.count : 3))
         return alternatives.randomElement(using: &random) ?? best
     }
+    /// True when this move leaves the next player stuck while the mover trails.
+    func endsInLoss(_ id: Int) -> Bool {
+        var next = self
+        guard next.play(id) else { return false }
+        return next.isOver && next.scores[turn] < next.scores[1 - turn]
+    }
+    /// A finished game outweighs any points still on the board.
+    private static let decisive = 1_000_000
     private func evaluated(_ id: Int, depth: Int, branches: Int) -> Int {
         var next = self
         next.play(id)
-        return tiles[id].value - next.bestValue(depth: depth - 1, branches: branches)
+        return tiles[id].value - next.bestValue(depth: depth - 1, branches: branches, alpha: -Int.max / 2, beta: Int.max / 2)
     }
-    private func bestValue(depth: Int, branches: Int) -> Int {
+    /// Negamax with alpha-beta: points the player to move gains minus the other's, and a
+    /// finished game counts as a decisive win or loss instead of a neutral zero.
+    private func bestValue(depth: Int, branches: Int, alpha: Int, beta: Int) -> Int {
+        let moves = legalMoves
+        if moves.isEmpty {
+            let lead = scores[turn] - scores[1 - turn]
+            return lead == 0 ? 0 : lead > 0 ? Self.decisive : -Self.decisive
+        }
         guard depth > 0 else { return 0 }
-        // ponytail: at most six branches per deeper ply bounds large-board work; widen after profiling.
-        return legalMoves.sorted { tiles[$0].value > tiles[$1].value }.prefix(branches)
-            .map { evaluated($0, depth: depth, branches: branches) }.max() ?? 0
+        var alpha = alpha, best = -Int.max / 2
+        // ponytail: at most `branches` moves per deeper ply bounds large-board work; widen after profiling.
+        for id in moves.sorted(by: { tiles[$0].value > tiles[$1].value }).prefix(branches) {
+            var next = self
+            next.play(id)
+            let gain = tiles[id].value
+            best = max(best, gain - next.bestValue(depth: depth - 1, branches: branches, alpha: gain - beta, beta: gain - alpha))
+            alpha = max(alpha, best)
+            if alpha >= beta { break }
+        }
+        return best
     }
 
 }
@@ -332,13 +368,29 @@ struct MountainHistory: Codable, Sendable {
         assert(replay.after.moves == before.moves + 1 && classic.moves == before.moves)
         assert(replay.after.tiles[replay.tileID].value == 0)
         for difficulty in ComputerDifficulty.allCases {
-            for side in [4, 6, 14] {
+            // The deep rivals take seconds per move unoptimised on 14 × 14, so they play the smaller boards here.
+            for side in difficulty.rawValue < 16 ? [4, 6, 14] : [4, 6] {
                 var game = MountainGame(size: side)
                 for roll in [0.0, 0.999] { assert(game.canPlay(game.computerMove(difficulty: difficulty, roll: roll)!)) }
                 while let move = game.computerMove(difficulty: difficulty, roll: 0) {
                     assert(game.play(move)); assert(game.moves <= side * side)
                 }
                 assert(game.isOver && game.scores.reduce(0, +) + game.tiles.map(\.value).reduce(0, +) == (side * side) * (side * side + 1) / 2)
+            }
+        }
+        // Above level 1, a rival never closes the game on a loss while another move keeps it going.
+        var closings = 0
+        while closings < 20 {
+            var game = MountainGame(size: 4)
+            while !game.isOver {
+                let legal = game.legalMoves
+                if legal.contains(where: game.endsInLoss) && legal.contains(where: { !game.endsInLoss($0) }) {
+                    closings += 1
+                    for difficulty in ComputerDifficulty.allCases.dropFirst() { for roll in [0.0, 0.999] {
+                        assert(!game.endsInLoss(game.computerMove(difficulty: difficulty, roll: roll)!), "\(difficulty.name) closed on a loss")
+                    } }
+                }
+                game.play(legal.randomElement()!)
             }
         }
         for side in [4, 6] {
@@ -352,7 +404,7 @@ struct MountainHistory: Codable, Sendable {
         assert(MountainHumanProfile.updating(identity: "A", displayName: "Ana", symbol: "ab", data: Data(), avatarStyle: "emoji") == nil)
         assert(MountainHumanProfile.knownNames(data: emojiData) == ["Ana"])
         assert(MountainBoardDeck.next(size: 99, firstPlayer: 5).size == 14)
-        print("Classic rules, human starts, replay isolation, bounded adaptation, sixteen AI levels and score conservation passed.")
+        print("Classic rules, human starts, replay isolation, bounded adaptation, eighteen AI levels, no losing closes and score conservation passed.")
     }
 }
 #endif
@@ -360,6 +412,7 @@ struct MountainHistory: Codable, Sendable {
 /// Local, between-game AIMD controller. Outcomes guide challenge; they never alter a board or score.
 struct MountainLearning: Codable, Sendable {
     enum Outcome: String, Codable, Sendable { case win, loss, tie }
+    static let maximumSkill = Double(ComputerDifficulty.allCases.count - 1)
     private(set) var skill = 0.0
     private(set) var recent: [Outcome] = []
     private(set) var cooldown = 0
@@ -370,7 +423,7 @@ struct MountainLearning: Codable, Sendable {
         return Double(decisive.filter { $0 == .win }.count) / Double(decisive.count)
     }
     var isValid: Bool {
-        skill.isFinite && (0...15).contains(skill) && recent.count <= 12 && (0...2).contains(cooldown)
+        skill.isFinite && (0...Self.maximumSkill).contains(skill) && recent.count <= 12 && (0...2).contains(cooldown)
     }
     mutating func record(_ outcome: Outcome) {
         // Ties do not count as wins or losses, and break a winning/losing streak.
@@ -386,7 +439,7 @@ struct MountainLearning: Codable, Sendable {
             skill = max(0, skill * 0.65)
             cooldown = 2
         } else if outcome == .win && pair == [.win, .win] && smoothed > 0.70 {
-            skill = min(15, skill + 0.25)
+            skill = min(Self.maximumSkill, skill + 0.25)
             cooldown = 2
         }
     }
@@ -546,6 +599,8 @@ struct MountainDisplaySnapshot: Sendable {
     let paused: Bool
     var avatarStyles: [String] = []
     var photoIDs: [String?] = []
+    var firstDifficulty: ComputerDifficulty? = nil
+    func rival(_ seat: Int) -> ComputerDifficulty { seat == 0 && computers[1] ? firstDifficulty ?? difficulty : difficulty }
     var humanVictory: Bool { game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1] }
     static var design: Self {
         var game = MountainGame(size: 6, values: Array(1...36), startingLine: 2)

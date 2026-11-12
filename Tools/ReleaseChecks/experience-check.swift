@@ -19,7 +19,8 @@ import Foundation
         precondition(!pass.hasScore && pass.category == .passAndPlay)
         pass.game.play(pass.game.legalMoves[0]); precondition(pass.hasScore)
         let ai = SavedMountainGame(size: 4, names: ["A", "B"], computers: [false,true], difficulty: .level4, adjustment: 0)
-        precondition(!ai.hasScore && ai.category == .ai && ai.title.contains("Theo (4)"))
+        precondition(!ai.hasScore && ai.category == .ai && ai.title.contains("Finn (4)"))
+        let names = ComputerDifficulty.allCases.map(\.name); precondition(names == names.sorted(), "Rival names rise alphabetically with difficulty")
         for profile in ComputerDifficulty.allCases { precondition(profile.displayName == "\(profile.name) (\(profile.rawValue + 1))") }
         let legacy = Data("{\"A\":{\"displayName\":\"Nathan\",\"symbol\":\"leaf.fill\"}}".utf8)
         let profile = MountainHumanProfile.read(identity: "A", data: legacy)
@@ -36,6 +37,6 @@ import Foundation
             let sky = MountainSky(date: Date(timeIntervalSince1970: 1792000000), timeZone: TimeZone(identifier: zone)!)
             precondition((0...1).contains(sky.daylight) && (0...1).contains(sky.sunProgress))
         }
-        print("PASS: tutorial actions, legal branching/back navigation and isolation; scoreless filtering/categories; all 16 AI name levels; legacy/avatar/photo profile decoding and path validation; local-time decorative sky bounds.")
+        print("PASS: tutorial actions, legal branching/back navigation and isolation; scoreless filtering/categories; all 18 alphabetical AI name levels; legacy/avatar/photo profile decoding and path validation; local-time decorative sky bounds.")
     }
 }

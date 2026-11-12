@@ -23,6 +23,44 @@ struct MountainButton: ButtonStyle {
     }
 }
 
+/// Squashes on press and springs back on release.
+struct MountainPressStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    func makeBody(configuration: Configuration) -> some View {
+        let still = systemReduceMotion || !animationsEnabled
+        configuration.label
+            .scaleEffect(configuration.isPressed && !still ? 0.93 : 1)
+            .brightness(configuration.isPressed ? 0.06 : 0)
+            .animation(still ? nil : .spring(response: 0.25, dampingFraction: 0.6), value: configuration.isPressed)
+    }
+}
+
+/// The home screen's big round Play button, ringed by a slow breathing glow.
+struct MountainPlayButton: View {
+    var size: CGFloat = 168
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    @State private var breathing = false
+    var body: some View {
+        let still = systemReduceMotion || !animationsEnabled
+        Button(action: action) {
+            Text("Play").font(MountainStyle.display(size * 0.22)).foregroundStyle(MountainStyle.ink)
+                .frame(width: size, height: size)
+                .background(MountainStyle.gold, in: Circle())
+                .shadow(color: .black.opacity(0.35), radius: 18, y: 10)
+                .contentShape(Circle())
+        }
+        .buttonStyle(MountainPressStyle()).mountainHover()
+        .background {
+            Circle().stroke(MountainStyle.gold.opacity(breathing ? 0 : 0.55), lineWidth: 10)
+                .scaleEffect(breathing ? 1.28 : 1).allowsHitTesting(false)
+        }
+        .onAppear { if !still { withAnimation(.easeOut(duration: 2.4).repeatForever(autoreverses: false)) { breathing = true } } }
+    }
+}
+
 /// Role is encoded by the pair of edges; turn emphasis changes only the overlay.
 struct MountainPlayerHighlight: View {
     let player: Int
@@ -61,8 +99,15 @@ private struct MountainTileButton: ButtonStyle {
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.9 : 1)
-            .animation(reduceMotion ? nil : .spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+            // Pressing down tucks the tile in and draws a glowing ring; releasing springs it back.
+            .overlay {
+                RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.cream, lineWidth: 3)
+                    .padding(configuration.isPressed ? 3 : -6)
+                    .opacity(configuration.isPressed && !reduceMotion ? 0.9 : 0)
+            }
+            .brightness(configuration.isPressed ? 0.08 : 0)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.88 : 1)
+            .animation(reduceMotion ? nil : .spring(response: 0.22, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }
 
@@ -100,6 +145,17 @@ struct MountainBoard: View {
         false
 #endif
     }
+    /// Desktop tiles are large, so their numbers fill more of the square.
+    private func numeralSize(_ width: CGFloat) -> CGFloat {
+#if os(macOS)
+        let base = max(numberSize * numberScale, width * 0.36)
+#else
+        let base = numberSize * numberScale
+#endif
+        return min(base, max(1, (width - 4) / 2.2))
+    }
+    /// The player who made the last move; `play` always hands the turn on.
+    private var mover: Int { 1 - game.turn }
     var body: some View {
         let metrics = MountainBoardLayout(size: game.size, availableWidth: Double(availableWidth), availableHeight: availableHeight.map(Double.init), compact: compact, scrollThreshold: scrollThreshold, minimumTile: Double(minimumTile))
         Group {
@@ -125,22 +181,23 @@ struct MountainBoard: View {
                                 .overlay { MountainTileValueShading(value: tile.value, playable: playable, player: game.turn) }
                             if tile.value == 0 {
                                 if lastMove == tile.id {
-                                    Text("+\(lastPoints)").font(.system(size: min(badgeSize, max(1, (width - 4) / 2.8)), weight: .bold)).lineLimit(1).minimumScaleFactor(0.1).foregroundStyle(MountainStyle.cream)
-                                        .transition(.identity).transaction { $0.animation = nil }
+                                    MountainDrainingNumber(points: lastPoints, from: numeralSize(width), to: min(badgeSize, max(1, (width - 4) / 2.8)), reduceMotion: reduceMotion)
+                                        .transition(.identity)
                                 } else {
                                     Image(systemName: "leaf.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
                                         .transition(.identity).transaction { $0.animation = nil }
                                 }
                             } else {
-                                Text("\(tile.value)").font(.system(size: min(numberSize * numberScale, max(1, (width - 4) / 2.2)), weight: .heavy)).monospacedDigit()
+                                Text("\(tile.value)").font(.system(size: numeralSize(width), weight: .heavy)).monospacedDigit()
                                     .lineLimit(1).minimumScaleFactor(0.1).padding(.horizontal, 2).foregroundStyle(MountainStyle.ink)
                                     .transition(.identity).transaction { $0.animation = nil }
                             }
                         }.frame(width: width, height: width)
                             .overlay { RoundedRectangle(cornerRadius: 12).strokeBorder(playable ? MountainStyle.cream.opacity(0.75) : .clear, lineWidth: 2)
-                                if selected == tile.id { RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.gold, lineWidth: 5) }
+                                // A taken tile was the last mover's; an open one is the current player's pending pick.
+                                if selected == tile.id { RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.player(tile.value == 0 ? mover : game.turn), lineWidth: 5) }
                                 if lastMove == tile.id {
-                                    RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.gold, lineWidth: 3)
+                                    RoundedRectangle(cornerRadius: 12).strokeBorder(MountainStyle.player(mover), lineWidth: 3)
                                         .matchedGeometryEffect(id: "last-picked-square", in: selectionAnimation)
                                 }
                             }
@@ -296,7 +353,6 @@ struct MountainScoreNumber: View, Animatable {
 
 /// The connected display is a presentation surface; this view cannot play a move or create an AI task.
 struct MountainExternalPresentation: View {
-    @AppStorage("aiUsesPictures", store: MountainExperience.defaults) private var pictures = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     private var reduceMotion: Bool { systemReduceMotion || !animationsEnabled }
@@ -354,11 +410,9 @@ struct MountainExternalPresentation: View {
     }
     @ViewBuilder private func displayAvatar(_ player: Int, size: CGFloat) -> some View {
         let style = snapshot.avatarStyles.indices.contains(player) ? snapshot.avatarStyles[player] : "fonster"
-        if snapshot.computers[player] && pictures {
-            Image(snapshot.difficulty.portrait).resizable().scaledToFill().frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
-        } else if snapshot.computers[player] {
-            MountainAvatar(name: snapshot.difficulty.name, size: size,
-                           activity: .init(game: snapshot.game, player: player, paused: snapshot.paused, lastMove: snapshot.lastMove))
+        if snapshot.computers[player] {
+            MountainRivalFace(difficulty: snapshot.rival(player), twin: player == 0 && snapshot.computers[1] && snapshot.rival(0) == snapshot.rival(1), size: size)
+                .frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
         } else {
             MountainAvatar(name: snapshot.names[player], symbol: snapshot.symbols[player], style: style,
                            photoID: snapshot.photoIDs.indices.contains(player) ? snapshot.photoIDs[player] : nil, size: size,
@@ -391,5 +445,58 @@ struct MountainExternalPresentation: View {
 enum MountainSpeech {
     static func player(_ name: String, points: Int, seat: Int) -> String {
         seat == 0 ? String(localized: "\(name), \(points) points. Row player.") : String(localized: "\(name), \(points) points. Column player.")
+    }
+}
+
+/// The picked number counts down and shrinks as its points fly to the score, ending as "+points".
+private struct MountainDrainingNumber: View {
+    let points: Int
+    let from: CGFloat
+    let to: CGFloat
+    let reduceMotion: Bool
+    @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var pace = 0.7
+    @State private var progress = 0.0
+    var body: some View {
+        MountainDrainingFrame(points: points, from: from, to: to, progress: reduceMotion ? 1 : progress)
+            .onAppear {
+                guard !reduceMotion else { return }
+                let duration = MountainMoveFeedback.duration * (pace.isFinite ? min(1.2, max(0.4, pace)) : 0.7) / 0.7
+                withAnimation(.easeInOut(duration: duration)) { progress = 1 }
+            }
+    }
+}
+private struct MountainDrainingFrame: View, Animatable {
+    let points: Int
+    let from: CGFloat
+    let to: CGFloat
+    var progress: Double
+    var animatableData: Double { get { progress } set { progress = newValue } }
+    var body: some View {
+        let done = progress >= 1
+        let remaining = Int((Double(points) * (1 - progress)).rounded())
+        Text(done ? "+\(points)" : "\(remaining)")
+            .font(.system(size: max(1, from + (to - from) * progress), weight: done ? .bold : .heavy)).monospacedDigit()
+            .lineLimit(1).minimumScaleFactor(0.1).padding(.horizontal, 2)
+            .foregroundStyle(MountainStyle.cream)
+    }
+}
+
+/// A rival's painted portrait. Rivals without a painting, and the second copy of a rival
+/// playing itself, show a lettered leaf badge so the two seats never look identical.
+struct MountainRivalFace: View {
+    let difficulty: ComputerDifficulty
+    var twin = false
+    var size: CGFloat = 48
+    var body: some View {
+        if let portrait = difficulty.portrait, !twin {
+            Image(portrait).resizable().scaledToFill()
+        } else {
+            ZStack {
+                Circle().fill(twin ? MountainStyle.mint : MountainStyle.gold)
+                Image(systemName: "leaf.fill").resizable().scaledToFit().padding(size * 0.14)
+                    .foregroundStyle(MountainStyle.ink.opacity(0.18)).rotationEffect(.degrees(-30))
+                Text(verbatim: String(difficulty.name.prefix(1))).font(.custom("Georgia-Bold", size: size * 0.52)).foregroundStyle(MountainStyle.ink)
+            }
+        }
     }
 }
