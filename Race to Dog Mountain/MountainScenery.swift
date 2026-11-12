@@ -280,89 +280,272 @@ private struct MountainVines: View, Animatable {
 }
 
 
-/// "Tally Tangle" drawn as a vine: the letter outlines grow stroke by stroke, leaves and
-/// blossoms sprout along them, then the letters fill in. Running `grow` back to 0 unwinds it.
+/// "Tally Tangle" hand-lettered in vines. Separate vines grow in from the top and sides of
+/// the screen; each reaches the top of one letter and writes it in script, with a slimmer vine
+/// twisting around the stem, tendrils curling from the ends, and leaves, berries and blossoms.
+/// `grow` runs the whole performance from 0 to 1; running it back unwinds every vine.
+/// Draw it full screen; `frame` is where the lettering sits inside that space.
 struct MountainVineTitle: View, Animatable {
     var grow: Double
+    var frame: CGRect
     var active = true
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     @Environment(\.scenePhase) private var scenePhase
     var animatableData: Double { get { grow } set { grow = newValue } }
 
-    /// Glyph outlines in a unit-width box, plus leaf spots (position along the vine, point, heading).
-    private struct Outline {
-        let path: Path
-        let aspect: CGFloat
-        let leaves: [(t: Double, point: CGPoint, angle: Double)]
+    private enum Edge { case top, leading, trailing }
+    private struct Stroke {
+        var points: [CGPoint]
+        var lengths: [CGFloat]
+        var window: ClosedRange<Double> = 0...1
+        var width: CGFloat = 6.4
+        var feeder = false
+        var curlStart = false
+        var curlEnd = false
+        var total: CGFloat { lengths.last ?? 0 }
+        init(_ points: [CGPoint]) {
+            self.points = points
+            var lengths: [CGFloat] = [0]
+            for i in points.indices.dropFirst() { lengths.append(lengths[i - 1] + hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y)) }
+            self.lengths = lengths
+        }
     }
-    private static let outline: Outline = {
-        let font = CTFontCreateWithName("Georgia-Bold" as CFString, 100, nil)
-        let lines = ["Tally", "Tangle"].map { CTLineCreateWithAttributedString(NSAttributedString(string: $0, attributes: [NSAttributedString.Key(kCTFontAttributeName as String): font])) }
-        let widths = lines.map { CGFloat(CTLineGetTypographicBounds($0, nil, nil, nil)) }
-        let ascent = CTFontGetAscent(font), lineHeight: CGFloat = 96
-        let combined = CGMutablePath()
-        for (index, line) in lines.enumerated() {
-            let inset = ((widths.max() ?? 0) - widths[index]) / 2
-            for run in (CTLineGetGlyphRuns(line) as? [CTRun]) ?? [] {
-                let count = CTRunGetGlyphCount(run)
-                var glyphs = [CGGlyph](repeating: 0, count: count), positions = [CGPoint](repeating: .zero, count: count)
-                CTRunGetGlyphs(run, CFRange(location: 0, length: count), &glyphs)
-                CTRunGetPositions(run, CFRange(location: 0, length: count), &positions)
-                for (glyph, position) in zip(glyphs, positions) {
-                    var flip = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: inset + position.x, ty: ascent + CGFloat(index) * lineHeight)
-                    if let letter = CTFontCreatePathForGlyph(font, glyph, &flip) { combined.addPath(letter) }
+    /// One letter (or crossbar) and the screen edge its vine grows in from.
+    private struct Part { let stroke: Stroke; let from: Edge; let order: Int }
+
+    /// Catmull-Rom through a skeleton, ten samples per span.
+    private static func smooth(_ points: [CGPoint]) -> [CGPoint] {
+        guard points.count > 1 else { return points }
+        var out: [CGPoint] = []
+        for i in 0..<(points.count - 1) {
+            let p0 = points[max(0, i - 1)], p1 = points[i], p2 = points[i + 1], p3 = points[min(points.count - 1, i + 2)]
+            for step in 0..<10 {
+                let t = CGFloat(step) / 10, t2 = t * t, t3 = t2 * t
+                func c(_ a: CGFloat, _ b: CGFloat, _ c: CGFloat, _ d: CGFloat) -> CGFloat {
+                    0.5 * (2 * b + (-a + c) * t + (2 * a - 5 * b + 4 * c - d) * t2 + (-a + 3 * b - 3 * c + d) * t3)
                 }
+                out.append(CGPoint(x: c(p0.x, p1.x, p2.x, p3.x), y: c(p0.y, p1.y, p2.y, p3.y)))
             }
         }
-        let box = combined.boundingBoxOfPath
-        var unit = CGAffineTransform(scaleX: 1 / box.width, y: 1 / box.width).translatedBy(x: -box.minX, y: -box.minY)
-        let path = Path(combined.copy(using: &unit) ?? combined)
-        let leaves = (0..<64).compactMap { i -> (t: Double, point: CGPoint, angle: Double)? in
-            let t = (Double(i) + 0.5) / 64
-            guard let p = path.trimmedPath(from: 0, to: t).currentPoint,
-                  let q = path.trimmedPath(from: 0, to: min(1, t + 0.004)).currentPoint, p != q else { return nil }
-            return (t, p, atan2(q.y - p.y, q.x - p.x) + (i % 2 == 0 ? 1.1 : -1.1))
+        out.append(points[points.count - 1])
+        return out
+    }
+
+    /// Script skeletons on a 100-unit line: baseline 78, x-height 44.
+    private static let letters: [Character: (points: [(CGFloat, CGFloat)], advance: CGFloat)] = [
+        "a": ([(0, 78), (12, 56), (24, 44), (16, 40), (6, 46), (2, 62), (8, 78), (18, 74), (24, 56), (25, 44), (25, 66), (29, 80), (36, 78)], 36),
+        "l": ([(0, 78), (10, 52), (15, 22), (12, 4), (6, 10), (5, 34), (8, 62), (13, 80), (20, 78)], 20),
+        "y": ([(0, 78), (4, 58), (6, 44), (7, 64), (13, 76), (21, 68), (24, 44), (24, 82), (22, 100), (14, 108), (7, 101), (13, 92), (32, 84)], 30),
+        "n": ([(0, 78), (4, 60), (5, 44), (5, 78), (7, 60), (14, 44), (21, 48), (23, 62), (24, 78), (30, 78)], 30),
+        "g": ([(0, 78), (12, 56), (24, 44), (16, 40), (6, 46), (2, 62), (8, 78), (18, 74), (24, 56), (25, 44), (25, 82), (23, 100), (15, 108), (8, 101), (14, 92), (30, 84)], 30),
+        "e": ([(0, 74), (12, 66), (20, 56), (18, 46), (10, 44), (4, 54), (4, 68), (10, 79), (20, 80), (30, 72)], 28)
+    ]
+    private static let size = CGSize(width: 186, height: 216)
+
+    private static let parts: [Part] = {
+        var parts: [Part] = []
+        func word(_ rest: String, top: CGFloat, inset: CGFloat, line: Int) {
+            func at(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: x + inset, y: y + top) }
+            // A vine capital T: a wavy crossbar, written from the side, then the stem.
+            var bar = Stroke(smooth([(-4, 16), (6, 6), (20, 11), (34, 3), (50, 9), (56, 4)].map { at($0.0, $0.1) }))
+            if line == 1 { bar = Stroke(bar.points.reversed()) }
+            bar.width = 5.2; bar.curlStart = true; bar.curlEnd = true
+            parts.append(Part(stroke: bar, from: line == 0 ? .leading : .trailing, order: 0))
+            // The cursive body, split at the top of each letter so a vine can land there and write it.
+            var skeleton = [(27, 8), (25, 36), (24, 64), (28, 80), (38, 78)].map { at($0.0, $0.1) }
+            var anchors = [0]
+            var x: CGFloat = 38
+            for character in rest {
+                guard let letter = letters[character] else { continue }
+                let points = letter.points.dropFirst().map { at($0.0 + x, $0.1) }
+                let top = points.indices.min { points[$0].y < points[$1].y } ?? 0
+                anchors.append(skeleton.count + top)
+                skeleton += points
+                x += letter.advance
+            }
+            let dense = smooth(skeleton)
+            let cuts = anchors.map { $0 * 10 } + [dense.count - 1]
+            for k in 0..<(cuts.count - 1) {
+                var stroke = Stroke(Array(dense[cuts[k]...cuts[k + 1]]))
+                stroke.curlEnd = k == cuts.count - 2
+                let middle = stroke.points[0].x
+                let from: Edge = line == 0 ? .top : middle < 60 ? .leading : .trailing
+                parts.append(Part(stroke: stroke, from: from, order: k + 1 + line))
+            }
         }
-        return Outline(path: path, aspect: box.height / box.width, leaves: leaves)
+        word("ally", top: 0, inset: 18, line: 0)
+        word("angle", top: 104, inset: 0, line: 1)
+        return parts
     }()
-    static var aspect: CGFloat { outline.aspect }
+    static var aspect: CGFloat { size.height / size.width }
+
+    /// Each feeder vine grows first, then its letter; letters start a beat apart.
+    private static func windows(order: Int) -> (feeder: ClosedRange<Double>, letter: ClosedRange<Double>) {
+        let start = Double(order) * 0.035
+        return (start...(start + 0.3), (start + 0.28)...min(1, start + 0.62))
+    }
+
+    /// A gently swaying vine from the screen edge to the letter's starting point.
+    private func feeder(to target: CGPoint, from edge: Edge, edges: (left: CGFloat, right: CGFloat, top: CGFloat), seed: Int, time: Double) -> Stroke {
+        let wobble = { (k: Double) in CGFloat(sin(time * 0.5 + Double(seed) * 1.9 + k) * 3) }
+        let j = CGFloat((seed * 37) % 17) - 8
+        var skeleton: [CGPoint]
+        switch edge {
+        case .top:
+            skeleton = [CGPoint(x: target.x + j, y: edges.top),
+                        CGPoint(x: target.x + j * 0.6 + 10 + wobble(0), y: edges.top + (target.y - edges.top) * 0.4),
+                        CGPoint(x: target.x - 8 + wobble(1), y: edges.top + (target.y - edges.top) * 0.75),
+                        CGPoint(x: target.x, y: target.y - 9), target]
+        case .leading, .trailing:
+            let x = edge == .leading ? edges.left : edges.right
+            let lift = target.y - 34 - CGFloat(seed % 3) * 6
+            skeleton = [CGPoint(x: x, y: lift - 10 + j),
+                        CGPoint(x: x + (target.x - x) * 0.35, y: lift - 6 + wobble(0)),
+                        CGPoint(x: x + (target.x - x) * 0.72, y: lift + 8 + wobble(1)),
+                        CGPoint(x: target.x, y: target.y - 9), target]
+        }
+        var stroke = Stroke(Self.smooth(skeleton))
+        stroke.width = 3.4; stroke.feeder = true
+        return stroke
+    }
 
     var body: some View {
         let still = systemReduceMotion || !animationsEnabled
         TimelineView(.animation(minimumInterval: 1.0 / 30, paused: still || !active || scenePhase != .active)) { timeline in
             Canvas { context, size in
                 let time = still ? 0 : timeline.date.timeIntervalSinceReferenceDate
-                let outline = Self.outline, scale = size.width
-                let shape = outline.path.applying(CGAffineTransform(scaleX: scale, y: scale))
-                // Letters fill in once the vine has traced most of them.
-                let fill = max(0, min(1, (grow - 0.7) / 0.3))
-                context.fill(shape, with: .color(MountainStyle.cream.opacity(fill * 0.95)))
-                context.stroke(shape.trimmedPath(from: 0, to: grow), with: .color(Color(red: 0.18, green: 0.48, blue: 0.27)),
-                               style: StrokeStyle(lineWidth: max(2, scale * 0.009), lineCap: .round, lineJoin: .round))
-                let leafLength = scale * 0.04
-                for (index, leaf) in outline.leaves.enumerated() where leaf.t < grow {
-                    let unfurl = min(1, (grow - leaf.t) / 0.06)
-                    var copy = context
-                    copy.translateBy(x: leaf.point.x * scale, y: leaf.point.y * scale)
-                    copy.rotate(by: .radians(leaf.angle + sin(time * 0.9 + Double(index)) * 0.12))
-                    copy.scaleBy(x: unfurl, y: unfurl)
-                    if index % 9 == 4 {
-                        // A few blossoms among the leaves.
-                        let petal = [Color(red: 1, green: 0.58, blue: 0.72), MountainStyle.gold, Color(red: 0.74, green: 0.62, blue: 1)][index % 3]
-                        for k in 0..<5 {
-                            let a = Double(k) * 2 * .pi / 5
-                            copy.fill(Path(ellipseIn: CGRect(x: cos(a) * leafLength * 0.22 - leafLength * 0.16, y: sin(a) * leafLength * 0.22 - leafLength * 0.16, width: leafLength * 0.32, height: leafLength * 0.32)), with: .color(petal))
-                        }
-                        copy.fill(Path(ellipseIn: CGRect(x: -leafLength * 0.1, y: -leafLength * 0.1, width: leafLength * 0.2, height: leafLength * 0.2)), with: .color(MountainStyle.cream))
-                    } else {
-                        copy.fill(Path(ellipseIn: CGRect(x: 0, y: -leafLength * 0.2, width: leafLength, height: leafLength * 0.4)),
-                                  with: .color(index % 3 == 0 ? Color(red: 0.31, green: 0.62, blue: 0.29) : Color(red: 0.42, green: 0.74, blue: 0.36)))
+                let scale = frame.width / Self.size.width
+                guard scale > 0 else { return }
+                context.translateBy(x: frame.minX, y: frame.minY)
+                context.scaleBy(x: scale, y: scale)
+                let edges = (left: -frame.minX / scale - 6, right: (size.width - frame.minX) / scale + 6, top: -frame.minY / scale - 6)
+                for part in Self.parts {
+                    let window = Self.windows(order: part.order)
+                    var vine = feeder(to: part.stroke.points[0], from: part.from, edges: edges, seed: part.order * 7 + (part.from == .top ? 1 : 3), time: time)
+                    vine.window = window.feeder
+                    var letter = part.stroke
+                    letter.window = window.letter
+                    // Side vines draw themselves into their letter once it's written, leaving the title clear;
+                    // vines from the top stay, hanging from the canopy.
+                    let absorbed = part.from == .top ? 0 : min(1, max(0, (grow - window.letter.upperBound) / 0.12))
+                    for (index, stroke) in [vine, letter].enumerated() {
+                        let local = (grow - stroke.window.lowerBound) / (stroke.window.upperBound - stroke.window.lowerBound)
+                        guard local > 0, index == 1 || absorbed < 1 else { continue }
+                        draw(stroke, index: part.order * 2 + index, reach: min(1, local), tail: index == 0 ? absorbed : 0, in: &context, time: time)
                     }
                 }
             }
         }
-        .aspectRatio(1 / Self.aspect, contentMode: .fit)
-        .accessibilityElement().accessibilityLabel(Text(verbatim: "Tally Tangle")).accessibilityAddTraits(.isHeader)
+        .allowsHitTesting(false).accessibilityHidden(true)
+    }
+
+    private static let stemDark = Color(red: 0.13, green: 0.38, blue: 0.22)
+    private static let stem = Color(red: 0.24, green: 0.56, blue: 0.30)
+    private static let highlight = Color(red: 0.62, green: 0.86, blue: 0.48)
+    private static let leafColors = [Color(red: 0.42, green: 0.74, blue: 0.36), Color(red: 0.31, green: 0.62, blue: 0.29), Color(red: 0.55, green: 0.80, blue: 0.40)]
+    private static let petals = [Color(red: 1, green: 0.58, blue: 0.72), MountainStyle.gold, Color(red: 0.74, green: 0.62, blue: 1)]
+
+    private func draw(_ stroke: Stroke, index: Int, reach: Double, tail: Double = 0, in context: inout GraphicsContext, time: Double) {
+        let head = stroke.total * reach
+        let count = stroke.lengths.firstIndex { $0 > head } ?? stroke.points.count
+        let first = stroke.lengths.firstIndex { $0 >= stroke.total * tail } ?? 0
+        guard count - first > 1 else { return }
+        let points = Array(stroke.points[first..<count])
+        let lengths = Array(stroke.lengths[first..<count])
+        func normal(_ i: Int) -> CGVector {
+            let a = points[max(0, i - 1)], b = points[min(points.count - 1, i + 1)]
+            let length = max(0.001, hypot(b.x - a.x, b.y - a.y))
+            return CGVector(dx: -(b.y - a.y) / length, dy: (b.x - a.x) / length)
+        }
+        // Letters swell through the middle; feeders thin slightly toward the letter. Both taper at the growing tip.
+        func width(_ i: Int) -> CGFloat {
+            let s = lengths[i], u = s / max(1, stroke.total)
+            let profile = stroke.feeder ? 1 - 0.25 * u : 0.55 + 0.45 * sin(.pi * min(1, u * 1.05 + 0.08))
+            let trailing = tail > 0 ? min(1, (s - (lengths.first ?? 0)) / 10 + 0.15) : 1
+            return stroke.width * profile * min(1, (head - s) / 10 + 0.15) * trailing
+        }
+        var left: [CGPoint] = [], right: [CGPoint] = []
+        for i in points.indices {
+            let n = normal(i), w = width(i) / 2
+            left.append(CGPoint(x: points[i].x + n.dx * w, y: points[i].y + n.dy * w))
+            right.append(CGPoint(x: points[i].x - n.dx * w, y: points[i].y - n.dy * w))
+        }
+        var body = Path(); body.addLines(left + right.reversed()); body.closeSubpath()
+        var shadow = context; shadow.translateBy(x: 0.8, y: 1.6)
+        shadow.fill(body, with: .color(MountainStyle.ink.opacity(0.5)))
+        context.fill(body, with: .color(Self.stemDark))
+        var core = Path(); core.addLines(points)
+        context.stroke(core, with: .color(Self.stem), style: StrokeStyle(lineWidth: stroke.width * 0.42, lineCap: .round, lineJoin: .round))
+        var shine = Path()
+        shine.addLines(points.indices.map { i in let n = normal(i); return CGPoint(x: points[i].x - n.dx * width(i) * 0.22, y: points[i].y - n.dy * width(i) * 0.22) })
+        context.stroke(shine, with: .color(Self.highlight.opacity(0.5)), style: StrokeStyle(lineWidth: 0.7, lineCap: .round))
+
+        // A slender vine twists smoothly around each letter, a little behind its stem.
+        if !stroke.feeder {
+            var twine = Path()
+            for i in points.indices where lengths[i] <= head - 12 {
+                let n = normal(i), offset = sin(lengths[i] * 0.22 + Double(index)) * (width(i) * 0.5 + 1.2)
+                let q = CGPoint(x: points[i].x + n.dx * offset, y: points[i].y + n.dy * offset)
+                if twine.isEmpty { twine.move(to: q) } else { twine.addLine(to: q) }
+            }
+            context.stroke(twine, with: .color(Self.highlight.opacity(0.85)), style: StrokeStyle(lineWidth: 0.9, lineCap: .round, lineJoin: .round))
+        }
+
+        // Leaves alternate sides and unfurl once the stem has passed; feeders are sparser.
+        var s: CGFloat = (lengths.first ?? 0) + 6, side: CGFloat = index % 2 == 0 ? 1 : -1, leafIndex = 0
+        while s < head - 3 {
+            guard let i = lengths.firstIndex(where: { $0 >= s }), i < points.count else { break }
+            let n = normal(i), unfurl = min(1, (head - s) / 12)
+            let size = (leafIndex % 4 == 0 ? 7.5 : 5.5) * unfurl
+            let base = CGPoint(x: points[i].x + n.dx * width(i) * 0.4 * side, y: points[i].y + n.dy * width(i) * 0.4 * side)
+            let angle = atan2(n.dy * side, n.dx * side) - 0.5 * side + sin(time * 0.9 + Double(leafIndex + index) * 1.7) * 0.14
+            var leaf = context
+            leaf.translateBy(x: base.x, y: base.y); leaf.rotate(by: .radians(angle))
+            var blade = Path()
+            blade.move(to: .zero)
+            blade.addQuadCurve(to: CGPoint(x: size, y: 0), control: CGPoint(x: size * 0.45, y: -size * 0.42))
+            blade.addQuadCurve(to: .zero, control: CGPoint(x: size * 0.45, y: size * 0.42))
+            leaf.fill(blade, with: .color(Self.leafColors[(leafIndex + index) % 3]))
+            var rib = Path(); rib.move(to: .zero); rib.addLine(to: CGPoint(x: size * 0.8, y: 0))
+            leaf.stroke(rib, with: .color(Self.stemDark.opacity(0.6)), lineWidth: 0.4)
+            if !stroke.feeder && leafIndex % 6 == 3 {
+                for k in 0..<3 {
+                    let b = CGPoint(x: points[i].x - n.dx * side * (3 + CGFloat(k % 2) * 1.6), y: points[i].y - n.dy * side * (3 + CGFloat(k) * 1.4))
+                    context.fill(Path(ellipseIn: CGRect(x: b.x - 1.1 * unfurl, y: b.y - 1.1 * unfurl, width: 2.2 * unfurl, height: 2.2 * unfurl)), with: .color(MountainStyle.gold))
+                }
+            }
+            s += stroke.feeder ? 14 : leafIndex % 3 == 0 ? 11 : 8
+            side = -side; leafIndex += 1
+        }
+
+        // Tendrils curl from crossbar ends and the last letter of each word once written.
+        if reach >= 1 {
+            for end in [stroke.curlStart ? 0 : nil, stroke.curlEnd ? points.count - 1 : nil].compactMap({ $0 }) {
+                let a = points[end], b = points[end == 0 ? 1 : end - 1]
+                var heading = atan2(a.y - b.y, a.x - b.x)
+                var q = a, turn = (end == 0 ? -1.0 : 1.0) * (0.34 + sin(time * 0.7 + Double(index)) * 0.03)
+                var tendril = Path(); tendril.move(to: q)
+                for step in 0..<22 {
+                    let length = 1.6 * (1 - Double(step) / 26)
+                    heading += turn; turn *= 1.06
+                    q = CGPoint(x: q.x + cos(heading) * length, y: q.y + sin(heading) * length)
+                    tendril.addLine(to: q)
+                }
+                context.stroke(tendril, with: .color(Self.highlight), style: StrokeStyle(lineWidth: 0.9, lineCap: .round, lineJoin: .round))
+            }
+        }
+
+        // One blossom opens where each feeder meets its letter, and at the end of every crossbar.
+        let bloom = min(1, max(0, (grow - 0.8) / 0.2))
+        guard bloom > 0, stroke.feeder || stroke.curlStart else { return }
+        let c = stroke.feeder ? points[points.count - 1] : points[points.count - 1]
+        let r = 2.8 * bloom + sin(time * 1.2 + Double(index)) * 0.15
+        for petal in 0..<5 {
+            let a = Double(petal) * 2 * .pi / 5 + Double(index)
+            context.fill(Path(ellipseIn: CGRect(x: c.x + cos(a) * r - r * 0.62, y: c.y + sin(a) * r - r * 0.62, width: r * 1.24, height: r * 1.24)),
+                         with: .color(Self.petals[index % 3]))
+        }
+        context.fill(Path(ellipseIn: CGRect(x: c.x - r * 0.42, y: c.y - r * 0.42, width: r * 0.84, height: r * 0.84)), with: .color(MountainStyle.cream))
     }
 }

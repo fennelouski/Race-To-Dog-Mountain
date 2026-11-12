@@ -189,8 +189,11 @@ struct MountainHome: View {
                 MountainScenery(active: !playing && !options && !rules, followsLocalTime: true, lush: true)
                     .overlay(MountainStyle.ink.opacity(0.45))
                 VStack(spacing: 24) {
-                    MountainVineTitle(grow: titleGrow, active: !playing && !options && !rules)
-                        .frame(width: wide ? 460 : 280)
+                    // Holds the title's place; the vines that write it are drawn full screen below.
+                    let titleWidth = min(wide ? 420 : 300, max(160, (geometry.size.height - 400) / MountainVineTitle.aspect))
+                    Color.clear.frame(width: titleWidth, height: titleWidth * MountainVineTitle.aspect)
+                        .anchorPreference(key: MountainTitleAnchor.self, value: .bounds) { $0 }
+                        .accessibilityElement().accessibilityLabel(Text(verbatim: "Tally Tangle")).accessibilityAddTraits(.isHeader)
                     Spacer(minLength: 16)
                     MountainPlayButton(size: wide ? 200 : 168) { firstPlay() }
                         .accessibilityIdentifier("start-game")
@@ -208,6 +211,11 @@ struct MountainHome: View {
                 .padding(.horizontal, 24).padding(.top, 36).padding(.bottom, 24)
                 .frame(maxWidth: 620).frame(maxWidth: .infinity)
             }
+            .overlayPreferenceValue(MountainTitleAnchor.self) { anchor in
+                GeometryReader { proxy in
+                    if let anchor { MountainVineTitle(grow: titleGrow, frame: proxy[anchor], active: !playing && !options && !rules) }
+                }.ignoresSafeArea()
+            }
             .modifier(MountainTouchBlooms(enabled: !homeReduceMotion && homeAnimations))
             .task(id: [playing, launching]) {
                 // The vine title writes itself after the launch curtain, unwinds when a game opens,
@@ -218,7 +226,7 @@ struct MountainHome: View {
                 if still { titleGrow = 1; return }
                 titleGrow = 0
                 do { try await Task.sleep(for: .milliseconds(250)) } catch { return }
-                withAnimation(.easeInOut(duration: 2.6)) { titleGrow = 1 }
+                withAnimation(.easeInOut(duration: 4.2)) { titleGrow = 1 }
             }
         }
     }
@@ -1824,4 +1832,9 @@ enum MountainReminders {
         center?.add(UNNotificationRequest(identifier: unfinishedID, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: 24 * 60 * 60, repeats: false)))
     }
     static func cancelUnfinished() { center?.removePendingNotificationRequests(withIdentifiers: [unfinishedID]) }
+}
+
+private struct MountainTitleAnchor: PreferenceKey {
+    static var defaultValue: Anchor<CGRect>? = nil
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) { value = nextValue() ?? value }
 }
