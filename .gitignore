@@ -21,3 +21,6 @@ xcuserdata/
 
 # macOS
 .DS_Store
+
+# Local audit evidence (already-tracked history stays tracked)
+app-store-audit/
