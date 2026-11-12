@@ -1,0 +1,22 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "App name on the Home Screen. Only Amharic keeps the original name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "am" : { "stringUnit" : { "state" : "translated", "value" : "Race to Dog Mountain" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tally Tangle" } }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "App bundle name. Only Amharic keeps the original name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "am" : { "stringUnit" : { "state" : "translated", "value" : "Race to Dog Mountain" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tally Tangle" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

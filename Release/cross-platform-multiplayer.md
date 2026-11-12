@@ -23,10 +23,10 @@ The existing `bash Tools/ReleaseChecks/run.sh` passes the actual Classic rules, 
 Native builds use the existing project and schemes, Debug configuration, a generic device destination, two jobs and `CODE_SIGNING_ALLOWED=NO`:
 
 ```sh
-xcodebuild -project 'Race to Dog Mountain.xcodeproj' -scheme 'Race to Dog Mountain' -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath /tmp/RaceMultiplayerIOSDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project 'Race to Dog Mountain.xcodeproj' -scheme 'Race to Dog Mountain Watch' -configuration Debug -destination 'generic/platform=watchOS' -derivedDataPath /tmp/RaceMultiplayerWatchDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project 'Race to Dog Mountain.xcodeproj' -scheme 'Race to Dog Mountain Mac' -configuration Debug -destination 'generic/platform=macOS' -derivedDataPath /tmp/RaceMultiplayerMacDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project 'Race to Dog Mountain.xcodeproj' -scheme 'Race to Dog Mountain Vision' -configuration Debug -destination 'generic/platform=visionOS' -derivedDataPath /tmp/RaceMultiplayerVisionDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project 'Tally Tangle.xcodeproj' -scheme 'Tally Tangle' -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath /tmp/RaceMultiplayerIOSDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project 'Tally Tangle.xcodeproj' -scheme 'Tally Tangle Watch' -configuration Debug -destination 'generic/platform=watchOS' -derivedDataPath /tmp/RaceMultiplayerWatchDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project 'Tally Tangle.xcodeproj' -scheme 'Tally Tangle Mac' -configuration Debug -destination 'generic/platform=macOS' -derivedDataPath /tmp/RaceMultiplayerMacDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project 'Tally Tangle.xcodeproj' -scheme 'Tally Tangle Vision' -configuration Debug -destination 'generic/platform=visionOS' -derivedDataPath /tmp/RaceMultiplayerVisionDD -jobs 2 CODE_SIGNING_ALLOWED=NO build
 ```
 
 Final results are:

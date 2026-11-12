@@ -91,11 +91,11 @@ let master = canvas(); back(master); middle(master); front(master)
 let flat = CGContext(data: nil, width: 1024, height: 1024, bitsPerComponent: 8, bytesPerRow: 4096,
                      space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
 flat.draw(master.makeImage()!, in: CGRect(x: 0, y: 0, width: size, height: size))
-let masterPath = "Race to Dog Mountain/Images.xcassets/AppIcon.appiconset/AppIcon-1024.png"
+let masterPath = "Tally Tangle/Images.xcassets/AppIcon.appiconset/AppIcon-1024.png"
 write(flat.makeImage()!, to: masterPath)
 
 // Every other square icon keeps its pixel size.
-let roots = ["Race to Dog Mountain/Images.xcassets/AppIcon.appiconset", "Race to Dog Mountain/Icons/iphone",
+let roots = ["Tally Tangle/Images.xcassets/AppIcon.appiconset", "Tally Tangle/Icons/iphone",
              "Watch/WatchAssets.xcassets/WatchIcon.appiconset", "Messages/Assets.xcassets/AppIcon.appiconset"]
 for root in roots {
     for file in (try? FileManager.default.contentsOfDirectory(atPath: root)) ?? [] {

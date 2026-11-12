@@ -3,12 +3,12 @@ set -euo pipefail
 TASK_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$TASK_ROOT"
 MODE="${1:-run}"
-APP_NAME="Race to Dog Mountain Mac"
+APP_NAME="Tally Tangle Mac"
 APP_BUNDLE="$TASK_ROOT/build/mac/Build/Products/Debug/$APP_NAME.app"
 case "$MODE" in run|--verify|--debug|--logs|--telemetry) ;; *) echo "Usage: $0 [--verify|--debug|--logs|--telemetry]" >&2; exit 2;; esac
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 mkdir -p build/mac
-if ! xcodebuild -project 'Race to Dog Mountain.xcodeproj' -scheme "$APP_NAME" -configuration Debug -destination 'platform=macOS' -derivedDataPath build/mac build > build/mac/build.log 2>&1; then
+if ! xcodebuild -project 'Tally Tangle.xcodeproj' -scheme "$APP_NAME" -configuration Debug -destination 'platform=macOS' -derivedDataPath build/mac build > build/mac/build.log 2>&1; then
     tail -60 build/mac/build.log >&2
     exit 1
 fi

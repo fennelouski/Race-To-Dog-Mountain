@@ -2,7 +2,7 @@ import Foundation
 
 @main enum WatchMatchCheck {
     static func main() {
-        let domain = "dog-mountain-watch-check.\(UUID())"
+        let domain = "tally-tangle-watch-check.\(UUID())"
         let defaults = UserDefaults(suiteName: domain)!
         defer { defaults.removePersistentDomain(forName: domain) }
         var match = WatchMatch(size: 4, difficulty: .level16, computers: [false, true], defaults: defaults)

@@ -203,7 +203,7 @@ The native watchOS adaptation keeps the garden palette and human rivals in short
 
 - Native wrist controls use system text roles, icons and numerals with descriptive accessibility labels.
 
-Implementation sources: `Race to Dog Mountain/MountainViews.swift` for home and local game views, `Race to Dog Mountain/MountainBoard.swift` for the extracted shared board, buttons and platform view helpers, `Race to Dog Mountain/MountainSocialViews.swift` for friend boards and inbox rows, `Messages/MessagesViewController.swift` for the Messages host and board bubble, `Race to Dog Mountain/MountainScenery.swift` for the shared palette and scenery, and `Watch/MountainWatchApp.swift` for wrist controls. Frontmatter lengths translate native points into CSS pixels for portable previews; SwiftUI Dynamic Type remains the runtime authority. Color percentages preserve the source's normalized RGB values.
+Implementation sources: `Tally Tangle/MountainViews.swift` for home and local game views, `Tally Tangle/MountainBoard.swift` for the extracted shared board, buttons and platform view helpers, `Tally Tangle/MountainSocialViews.swift` for friend boards and inbox rows, `Messages/MessagesViewController.swift` for the Messages host and board bubble, `Tally Tangle/MountainScenery.swift` for the shared palette and scenery, and `Watch/MountainWatchApp.swift` for wrist controls. Frontmatter lengths translate native points into CSS pixels for portable previews; SwiftUI Dynamic Type remains the runtime authority. Color percentages preserve the source's normalized RGB values.
 
 ## Colors
 
@@ -322,7 +322,7 @@ Replay shows the board before the move, outlines the chosen tile in gold, then s
 
 ### App icon
 
-The canonical artwork is `Race to Dog Mountain/Images.xcassets/AppIcon.appiconset/AppIcon-1024.png`. Two braided vines, gold for the row player and mint for the column player, climb over a leafy disc, with cream number tiles caught in the tangle. `Tools/generate-app-icon.swift` renders it and resizes every square iOS, Mac, Watch and Messages icon; run `Tools/export-messages-icons.swift` afterwards. Preserve the clear braid silhouette and full-bleed square composition when deriving smaller icons; the platform supplies the corner mask.
+The canonical artwork is `Tally Tangle/Images.xcassets/AppIcon.appiconset/AppIcon-1024.png`. Two braided vines, gold for the row player and mint for the column player, climb over a leafy disc, with cream number tiles caught in the tangle. `Tools/generate-app-icon.swift` renders it and resizes every square iOS, Mac, Watch and Messages icon; run `Tools/export-messages-icons.swift` afterwards. Preserve the clear braid silhouette and full-bleed square composition when deriving smaller icons; the platform supplies the corner mask.
 
 The native visionOS icon uses three layers in `Vision/VisionAssets.xcassets/VisionIcon.solidimagestack`, each at the vision icon layer size. Back carries the opaque pine field and leafy disc; Middle carries both full vines; Front carries the gold crossings, leaves and tiles. `Tools/generate-app-icon.swift` writes these layers. Keep these native depth layers separate from the existing iOS/macOS icon.
 

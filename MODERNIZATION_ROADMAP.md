@@ -1,8 +1,8 @@
-# iOS 17+ Modernization Roadmap for Race to Dog Mountain
+# iOS 17+ Modernization Roadmap for Tally Tangle
 
 ## Summary
 
-This document tracks the modernization progress for the Race to Dog Mountain iOS game app. The app has been significantly updated for iOS 17+ compatibility with modern APIs and best practices.
+This document tracks the modernization progress for the Tally Tangle iOS game app. The app has been significantly updated for iOS 17+ compatibility with modern APIs and best practices.
 
 **Latest Updates (Current Session):**
 - ✅ Added Scene Delegate support for modern app lifecycle
@@ -254,7 +254,7 @@ The following modernizations have been completed:
 
 **Affected Files:**
 - `AppDelegate.m` (lines 86-164)
-- `Race_to_Dog_Mountain.xcdatamodeld`
+- `Tally_Tangle.xcdatamodeld`
 
 **Acceptance Criteria:**
 - [ ] If keeping: Use Core Data for game state/statistics
@@ -297,7 +297,7 @@ The following modernizations have been completed:
 **Feature:** Implement comprehensive test coverage
 
 **Affected Files:**
-- `Race to Dog MountainTests/` - currently minimal
+- `Tally TangleTests/` - currently minimal
 - New files for comprehensive tests
 
 **Acceptance Criteria:**

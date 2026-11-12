@@ -1,7 +1,7 @@
 // Static vector exports of existing MountainScenery geometry. Run from repository root.
 import Foundation
 import CoreGraphics
-let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("Race to Dog Mountain/Images.xcassets")
+let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("Tally Tangle/Images.xcassets")
 let w = 375.0, h = 812.0
 func color(_ r: Double, _ g: Double, _ b: Double, _ a: Double = 1) -> CGColor { CGColor(red: r, green: g, blue: b, alpha: a) }
 let ink = color(0.025, 0.12, 0.17), gold = color(1, 0.73, 0.28)

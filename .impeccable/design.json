@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-09-30T20:55:03.616561+00:00",
-  "title": "Design System: Race to Dog Mountain",
+  "title": "Design System: Tally Tangle",
   "extensions": {
     "colorMeta": {
       "pine-ink": {
@@ -247,9 +247,9 @@
     ],
     "socialPlay": {
       "source": [
-        "Race to Dog Mountain/MountainViews.swift",
-        "Race to Dog Mountain/MountainBoard.swift",
-        "Race to Dog Mountain/MountainSocialViews.swift",
+        "Tally Tangle/MountainViews.swift",
+        "Tally Tangle/MountainBoard.swift",
+        "Tally Tangle/MountainSocialViews.swift",
         "Messages/MessagesViewController.swift"
       ],
       "sharedControls": "MountainBoard.swift holds the existing board, button styles and platform view helpers extracted from MountainViews.swift. Local, friend and Messages games reuse them.",
@@ -287,7 +287,7 @@
       "visionOS": {
         "source": [
           "Vision/MountainVisionApp.swift",
-          "Race to Dog Mountain/MountainViews.swift"
+          "Tally Tangle/MountainViews.swift"
         ],
         "window": {
           "style": "plain",
@@ -354,7 +354,7 @@
         "source": [
           "Watch/MountainWatchApp.swift",
           "Watch/WatchMatch.swift",
-          "Race to Dog Mountain/MountainScenery.swift"
+          "Tally Tangle/MountainScenery.swift"
         ],
         "minimumVersion": "watchOS 10",
         "units": "Frontmatter lengths represent native points; typography uses SwiftUI Dynamic Type roles.",
@@ -468,7 +468,7 @@
       "name": "Game navigation",
       "kind": "nav",
       "description": "Circular close action and compact centered game identity. The close action confirms when a game is unfinished.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Game\"><button aria-label=\"Close game\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></button><strong>Dog Mountain</strong><button aria-label=\"Player controls\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"7\" r=\"3\"/><path d=\"M3 21v-3a6 6 0 0112 0v3M17 4a3 3 0 010 6M18 15a5 5 0 013 5\"/></svg></button></nav>",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Game\"><button aria-label=\"Close game\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></button><strong>Tally Tangle</strong><button aria-label=\"Player controls\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"7\" r=\"3\"/><path d=\"M3 21v-3a6 6 0 0112 0v3M17 4a3 3 0 010 6M18 15a5 5 0 013 5\"/></svg></button></nav>",
       "css": ".ds-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;background:rgb(2.5% 12% 17%);color:rgb(100% 95% 82%);font:600 17px system-ui,sans-serif}.ds-nav button{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:rgb(100% 95% 82% / .1);color:rgb(100% 95% 82%);cursor:pointer}.ds-nav button:hover{background:rgb(100% 95% 82% / .16)}.ds-nav button:focus-visible{outline:2px solid rgb(100% 73% 28%);outline-offset:3px}.ds-nav button:active{background:rgb(100% 95% 82% / .22)}"
     },
     {

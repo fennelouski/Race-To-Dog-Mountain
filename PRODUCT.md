@@ -38,11 +38,11 @@ Settings has a Notifications section: an optional daily reminder at a chosen tim
 
 ## Localization
 
-All user-facing text lives in `Race to Dog Mountain/Localizable.xcstrings`, shared by every target and translated into every iOS 26 UI language (50 locales; English variants fall back to en). Plural-sensitive counts use plural variations. "Tally Tangle", Game Center and URLs are marked do-not-translate. New UI strings must go through `Text("literal")` or `String(localized:)`; plain `String` literals shown to people are not localized.
+All user-facing text lives in `Tally Tangle/Localizable.xcstrings`, shared by every target and translated into every iOS 26 UI language (50 locales; English variants fall back to en). Plural-sensitive counts use plural variations. "Tally Tangle", Game Center and URLs are marked do-not-translate. New UI strings must go through `Text("literal")` or `String(localized:)`; plain `String` literals shown to people are not localized.
 
 ## Brand commitments
 
-The user requests a rich, colorful, creative interface, animations including background motion, and an interesting opening screen rather than settings. Keep the Tally Tangle name (renamed from Race to Dog Mountain on 2026-11-11). Theme everything with tangling vines and plants, never mountains. The game screen always has subtle motion and responds to touches. Launch should lead directly to Play; player configuration is secondary.
+The user requests a rich, colorful, creative interface, animations including background motion, and an interesting opening screen rather than settings. Keep the Tally Tangle name (renamed from Tally Tangle on 2026-11-11). Theme everything with tangling vines and plants, never mountains. The game screen always has subtle motion and responds to touches. Launch should lead directly to Play; player configuration is secondary.
 
 ## Accessibility
 

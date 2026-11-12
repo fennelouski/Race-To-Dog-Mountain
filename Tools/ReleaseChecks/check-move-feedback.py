@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 root = Path(__file__).resolve().parents[2]
-source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
+source = (root / 'Tally Tangle/MountainViews.swift').read_text()
 body = source.split('    private func move(_ id: Int, computer: Bool = false) {', 1)[1].split('\n    }', 1)[0]
 harness = r'''
 import Foundation
@@ -65,5 +65,5 @@ BODY
 with tempfile.TemporaryDirectory(prefix='mountain-move-feedback-') as temp:
     swift = Path(temp) / 'Moves.swift'; swift.write_text(harness)
     binary = Path(temp) / 'check'
-    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', str(root / 'Race to Dog Mountain/MountainGame.swift'), str(swift), '-o', str(binary)], check=True)
+    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', str(root / 'Tally Tangle/MountainGame.swift'), str(swift), '-o', str(binary)], check=True)
     subprocess.run([str(binary)], check=True)

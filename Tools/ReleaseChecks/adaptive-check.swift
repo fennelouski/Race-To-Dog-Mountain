@@ -68,7 +68,7 @@ struct SeededRandom: RandomNumberGenerator {
         for _ in 0..<9 { clustered.record(.loss) }
         assert(clustered.skill < beforeStruggle * 0.70, "Genuine sustained struggle recovers faster")
 
-        let suite = "dog-mountain-adaptive-check-" + UUID().uuidString
+        let suite = "tally-tangle-adaptive-check-" + UUID().uuidString
         let defaults = UserDefaults(suiteName: suite)!
         defer { defaults.removePersistentDomain(forName: suite) }
         let store = MountainLearningStore(defaults: defaults)

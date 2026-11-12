@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 out="$1"; mkdir -p "$out"
-app="build/mac-eval/Build/Products/Debug/Race to Dog Mountain Mac.app/Contents/MacOS/Race to Dog Mountain Mac"
+app="build/mac-eval/Build/Products/Debug/Tally Tangle Mac.app/Contents/MacOS/Tally Tangle Mac"
 helper=$(mktemp -d)/winid
 xcrun swiftc Tools/Screenshots/window-id.swift -o "$helper"
 for n in ${SCENES:-$(seq 1 30)}; do

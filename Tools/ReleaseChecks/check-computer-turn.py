@@ -10,7 +10,7 @@ import subprocess
 import tempfile
 
 root = Path(__file__).resolve().parents[2]
-source = (root / 'Race to Dog Mountain/MountainViews.swift').read_text()
+source = (root / 'Tally Tangle/MountainViews.swift').read_text()
 match = re.search(r'\.task\(id: (.*?)\) \{\n(.*?)\n            \}\n            \.onChange', source[source.index('.task(id: \"'):], re.S)
 assert match, 'Computer task extraction no longer matches production source'
 identity, body = match.groups()
@@ -58,7 +58,7 @@ struct HumanSelection { let id: Int }
     var learning: MountainLearningContext?
     lazy var learningStore: MountainLearningStore? = MountainLearningStore(defaults: preferences)
     let names = ["Test first", "Test second"]
-    let preferences = UserDefaults(suiteName: "dog-mountain-check-" + UUID().uuidString)!
+    let preferences = UserDefaults(suiteName: "tally-tangle-check-" + UUID().uuidString)!
     var difficulty = ComputerDifficulty.level6
     func rival(_ seat: Int) -> ComputerDifficulty { difficulty }
     var matchAdjustment = 0
@@ -272,9 +272,9 @@ RESOLUTION_BODY
     }
 }
 '''.replace('ROLE_CHANGE_BODY', role_change_body).replace('PRESENTATION_BODY', presentation_body).replace('RESOLUTION_BODY', resolution_body).replace('IDENTITY', identity).replace('BODY', body).replace('RECORD', record)
-with tempfile.TemporaryDirectory(prefix='dog-mountain-turn-check-') as tmp:
+with tempfile.TemporaryDirectory(prefix='tally-tangle-turn-check-') as tmp:
     swift = Path(tmp) / 'ComputerTurnChecks.swift'
     swift.write_text(harness)
     executable = Path(tmp) / 'check'
-    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', '-target', subprocess.check_output(['uname', '-m'], text=True).strip() + '-apple-macos14.0', str(root / 'Race to Dog Mountain/MountainGame.swift'), str(root / 'Race to Dog Mountain/MountainMatches.swift'), str(root / 'Race to Dog Mountain/MountainLibrary.swift'), str(swift), '-o', str(executable)], check=True)
+    subprocess.run(['xcrun', 'swiftc', '-parse-as-library', '-target', subprocess.check_output(['uname', '-m'], text=True).strip() + '-apple-macos14.0', str(root / 'Tally Tangle/MountainGame.swift'), str(root / 'Tally Tangle/MountainMatches.swift'), str(root / 'Tally Tangle/MountainLibrary.swift'), str(swift), '-o', str(executable)], check=True)
     subprocess.run([str(executable)], check=True)
