@@ -2,6 +2,7 @@ import SwiftUI
 import Observation
 import ImageIO
 import UniformTypeIdentifiers
+import UserNotifications
 #if canImport(PhotosUI)
 import PhotosUI
 #endif
@@ -208,7 +209,7 @@ struct MountainHome: View {
                 .frame(maxWidth: 620).frame(maxWidth: .infinity)
             }
             .modifier(MountainTouchBlooms(enabled: !homeReduceMotion && homeAnimations))
-            .task(id: "\(playing)-\(launching)") {
+            .task(id: [playing, launching]) {
                 // The vine title writes itself after the launch curtain, unwinds when a game opens,
                 // and grows back when you return home.
                 let still = homeReduceMotion || !homeAnimations
@@ -584,7 +585,7 @@ private struct MountainGameView: View {
             .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() }; publishDisplay() }
             .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
             .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], seat: player.id, profiles: $humanProfiles, computer: $computers[player.id], difficulty: player.id == 0 && computers[1] ? $firstDifficulty : $difficulty, levelKey: player.id == 0 && computers[1] ? "firstComputerLevel" : "computerLevel", adaptive: $adaptiveDifficulty, canResetLearning: computers.contains(false), onResetLearning: { if let human = computers[player.id] ? computers.firstIndex(of: false) : player.id { learningStore?.reset(key: MountainLearningStore.key(name: names[human], size: game.size, seat: human)) } }, onDifficultyChanged: { rolesChanged = true; learning = nil; if player.id == 0 && computers[1] { MountainExperience.defaults.set(firstDifficulty.rawValue, forKey: "firstComputerLevel") } else { computerLevel = difficulty.rawValue }; persist() }).mountainSheetSize() }
-            .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay() }
+            .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay(); MountainReminders.cancelUnfinished() }
             .onChange(of: humanProfiles) { publishDisplay() }
             .onChange(of: feedback.isEmpty) { presentPendingResult() }
             .onChange(of: customizing?.id) { publishDisplay(); presentPendingResult() }
@@ -720,7 +721,7 @@ private struct MountainGameView: View {
         keyboardPick = line[min(line.count - 1, max(0, index + step))]
         return .handled
     }
-    private func leaveGame() { leavingGame = true; resolution = nil; feedback.removeAll(); persist(); if let onLeave { onLeave() } else { dismiss() } }
+    private func leaveGame() { if game.moves > 0, !game.isOver, computers.contains(false) { MountainReminders.scheduleUnfinished() }; leavingGame = true; resolution = nil; feedback.removeAll(); persist(); if let onLeave { onLeave() } else { dismiss() } }
     /// Seats carry the row/column role, so a switch starts a fresh, balanced race. Vines cover
     /// the board, the players trade places and the new board is dealt underneath, then the vines recede.
     private func swapSeats() {
@@ -1318,6 +1319,12 @@ private struct MountainSettings: View {
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animations = true
     @AppStorage("hapticsEnabled", store: MountainExperience.defaults) private var haptics = true
     @AppStorage("computerMoveDuration", store: MountainExperience.defaults) private var duration = 0.7
+    @AppStorage(MountainReminders.dailyKey, store: MountainExperience.defaults) private var dailyReminder = false
+    @AppStorage(MountainReminders.timeKey, store: MountainExperience.defaults) private var reminderMinutes = 18 * 60
+    @AppStorage(MountainReminders.unfinishedKey, store: MountainExperience.defaults) private var unfinishedReminder = false
+    @State private var notificationsBlocked = false
+    @AppStorage("friendAutomaticMoves", store: MountainExperience.defaults) private var automaticMoves = true
+    @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     /// "None" is the old Reduced motion switch; any pace turns animation back on.
     private var motion: Binding<Double> {
@@ -1356,11 +1363,57 @@ private struct MountainSettings: View {
                         }
 #endif
                     }
+                    group("Friend games") {
+                        row("timer", tint: MountainStyle.mint, "Automatic moves", detail: "In new friend games, if a player waits 12 hours, the largest number on their line is taken for them. Either player can change it on their turn.") { EmptyView() } trailing: {
+                            Toggle("Automatic moves", isOn: $automaticMoves).labelsHidden().accessibilityIdentifier("automatic-moves-default")
+                        }
+                    }
+                    notificationGroup
                 }.padding(20).frame(maxWidth: 560).frame(maxWidth: .infinity)
             }.background(MountainStyle.ink)
+                .task { notificationsBlocked = await MountainReminders.blocked() }
                 .navigationTitle("Settings").mountainInlineTitle()
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.keyboardShortcut(.defaultAction) } }
         }.tint(MountainStyle.gold).foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
+    }
+    private var reminderTime: Binding<Date> {
+        Binding(get: { Calendar.current.date(bySettingHour: reminderMinutes / 60, minute: reminderMinutes % 60, second: 0, of: .now) ?? .now },
+                set: { let parts = Calendar.current.dateComponents([.hour, .minute], from: $0); reminderMinutes = (parts.hour ?? 18) * 60 + (parts.minute ?? 0) })
+    }
+    /// Turning a reminder on asks for permission first; a refusal leaves it off and points to system Settings.
+    private func enable(_ on: Bool, _ apply: @escaping (Bool) -> Void) {
+        guard on else { apply(false); MountainReminders.refresh(); return }
+        Task {
+            let allowed = await MountainReminders.requestPermission()
+            notificationsBlocked = !allowed
+            apply(allowed); MountainReminders.refresh()
+        }
+    }
+    private var notificationGroup: some View {
+        group("Notifications") {
+            row("bell.fill", tint: MountainStyle.gold, "Daily reminder", detail: "A gentle nudge to come back and play.") {
+                if dailyReminder {
+                    DatePicker("Reminder time", selection: reminderTime, displayedComponents: .hourAndMinute)
+                        .onChange(of: reminderMinutes) { MountainReminders.refresh() }
+                        .accessibilityIdentifier("reminder-time")
+                }
+            } trailing: {
+                Toggle("Daily reminder", isOn: Binding(get: { dailyReminder }, set: { on in enable(on) { dailyReminder = $0 } }))
+                    .labelsHidden().accessibilityIdentifier("daily-reminder")
+            }
+            divider
+            row("hourglass", tint: MountainStyle.mint, "Unfinished games", detail: "A reminder a day after you leave a game partway through.") { EmptyView() } trailing: {
+                Toggle("Unfinished games", isOn: Binding(get: { unfinishedReminder }, set: { on in enable(on) { unfinishedReminder = $0 } }))
+                    .labelsHidden().accessibilityIdentifier("unfinished-reminder")
+            }
+            divider
+            row("person.2.fill", tint: MountainStyle.gold, "Friend turns and invites", detail: notificationsBlocked ? "Notifications are off for Tally Tangle. Turn them on in Settings." : "Game Center sends these. Choose sounds, banners and badges in Settings.") { EmptyView() } trailing: {
+                Button("Open") { if let url = MountainReminders.systemSettingsURL { openURL(url) } }
+                    .buttonStyle(.plain).font(.subheadline.weight(.semibold)).padding(.horizontal, 14).frame(minHeight: 36)
+                    .background(MountainStyle.cream.opacity(0.12), in: Capsule()).accessibilityIdentifier("notification-settings")
+                    .accessibilityLabel("Open notification settings")
+            }
+        }
     }
     private var divider: some View { Rectangle().fill(MountainStyle.cream.opacity(0.1)).frame(height: 1).padding(.leading, 64) }
     private func group<Content: View>(_ title: LocalizedStringResource, @ViewBuilder content: () -> Content) -> some View {
@@ -1727,4 +1780,48 @@ private struct MountainBloom: View {
         .opacity(open ? 0 : 1)
         .onAppear { withAnimation(.easeOut(duration: 0.7)) { open = true } }
     }
+}
+
+/// Local reminders only. Friend-game turns and invitations come from Game Center, whose
+/// banners and sounds people manage in the system's notification settings.
+enum MountainReminders {
+    static let dailyKey = "reminderDaily", timeKey = "reminderMinutes", unfinishedKey = "reminderUnfinished"
+    private static let dailyID = "daily-reminder", unfinishedID = "unfinished-game"
+    /// The notification center aborts outside an app bundle (command-line checks), so those skip it.
+    private static var center: UNUserNotificationCenter? { Bundle.main.bundleIdentifier == nil ? nil : .current() }
+    private static var defaults: UserDefaults { MountainExperience.defaults }
+    static var systemSettingsURL: URL? {
+#if os(macOS)
+        URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")
+#elseif os(iOS)
+        URL(string: UIApplication.openNotificationSettingsURLString)
+#else
+        URL(string: UIApplication.openSettingsURLString)
+#endif
+    }
+    static func requestPermission() async -> Bool {
+        (try? await center?.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+    }
+    static func blocked() async -> Bool { await center?.notificationSettings().authorizationStatus == .denied }
+    /// Reschedules the daily reminder from the stored switch and time.
+    static func refresh() {
+        center?.removePendingNotificationRequests(withIdentifiers: [dailyID])
+        guard !MountainExperience.isQAActive, defaults.bool(forKey: dailyKey) else { return }
+        let minutes = defaults.object(forKey: timeKey) as? Int ?? 18 * 60
+        let content = UNMutableNotificationContent()
+        content.title = "Tally Tangle"
+        content.body = String(localized: "The vines are ready for another game.")
+        content.sound = .default
+        let trigger = UNCalendarNotificationTrigger(dateMatching: DateComponents(hour: minutes / 60, minute: minutes % 60), repeats: true)
+        center?.add(UNNotificationRequest(identifier: dailyID, content: content, trigger: trigger))
+    }
+    static func scheduleUnfinished() {
+        guard !MountainExperience.isQAActive, defaults.bool(forKey: unfinishedKey) else { return }
+        let content = UNMutableNotificationContent()
+        content.title = "Tally Tangle"
+        content.body = String(localized: "Your game is waiting for your next move.")
+        content.sound = .default
+        center?.add(UNNotificationRequest(identifier: unfinishedID, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: 24 * 60 * 60, repeats: false)))
+    }
+    static func cancelUnfinished() { center?.removePendingNotificationRequests(withIdentifiers: [unfinishedID]) }
 }

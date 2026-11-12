@@ -134,7 +134,7 @@ struct MountainGameCenterSheet: Identifiable {
                 for match in loaded {
                     if match.participants.count != 2 { continue }
                     do {
-                        let data = try await match.loadMatchData()
+                        let data = try await recordAutomaticMove(match, data: try await match.loadMatchData())
                         result.append(try summary(match, data: data).preservingProgress(from: matches.first { $0.id == match.matchID }))
                     } catch {
                         // Retain the last valid board, but never offer a move from unreadable data.
@@ -157,13 +157,52 @@ struct MountainGameCenterSheet: Identifiable {
             } catch { self.error = String(localized: "Couldn't refresh friend games. \(error.localizedDescription)") }
         } while refreshAgain && authenticated
     }
+    /// The board as it stands, including an automatic move for a player whose 12 hours ran out.
+    private func settled(_ match: GKTurnBasedMatch, data: Data?) throws -> MountainChallenge? {
+        guard let challenge = try data.flatMap({ $0.isEmpty ? nil : try MountainChallenge.decode($0) }) else { return nil }
+        guard match.status != .ended, let current = match.currentParticipant?.player?.teamPlayerID else { return challenge }
+        let other = match.participants.compactMap { $0.player?.teamPlayerID }.first { $0 != current }
+        return challenge.resolvingTimeout(currentPlayer: current, otherPlayer: other)
+    }
+    /// Saves an automatic move once it's this device's turn, ending the match if it finished the board.
+    private func recordAutomaticMove(_ match: GKTurnBasedMatch, data: Data?) async throws -> Data? {
+        guard let data, !data.isEmpty, match.currentParticipant?.player?.teamPlayerID == GKLocalPlayer.local.teamPlayerID,
+              let resolved = try settled(match, data: data), resolved != (try MountainChallenge.decode(data)) else { return data }
+        let encoded = try resolved.encoded()
+        if resolved.game.isOver { try await endMatch(match, challenge: resolved, encoded: encoded) }
+        else { try await match.saveCurrentTurn(withMatch: encoded) }
+        return encoded
+    }
+    private func endMatch(_ match: GKTurnBasedMatch, challenge: MountainChallenge, encoded: Data) async throws {
+        for participant in match.participants {
+            let seat = participant.player?.teamPlayerID == challenge.rowPlayer ? 0 : 1
+            participant.matchOutcome = challenge.game.scores[0] == challenge.game.scores[1] ? .tied :
+                challenge.game.scores[seat] > challenge.game.scores[1 - seat] ? .won : .lost
+        }
+        try await match.endMatchInTurn(withMatch: encoded)
+    }
+    /// Turns friend-game automatic moves on or off. Only the player whose turn it is can save it.
+    func setAutomatic(_ on: Bool) async {
+        guard checkAuthentication(), let race = opened, race.yourTurn, !race.ended, !sending else { return }
+        let player = GKLocalPlayer.local.teamPlayerID
+        sending = true; defer { finishOperation() }
+        do {
+            let match = try await GKTurnBasedMatch.load(withID: race.id)
+            guard match.currentParticipant?.player?.teamPlayerID == player, var challenge = try settled(match, data: try await match.loadMatchData()) else { throw MountainMatchError.changedTurn }
+            challenge.automatic = on
+            try await match.saveCurrentTurn(withMatch: try challenge.encoded())
+            MountainExperience.defaults.set(on, forKey: "friendAutomaticMoves")
+            let saved = FriendRace(id: race.id, title: race.title, names: race.names, challenge: challenge, yourTurn: true, ended: false, updated: Date())
+            opened = remember(saved)
+        } catch { self.error = error.localizedDescription }
+    }
     private func summary(_ match: GKTurnBasedMatch, data: Data?) throws -> FriendRace {
-        let challenge = try data.flatMap { $0.isEmpty ? nil : try MountainChallenge.decode($0) }
+        let challenge = try settled(match, data: data)
         let local = GKLocalPlayer.local.teamPlayerID
         let ids = match.participants.compactMap { $0.player?.teamPlayerID }
         guard match.participants.count == 2, ids.contains(local) else { throw MountainMatchError.invalidData }
         let abandoned = match.participants.contains { $0.status == .done || $0.status == .declined }
-        let ended = match.status == .ended || abandoned
+        let ended = match.status == .ended || abandoned || challenge?.game.isOver == true
         if let challenge {
             guard ids.contains(challenge.rowPlayer), challenge.columnPlayer == nil || ids.contains(challenge.columnPlayer!),
                   ids.contains(local) else { throw MountainMatchError.invalidData }
@@ -201,12 +240,14 @@ struct MountainGameCenterSheet: Identifiable {
         if match.participants.first(where: { $0.player?.teamPlayerID == player })?.status == .invited {
             match = try await match.acceptInvite()
         }
-        var data = try await match.loadMatchData()
+        var data = try await recordAutomaticMove(match, data: try await match.loadMatchData())
         guard GKLocalPlayer.local.isAuthenticated, GKLocalPlayer.local.teamPlayerID == player else { throw MountainMatchError.unavailable }
         if data == nil || data!.isEmpty {
             if match.participants.contains(where: { $0.status == .done || $0.status == .declined }) { return try summary(match, data: data) }
             guard match.status != .ended, match.currentParticipant?.player?.teamPlayerID == player else { throw MountainMatchError.unavailable }
-            data = try MountainChallenge(size: requestedSize, player: player).encoded()
+            var fresh = MountainChallenge(size: requestedSize, player: player)
+            fresh.automatic = MountainExperience.defaults.object(forKey: "friendAutomaticMoves") as? Bool ?? true
+            data = try fresh.encoded()
             try await match.saveCurrentTurn(withMatch: data!)
         }
         return try summary(match, data: data)
@@ -250,21 +291,21 @@ struct MountainGameCenterSheet: Identifiable {
         guard match.status != .ended, match.currentParticipant?.player?.teamPlayerID == GKLocalPlayer.local.teamPlayerID,
               let data = try await match.loadMatchData() else { throw MountainMatchError.changedTurn }
         let current = try summary(match, data: data)
-        guard !current.ended else { throw MountainMatchError.unavailable }
-        let next = try request.applying(to: MountainChallenge.decode(data), player: player)
+        guard !current.ended, let board = try settled(match, data: data) else { throw MountainMatchError.unavailable }
+        let next = try request.applying(to: board, player: player)
         let encoded = try next.encoded()
         guard GKLocalPlayer.local.isAuthenticated, GKLocalPlayer.local.teamPlayerID == player else { throw MountainMatchError.unavailable }
         if next.game.isOver {
-            for participant in match.participants {
-                let seat = participant.player?.teamPlayerID == next.rowPlayer ? 0 : 1
-                participant.matchOutcome = next.game.scores[0] == next.game.scores[1] ? .tied :
-                    next.game.scores[seat] > next.game.scores[1 - seat] ? .won : .lost
-            }
-            try await match.endMatchInTurn(withMatch: encoded)
+            try await endMatch(match, challenge: next, encoded: encoded)
         } else {
             let others = match.participants.filter { $0.player?.teamPlayerID != GKLocalPlayer.local.teamPlayerID }
-            guard others.count == 1 else { throw MountainMatchError.invalidData }
-            try await match.endTurn(withNextParticipants: others, turnTimeout: GKTurnTimeoutNone, match: encoded)
+            guard others.count == 1, let me = match.participants.first(where: { $0.player?.teamPlayerID == player }) else { throw MountainMatchError.invalidData }
+            // With automatic moves, Game Center returns the turn here after 12 hours so this device can move for them.
+            if next.automatic == true {
+                try await match.endTurn(withNextParticipants: others + [me], turnTimeout: MountainChallenge.automaticTimeout, match: encoded)
+            } else {
+                try await match.endTurn(withNextParticipants: others, turnTimeout: GKTurnTimeoutNone, match: encoded)
+            }
         }
         guard checkAuthentication(), GKLocalPlayer.local.teamPlayerID == player else { throw MountainMatchError.unavailable }
         let saved = FriendRace(id: current.id, title: current.title, names: current.names, challenge: next,

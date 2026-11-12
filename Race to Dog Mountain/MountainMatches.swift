@@ -10,6 +10,10 @@ struct MountainChallenge: Codable, Sendable, Identifiable, Equatable {
     let rowPlayer: String
     private(set) var columnPlayer: String?
     private(set) var moves: [Int]
+    /// When on, a player who leaves their turn for 12 hours has the largest open number taken
+    /// for them. Older saves and other app versions simply don't carry it.
+    var automatic: Bool? = nil
+    static let automaticTimeout: TimeInterval = 12 * 60 * 60
 
     init(size: Int = 6, player: String) {
         let initial = MountainGame(size: size)
@@ -32,6 +36,17 @@ struct MountainChallenge: Codable, Sendable, Identifiable, Equatable {
         if seat == 1 { columnPlayer = player }
         moves.append(tile)
         return true
+    }
+    /// Game Center hands the turn on when the timeout passes, so the current participant can be
+    /// the player whose move is next on the board's opponent. Plays that skipped move for them:
+    /// the largest number on their line. Deterministic, so every device reaches the same board.
+    func resolvingTimeout(currentPlayer: String, otherPlayer: String?) -> Self {
+        let board = game
+        guard automatic == true, !board.isOver, let current = seat(for: currentPlayer), current != board.turn,
+              let largest = board.legalMoves.max(by: { board.tiles[$0].value < board.tiles[$1].value }),
+              let absent = board.turn == 0 ? rowPlayer : columnPlayer ?? otherPlayer else { return self }
+        var next = self
+        return next.play(largest, player: absent) ? next : self
     }
     var isValid: Bool {
         guard version == 1, (4...14).contains(size), (0..<size).contains(startingLine),
@@ -123,6 +138,7 @@ struct MountainMoveRequest: Codable, Sendable, Equatable {
             throw MountainMatchError.changedTurn
         }
         var next = current
+        next.automatic = previous.automatic
         guard next.play(tile, player: player) else { throw MountainMatchError.changedTurn }
         return next
     }

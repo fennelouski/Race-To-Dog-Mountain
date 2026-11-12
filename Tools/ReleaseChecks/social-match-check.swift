@@ -110,6 +110,23 @@ import Foundation
         assert(recovery.error != nil && recovery.games.isEmpty)
         recovery.save(separate)
         assert(defaults.data(forKey: "mountainGames.v1.recovery") == Data("broken".utf8))
-        print("Independent saves, legal two-player turns, wire validation, Watch command/reply validation, durable multi-game inbox/receipts, stale snapshot/command rejection, Messages URL roundtrip, result persistence and corruption recovery passed.")
+        // Automatic moves: after a timeout the waiting player's device takes the largest open number for the absent player.
+        var timed = MountainChallenge(size: 4, player: "row")
+        timed.automatic = true
+        let opening = timed.game.legalMoves[0]
+        precondition(timed.play(opening, player: "row"))
+        let board = timed.game
+        let largest = board.legalMoves.max { board.tiles[$0].value < board.tiles[$1].value }!
+        let settled = timed.resolvingTimeout(currentPlayer: "row", otherPlayer: "column")
+        precondition(settled.moves == [opening, largest] && settled.seat(for: "column") == 1 && settled.isValid && settled.continues(timed), "Automatic move takes the largest number for the absent player")
+        precondition(settled.resolvingTimeout(currentPlayer: "row", otherPlayer: "column") == settled, "Exactly one automatic move per handed-on turn")
+        precondition(timed.resolvingTimeout(currentPlayer: "column", otherPlayer: "row") == timed, "No automatic move when the current player is the one to move")
+        var manual = timed; manual.automatic = false
+        precondition(manual.resolvingTimeout(currentPlayer: "row", otherPlayer: "column") == manual, "Automatic moves stay off unless chosen")
+        var legacy = try JSONSerialization.jsonObject(with: try timed.encoded()) as! [String: Any]
+        legacy.removeValue(forKey: "automatic")
+        let older = try MountainChallenge.decode(JSONSerialization.data(withJSONObject: legacy))
+        precondition(older.automatic == nil, "Older games decode without automatic moves")
+        print("Independent saves, legal two-player turns, wire validation, Watch command/reply validation, durable multi-game inbox/receipts, stale snapshot/command rejection, Messages URL roundtrip, result persistence, corruption recovery and automatic timeout moves passed.")
     }
 }

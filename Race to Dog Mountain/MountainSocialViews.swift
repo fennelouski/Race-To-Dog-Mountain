@@ -63,6 +63,18 @@ struct MountainFriendGame: View {
                         MountainChallengeBoard(challenge: challenge, names: race.names, canPlay: race.yourTurn && !race.ended && race.problem == nil,
                                                busy: friends.sending, ended: race.ended) { tile in Task { await friends.play(tile) } }
                         if let problem = race.problem { Text(problem).font(.footnote).padding(.horizontal, 16) }
+                        if !race.ended && race.problem == nil {
+                            // Either player can change it on their own turn; the other sees it on the next move.
+                            Toggle(isOn: Binding(get: { challenge.automatic == true }, set: { on in Task { await friends.setAutomatic(on) } })) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Automatic moves").font(.subheadline.weight(.semibold))
+                                    Text("After 12 hours without a move, the largest number on that player’s line is taken for them.")
+                                        .font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.75)).fixedSize(horizontal: false, vertical: true)
+                                }
+                            }
+                            .disabled(!race.yourTurn || friends.sending).padding(.horizontal, 16)
+                            .accessibilityIdentifier("friend-automatic-moves")
+                        }
                         if race.ended && race.problem == nil {
                             HStack(spacing: 12) {
                                 Button { Task { await friends.rematch() } } label: { Label("Rematch", systemImage: "arrow.clockwise").frame(maxWidth: .infinity) }
