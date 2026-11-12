@@ -21,16 +21,16 @@ struct MountainChallengeBoard: View {
                     Image(systemName: game.isOver || ended ? "flag.checkered" : canPlay ? "hand.point.up.left.fill" : "hourglass")
                         .font(.title2).frame(height: 44).foregroundStyle(MountainStyle.player(game.turn))
                         .overlay { if busy { ProgressView().tint(MountainStyle.gold) } }
-                        .accessibilityLabel(status + (game.isOver || ended ? "" : ". \(names[game.turn]), \(game.turn == 0 ? "row" : "column") player"))
+                        .accessibilityLabel(game.isOver || ended ? status : status + ". " + (game.turn == 0 ? String(localized: "\(names[game.turn]), row player") : String(localized: "\(names[game.turn]), column player")))
                     MountainBoard(game: game, availableWidth: min(geometry.size.width - 32, 700), interactive: canPlay && !busy, lastMove: challenge.moves.last, lastPoints: challenge.moves.last.map { challenge.values[$0] } ?? 0, select: select)
                 }.padding(16).frame(maxWidth: 760).frame(maxWidth: .infinity)
             }
         }
     }
     private var status: String {
-        if game.isOver { return game.scores[0] == game.scores[1] ? "An even tangle" : "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!" }
-        if ended { return "Game ended" }
-        return busy ? "Passing the turn" : canPlay ? "Your move" : "Your friend's move"
+        if game.isOver { return game.scores[0] == game.scores[1] ? String(localized: "An even tangle") : String(localized: "\(names[game.scores[0] > game.scores[1] ? 0 : 1]) wins!") }
+        if ended { return String(localized: "Game ended") }
+        return busy ? String(localized: "Passing the turn") : canPlay ? String(localized: "Your move") : String(localized: "Your friend's move")
     }
     private func score(_ player: Int) -> some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -44,7 +44,7 @@ struct MountainChallengeBoard: View {
             .foregroundStyle(MountainStyle.player(player))
             .background(MountainStyle.player(player).opacity(game.turn == player && !game.isOver ? 0.2 : 0.08), in: RoundedRectangle(cornerRadius: 16))
             .overlay { MountainPlayerHighlight(player: player, active: game.turn == player && !game.isOver && !ended) }
-            .accessibilityElement(children: .ignore).accessibilityLabel("\(names[player]), \(game.scores[player]) points. \(player == 0 ? "Row" : "Column") player. \(game.isOver || ended ? "Game ended" : game.turn == player ? "Current player" : "Waiting")")
+            .accessibilityElement(children: .ignore).accessibilityLabel(MountainSpeech.player(names[player], points: game.scores[player], seat: player) + " " + (game.isOver || ended ? String(localized: "Game ended") : game.turn == player ? String(localized: "Current player") : String(localized: "Waiting")))
     }
 }
 

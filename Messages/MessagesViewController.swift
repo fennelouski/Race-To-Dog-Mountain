@@ -111,9 +111,9 @@ final class MessagesViewController: MSMessagesAppViewController {
             renderer.scale = 2
             layout.image = renderer.uiImage
             layout.caption = "Tally Tangle"
-            layout.subcaption = challenge.game.isOver ? "Finished · \(challenge.game.scores[0]) : \(challenge.game.scores[1])" : "Your move · \(challenge.game.scores[0]) : \(challenge.game.scores[1])"
+            layout.subcaption = challenge.game.isOver ? String(localized: "Finished · \(challenge.game.scores[0]) : \(challenge.game.scores[1])") : String(localized: "Your move · \(challenge.game.scores[0]) : \(challenge.game.scores[1])")
             message.layout = layout; message.url = try challenge.messageURL()
-            message.summaryText = challenge.game.isOver ? "The game is finished." : "Your turn in Tally Tangle."
+            message.summaryText = challenge.game.isOver ? String(localized: "The game is finished.") : String(localized: "Your turn in Tally Tangle.")
             conversation.insert(message) { [weak self] failure in
                 Task { @MainActor in
                     guard let self else { return }
@@ -150,7 +150,7 @@ private struct MountainMessagesView: View {
                     if state.expanded {
                         MountainChallengeBoard(challenge: challenge, names: state.names, canPlay: state.canMove, busy: state.busy, select: state.choose)
                     } else {
-                        Text(state.staged ? "Tap Send to pass your move" : challenge.game.isOver ? "Game finished" : state.canMove ? "Your move" : "Waiting for your friend")
+                        Text(state.staged ? String(localized: "Tap Send to pass your move") : challenge.game.isOver ? String(localized: "Game finished") : state.canMove ? String(localized: "Your move") : String(localized: "Waiting for your friend"))
                             .font(.headline).padding(.top, 12)
                         Button { state.expand?() } label: { Label("Open board", systemImage: "square.grid.3x3.fill").frame(maxWidth: .infinity) }.buttonStyle(MountainButton(prominent: true))
                     }

@@ -97,13 +97,13 @@ struct FriendRace: Codable, Sendable, Identifiable, Equatable {
         if previous.ended && !ended { return previous }
         guard let new = challenge else {
             var retained = previous
-            retained.problem = "Couldn't load this game. Refresh to try again."
+            retained.problem = String(localized: "Couldn't load this game. Refresh to try again.")
             return retained
         }
         guard !new.continues(old) else { return self }
         if old.continues(new) { return previous }
         var retained = previous
-        retained.problem = "The game changed. Refresh to try again."
+        retained.problem = String(localized: "The game changed. Refresh to try again.")
         return retained
     }
 }
@@ -208,7 +208,7 @@ enum MountainMatchError: LocalizedError {
 enum MountainGameCategory: String, CaseIterable, Identifiable {
     case passAndPlay, ai, messages
     var id: String { rawValue }
-    var title: String { switch self { case .passAndPlay: "Pass & Play"; case .ai: "AI"; case .messages: "iMessage" } }
+    var title: String { switch self { case .passAndPlay: String(localized: "Pass & Play"); case .ai: String(localized: "AI"); case .messages: "iMessage" } }
 }
 
 struct SavedMountainGame: Codable, Identifiable {

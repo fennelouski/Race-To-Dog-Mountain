@@ -74,7 +74,7 @@ struct MountainGameCenterSheet: Identifiable {
                     if self.wantsMatch { self.showMatchmaker() }
                 } else {
                     self.wantsMatch = false; self.matches = []; self.opened = nil
-                    self.error = "Sign in to Game Center in Settings, then choose Play a friend."
+                    self.error = String(localized: "Sign in to Game Center in Settings, then choose Play a friend.")
                 }
             }
         }
@@ -139,7 +139,7 @@ struct MountainGameCenterSheet: Identifiable {
                     } catch {
                         // Retain the last valid board, but never offer a move from unreadable data.
                         var unavailable = try matches.first { $0.id == match.matchID } ?? summary(match, data: nil)
-                        unavailable.problem = "Couldn't load this game. Refresh to try again."
+                        unavailable.problem = String(localized: "Couldn't load this game. Refresh to try again.")
                         result.append(unavailable)
                     }
                 }
@@ -154,7 +154,7 @@ struct MountainGameCenterSheet: Identifiable {
 #if os(iOS)
                 inboxChanged?()
 #endif
-            } catch { self.error = "Couldn't refresh friend games. \(error.localizedDescription)" }
+            } catch { self.error = String(localized: "Couldn't refresh friend games. \(error.localizedDescription)") }
         } while refreshAgain && authenticated
     }
     private func summary(_ match: GKTurnBasedMatch, data: Data?) throws -> FriendRace {
@@ -175,13 +175,13 @@ struct MountainGameCenterSheet: Identifiable {
         let row = challenge.flatMap { c in match.participants.compactMap(\.player).first { $0.teamPlayerID == c.rowPlayer } }
         let names = challenge == nil ? [GKLocalPlayer.local.displayName, opponent?.displayName ?? "Friend"] :
             [row?.displayName ?? "Friend", challenge!.rowPlayer == local ? opponent?.displayName ?? "Friend" : GKLocalPlayer.local.displayName]
-        return FriendRace(id: match.matchID, title: opponent?.displayName ?? "Finding a friend", names: names,
+        return FriendRace(id: match.matchID, title: opponent?.displayName ?? String(localized: "Finding a friend"), names: names,
                           challenge: challenge, yourTurn: !ended && match.currentParticipant?.player?.teamPlayerID == local,
                           ended: ended, updated: match.participants.compactMap(\.lastTurnDate).max() ?? match.creationDate,
-                          problem: abandoned && match.status != .ended ? "A player left this game. Start a new friend game." : nil)
+                          problem: abandoned && match.status != .ended ? String(localized: "A player left this game. Start a new friend game.") : nil)
     }
     func open(_ id: String) async {
-        guard checkAuthentication() else { error = "Sign in to Game Center to open friend games."; return }
+        guard checkAuthentication() else { error = String(localized: "Sign in to Game Center to open friend games."); return }
         if sending { pendingOpen = id; return }
         let navigation = navigationGeneration
         sending = true; defer { finishOperation() }

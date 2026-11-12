@@ -14,42 +14,42 @@ enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
     case level9, level10, level11, level12, level13, level14, level15, level16
     var id: Int { rawValue }
     var name: String { ["Quinn", "Milo", "June", "Theo", "Amara", "Finn", "Leila", "Oscar", "Nia", "Hugo", "Sana", "Ezra", "Inez", "Kai", "Zuri", "Avery"][rawValue] }
-    var title: String { "Level \(rawValue + 1)" }
+    var title: String { String(localized: "Level \(rawValue + 1)") }
     var displayName: String { "\(name) (\(rawValue + 1))" }
     var portrait: String { "Opponent\(rawValue + 1)" }
     var detail: String {
-        ["Curious beginner", "Easygoing explorer", "Enthusiastic newcomer", "Patient gardener", "Careful vine finder", "Adventurous thinker", "Observant challenger", "Steady tactician", "Playful strategist", "Quiet problem solver", "Focused planner", "Analytical navigator", "Confident grower", "Precise pathfinder", "Inventive expert", "Canopy strategist"][rawValue]
+        [String(localized: "Curious beginner"), String(localized: "Easygoing explorer"), String(localized: "Enthusiastic newcomer"), String(localized: "Patient gardener"), String(localized: "Careful vine finder"), String(localized: "Adventurous thinker"), String(localized: "Observant challenger"), String(localized: "Steady tactician"), String(localized: "Playful strategist"), String(localized: "Quiet problem solver"), String(localized: "Focused planner"), String(localized: "Analytical navigator"), String(localized: "Confident grower"), String(localized: "Precise pathfinder"), String(localized: "Inventive expert"), String(localized: "Canopy strategist")][rawValue]
     }
     var depth: Int { rawValue / 4 + 1 }
     var branches: Int { rawValue % 4 + 3 }
     var accuracy: Double { 0.10 + Double(rawValue) * (0.88 / 15) }
     var greeting: String {
-        ["Let's learn the vines together.", "No rush. Let's enjoy the garden.", "Ready to try a new route?", "One thoughtful step at a time.", "Let's see where the numbers take us.", "I have a good feeling about this tangle.", "There's always another angle.", "Let's put our plans to the test.", "Care for a friendly challenge?", "I'll take a moment to think.", "Ready when you are.", "Every choice changes the possibilities.", "Let's find the cleanest vine.", "The small details matter.", "Let's try something unexpected.", "A good tangle starts with a good choice."][rawValue]
+        [String(localized: "Let's learn the vines together."), String(localized: "No rush. Let's enjoy the garden."), String(localized: "Ready to try a new route?"), String(localized: "One thoughtful step at a time."), String(localized: "Let's see where the numbers take us."), String(localized: "I have a good feeling about this tangle."), String(localized: "There's always another angle."), String(localized: "Let's put our plans to the test."), String(localized: "Care for a friendly challenge?"), String(localized: "I'll take a moment to think."), String(localized: "Ready when you are."), String(localized: "Every choice changes the possibilities."), String(localized: "Let's find the cleanest vine."), String(localized: "The small details matter."), String(localized: "Let's try something unexpected."), String(localized: "A good tangle starts with a good choice.")][rawValue]
     }
     func phrase(move: Int) -> String {
         let phrases = [
-            ["That looked promising!", "I'm still finding my feet.", "Your turn to explore."],
-            ["Nice and steady.", "Let's see what happens next.", "Plenty of vine ahead."],
-            ["Found a new path!", "Let's keep moving.", "I wonder what you'll choose."],
-            ["A little patience goes a long way.", "One step, then the next.", "Take your time."],
-            ["That opens a useful route.", "I've checked the next turn.", "What will you leave me?"],
-            ["Let's follow this one.", "A bold step can pay off.", "Your adventure continues."],
-            ["Did you notice that column?", "There's more than one way through.", "Look at the next row."],
-            ["A steady route is still a route.", "Now we test the plan.", "Your next move matters."],
-            ["A little twist in the vine.", "This is getting interesting.", "Surprise me."],
-            ["I've thought through a few turns.", "No need to rush the choice.", "The next step is yours."],
-            ["Keep an eye on what follows.", "This route has potential.", "Your move, your plan."],
-            ["The possibilities just changed.", "I compared a few routes.", "Which reply do you prefer?"],
-            ["A clean path through the numbers.", "I'll take the longer view.", "Think one turn beyond mine."],
-            ["A small detail can decide the tangle.", "I weighed the next few steps.", "Choose your reply carefully."],
-            ["An unexpected route can be useful.", "Let's change the shape of the game.", "I have another idea."],
-            ["Look beyond the next step.", "Every route has a tradeoff.", "The canopy takes planning."]
+            [String(localized: "That looked promising!"), String(localized: "I'm still finding my feet."), String(localized: "Your turn to explore.")],
+            [String(localized: "Nice and steady."), String(localized: "Let's see what happens next."), String(localized: "Plenty of vine ahead.")],
+            [String(localized: "Found a new path!"), String(localized: "Let's keep moving."), String(localized: "I wonder what you'll choose.")],
+            [String(localized: "A little patience goes a long way."), String(localized: "One step, then the next."), String(localized: "Take your time.")],
+            [String(localized: "That opens a useful route."), String(localized: "I've checked the next turn."), String(localized: "What will you leave me?")],
+            [String(localized: "Let's follow this one."), String(localized: "A bold step can pay off."), String(localized: "Your adventure continues.")],
+            [String(localized: "Did you notice that column?"), String(localized: "There's more than one way through."), String(localized: "Look at the next row.")],
+            [String(localized: "A steady route is still a route."), String(localized: "Now we test the plan."), String(localized: "Your next move matters.")],
+            [String(localized: "A little twist in the vine."), String(localized: "This is getting interesting."), String(localized: "Surprise me.")],
+            [String(localized: "I've thought through a few turns."), String(localized: "No need to rush the choice."), String(localized: "The next step is yours.")],
+            [String(localized: "Keep an eye on what follows."), String(localized: "This route has potential."), String(localized: "Your move, your plan.")],
+            [String(localized: "The possibilities just changed."), String(localized: "I compared a few routes."), String(localized: "Which reply do you prefer?")],
+            [String(localized: "A clean path through the numbers."), String(localized: "I'll take the longer view."), String(localized: "Think one turn beyond mine.")],
+            [String(localized: "A small detail can decide the tangle."), String(localized: "I weighed the next few steps."), String(localized: "Choose your reply carefully.")],
+            [String(localized: "An unexpected route can be useful."), String(localized: "Let's change the shape of the game."), String(localized: "I have another idea.")],
+            [String(localized: "Look beyond the next step."), String(localized: "Every route has a tradeoff."), String(localized: "The canopy takes planning.")]
         ]
         return phrases[rawValue][move % 3]
     }
     func resultPhrase(humanWon: Bool) -> String {
-        humanWon ? ["You found the route!", "A lovely tangle. Well played.", "That was a clever adventure!", "Your patience paid off.", "You spotted the better path.", "A bold finish. Nice work!", "You saw something I missed.", "Your plan held up. Well played.", "A delightful surprise!", "You gave me something to think about.", "A well-earned finish.", "Your choices made the difference.", "An excellent harvest.", "You caught the decisive detail.", "A creative route to victory!", "A worthy bloom. You earned the canopy."][rawValue]
-            : ["Another try? We'll learn together.", "There's always another vine.", "Next adventure, new possibilities.", "Take another steady tangle.", "Let's find a different route.", "The next tangle could be yours.", "Try another angle next time.", "A new plan, a new game.", "Let's play another friendly round.", "A fresh board gives us both a fresh start.", "Another chance to test your plan.", "The next game has new possibilities.", "Let's explore another path.", "There's another route waiting.", "Try something unexpected next time.", "The vines will be here for another tangle."][rawValue]
+        humanWon ? [String(localized: "You found the route!"), String(localized: "A lovely tangle. Well played."), String(localized: "That was a clever adventure!"), String(localized: "Your patience paid off."), String(localized: "You spotted the better path."), String(localized: "A bold finish. Nice work!"), String(localized: "You saw something I missed."), String(localized: "Your plan held up. Well played."), String(localized: "A delightful surprise!"), String(localized: "You gave me something to think about."), String(localized: "A well-earned finish."), String(localized: "Your choices made the difference."), String(localized: "An excellent harvest."), String(localized: "You caught the decisive detail."), String(localized: "A creative route to victory!"), String(localized: "A worthy bloom. You earned the canopy.")][rawValue]
+            : [String(localized: "Another try? We'll learn together."), String(localized: "There's always another vine."), String(localized: "Next adventure, new possibilities."), String(localized: "Take another steady tangle."), String(localized: "Let's find a different route."), String(localized: "The next tangle could be yours."), String(localized: "Try another angle next time."), String(localized: "A new plan, a new game."), String(localized: "Let's play another friendly round."), String(localized: "A fresh board gives us both a fresh start."), String(localized: "Another chance to test your plan."), String(localized: "The next game has new possibilities."), String(localized: "Let's explore another path."), String(localized: "There's another route waiting."), String(localized: "Try something unexpected next time."), String(localized: "The vines will be here for another tangle.")][rawValue]
     }
     static func adjusted(_ current: Int, humanWon: Bool) -> Int {
         min(2, max(-2, current + (humanWon ? 1 : -1)))
@@ -482,7 +482,7 @@ struct MountainHumanProfile: Codable {
     static func knownNames(data: Data) -> [String] {
         let profiles = (data.count < 262_144 ? try? JSONDecoder().decode([String: Self].self, from: data) : nil) ?? [:]
         let names = profiles.values.map { $0.displayName.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty && !["Player 1", "Player 2"].contains($0) }
+            .filter { !$0.isEmpty && !["Player 1", "Player 2", String(localized: "Player 1"), String(localized: "Player 2")].contains($0) }
         return Array(Set(names)).sorted().prefix(24).map { $0 }
     }
     static func read(identity: String, data: Data) -> Self {

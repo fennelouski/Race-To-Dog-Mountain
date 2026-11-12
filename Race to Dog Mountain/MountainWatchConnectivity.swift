@@ -93,7 +93,7 @@ import GameKit
             }
             if let id = request.matchID { try await friends.loadForWatch(id) }
             await friends.refresh()
-            if !friends.authenticated && !accepted { failure = "Open Tally Tangle on your paired iPhone and sign in to Game Center." }
+            if !friends.authenticated && !accepted { failure = String(localized: "Open Tally Tangle on your paired iPhone and sign in to Game Center.") }
         } catch { failure = String(error.localizedDescription.prefix(1_024)) }
         let current = snapshot()
         publish(force: true)
@@ -156,7 +156,7 @@ import GameKit
     private func send(_ request: MountainWatchRequest) {
         guard !MountainExperience.isQAActive, !sending else { return }
         reachable = WCSession.default.activationState == .activated && WCSession.default.isReachable
-        guard reachable else { error = "Connect to your paired iPhone to refresh or send a move."; return }
+        guard reachable else { error = String(localized: "Connect to your paired iPhone to refresh or send a move."); return }
         guard let data = try? JSONEncoder().encode(request) else { return }
         pending = request; sending = true; error = nil
         WCSession.default.sendMessageData(data, replyHandler: { [weak self] data in
@@ -165,7 +165,7 @@ import GameKit
             Task { @MainActor in
                 guard let self, self.pending?.id == request.id else { return }
                 self.pending = nil; self.sending = false
-                self.error = "Couldn't confirm the move or refresh. Refresh before trying again. \(failure.localizedDescription)"
+                self.error = String(localized: "Couldn't confirm the move or refresh. Refresh before trying again. \(failure.localizedDescription)")
             }
         })
     }
@@ -173,13 +173,13 @@ import GameKit
         guard pending?.id == request.id else { return }
         pending = nil; sending = false
         guard data.count <= 60_000, let reply = try? JSONDecoder().decode(MountainWatchReply.self, from: data),
-              reply.acknowledges(request) else { error = "Couldn't confirm the response. Refresh to try again."; return }
+              reply.acknowledges(request) else { error = String(localized: "Couldn't confirm the response. Refresh to try again."); return }
         if let snapshot = reply.inbox { receive(snapshot) }
         awaitedSequence = reply.sequence
         awaitingSnapshot = (inbox?.sequence ?? 0) < reply.sequence
         error = reply.error
         // Accepted moves are displayed only when the canonical phone snapshot arrives.
-        if request.move != nil && !reply.accepted && error == nil { error = "The move wasn't saved. Refresh to try again." }
+        if request.move != nil && !reply.accepted && error == nil { error = String(localized: "The move wasn't saved. Refresh to try again.") }
     }
     private func receive(_ next: MountainFriendInbox) {
         guard next.replaces(inbox) else { return }

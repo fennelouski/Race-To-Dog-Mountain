@@ -152,8 +152,8 @@ struct MountainBoard: View {
                     }
                     .animation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.7), value: lastMove)
                     .buttonStyle(MountainTileButton()).mountainHover().disabled(!playable || !interactive || game.isOver)
-                    .accessibilityLabel("Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value == 0 ? "used" : String(tile.value))")
-                    .accessibilityHint(playable ? "Adds \(tile.value) points and sets the next player's \(game.turn == 0 ? "column" : "row")" : "")
+                    .accessibilityLabel(tile.value == 0 ? String(localized: "Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), used") : String(localized: "Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value) points"))
+                    .accessibilityHint(!playable ? "" : game.turn == 0 ? String(localized: "Adds \(tile.value) points and sets the next player's column") : String(localized: "Adds \(tile.value) points and sets the next player's row"))
                     .accessibilityIdentifier("tile-\(tile.id)")
                 }
         }.padding(MountainBoardLayout.padding).frame(width: CGFloat(metrics.extent))
@@ -326,7 +326,7 @@ struct MountainExternalPresentation: View {
                 if snapshot.game.isOver {
                     VStack(spacing: 18) {
                         Image(systemName: snapshot.humanVictory ? "crown.fill" : "leaf.fill").font(.system(size: 56)).accessibilityHidden(true)
-                        Text(snapshot.game.scores[0] == snapshot.game.scores[1] ? "An even tangle" : "\(snapshot.names[snapshot.game.scores[0] > snapshot.game.scores[1] ? 0 : 1]) wins!")
+                        Text(snapshot.game.scores[0] == snapshot.game.scores[1] ? String(localized: "An even tangle") : String(localized: "\(snapshot.names[snapshot.game.scores[0] > snapshot.game.scores[1] ? 0 : 1]) wins!"))
                             .font(MountainStyle.display(54)).multilineTextAlignment(.center)
                         Text("\(snapshot.game.scores[0]) : \(snapshot.game.scores[1])").font(.largeTitle.bold()).monospacedDigit()
                     }.padding(48).background(MountainStyle.ink.opacity(0.96), in: RoundedRectangle(cornerRadius: 32))
@@ -383,6 +383,13 @@ struct MountainExternalPresentation: View {
             .foregroundStyle(MountainStyle.player(player))
             .background(MountainStyle.ink.opacity(0.80), in: RoundedRectangle(cornerRadius: 24))
             .overlay { MountainPlayerHighlight(player: player, active: snapshot.game.turn == player && !snapshot.game.isOver) }
-            .accessibilityElement(children: .ignore).accessibilityLabel("\(snapshot.names[player]), \(snapshot.game.scores[player]) points. \(player == 0 ? "Row" : "Column") player. \(snapshot.game.isOver ? "Game over" : snapshot.game.turn == player ? "Your turn" : "Waiting")")
+            .accessibilityElement(children: .ignore).accessibilityLabel(MountainSpeech.player(snapshot.names[player], points: snapshot.game.scores[player], seat: player) + " " + (snapshot.game.isOver ? String(localized: "Game over") : snapshot.game.turn == player ? String(localized: "Your turn") : String(localized: "Waiting")))
+    }
+}
+
+/// Spoken score-card phrases built from whole localized sentences.
+enum MountainSpeech {
+    static func player(_ name: String, points: Int, seat: Int) -> String {
+        seat == 0 ? String(localized: "\(name), \(points) points. Row player.") : String(localized: "\(name), \(points) points. Column player.")
     }
 }

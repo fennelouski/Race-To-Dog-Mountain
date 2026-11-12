@@ -101,7 +101,7 @@ private struct WatchFriendGame: View {
                             .accessibilityElement(children: .ignore).accessibilityLabel("\(race.names[0]), \(game.scores[0]) points. \(race.names[1]), \(game.scores[1]) points.")
                         Text(game.isOver || race.ended ? "Finished" : race.yourTurn ? "Your move" : "Friend's move").font(.caption)
                         if !game.isOver && !race.ended {
-                            Label("\(game.turn == 0 ? "Row" : "Column") \(game.turn == 0 ? game.row + 1 : game.column + 1)", systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
+                            Label(game.turn == 0 ? String(localized: "Row \(game.row + 1)") : String(localized: "Column \(game.column + 1)"), systemImage: game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
                                 .font(.caption).foregroundStyle(MountainStyle.player(game.turn))
                         }
                         if friends.sending || friends.awaitingSnapshot { ProgressView("Confirming with iPhone") }
@@ -118,7 +118,7 @@ private struct WatchFriendGame: View {
                                 }
                             }
                         }
-                    } else { Text(race?.problem ?? "Refresh to open this game.").font(.caption) }
+                    } else { Text(race?.problem ?? String(localized: "Refresh to open this game.")).font(.caption) }
                     if !friends.reachable { Text("Connect to your paired iPhone to send a move.").font(.caption) }
                     if let error = friends.error { Text(error).font(.caption).foregroundStyle(MountainStyle.gold) }
                     Button { friends.open(id) } label: { Image(systemName: "arrow.clockwise").frame(maxWidth: .infinity) }
@@ -169,7 +169,7 @@ private struct WatchRivals: View {
                     Text("\(rival.rawValue + 1)").monospacedDigit()
                     if level == rival.rawValue { Image(systemName: "checkmark").accessibilityLabel("Selected") }
                 }.frame(minHeight: 44)
-            }.accessibilityLabel("Difficulty \(rival.rawValue + 1), \(rival.name)\(level == rival.rawValue ? ", selected" : "")")
+            }.accessibilityLabel(level == rival.rawValue ? String(localized: "Difficulty \(rival.rawValue + 1), \(rival.name), selected") : String(localized: "Difficulty \(rival.rawValue + 1), \(rival.name)"))
         }
     }
 }
@@ -197,7 +197,7 @@ private struct WatchGame: View {
     private var active: Bool { visible && phase == .active && !dimmed }
     private var paused: Bool { replaying || page != 0 || confirmExit }
     private func name(_ player: Int) -> String {
-        match.computers[player] ? match.difficulty.displayName : match.computers.contains(true) ? "You" : "Player \(player + 1)"
+        match.computers[player] ? match.difficulty.displayName : match.computers.contains(true) ? String(localized: "You") : String(localized: "Player \(player + 1)")
     }
 
     var body: some View {
@@ -215,7 +215,7 @@ private struct WatchGame: View {
                             Text("\(match.game.turn == 0 ? match.game.row + 1 : match.game.column + 1)").monospacedDigit()
                         }.font(.caption).foregroundStyle(MountainStyle.player(match.game.turn))
                             .accessibilityElement(children: .ignore)
-                            .accessibilityLabel("\(match.computers[match.game.turn] ? "\(name(match.game.turn))'s" : "Your") \(match.game.turn == 0 ? "row \(match.game.row + 1)" : "column \(match.game.column + 1)")")
+                            .accessibilityLabel(match.computers[match.game.turn] ? (match.game.turn == 0 ? String(localized: "\(name(match.game.turn))'s row \(match.game.row + 1)") : String(localized: "\(name(match.game.turn))'s column \(match.game.column + 1)")) : (match.game.turn == 0 ? String(localized: "Your row \(match.game.row + 1)") : String(localized: "Your column \(match.game.column + 1)")))
                         if match.waitingForStart {
                             Button { match.startComputer(); match.save() } label: { Image(systemName: "play.fill").frame(maxWidth: .infinity) }.buttonStyle(WatchButton(prominent: true)).accessibilityLabel("Play computer")
                         } else if match.computers[match.game.turn] {
@@ -294,7 +294,7 @@ private struct WatchGame: View {
                     Text("\(match.game.tiles[tile].value)").font(.title3.bold()).monospacedDigit().frame(maxWidth: .infinity)
                 }.buttonStyle(WatchButton(tileColor: MountainStyle.player(match.game.turn), tileValue: match.game.tiles[tile].value, tilePlayer: match.game.turn))
                     .accessibilityLabel("\(match.game.tiles[tile].value) points, row \(tile / match.game.size + 1), column \(tile % match.game.size + 1)")
-                    .accessibilityHint("Sets the next player's \(match.game.turn == 0 ? "column" : "row")")
+                    .accessibilityHint(match.game.turn == 0 ? String(localized: "Sets the next player's column") : String(localized: "Sets the next player's row"))
                     .accessibilityIdentifier("tile-\(tile)")
             }
         }
@@ -311,7 +311,7 @@ private struct WatchGame: View {
             if match.computers[player] { WatchPortrait(difficulty: match.difficulty, size: 24) } else { Image(systemName: "person.fill").frame(height: 24) }
             Text("\(match.game.scores[player])").font(.title3.bold()).monospacedDigit()
         }.frame(maxWidth: .infinity).foregroundStyle(MountainStyle.player(player))
-            .accessibilityElement(children: .ignore).accessibilityLabel("\(name(player)), \(player == 0 ? "row" : "column") player, \(match.game.scores[player]) points")
+            .accessibilityElement(children: .ignore).accessibilityLabel(player == 0 ? String(localized: "\(name(player)), row player, \(match.game.scores[player]) points") : String(localized: "\(name(player)), column player, \(match.game.scores[player]) points"))
     }
 }
 
@@ -342,7 +342,7 @@ private struct WatchBoard: View {
                 Image(systemName: game.isOver ? "flag.checkered" : game.turn == 0 ? "arrow.left.and.right" : "arrow.up.and.down")
                 if !game.isOver { Text("\(game.turn == 0 ? game.row + 1 : game.column + 1)").monospacedDigit() }
             }.font(.caption).foregroundStyle(MountainStyle.player(game.turn))
-                .accessibilityElement(children: .ignore).accessibilityLabel(game.isOver ? "Final board" : "\(game.turn == 0 ? "Row \(game.row + 1)" : "Column \(game.column + 1)") highlighted")
+                .accessibilityElement(children: .ignore).accessibilityLabel(game.isOver ? String(localized: "Final board") : game.turn == 0 ? String(localized: "Row \(game.row + 1) highlighted") : String(localized: "Column \(game.column + 1) highlighted"))
             if game.size == 4 {
                 grid
             } else {
@@ -361,9 +361,14 @@ private struct WatchBoard: View {
                                     .overlay { MountainTileValueShading(value: tile.value, playable: game.canPlay(tile.id), player: game.turn, cornerRadius: 5) }
                             }
                             .overlay { if selected == tile.id { RoundedRectangle(cornerRadius: 5).strokeBorder(MountainStyle.gold, lineWidth: 3) } }
-                            .accessibilityLabel("Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value == 0 ? "used" : "\(tile.value) points")\(game.canPlay(tile.id) ? ", available" : "")")
+                            .accessibilityLabel(tileLabel(tile, in: game))
                     }
         }.padding(4)
+    }
+    private func tileLabel(_ tile: MountainGame.Tile, in game: MountainGame) -> String {
+        let row = tile.id / game.size + 1, column = tile.id % game.size + 1
+        let base = tile.value == 0 ? String(localized: "Row \(row), column \(column), used") : String(localized: "Row \(row), column \(column), \(tile.value) points")
+        return game.canPlay(tile.id) ? base + String(localized: ", available") : base
     }
 }
 
@@ -381,7 +386,7 @@ private struct WatchReplay: View {
                     WatchPortrait(difficulty: replay.difficulty, size: 24)
                     Image(systemName: step == 0 ? "backward.end.fill" : step == 1 ? "scope" : "checkmark")
                     Text("\(replay.before.tiles[replay.tileID].value)").font(.title3.bold()).monospacedDigit()
-                }.accessibilityElement(children: .ignore).accessibilityLabel(step == 0 ? "Before the move" : step == 1 ? "\(replay.difficulty.name) chooses \(replay.before.tiles[replay.tileID].value)" : "\(replay.difficulty.name) earned \(replay.before.tiles[replay.tileID].value) points")
+                }.accessibilityElement(children: .ignore).accessibilityLabel(step == 0 ? String(localized: "Before the move") : step == 1 ? String(localized: "\(replay.difficulty.name) chooses \(replay.before.tiles[replay.tileID].value)") : String(localized: "\(replay.difficulty.name) earned \(replay.before.tiles[replay.tileID].value) points"))
                 Button { repeatCount += 1 } label: { Image(systemName: "arrow.counterclockwise").frame(maxWidth: .infinity) }.buttonStyle(WatchButton(prominent: true)).accessibilityLabel("Watch again")
                 WatchBoard(game: step < 2 ? replay.before : replay.after, selected: step == 0 ? nil : replay.tileID)
             }.padding(.horizontal, 8).padding(.bottom, 8)

@@ -14,12 +14,12 @@ import Observation
                saved.allSatisfy(\.isValid), Set(saved.map(\.id)).count == saved.count {
                 games = saved
             } else {
-                games = []; error = "Saved games couldn't be read. The original data has been kept."
+                games = []; error = String(localized: "Saved games couldn't be read. The original data has been kept.")
             }
         } else { games = [] }
     }
     func save(_ game: SavedMountainGame) {
-        guard game.isValid else { error = "This game couldn't be saved."; return }
+        guard game.isValid else { error = String(localized: "This game couldn't be saved."); return }
         // Merge the freshest persisted library so a retired scene cannot erase a newer game.
         var next = games
         if let data = defaults.data(forKey: Self.key), data.count <= 4_194_304,
@@ -30,14 +30,14 @@ import Observation
         else { next.append(game) }
         do {
             let data = try JSONEncoder().encode(next)
-            guard data.count <= 4_194_304 else { error = "The saved games library is full. This game could not be saved."; return }
+            guard data.count <= 4_194_304 else { error = String(localized: "The saved games library is full. This game could not be saved."); return }
             // Keep unreadable old data available rather than overwriting the only copy.
             if games.isEmpty, error != nil, let old = defaults.data(forKey: Self.key) {
                 defaults.set(old, forKey: Self.key + ".recovery")
             }
             defaults.set(data, forKey: Self.key)
             games = next; error = nil
-        } catch { self.error = "The game couldn't be saved. Try again before closing it." }
+        } catch { self.error = String(localized: "The game couldn't be saved. Try again before closing it.") }
     }
     var active: [SavedMountainGame] { games.filter { !$0.game.isOver }.sorted { $0.updatedAt > $1.updatedAt } }
     var finished: [SavedMountainGame] { games.filter { $0.game.isOver }.sorted { $0.updatedAt > $1.updatedAt } }

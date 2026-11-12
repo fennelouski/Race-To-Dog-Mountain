@@ -28,9 +28,13 @@ The iOS app embeds a Messages extension for two-person conversations. Each indep
 
 Compact boards through a configurable 7 × 7 threshold fit the available width; larger compact boards scroll, while roomier boards fit the available width and height. Fitted cells can be smaller than 44 points and use smaller text; VoiceOver exposes complete values. Dynamic Type accessibility sizes retain vertical scrolling.
 
-Human score profiles allow a display name/icon without changing saved player identity. At the end of a round the final points land on the score, then the game layout animates in place: a winner panel tallies both totals, the board steps back, and Play again, Share and Home sit below. Haptics mark moves and the result. New games preserve validated actual move history for replay GIF export; old saves with no transcript export their actual final board as PNG. Animations and haptics can be disabled independently. System Reduce Motion overrides animation settings, and the status bar is hidden by default with an opt-in toggle.
+Human score profiles allow a display name/icon without changing saved player identity. At the end of a round the final points land on the score, then the game layout animates in place: a winner panel tallies both totals, a smaller final board replays who claimed each square (tap to replay), and Play again, Share and Home sit below, all on one screen without scrolling (accessibility text sizes may scroll). Haptics mark moves and the result. New games preserve validated actual move history for replay GIF export; old saves with no transcript export their actual final board as PNG. Animations and haptics can be disabled independently. System Reduce Motion overrides animation settings, and the status bar is hidden by default with an opt-in toggle.
 
 Connected iOS displays consume read-only snapshots from the single active game controller. The external board uses a wide board-and-scores composition, independent safe-area layout, and no gameplay/AI authority. iPhone remains the portrait controller. Reconnection retains the primary game; legacy external-scene configuration and iOS 27 scene accessories cover their respective OS versions. Hardware AirPlay/cable validation remains separate from source and simulator UI verification.
+
+## Localization
+
+All user-facing text lives in `Race to Dog Mountain/Localizable.xcstrings`, shared by every target and translated into every iOS 26 UI language (50 locales; English variants fall back to en). Plural-sensitive counts use plural variations. "Tally Tangle", Game Center and URLs are marked do-not-translate. New UI strings must go through `Text("literal")` or `String(localized:)`; plain `String` literals shown to people are not localized.
 
 ## Brand commitments
 

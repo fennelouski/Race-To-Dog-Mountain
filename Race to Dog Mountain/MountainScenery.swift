@@ -12,11 +12,11 @@ enum MountainStyle {
     static let mint = Color(red: 0.42, green: 0.88, blue: 0.81)
     /// Light enough for ink numerals; gold and mint stay the defaults.
     static let palette: [(name: String, red: Double, green: Double, blue: Double)] = [
-        ("Gold", 1, 0.73, 0.28), ("Mint", 0.42, 0.88, 0.81), ("Coral", 1, 0.5, 0.45), ("Rose", 1, 0.58, 0.72),
-        ("Lavender", 0.74, 0.62, 1), ("Sky", 0.45, 0.75, 1), ("Lime", 0.72, 0.9, 0.35), ("Tangerine", 1, 0.6, 0.2),
-        ("Lemon", 1, 0.88, 0.3), ("Seafoam", 0.5, 0.95, 0.65), ("Peach", 1, 0.72, 0.56), ("Lilac", 0.85, 0.62, 0.95),
-        ("Periwinkle", 0.6, 0.68, 1), ("Aqua", 0.3, 0.85, 0.95), ("Leaf", 0.5, 0.82, 0.4), ("Berry", 0.95, 0.45, 0.6),
-        ("Orchid", 0.9, 0.52, 0.86), ("Ice", 0.68, 0.9, 1), ("Pistachio", 0.78, 0.92, 0.6), ("Cherry", 0.98, 0.38, 0.42)
+        (String(localized: "Gold"), 1, 0.73, 0.28), (String(localized: "Mint"), 0.42, 0.88, 0.81), (String(localized: "Coral"), 1, 0.5, 0.45), (String(localized: "Rose"), 1, 0.58, 0.72),
+        (String(localized: "Lavender"), 0.74, 0.62, 1), (String(localized: "Sky"), 0.45, 0.75, 1), (String(localized: "Lime"), 0.72, 0.9, 0.35), (String(localized: "Tangerine"), 1, 0.6, 0.2),
+        (String(localized: "Lemon"), 1, 0.88, 0.3), (String(localized: "Seafoam"), 0.5, 0.95, 0.65), (String(localized: "Peach"), 1, 0.72, 0.56), (String(localized: "Lilac"), 0.85, 0.62, 0.95),
+        (String(localized: "Periwinkle"), 0.6, 0.68, 1), (String(localized: "Aqua"), 0.3, 0.85, 0.95), (String(localized: "Leaf"), 0.5, 0.82, 0.4), (String(localized: "Berry"), 0.95, 0.45, 0.6),
+        (String(localized: "Orchid"), 0.9, 0.52, 0.86), (String(localized: "Ice"), 0.68, 0.9, 1), (String(localized: "Pistachio"), 0.78, 0.92, 0.6), (String(localized: "Cherry"), 0.98, 0.38, 0.42)
     ]
     static func colorKey(_ player: Int) -> String { "player\(player + 1)Color" }
     static func colorIndex(_ player: Int) -> Int {
