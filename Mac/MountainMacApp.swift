@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct MountainActions {
     var newGame: () -> Void
@@ -23,6 +24,8 @@ extension FocusedValues {
 }
 
 @main struct MountainMacApp: App {
+    // AppKit's automatic ⌃⌘F item is replaced by our ⇧⌘F one, so the View menu lists it once.
+    init() { UserDefaults.standard.set(false, forKey: "NSFullScreenMenuItemEverywhere") }
     var body: some Scene {
         WindowGroup("Tally Tangle") {
             MountainHome().frame(minWidth: 620, minHeight: 660)
@@ -55,6 +58,10 @@ private struct MountainCommands: Commands {
                 .keyboardShortcut(",").disabled(actions?.options == nil)
             Button("Leave Game") { actions?.close?() }
                 .keyboardShortcut("w", modifiers: [.command, .shift]).disabled(actions?.close == nil)
+        }
+        CommandGroup(after: .toolbar) {
+            Button("Toggle Full Screen") { NSApp.keyWindow?.toggleFullScreen(nil) }
+                .keyboardShortcut("f", modifiers: [.command, .shift])
         }
         CommandGroup(replacing: .help) {
             Button("How to Play") { actions?.rules?() }
