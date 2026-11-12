@@ -600,6 +600,10 @@ struct MountainDisplaySnapshot: Sendable {
     var avatarStyles: [String] = []
     var photoIDs: [String?] = []
     var firstDifficulty: ComputerDifficulty? = nil
+    /// The move transcript, so a connected display can replay the finished board.
+    var history: MountainHistory? = nil
+    /// True once the phone has moved on to its finish layout (after the last points land).
+    var finished = false
     func rival(_ seat: Int) -> ComputerDifficulty { seat == 0 && computers[1] ? firstDifficulty ?? difficulty : difficulty }
     var humanVictory: Bool { game.isOver && game.scores[0] != game.scores[1] && !computers[game.scores[0] > game.scores[1] ? 0 : 1] }
     static var design: Self {

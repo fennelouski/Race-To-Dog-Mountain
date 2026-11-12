@@ -670,6 +670,7 @@ private struct MountainGameView: View {
             .onChange(of: feedback.isEmpty) { presentPendingResult() }
             .onChange(of: customizing?.id) { publishDisplay(); presentPendingResult() }
             .onChange(of: replaying) { publishDisplay() }
+            .onChange(of: resultPresented) { publishDisplay() }
 
         }
     }
@@ -997,7 +998,7 @@ private struct MountainGameView: View {
             paused: scenePhase != .active || replaying || leavingGame || customizing != nil || gameHelp || gameSettings,
             avatarStyles: [0, 1].map { MountainHumanProfile.read(identity: names[$0], data: humanProfiles).resolvedStyle },
             photoIDs: [0, 1].map { MountainHumanProfile.read(identity: names[$0], data: humanProfiles).photoID },
-            firstDifficulty: firstDifficulty))
+            firstDifficulty: firstDifficulty, history: history, finished: finished))
 #endif
     }
     private func retireDisplay() {
@@ -1341,16 +1342,43 @@ private struct MountainExternalScreen: View {
             if let snapshot = hub.snapshot {
                 MountainExternalPresentation(snapshot: snapshot).id(snapshot.owner)
             } else {
-                ZStack {
-                    MountainScenery().overlay(MountainStyle.ink.opacity(0.5)).ignoresSafeArea()
-                    VStack(spacing: 24) {
-                        Image(systemName: "leaf.fill").font(.system(size: 80)).foregroundStyle(MountainStyle.gold)
-                        Text("Tally Tangle").font(MountainStyle.display(60)).multilineTextAlignment(.center)
-                        Text("Start a game on your iPhone or iPad").font(.title)
-                    }.padding(48)
-                }.foregroundStyle(MountainStyle.cream)
+                MountainExternalHome()
             }
         }.preferredColorScheme(.dark).statusBarHidden()
+    }
+}
+
+/// The home screen as a connected display sees it: the same canopy and vine title, composed for
+/// whatever shape the screen is, writing itself in as the phone's home screen does.
+private struct MountainExternalHome: View {
+    @State private var grow = 0.0
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    var body: some View {
+        GeometryReader { geometry in
+            let size = geometry.size
+            let wide = size.width > size.height
+            // Fill most of the height on a TV, and most of the width on a portrait screen.
+            let width = min(size.width * (wide ? 0.42 : 0.78), size.height * 0.62 / MountainVineTitle.aspect)
+            let frame = CGRect(x: (size.width - width) / 2, y: size.height * 0.1, width: width, height: width * MountainVineTitle.aspect)
+            ZStack {
+                MountainScenery(followsLocalTime: true, lush: true).overlay(MountainStyle.ink.opacity(0.4))
+                MountainVineTitle(grow: grow, frame: frame)
+                Text("Press Play on your iPhone or iPad")
+                    .font(.system(size: max(18, size.height * 0.032), weight: .semibold))
+                    .foregroundStyle(MountainStyle.cream)
+                    .padding(.horizontal, 28).padding(.vertical, 14)
+                    .background(MountainStyle.ink.opacity(0.7), in: Capsule())
+                    .position(x: size.width / 2, y: min(size.height - 60, frame.maxY + size.height * 0.1))
+            }
+        }
+        .ignoresSafeArea()
+        .accessibilityElement(children: .combine)
+        .task {
+            if systemReduceMotion || !animationsEnabled { grow = 1; return }
+            try? await Task.sleep(for: .milliseconds(400))
+            withAnimation(.easeInOut(duration: 4.2)) { grow = 1 }
+        }
     }
 }
 

@@ -181,7 +181,7 @@ struct MountainBoard: View {
                                 .overlay { MountainTileValueShading(value: tile.value, playable: playable, player: game.turn) }
                             if tile.value == 0 {
                                 if lastMove == tile.id {
-                                    MountainDrainingNumber(points: lastPoints, from: numeralSize(width), to: min(badgeSize, max(1, (width - 4) / 2.8)), reduceMotion: reduceMotion)
+                                    MountainDrainingNumber(points: lastPoints, from: numeralSize(width), to: min(badgeSize * numberScale, max(1, (width - 4) / 2.8)), reduceMotion: reduceMotion)
                                         .transition(.identity)
                                 } else {
                                     Image(systemName: "leaf.fill").font(.caption).foregroundStyle(MountainStyle.cream.opacity(0.22))
@@ -361,16 +361,21 @@ struct MountainExternalPresentation: View {
     var body: some View {
         GeometryReader { geometry in
             let inset = max(20, min(geometry.size.width, geometry.size.height) * 0.045)
-            let scoreWidth = min(360, max(180, geometry.size.width * 0.25))
             let wide = geometry.size.width > geometry.size.height
-            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 0 : 220), geometry.size.width - inset * 2 - (wide ? scoreWidth + 36 : 0)))
+            // On a wide screen the board takes the full height and the scores share what's left beside it.
+            let fullSide = geometry.size.height - inset * 2
+            let scoreWidth = wide ? min(560, max(180, geometry.size.width - fullSide - inset * 2 - 48)) : min(360, max(180, geometry.size.width * 0.25))
+            let side = max(120, min(geometry.size.height - inset * 2 - (wide ? 0 : 220), geometry.size.width - inset * 2 - (wide ? scoreWidth + 48 : 0)))
             ZStack {
                 MountainScenery(active: !snapshot.paused, celebration: snapshot.humanVictory)
                     .overlay(MountainStyle.ink.opacity(0.50)).ignoresSafeArea()
+                if snapshot.finished {
+                    finish(size: geometry.size, inset: inset, wide: wide)
+                } else {
                 VStack(spacing: 24) {
                     if wide {
-                        HStack(alignment: .center, spacing: 36) {
-                            displayBoard(side: side).frame(maxWidth: .infinity)
+                        HStack(alignment: .center, spacing: 48) {
+                            displayBoard(side: side)
                             VStack(spacing: 24) { displayScore(0, height: geometry.size.height); displayScore(1, height: geometry.size.height) }.frame(width: scoreWidth)
                         }
                     } else {
@@ -379,15 +384,6 @@ struct MountainExternalPresentation: View {
                     }
                     Spacer(minLength: 0)
                 }.padding(inset)
-                if snapshot.game.isOver {
-                    VStack(spacing: 18) {
-                        Image(systemName: snapshot.humanVictory ? "crown.fill" : "leaf.fill").font(.system(size: 56)).accessibilityHidden(true)
-                        Text(snapshot.game.scores[0] == snapshot.game.scores[1] ? String(localized: "An even tangle") : String(localized: "\(snapshot.names[snapshot.game.scores[0] > snapshot.game.scores[1] ? 0 : 1]) wins!"))
-                            .font(MountainStyle.display(54)).multilineTextAlignment(.center)
-                        Text("\(snapshot.game.scores[0]) : \(snapshot.game.scores[1])").font(.largeTitle.bold()).monospacedDigit()
-                    }.padding(48).background(MountainStyle.ink.opacity(0.96), in: RoundedRectangle(cornerRadius: 32))
-                        .overlay { RoundedRectangle(cornerRadius: 32).strokeBorder(MountainStyle.gold.opacity(0.7), lineWidth: 2) }
-                        .padding(inset)
                 }
             }.onChange(of: geometry.size) { _, _ in feedback.removeAll() }
         }
@@ -402,6 +398,34 @@ struct MountainExternalPresentation: View {
         .onChange(of: snapshot.paused) { _, paused in if paused { feedback.removeAll() } }
         .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
         .foregroundStyle(MountainStyle.cream).preferredColorScheme(.dark)
+    }
+    /// The phone's finish screen recomposed for this display: the result beside the replay board
+    /// on a wide screen, stacked on a tall one. It appears when the phone's does.
+    @ViewBuilder private func finish(size: CGSize, inset: CGFloat, wide: Bool) -> some View {
+#if DOGMOUNTAIN_MESSAGES
+        EmptyView() // The Messages extension never drives a connected display.
+#else
+        let scores = snapshot.game.scores
+        let result = scores[0] == scores[1] ? String(localized: "A tie!") : String(localized: "\(snapshot.names[scores[0] > scores[1] ? 0 : 1]) wins!")
+        let panel = MountainFinishPanel(result: result, names: snapshot.names, scores: scores, humanVictory: snapshot.humanVictory, reduceMotion: reduceMotion, haptics: false)
+        let board = MountainFinishBoard(game: snapshot.game, history: snapshot.history, names: snapshot.names, reduceMotion: reduceMotion)
+        // The panel is laid out at phone size and scaled up, so its type stays in proportion on a TV.
+        let scale = min(2.4, max(1, min(size.width, size.height) / 640))
+        let panelWidth = 340 * scale
+        if wide {
+            let side = max(120, min(size.height - inset * 2, size.width - panelWidth - inset * 3.5))
+            HStack(spacing: inset * 1.5) {
+                panel.frame(width: 340).scaleEffect(scale).frame(width: panelWidth)
+                board.frame(width: side, height: side)
+            }.padding(inset).frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            let side = max(120, min(size.width - inset * 2, size.height * 0.5))
+            VStack(spacing: inset * 4) {
+                panel.frame(width: 340).scaleEffect(scale).frame(width: panelWidth)
+                board.frame(width: side, height: side)
+            }.padding(inset).frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+#endif
     }
     private func displayBoard(side: CGFloat) -> some View {
         MountainBoard(game: snapshot.game, availableWidth: side, fitAllSizes: true, numberScale: 2,
