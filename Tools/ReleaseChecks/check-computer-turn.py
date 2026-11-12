@@ -31,6 +31,8 @@ final class UIApplication {
     var applicationState = State.active
 }
 
+enum MountainShowcase { static let freezesComputer = false }
+
 @MainActor enum MountainPlatform {
     static var isActive: Bool { UIApplication.shared.applicationState == .active }
 }

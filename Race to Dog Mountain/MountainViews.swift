@@ -112,6 +112,7 @@ struct MountainHome: View {
     @AppStorage("hasPlayed", store: MountainExperience.defaults) private var hasPlayed = false
     @State private var titleGrow = 0.0
     @State private var titlePokes: [MountainVinePoke] = []
+    @State private var titleSize = CGSize.zero
     @State private var launching = true
 
     var body: some View {
@@ -157,7 +158,12 @@ struct MountainHome: View {
             MountainRules { startAfterGuide = true; rules = false }.mountainSheetSize()
         }
         .overlay { if launching { MountainVineSweep(curtain: true, duration: 1.8) { launching = false }.ignoresSafeArea() } }
-        .onAppear { size = min(max(size, 4), 14); refreshHistory(); MountainBoardDeck.refill() }
+        .onAppear {
+            size = min(max(size, 4), 14); refreshHistory(); MountainBoardDeck.refill()
+#if DEBUG
+            if let scene = MountainShowcase.scene { stage(scene) }
+#endif
+        }
         .task { await friends.resume() }
         .onChange(of: phase) { _, phase in if phase == .active { Task { await friends.refresh() } } }
         .sheet(item: $friends.presentation, onDismiss: friends.presentationDismissed) { MountainGameCenterPresenter(controller: $0.controller).mountainSheetSize() }
@@ -189,16 +195,22 @@ struct MountainHome: View {
             ZStack {
                 MountainScenery(active: !playing && !options && !rules, followsLocalTime: true, lush: true)
                     .overlay(MountainStyle.ink.opacity(0.45))
-                VStack(spacing: 24) {
+                VStack(spacing: 12) {
                     // Holds the title's place; the vines that write it are drawn full screen below.
-                    let titleWidth = min(wide ? 420 : 300, max(160, (geometry.size.height - 400) / MountainVineTitle.aspect))
-                    Color.clear.frame(width: titleWidth, height: titleWidth * MountainVineTitle.aspect)
+                    let playSize = wide ? min(200, geometry.size.height * 0.2) : 168
+                    // The title takes the room left after Play and the buttons, so nothing is ever pushed off screen.
+                    let titleWidth: CGFloat = wide ? min(560, geometry.size.width * 0.5) : 300
+                    Color.clear.frame(maxWidth: titleWidth, maxHeight: titleWidth * MountainVineTitle.aspect)
+                        .aspectRatio(1 / MountainVineTitle.aspect, contentMode: .fit)
+                        .layoutPriority(1)
+                        .background { GeometryReader { proxy in Color.clear.onAppear { titleSize = proxy.size }.onChange(of: proxy.size) { titleSize = proxy.size } } }
                         .anchorPreference(key: MountainTitleAnchor.self, value: .bounds) { $0 }
                         .contentShape(Rectangle())
-                        .onTapGesture(coordinateSpace: .local) { point in pokeTitle(at: point, width: titleWidth) }
+                        .onTapGesture(coordinateSpace: .local) { point in pokeTitle(at: point, width: titleSize.width) }
                         .accessibilityElement().accessibilityLabel(Text(verbatim: "Tally Tangle")).accessibilityAddTraits(.isHeader)
-                    Spacer(minLength: 16)
-                    MountainPlayButton(size: wide ? 200 : 168) { firstPlay() }
+                    // Leaves spill past the letters and Play's glow ring breathes outward, so keep a clear gap.
+                    Spacer(minLength: 44)
+                    MountainPlayButton(size: playSize) { firstPlay() }
                         .accessibilityIdentifier("start-game")
                         .keyboardShortcut("n", modifiers: .command)
                     Spacer(minLength: 16)
@@ -217,10 +229,17 @@ struct MountainHome: View {
             .overlayPreferenceValue(MountainTitleAnchor.self) { anchor in
                 GeometryReader { proxy in
                     if let anchor { MountainVineTitle(grow: titleGrow, frame: proxy[anchor], active: !playing && !options && !rules, pokes: titlePokes) }
-                }.ignoresSafeArea()
+                }
+#if !os(visionOS)
+                // Reach the very top edge on phones; visionOS windows have no edge to grow from.
+                .ignoresSafeArea()
+#endif
             }
             .modifier(MountainTouchBlooms(enabled: !homeReduceMotion && homeAnimations))
             .task(id: [playing, launching]) {
+#if DEBUG
+                if MountainShowcase.scene?.titleGrow != nil { return }
+#endif
                 // The vine title writes itself after the launch curtain, unwinds when a game opens,
                 // and grows back when you return home.
                 let still = homeReduceMotion || !homeAnimations
@@ -369,12 +388,41 @@ struct MountainHome: View {
         history = [0, 1].map { MountainExperience.defaults.integer(forKey: "\(names[$0])vvv\(names[1 - $0])") }
     }
     private var playerOptions: some View { MountainSettings() }
+#if DEBUG
+    /// Marketing capture: puts the home screen into one prepared scene.
+    private func stage(_ scene: MountainShowcase.Scene) {
+        launching = false
+        for saved in scene.library { library.save(saved) }
+        if let grow = scene.titleGrow { titleGrow = grow }
+        switch scene.home {
+        case .title: break
+        case .settings: options = true
+        case .help: rules = true
+        case .history(let category): gameCategory = category; social = true
+        }
+        if let game = scene.game { library.save(game); selection = game; playing = true }
+#if os(macOS)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            for window in NSApplication.shared.windows where window.isVisible && window.styleMask.contains(.titled) {
+                window.setContentSize(NSSize(width: 1280, height: 800)); window.center()
+            }
+        }
+#endif
+    }
+#endif
 }
 
 
 private struct MountainRules: View {
     var onPlay: () -> Void
-    @State private var lesson = MountainTutorial()
+    @State private var lesson: MountainTutorial = {
+        var lesson = MountainTutorial()
+#if DEBUG
+        // Marketing capture can open the guide partway through.
+        for _ in 0..<(MountainShowcase.scene?.tutorialSteps ?? 0) { lesson.choose(lesson.game.legalMoves[lesson.game.legalMoves.count / 2]) }
+#endif
+        return lesson
+    }()
     @State private var feedback: [MountainMoveFeedback] = []
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.dismiss) private var dismiss
@@ -604,7 +652,20 @@ private struct MountainGameView: View {
             .onChange(of: scenePhase) { _, phase in if phase != .active { feedback.removeAll() }; publishDisplay() }
             .onChange(of: reduceMotion) { _, reduced in if reduced { feedback.removeAll() } }
             .sheet(item: $customizing) { player in MountainHumanEditor(identity: names[player.id], seat: player.id, profiles: $humanProfiles, computer: $computers[player.id], difficulty: player.id == 0 && computers[1] ? $firstDifficulty : $difficulty, levelKey: player.id == 0 && computers[1] ? "firstComputerLevel" : "computerLevel", adaptive: $adaptiveDifficulty, canResetLearning: computers.contains(false), onResetLearning: { if let human = computers[player.id] ? computers.firstIndex(of: false) : player.id { learningStore?.reset(key: MountainLearningStore.key(name: names[human], size: game.size, seat: human)) } }, onDifficultyChanged: { rolesChanged = true; learning = nil; if player.id == 0 && computers[1] { MountainExperience.defaults.set(firstDifficulty.rawValue, forKey: "firstComputerLevel") } else { computerLevel = difficulty.rawValue }; persist() }).mountainSheetSize() }
-            .onAppear { displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay(); MountainReminders.cancelUnfinished() }
+            .onAppear {
+                displayHub.claim(owner: savedID); if game.isOver { resultPresented = true }; publishDisplay(); MountainReminders.cancelUnfinished()
+#if DEBUG
+                if let scene = MountainShowcase.scene {
+                    if let last = history?.choices.last, let initial = history?.initial { lastMove = last; lastPoints = initial.tiles[last].value }
+                    switch scene.overlay {
+                    case .none: break
+                    case .replay: replaying = true
+                    case .editor(let seat): customizing = MountainHumanSelection(id: seat)
+                    case .settings: gameSettings = true
+                    }
+                }
+#endif
+            }
             .onChange(of: humanProfiles) { publishDisplay() }
             .onChange(of: feedback.isEmpty) { presentPendingResult() }
             .onChange(of: customizing?.id) { publishDisplay(); presentPendingResult() }
@@ -627,7 +688,7 @@ private struct MountainGameView: View {
 #endif
             .onReceive(NotificationCenter.default.publisher(for: MountainPlatform.didBecomeActive)) { _ in foregroundNonce += 1 }
             .task(id: "\(savedID)-\(gameSettings)-\(gameHelp)-\(game.moves)-\(computers)-\(leavingGame)-\(foregroundNonce)-\(computerStarted)-\(replaying)-\(customizing?.id ?? -1)-\(resultPresented)-\(resolution?.uuidString ?? "ready")-\(scenePhase)") {
-                guard scenePhase == .active, MountainPlatform.isActive, !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil, !resultPresented, resolution == nil, !waitingForStart, !game.isOver, computers[game.turn] else { return }
+                guard !MountainShowcase.freezesComputer, scenePhase == .active, MountainPlatform.isActive, !leavingGame, !replaying, !gameHelp, !gameSettings, customizing == nil, !resultPresented, resolution == nil, !waitingForStart, !game.isOver, computers[game.turn] else { return }
                 do { try await Task.sleep(for: .milliseconds(700)) } catch { return }
                 let snapshot = game, profile = rival(game.turn), skill = matchAdjustment
                 let next = await Task.detached(priority: .userInitiated) {
@@ -1602,7 +1663,8 @@ private struct MountainExportBoard: View {
                 .font(.system(size: 16, weight: .semibold)).lineLimit(1)
             LazyVGrid(columns: Array(repeating: GridItem(.fixed(side), spacing: 3), count: game.size), spacing: 3) {
                 ForEach(game.tiles) { tile in
-                    Text(tile.value == 0 ? selected == tile.id ? "+\(points)" : "·" : "\(tile.value)")
+                    let label: String = tile.value != 0 ? String(tile.value) : selected == tile.id ? "+" + String(points) : "·"
+                    Text(verbatim: label)
                         .font(.system(size: game.size > 8 ? 12 : 19, weight: .bold)).monospacedDigit()
                         .frame(width: side, height: side)
                         .foregroundStyle(tile.value == 0 ? MountainStyle.cream : MountainStyle.ink)
@@ -1647,7 +1709,9 @@ struct MountainFinishPanel: View {
         .background(MountainStyle.ink.opacity(0.55), in: RoundedRectangle(cornerRadius: 20))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(result) \(names[0]) \(scores[0]), \(names[1]) \(scores[1]).")
+#if !os(visionOS)
         .sensoryFeedback(humanVictory ? .success : .impact(flexibility: .soft), trigger: landed) { _, done in haptics && done && !MountainExperience.isQAActive }
+#endif
         .onAppear {
             guard !reduceMotion else { tally = 1; landed = true; return }
             withAnimation(.easeOut(duration: 1.1).delay(0.25)) { tally = 1 } completion: {
@@ -1706,12 +1770,16 @@ struct MountainFinishBoard: View {
                             let claim: (Int, Int, Int)? = owner[id]
                             let remaining: Int = game.tiles[id].value
                             let label: String = claim.map { String($0.1) } ?? (remaining > 0 ? String(remaining) : "")
+                            let fill: Color = claim.map { MountainStyle.player($0.0) } ?? MountainStyle.cream.opacity(0.08)
+                            let ink: Color = claim == nil ? MountainStyle.cream.opacity(0.45) : MountainStyle.ink
+                            let latest: Bool = claim?.2 == shown - 1 && shown < claims.count
+                            let corner: CGFloat = cell * 0.18
                             Text(verbatim: label)
                                 .font(.system(size: max(6, cell * 0.4), weight: .bold)).monospacedDigit().minimumScaleFactor(0.5)
                                 .frame(width: cell, height: cell)
-                                .foregroundStyle(claim == nil ? MountainStyle.cream.opacity(0.45) : MountainStyle.ink)
-                                .background(claim.map { MountainStyle.player($0.0) } ?? MountainStyle.cream.opacity(0.08), in: RoundedRectangle(cornerRadius: cell * 0.18))
-                                .overlay { RoundedRectangle(cornerRadius: cell * 0.18).strokeBorder(MountainStyle.cream, lineWidth: claim?.2 == shown - 1 && shown < claims.count ? 2 : 0) }
+                                .foregroundStyle(ink)
+                                .background(fill, in: RoundedRectangle(cornerRadius: corner))
+                                .overlay { RoundedRectangle(cornerRadius: corner).strokeBorder(MountainStyle.cream, lineWidth: latest ? 2 : 0) }
                                 .scaleEffect(claim?.2 == shown - 1 && shown < claims.count && !reduceMotion ? 1.12 : 1)
                         }
                     }
@@ -1848,4 +1916,115 @@ enum MountainReminders {
 private struct MountainTitleAnchor: PreferenceKey {
     static var defaultValue: Anchor<CGRect>? = nil
     static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) { value = nextValue() ?? value }
+}
+
+/// Marketing capture (DEBUG only): `-MountainShowcase <n>` with a private QA session opens a
+/// prepared, deterministic scene. Games are real: every move comes from the game's own AI.
+enum MountainShowcase {
+    static var freezesComputer: Bool { scene != nil }
+#if DEBUG
+    enum Home { case title, settings, help, history(MountainGameCategory) }
+    enum Overlay { case none, replay, editor(Int), settings }
+    struct Scene {
+        var home = Home.title
+        var titleGrow: Double? = nil
+        var tutorialSteps = 0
+        var game: SavedMountainGame? = nil
+        var overlay = Overlay.none
+        var library: [SavedMountainGame] = []
+    }
+    private struct Seeded: RandomNumberGenerator {
+        var state: UInt64
+        mutating func next() -> UInt64 { state = state &* 6364136223846793005 &+ 1442695040888963407; return state }
+    }
+    /// Plays `moves` real AI moves (or to the end) on a seeded board. `wanted` keeps trying seeds
+    /// until the finished game has the requested winner seat.
+    private static func play(size: Int, seed: UInt64, moves: Int? = nil, levels: [ComputerDifficulty], wanted: Int? = nil,
+                             names: [String], computers: [Bool], rival: ComputerDifficulty, first: ComputerDifficulty? = nil) -> SavedMountainGame {
+        for attempt in 0..<40 {
+            var random = Seeded(state: seed &+ UInt64(attempt) &* 7919)
+            let values = Array(1...(size * size)).shuffled(using: &random)
+            var game = MountainGame(size: size, values: values, firstPlayer: 0, startingLine: Int(seed % UInt64(size)))
+            var history = MountainHistory(initial: game)
+            var replay: MountainReplay?
+            while !game.isOver && game.moves < (moves ?? .max) {
+                // ponytail: capped search depth keeps setup instant in Debug; the boards only need to look like real play.
+                let level = levels[game.turn].rawValue <= 11 ? levels[game.turn] : .level12
+                guard let move = game.computerMove(difficulty: level, roll: 0.5, using: &random) else { break }
+                if computers[game.turn] { replay = MountainReplay(before: game, tileID: move, difficulty: game.turn == 0 && computers[1] ? first ?? rival : rival) }
+                history.record(move, before: game); game.play(move)
+            }
+            if let wanted, !(game.isOver && game.scores[wanted] > game.scores[1 - wanted]) { continue }
+            var saved = SavedMountainGame(size: size, names: names, computers: computers, difficulty: rival, adjustment: 0)
+            saved.game = game; saved.history = history; saved.replay = replay; saved.computerStarted = true
+            saved.firstDifficulty = first; saved.recorded = game.isOver
+            return saved
+        }
+        preconditionFailure("No seeded game reached the requested result")
+    }
+    private static let you = ["Maya", "Player 2"]
+    private static func versus(_ size: Int, _ seed: UInt64, moves: Int? = nil, rival: ComputerDifficulty, wanted: Int? = nil) -> SavedMountainGame {
+        play(size: size, seed: seed, moves: moves, levels: [wanted == 1 ? .level2 : .level12, wanted == 0 ? .level2 : rival], wanted: wanted, names: you, computers: [false, true], rival: rival)
+    }
+    private static func friends(_ size: Int, _ seed: UInt64, moves: Int? = nil, wanted: Int? = nil) -> SavedMountainGame {
+        play(size: size, seed: seed, moves: moves, levels: [.level12, .level12], wanted: wanted, names: ["Maya", "Leo"], computers: [false, false], rival: .level6)
+    }
+    private static func bots(_ size: Int, _ seed: UInt64, moves: Int? = nil, _ a: ComputerDifficulty, _ b: ComputerDifficulty) -> SavedMountainGame {
+        play(size: size, seed: seed, moves: moves, levels: [a, b], names: ["Player 1", "Player 2"], computers: [true, true], rival: b, first: a)
+    }
+    /// Colours per scene: index pairs into the player palette.
+    static let colors: [Int: (Int, Int)] = [5: (2, 5), 6: (4, 6), 8: (3, 9), 10: (19, 17), 13: (13, 15), 25: (7, 11), 26: (16, 1), 27: (15, 9), 30: (6, 12)]
+
+    static let scene: Scene? = {
+        let args = ProcessInfo.processInfo.arguments
+        guard MountainExperience.isQAActive, let flag = args.firstIndex(of: "-MountainShowcase"), args.indices.contains(flag + 1),
+              let number = Int(args[flag + 1]) else { return nil }
+        let defaults = MountainExperience.defaults
+        let pair = colors[number] ?? (0, 1)
+        defaults.set(pair.0, forKey: "player1Color"); defaults.set(pair.1, forKey: "player2Color")
+        defaults.set(true, forKey: "hasPlayed"); defaults.set(6, forKey: "complexity")
+        var profiles = Data()
+        for (name, emoji) in [("Maya", "🦊"), ("Leo", "🐢")] {
+            profiles = MountainHumanProfile.updating(identity: name, displayName: name, symbol: emoji, data: profiles, avatarStyle: "emoji") ?? profiles
+        }
+        defaults.set(profiles, forKey: "humanProfiles.v1")
+        var history: [SavedMountainGame] { [versus(6, 41, rival: .level9, wanted: 0), versus(8, 42, rival: .level14, wanted: 1), versus(5, 43, moves: 9, rival: .level5),
+                       friends(6, 44, wanted: 0), friends(4, 45, moves: 6), versus(7, 46, rival: .level17, wanted: 0), versus(4, 47, rival: .level2, wanted: 0)] }
+        switch number {
+        case 1: return Scene()
+        case 2: return Scene(titleGrow: 0.5)
+        case 3: return Scene(titleGrow: 0.7)
+        case 4: return Scene(game: versus(6, 11, moves: 10, rival: .level18))
+        case 5: return Scene(game: versus(4, 12, moves: 2, rival: .level1))
+        case 6: return Scene(game: versus(8, 13, moves: 18, rival: .level16))
+        case 7: return Scene(game: versus(10, 14, moves: 26, rival: .level17))
+        case 8: return Scene(game: versus(14, 15, moves: 40, rival: .level13))
+        case 9: return Scene(game: friends(6, 16, moves: 12))
+        case 10: return Scene(game: bots(7, 17, moves: 14, .level17, .level18))
+        case 11: return Scene(game: bots(5, 18, moves: 8, .level11, .level11))
+        case 12: return Scene(game: versus(9, 19, moves: 16, rival: .level2))
+        case 13: return Scene(game: versus(6, 20, rival: .level10, wanted: 0))
+        case 14: return Scene(game: versus(8, 21, rival: .level18, wanted: 1))
+        case 15: return Scene(game: friends(5, 22, wanted: 1))
+        case 16: return Scene(game: bots(7, 23, .level15, .level18))
+        case 17: return Scene(game: versus(4, 24, rival: .level1, wanted: 0))
+        case 18: return Scene(home: .settings)
+        case 19: return Scene(home: .history(.ai), library: history)
+        case 20: return Scene(home: .history(.passAndPlay), library: history)
+        case 21: return Scene(home: .help)
+        case 22: return Scene(home: .help, tutorialSteps: 2)
+        case 23: return Scene(home: .help, tutorialSteps: 4)
+        case 24: return Scene(game: versus(6, 25, moves: 7, rival: .level12), overlay: .replay)
+        case 25: return Scene(game: versus(6, 26, moves: 4, rival: .level15), overlay: .editor(1))
+        case 26: return Scene(game: friends(6, 27, moves: 2), overlay: .editor(0))
+        case 27: return Scene(game: versus(12, 28, moves: 30, rival: .level8))
+        case 28: return Scene(game: versus(7, 29, moves: 12, rival: .level3))
+        case 29: return Scene(game: versus(5, 30, moves: 6, rival: .level8))
+        case 30: return Scene(game: versus(9, 31, rival: .level3, wanted: 0))
+        default: return nil
+        }
+    }()
+#else
+    static let scene: Never? = nil
+#endif
 }
