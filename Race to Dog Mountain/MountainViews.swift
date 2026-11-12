@@ -161,7 +161,9 @@ struct MountainHome: View {
         .onAppear {
             size = min(max(size, 4), 14); refreshHistory(); MountainBoardDeck.refill()
 #if DEBUG
-            if let scene = MountainShowcase.scene { stage(scene) }
+            // iPhone Duo resizes the launch scene a moment after it appears, which drops state set
+            // immediately; stage the scene once it has settled.
+            if let scene = MountainShowcase.scene { DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { stage(scene) } }
 #endif
         }
         .task { await friends.resume() }
@@ -400,7 +402,10 @@ struct MountainHome: View {
         case .help: rules = true
         case .history(let category): gameCategory = category; social = true
         }
-        if let game = scene.game { library.save(game); selection = game; playing = true }
+        if let game = scene.game {
+            library.save(game)
+            selection = game; playing = true
+        }
 #if os(macOS)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             for window in NSApplication.shared.windows where window.isVisible && window.styleMask.contains(.titled) {
@@ -603,8 +608,9 @@ private struct MountainGameView: View {
                 MountainStyle.ink.opacity(0.60).ignoresSafeArea()
                 // A finished round fits one screen; accessibility text sizes keep the scrolling layout.
                 let fitted = finished && !typeSize.isAccessibilitySize
+                let column = sideColumn(geometry)
                 let content = VStack(spacing: fitted ? 16 : 24) {
-                        header
+                        if column == nil { header }
                         if fitted {
                             finishLayout(wide: usesSideControls(width: geometry.size.width, height: geometry.size.height))
                                 .frame(maxHeight: .infinity)
@@ -640,6 +646,12 @@ private struct MountainGameView: View {
                     content.frame(maxHeight: .infinity, alignment: .top).transition(.opacity)
                 } else {
                     ScrollView { content }.scrollIndicators(.hidden).transition(.opacity)
+                }
+                if let column {
+                    // Below the status bar and camera at the top of the column.
+                    let height = min(380, geometry.size.height * 0.62)
+                    headerBar(vertical: true).frame(width: column, height: height)
+                        .position(x: geometry.size.width + column / 2, y: 76 + height / 2)
                 }
             }
             .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.82), value: resultPresented)
@@ -839,8 +851,15 @@ private struct MountainGameView: View {
     /// Two copies of one rival show its two looks, painting and Fonster, so the seats stay distinct.
     private func twin(_ seat: Int) -> Bool { seat == 0 && computers == [true, true] && firstDifficulty == difficulty }
     private func playerName(_ index: Int) -> String { computers[index] ? rival(index).displayName : MountainHumanProfile.read(identity: names[index], data: humanProfiles).displayName }
-    private var header: some View {
-        HStack {
+    private var header: some View { headerBar(vertical: false) }
+    /// A screen that reserves a whole side column (iPhone Duo's outer display keeps one for its
+    /// status bar and camera) gets the controls stacked down that column, as Apple's own apps do.
+    private func sideColumn(_ geometry: GeometryProxy) -> CGFloat? {
+        geometry.safeAreaInsets.trailing >= 44 ? geometry.safeAreaInsets.trailing : nil
+    }
+    private func headerBar(vertical: Bool) -> some View {
+        let layout = vertical ? AnyLayout(VStackLayout(spacing: 14)) : AnyLayout(HStackLayout())
+        return layout {
             Button { leaveGame() } label: {
                 Image(systemName: "xmark").frame(width: MountainStyle.headerControlSize, height: MountainStyle.headerControlSize)
                     .background(MountainStyle.cream.opacity(0.1), in: Circle())

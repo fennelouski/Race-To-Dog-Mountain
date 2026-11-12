@@ -1,6 +1,6 @@
 #!/bin/bash
 # Captures the 30 marketing scenes on a simulator.
-# Usage: bash Tools/Screenshots/capture-sim.sh <simulator udid> <app bundle path> <bundle id> <output folder>
+# Usage: [DISPLAY_ID=n] [WAIT=s] bash Tools/Screenshots/capture-sim.sh <simulator udid> <app bundle path> <bundle id> <output folder>
 set -euo pipefail
 udid="$1"; app="$2"; bundle="$3"; out="$4"
 mkdir -p "$out"
@@ -15,6 +15,7 @@ for n in ${SCENES:-$(seq 1 30)}; do
   xcrun simctl launch --terminate-running-process "$udid" "$bundle" \
     -MountainUITests -MountainTestSession "$(uuidgen)" -MountainMarketingCapture -MountainShowcase "$n" >/dev/null
   sleep "${WAIT:-9}"
-  xcrun simctl io "$udid" screenshot "$out/$(printf %02d "$n").png" >/dev/null 2>&1
+  # DISPLAY picks a screen on multi-display devices: iPhone Duo's outer screen is 1, its inner screen 3.
+  xcrun simctl io "$udid" screenshot ${DISPLAY_ID:+--display=$DISPLAY_ID} "$out/$(printf %02d "$n").png" >/dev/null 2>&1
 done
 xcrun simctl terminate "$udid" "$bundle" 2>/dev/null || true
