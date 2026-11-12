@@ -111,6 +111,7 @@ struct MountainHome: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     @AppStorage("hasPlayed", store: MountainExperience.defaults) private var hasPlayed = false
     @State private var titleGrow = 0.0
+    @State private var titlePokes: [MountainVinePoke] = []
     @State private var launching = true
 
     var body: some View {
@@ -193,6 +194,8 @@ struct MountainHome: View {
                     let titleWidth = min(wide ? 420 : 300, max(160, (geometry.size.height - 400) / MountainVineTitle.aspect))
                     Color.clear.frame(width: titleWidth, height: titleWidth * MountainVineTitle.aspect)
                         .anchorPreference(key: MountainTitleAnchor.self, value: .bounds) { $0 }
+                        .contentShape(Rectangle())
+                        .onTapGesture(coordinateSpace: .local) { point in pokeTitle(at: point, width: titleWidth) }
                         .accessibilityElement().accessibilityLabel(Text(verbatim: "Tally Tangle")).accessibilityAddTraits(.isHeader)
                     Spacer(minLength: 16)
                     MountainPlayButton(size: wide ? 200 : 168) { firstPlay() }
@@ -213,7 +216,7 @@ struct MountainHome: View {
             }
             .overlayPreferenceValue(MountainTitleAnchor.self) { anchor in
                 GeometryReader { proxy in
-                    if let anchor { MountainVineTitle(grow: titleGrow, frame: proxy[anchor], active: !playing && !options && !rules) }
+                    if let anchor { MountainVineTitle(grow: titleGrow, frame: proxy[anchor], active: !playing && !options && !rules, pokes: titlePokes) }
                 }.ignoresSafeArea()
             }
             .modifier(MountainTouchBlooms(enabled: !homeReduceMotion && homeAnimations))
@@ -229,6 +232,14 @@ struct MountainHome: View {
                 withAnimation(.easeInOut(duration: 4.2)) { titleGrow = 1 }
             }
         }
+    }
+
+    private func pokeTitle(at point: CGPoint, width: CGFloat) {
+        guard !homeReduceMotion, homeAnimations, titleGrow > 0.9 else { return }
+        let size = CGSize(width: width, height: width * MountainVineTitle.aspect)
+        let poke = MountainVinePoke(part: MountainVineTitle.part(at: point, in: size), point: point)
+        titlePokes = Array((titlePokes + [poke]).suffix(5))
+        Task { try? await Task.sleep(for: .seconds(1.6)); titlePokes.removeAll { $0.id == poke.id } }
     }
 
     private func homeControl(_ title: LocalizedStringResource, symbol: String, identifier: String, action: @escaping () -> Void) -> some View {

@@ -289,6 +289,8 @@ struct MountainVineTitle: View, Animatable {
     var grow: Double
     var frame: CGRect
     var active = true
+    /// Recent taps on the title; each sets one letter's vine wiggling and scatters a few leaves.
+    var pokes: [MountainVinePoke] = []
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
     @Environment(\.scenePhase) private var scenePhase
@@ -420,7 +422,19 @@ struct MountainVineTitle: View, Animatable {
                 context.translateBy(x: frame.minX, y: frame.minY)
                 context.scaleBy(x: scale, y: scale)
                 let edges = (left: -frame.minX / scale - 6, right: (size.width - frame.minX) / scale + 6, top: -frame.minY / scale - 6)
-                for part in Self.parts {
+                let now = timeline.date
+                for (partIndex, part) in Self.parts.enumerated() {
+                    // The tapped letter shakes fully; nearby letters ripple a moment later, more gently.
+                    var shake = (age: 0.0, strength: 0.0)
+                    if !still {
+                        for poke in pokes {
+                            let point = CGPoint(x: poke.point.x / scale, y: poke.point.y / scale)
+                            let distance = poke.part == partIndex ? 0 : Self.distance(from: point, to: part.stroke)
+                            let strength = poke.part == partIndex ? 1 : max(0, 1 - distance / 45) * 0.55
+                            let age = now.timeIntervalSince(poke.date) - Double(distance) / 160
+                            if strength > shake.strength * exp(-max(0, shake.age) * 2.2), age > 0 { shake = (age, strength) }
+                        }
+                    }
                     let window = Self.windows(order: part.order)
                     var vine = feeder(to: part.stroke.points[0], from: part.from, edges: edges, seed: part.order * 7 + (part.from == .top ? 1 : 3), time: time)
                     vine.window = window.feeder
@@ -432,9 +446,10 @@ struct MountainVineTitle: View, Animatable {
                     for (index, stroke) in [vine, letter].enumerated() {
                         let local = (grow - stroke.window.lowerBound) / (stroke.window.upperBound - stroke.window.lowerBound)
                         guard local > 0, index == 1 || absorbed < 1 else { continue }
-                        draw(stroke, index: part.order * 2 + index, reach: min(1, local), tail: index == 0 ? absorbed : 0, in: &context, time: time)
+                        draw(stroke, index: part.order * 2 + index, reach: min(1, local), tail: index == 0 ? absorbed : 0, shake: shake, in: &context, time: time)
                     }
                 }
+                if !still { drawBursts(in: &context, scale: scale, now: now) }
             }
         }
         .allowsHitTesting(false).accessibilityHidden(true)
@@ -446,13 +461,64 @@ struct MountainVineTitle: View, Animatable {
     private static let leafColors = [Color(red: 0.42, green: 0.74, blue: 0.36), Color(red: 0.31, green: 0.62, blue: 0.29), Color(red: 0.55, green: 0.80, blue: 0.40)]
     private static let petals = [Color(red: 1, green: 0.58, blue: 0.72), MountainStyle.gold, Color(red: 0.74, green: 0.62, blue: 1)]
 
-    private func draw(_ stroke: Stroke, index: Int, reach: Double, tail: Double = 0, in context: inout GraphicsContext, time: Double) {
+    /// The letter (or crossbar) nearest a tap in the title's own points, if the tap is on or near one.
+    static func part(at point: CGPoint, in frame: CGSize) -> Int? {
+        let scale = frame.width / size.width
+        guard scale > 0 else { return nil }
+        let local = CGPoint(x: point.x / scale, y: point.y / scale)
+        let nearest = parts.indices.min { distance(from: local, to: parts[$0].stroke) < distance(from: local, to: parts[$1].stroke) }
+        return nearest.flatMap { distance(from: local, to: parts[$0].stroke) < 18 ? $0 : nil }
+    }
+    private static func distance(from point: CGPoint, to stroke: Stroke) -> CGFloat {
+        stride(from: 0, to: stroke.points.count, by: 4).map { hypot(stroke.points[$0].x - point.x, stroke.points[$0].y - point.y) }.min() ?? .infinity
+    }
+    /// Leaves and petals spring from each tap and drift down as they fade.
+    private func drawBursts(in context: inout GraphicsContext, scale: CGFloat, now: Date) {
+        for poke in pokes {
+            let age = now.timeIntervalSince(poke.date)
+            guard age < 1.4 else { continue }
+            let origin = CGPoint(x: poke.point.x / scale, y: poke.point.y / scale)
+            for k in 0..<16 {
+                let seed = Double(k) * 2.399 + Double(poke.id.hashValue % 97)
+                let speed = 34 + Double(k % 4) * 10
+                let x = origin.x + cos(seed) * speed * age
+                let y = origin.y + sin(seed) * speed * age * 0.7 + 30 * age * age
+                var piece = context
+                piece.opacity = max(0, 1 - age / 1.4)
+                piece.translateBy(x: x, y: y)
+                piece.rotate(by: .radians(seed + age * (4 + Double(k % 3))))
+                if k % 3 == 0 {
+                    piece.fill(Path(ellipseIn: CGRect(x: -2.6, y: -2.6, width: 5.2, height: 5.2)), with: .color(Self.petals[k % 3]))
+                } else {
+                    var blade = Path()
+                    blade.move(to: .zero)
+                    blade.addQuadCurve(to: CGPoint(x: 8, y: 0), control: CGPoint(x: 3.6, y: -3.3))
+                    blade.addQuadCurve(to: .zero, control: CGPoint(x: 3.6, y: 3.3))
+                    piece.fill(blade, with: .color(Self.leafColors[k % 3]))
+                }
+            }
+        }
+    }
+
+    private func draw(_ stroke: Stroke, index: Int, reach: Double, tail: Double = 0, shake: (age: Double, strength: Double) = (0, 0),
+                      in context: inout GraphicsContext, time: Double) {
         let head = stroke.total * reach
         let count = stroke.lengths.firstIndex { $0 > head } ?? stroke.points.count
         let first = stroke.lengths.firstIndex { $0 >= stroke.total * tail } ?? 0
         guard count - first > 1 else { return }
-        let points = Array(stroke.points[first..<count])
         let lengths = Array(stroke.lengths[first..<count])
+        // A tap sends a wave running along the vine that dies away within a second or so.
+        let settle = shake.strength * exp(-shake.age * 2.2)
+        var points = Array(stroke.points[first..<count])
+        if settle > 0.01 {
+            let base = points
+            for i in points.indices {
+                let a = base[max(0, i - 1)], b = base[min(base.count - 1, i + 1)]
+                let length = max(0.001, hypot(b.x - a.x, b.y - a.y))
+                let wave = CGFloat(settle * 4.2 * sin(Double(lengths[i]) * 0.3 - shake.age * 15))
+                points[i] = CGPoint(x: base[i].x - (b.y - a.y) / length * wave, y: base[i].y + (b.x - a.x) / length * wave)
+            }
+        }
         func normal(_ i: Int) -> CGVector {
             let a = points[max(0, i - 1)], b = points[min(points.count - 1, i + 1)]
             let length = max(0.001, hypot(b.x - a.x, b.y - a.y))
@@ -499,7 +565,8 @@ struct MountainVineTitle: View, Animatable {
             let n = normal(i), unfurl = min(1, (head - s) / 12)
             let size = (leafIndex % 4 == 0 ? 7.5 : 5.5) * unfurl
             let base = CGPoint(x: points[i].x + n.dx * width(i) * 0.4 * side, y: points[i].y + n.dy * width(i) * 0.4 * side)
-            let angle = atan2(n.dy * side, n.dx * side) - 0.5 * side + sin(time * 0.9 + Double(leafIndex + index) * 1.7) * 0.14
+            let flutter = settle * 1.0 * sin(shake.age * 22 + Double(leafIndex))
+            let angle = atan2(n.dy * side, n.dx * side) - 0.5 * side + sin(time * 0.9 + Double(leafIndex + index) * 1.7) * 0.14 + flutter
             var leaf = context
             leaf.translateBy(x: base.x, y: base.y); leaf.rotate(by: .radians(angle))
             var blade = Path()
@@ -548,4 +615,12 @@ struct MountainVineTitle: View, Animatable {
         }
         context.fill(Path(ellipseIn: CGRect(x: c.x - r * 0.42, y: c.y - r * 0.42, width: r * 0.84, height: r * 0.84)), with: .color(MountainStyle.cream))
     }
+}
+
+/// A tap on the vine title, in the title's own coordinates.
+struct MountainVinePoke: Identifiable, Equatable {
+    let id = UUID()
+    let part: Int?
+    let point: CGPoint
+    var date = Date()
 }
