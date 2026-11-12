@@ -629,7 +629,7 @@ private struct MountainGameView: View {
                                     .frame(maxWidth: .infinity)
                             }
                         } else {
-                            verticalGame(width: min(geometry.size.width - 32, 760), maxHeight: geometry.size.width >= 600 && !typeSize.isAccessibilitySize ? max(160, geometry.size.height - boardTop - gameHorizontalPadding) : nil)
+                            verticalGame(width: min(geometry.size.width - 32, 760), bleed: column.map { $0 + 16 } ?? 0, maxHeight: geometry.size.width >= 600 && !typeSize.isAccessibilitySize ? max(160, geometry.size.height - boardTop - gameHorizontalPadding) : nil)
                         }
                     }
                     .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.82), value: resultPresented)
@@ -753,14 +753,14 @@ private struct MountainGameView: View {
         32
 #endif
     }
-    private func board(width: CGFloat, maxHeight: CGFloat? = nil, fitAllSizes: Bool = false) -> some View {
-        MountainBoard(game: game, availableWidth: width, availableHeight: maxHeight, fitAllSizes: fitAllSizes, interactive: !computers[game.turn] && resolution == nil, lastMove: lastMove, lastPoints: lastPoints, selected: resolution == nil ? keyboardPick : lastComputerMove?.tileID) { move($0) }
+    private func board(width: CGFloat, maxHeight: CGFloat? = nil, fitAllSizes: Bool = false, bleed: CGFloat = 0) -> some View {
+        MountainBoard(game: game, availableWidth: width, availableHeight: maxHeight, fitAllSizes: fitAllSizes, trailingBleed: bleed, interactive: !computers[game.turn] && resolution == nil, lastMove: lastMove, lastPoints: lastPoints, selected: resolution == nil ? keyboardPick : lastComputerMove?.tileID) { move($0) }
             .overlay { MountainVineSweep(trigger: seatVines, cover: true, duration: Self.seatCover).clipShape(RoundedRectangle(cornerRadius: 20)) }
             .background { GeometryReader { proxy in
                 Color.clear.preference(key: MountainBoardTop.self, value: proxy.frame(in: .named("mountain-game-content")).minY)
             } }
     }
-    private func verticalGame(width: CGFloat, maxHeight: CGFloat? = nil) -> some View {
+    private func verticalGame(width: CGFloat, bleed: CGFloat = 0, maxHeight: CGFloat? = nil) -> some View {
         VStack(spacing: 24) {
             if finished {
                 finishPanel.transition(finishTransition)
@@ -770,7 +770,7 @@ private struct MountainGameView: View {
                 HStack(spacing: 14) { scoreCards }
             }
             // The finished board steps back so the result and actions share the space evenly.
-            board(width: finished ? width * 0.72 : width, maxHeight: maxHeight.map { finished ? $0 * 0.6 : $0 })
+            board(width: finished ? width * 0.72 : width, maxHeight: maxHeight.map { finished ? $0 * 0.6 : $0 }, bleed: finished ? 0 : bleed)
                 .opacity(finished ? 0.8 : 1)
             if finished { finishActions.transition(finishTransition) } else { matchControls }
         }

@@ -112,12 +112,32 @@ private struct MountainTileButton: ButtonStyle {
 }
 
 
+/// Softens a tile by how far it has run past the scrolling board's trailing edge.
+private struct MountainEdgeSoftening: ViewModifier {
+    let limit: CGFloat
+    let bleed: CGFloat
+    func body(content: Content) -> some View {
+        if bleed > 0 {
+            content.visualEffect { [limit, bleed] tile, proxy in
+                let past = min(1, max(0, (proxy.frame(in: .scrollView(axis: .horizontal)).maxX - limit) / bleed))
+                // Squared, so a tile just past the edge stays readable and the far ones fall away.
+                return tile.blur(radius: 8 * past * past).opacity(1 - 0.85 * past * past)
+            }
+        } else {
+            content
+        }
+    }
+}
+
 struct MountainBoard: View {
     let game: MountainGame
     let availableWidth: CGFloat
     var availableHeight: CGFloat? = nil
     var fitAllSizes = false
     var numberScale: CGFloat = 1
+    /// Room past the trailing edge that a scrolling board runs on into (iPhone Duo's side column),
+    /// its tiles blurring and dimming under the controls there instead of stopping at a hard line.
+    var trailingBleed: CGFloat = 0
     @AppStorage("boardScrollThreshold", store: MountainExperience.defaults) private var scrollThreshold = 7
 #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -158,18 +178,22 @@ struct MountainBoard: View {
     private var mover: Int { 1 - game.turn }
     var body: some View {
         let metrics = MountainBoardLayout(size: game.size, availableWidth: Double(availableWidth), availableHeight: availableHeight.map(Double.init), compact: compact, scrollThreshold: scrollThreshold, minimumTile: Double(minimumTile))
+        let bleed = metrics.scrolls ? trailingBleed : 0
         Group {
             if metrics.scrolls {
-                ScrollView(.horizontal) { grid(metrics) }
+                ScrollView(.horizontal) { grid(metrics, bleed: bleed) }
+                    .scrollClipDisabled(bleed > 0)
+                    // Still clipped at the leading edge; only the trailing side runs on.
+                    .mask { Rectangle().padding(.trailing, -bleed) }
                     .accessibilityIdentifier("board-scroll")
             } else {
                 grid(metrics)
             }
         }
         .frame(width: max(64, availableWidth))
-        .background(MountainStyle.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 20))
+        .background { RoundedRectangle(cornerRadius: 20).fill(MountainStyle.ink.opacity(0.7)).padding(.trailing, -bleed) }
     }
-    private func grid(_ metrics: MountainBoardLayout) -> some View {
+    private func grid(_ metrics: MountainBoardLayout, bleed: CGFloat = 0) -> some View {
         let width = CGFloat(metrics.tile)
         return LazyVGrid(columns: Array(repeating: GridItem(.fixed(width), spacing: MountainBoardLayout.gap), count: game.size), spacing: MountainBoardLayout.gap) {
                 ForEach(game.tiles) { tile in
@@ -212,6 +236,7 @@ struct MountainBoard: View {
                     .accessibilityLabel(tile.value == 0 ? String(localized: "Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), used") : String(localized: "Row \(tile.id / game.size + 1), column \(tile.id % game.size + 1), \(tile.value) points"))
                     .accessibilityHint(!playable ? "" : game.turn == 0 ? String(localized: "Adds \(tile.value) points and sets the next player's column") : String(localized: "Adds \(tile.value) points and sets the next player's row"))
                     .accessibilityIdentifier("tile-\(tile.id)")
+                    .modifier(MountainEdgeSoftening(limit: availableWidth, bleed: bleed))
                 }
         }.padding(MountainBoardLayout.padding).frame(width: CGFloat(metrics.extent))
             .accessibilityElement(children: .contain).accessibilityIdentifier("game-board")
