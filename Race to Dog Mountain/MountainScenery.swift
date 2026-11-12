@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreText
 
 enum MountainStyle {
 #if os(visionOS)
@@ -278,3 +279,90 @@ private struct MountainVines: View, Animatable {
     }
 }
 
+
+/// "Tally Tangle" drawn as a vine: the letter outlines grow stroke by stroke, leaves and
+/// blossoms sprout along them, then the letters fill in. Running `grow` back to 0 unwinds it.
+struct MountainVineTitle: View, Animatable {
+    var grow: Double
+    var active = true
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+    @Environment(\.scenePhase) private var scenePhase
+    var animatableData: Double { get { grow } set { grow = newValue } }
+
+    /// Glyph outlines in a unit-width box, plus leaf spots (position along the vine, point, heading).
+    private struct Outline {
+        let path: Path
+        let aspect: CGFloat
+        let leaves: [(t: Double, point: CGPoint, angle: Double)]
+    }
+    private static let outline: Outline = {
+        let font = CTFontCreateWithName("Georgia-Bold" as CFString, 100, nil)
+        let lines = ["Tally", "Tangle"].map { CTLineCreateWithAttributedString(NSAttributedString(string: $0, attributes: [NSAttributedString.Key(kCTFontAttributeName as String): font])) }
+        let widths = lines.map { CGFloat(CTLineGetTypographicBounds($0, nil, nil, nil)) }
+        let ascent = CTFontGetAscent(font), lineHeight: CGFloat = 96
+        let combined = CGMutablePath()
+        for (index, line) in lines.enumerated() {
+            let inset = ((widths.max() ?? 0) - widths[index]) / 2
+            for run in (CTLineGetGlyphRuns(line) as? [CTRun]) ?? [] {
+                let count = CTRunGetGlyphCount(run)
+                var glyphs = [CGGlyph](repeating: 0, count: count), positions = [CGPoint](repeating: .zero, count: count)
+                CTRunGetGlyphs(run, CFRange(location: 0, length: count), &glyphs)
+                CTRunGetPositions(run, CFRange(location: 0, length: count), &positions)
+                for (glyph, position) in zip(glyphs, positions) {
+                    var flip = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: inset + position.x, ty: ascent + CGFloat(index) * lineHeight)
+                    if let letter = CTFontCreatePathForGlyph(font, glyph, &flip) { combined.addPath(letter) }
+                }
+            }
+        }
+        let box = combined.boundingBoxOfPath
+        var unit = CGAffineTransform(scaleX: 1 / box.width, y: 1 / box.width).translatedBy(x: -box.minX, y: -box.minY)
+        let path = Path(combined.copy(using: &unit) ?? combined)
+        let leaves = (0..<64).compactMap { i -> (t: Double, point: CGPoint, angle: Double)? in
+            let t = (Double(i) + 0.5) / 64
+            guard let p = path.trimmedPath(from: 0, to: t).currentPoint,
+                  let q = path.trimmedPath(from: 0, to: min(1, t + 0.004)).currentPoint, p != q else { return nil }
+            return (t, p, atan2(q.y - p.y, q.x - p.x) + (i % 2 == 0 ? 1.1 : -1.1))
+        }
+        return Outline(path: path, aspect: box.height / box.width, leaves: leaves)
+    }()
+    static var aspect: CGFloat { outline.aspect }
+
+    var body: some View {
+        let still = systemReduceMotion || !animationsEnabled
+        TimelineView(.animation(minimumInterval: 1.0 / 30, paused: still || !active || scenePhase != .active)) { timeline in
+            Canvas { context, size in
+                let time = still ? 0 : timeline.date.timeIntervalSinceReferenceDate
+                let outline = Self.outline, scale = size.width
+                let shape = outline.path.applying(CGAffineTransform(scaleX: scale, y: scale))
+                // Letters fill in once the vine has traced most of them.
+                let fill = max(0, min(1, (grow - 0.7) / 0.3))
+                context.fill(shape, with: .color(MountainStyle.cream.opacity(fill * 0.95)))
+                context.stroke(shape.trimmedPath(from: 0, to: grow), with: .color(Color(red: 0.18, green: 0.48, blue: 0.27)),
+                               style: StrokeStyle(lineWidth: max(2, scale * 0.009), lineCap: .round, lineJoin: .round))
+                let leafLength = scale * 0.04
+                for (index, leaf) in outline.leaves.enumerated() where leaf.t < grow {
+                    let unfurl = min(1, (grow - leaf.t) / 0.06)
+                    var copy = context
+                    copy.translateBy(x: leaf.point.x * scale, y: leaf.point.y * scale)
+                    copy.rotate(by: .radians(leaf.angle + sin(time * 0.9 + Double(index)) * 0.12))
+                    copy.scaleBy(x: unfurl, y: unfurl)
+                    if index % 9 == 4 {
+                        // A few blossoms among the leaves.
+                        let petal = [Color(red: 1, green: 0.58, blue: 0.72), MountainStyle.gold, Color(red: 0.74, green: 0.62, blue: 1)][index % 3]
+                        for k in 0..<5 {
+                            let a = Double(k) * 2 * .pi / 5
+                            copy.fill(Path(ellipseIn: CGRect(x: cos(a) * leafLength * 0.22 - leafLength * 0.16, y: sin(a) * leafLength * 0.22 - leafLength * 0.16, width: leafLength * 0.32, height: leafLength * 0.32)), with: .color(petal))
+                        }
+                        copy.fill(Path(ellipseIn: CGRect(x: -leafLength * 0.1, y: -leafLength * 0.1, width: leafLength * 0.2, height: leafLength * 0.2)), with: .color(MountainStyle.cream))
+                    } else {
+                        copy.fill(Path(ellipseIn: CGRect(x: 0, y: -leafLength * 0.2, width: leafLength, height: leafLength * 0.4)),
+                                  with: .color(index % 3 == 0 ? Color(red: 0.31, green: 0.62, blue: 0.29) : Color(red: 0.42, green: 0.74, blue: 0.36)))
+                    }
+                }
+            }
+        }
+        .aspectRatio(1 / Self.aspect, contentMode: .fit)
+        .accessibilityElement().accessibilityLabel(Text(verbatim: "Tally Tangle")).accessibilityAddTraits(.isHeader)
+    }
+}

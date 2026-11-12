@@ -109,6 +109,7 @@ struct MountainHome: View {
     @State private var history = [0, 0]
     @Environment(\.dynamicTypeSize) private var typeSize
     @AppStorage("hasPlayed", store: MountainExperience.defaults) private var hasPlayed = false
+    @State private var titleGrow = 0.0
     @State private var launching = true
 
     var body: some View {
@@ -187,11 +188,8 @@ struct MountainHome: View {
                 MountainScenery(active: !playing && !options && !rules, followsLocalTime: true, lush: true)
                     .overlay(MountainStyle.ink.opacity(0.45))
                 VStack(spacing: 24) {
-                    Text("Tally\nTangle")
-                        .font(MountainStyle.display(typeSize.isAccessibilitySize ? 36 : wide ? 76 : 52))
-                        .tracking(-1).multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityAddTraits(.isHeader)
+                    MountainVineTitle(grow: titleGrow, active: !playing && !options && !rules)
+                        .frame(width: wide ? 460 : 280)
                     Spacer(minLength: 16)
                     MountainPlayButton(size: wide ? 200 : 168) { firstPlay() }
                         .accessibilityIdentifier("start-game")
@@ -210,6 +208,17 @@ struct MountainHome: View {
                 .frame(maxWidth: 620).frame(maxWidth: .infinity)
             }
             .modifier(MountainTouchBlooms(enabled: !homeReduceMotion && homeAnimations))
+            .task(id: "\(playing)-\(launching)") {
+                // The vine title writes itself after the launch curtain, unwinds when a game opens,
+                // and grows back when you return home.
+                let still = homeReduceMotion || !homeAnimations
+                if playing { withAnimation(still ? nil : .easeIn(duration: 0.5)) { titleGrow = 0 }; return }
+                guard !launching, titleGrow < 1 else { return }
+                if still { titleGrow = 1; return }
+                titleGrow = 0
+                do { try await Task.sleep(for: .milliseconds(250)) } catch { return }
+                withAnimation(.easeInOut(duration: 2.6)) { titleGrow = 1 }
+            }
         }
     }
 
