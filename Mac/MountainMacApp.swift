@@ -10,6 +10,7 @@ struct MountainActions {
     var swap: (() -> Void)? = nil
     var history: (() -> Void)? = nil
     var invite: (() -> Void)? = nil
+    var find: (() -> Void)? = nil
 }
 
 private struct MountainActionsKey: FocusedValueKey {
@@ -42,6 +43,10 @@ private struct MountainCommands: Commands {
         CommandGroup(replacing: .newItem) {
             Button("New Game") { actions?.newGame() }
                 .keyboardShortcut("n").disabled(actions == nil)
+        }
+        CommandGroup(after: .textEditing) {
+            Button("Find Game…") { actions?.find?() }
+                .keyboardShortcut("f").disabled(actions?.find == nil)
         }
         CommandMenu("Game") {
             Button("Replay Computer Move") { actions?.replay?() }
