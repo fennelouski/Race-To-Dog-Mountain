@@ -65,6 +65,12 @@ enum ComputerDifficulty: Int, CaseIterable, Identifiable, Sendable, Codable {
 }
 
 struct MountainGame: Sendable, Codable {
+#if os(tvOS)
+    static let maximumBoardSize = 15
+#else
+    static let maximumBoardSize = 14
+#endif
+
     struct Tile: Identifiable, Sendable, Codable {
         let id: Int
         var value: Int
@@ -78,7 +84,7 @@ struct MountainGame: Sendable, Codable {
     private(set) var moves = 0
 
     init(size: Int, values: [Int]? = nil, firstPlayer: Int = 0, startingLine: Int? = nil) {
-        self.size = min(max(size, 4), 14)
+        self.size = min(max(size, 4), Self.maximumBoardSize)
         let side = self.size
         let count = side * side
         let numbers = values?.count == count ? values! : Array(1...count).shuffled()
@@ -92,7 +98,16 @@ struct MountainGame: Sendable, Codable {
         guard tiles.indices.contains(id), tiles[id].value > 0 else { return false }
         return turn == 0 ? id / size == row : id % size == column
     }
-    var legalMoves: [Int] { tiles.filter { canPlay($0.id) }.map(\.id) }
+    var legalMoves: [Int] {
+#if os(tvOS)
+        if size == 15 {
+            // Search just the active row/column instead of scanning 225 tiles per CPU branch.
+            if turn == 0 { return (row * size..<(row + 1) * size).filter(canPlay) }
+            return stride(from: column, to: size * size, by: size).filter(canPlay)
+        }
+#endif
+        return tiles.filter { canPlay($0.id) }.map(\.id)
+    }
     var isOver: Bool { legalMoves.isEmpty }
 
     @discardableResult mutating func play(_ id: Int) -> Bool {
@@ -121,9 +136,17 @@ struct MountainGame: Sendable, Codable {
     }
     func computerMove<R: RandomNumberGenerator>(difficulty: ComputerDifficulty, adjustment: Int = 0, roll: Double? = nil, using random: inout R) -> Int? {
         // ponytail: the deepest rival narrows on big boards to keep a move near a second; iterative deepening if that's too coarse.
-        let branches = size > 8 ? min(8, difficulty.branches) : difficulty.branches
+        var branches = size > 8 ? min(8, difficulty.branches) : difficulty.branches
+        var depth = difficulty.depth
+#if os(tvOS)
+        // Avoid a long single turn for the two deepest rivals on the TV's densest grid.
+        if size == 15 && difficulty.rawValue >= 16 {
+            branches = difficulty.rawValue == 16 ? 5 : 6
+            depth = difficulty.rawValue == 16 ? 5 : 6
+        }
+#endif
         let evaluatedMoves: [(id: Int, value: Int)] = legalMoves.map { id in
-            (id: id, value: evaluated(id, depth: difficulty.depth, branches: branches))
+            (id: id, value: evaluated(id, depth: depth, branches: branches))
         }
         let ranked = evaluatedMoves.sorted { left, right in
             if left.value == right.value { return left.id < right.id }
@@ -258,7 +281,7 @@ struct MountainAvatarPose: Equatable, Sendable {
 
 extension MountainGame {
     var isValid: Bool {
-        guard (4...14).contains(size) else { return false }
+        guard (4...Self.maximumBoardSize).contains(size) else { return false }
         let count = size * size, total = count * (count + 1) / 2
         guard tiles.count == count, scores.count == 2, (0...1).contains(turn),
               (0..<size).contains(row), (0..<size).contains(column), (0...count).contains(moves),
@@ -354,7 +377,7 @@ struct MountainHistory: Codable, Sendable {
         assert(!classic.play(2) && !classic.play(5))
         assert(classic.play(14) && classic.scores == [3, 15] && classic.row == 3)
         assert(!classic.play(-1) && !classic.play(16))
-        assert(MountainGame(size: 1).size == 4 && MountainGame(size: 99).size == 14)
+        assert(MountainGame(size: 1).size == 4 && MountainGame(size: 99).size == MountainGame.maximumBoardSize)
         assert(MountainGame(size: 4).turn == 0)
         assert(MountainGame.startingPlayer(computers: [false, true]) == 0)
         assert(MountainGame.startingPlayer(computers: [true, false]) == 1)

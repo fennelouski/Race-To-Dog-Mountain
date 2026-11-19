@@ -95,6 +95,11 @@
 		AF3000000000000000000004 /* MountainFuzzyPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3000000000000000000001; };
 		F153471B6A0A4AE9893F5F66 /* MountainFonster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFCB8FEE2A742298E867781; };
 		AF3000000000000000000005 /* MountainFuzzyPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3000000000000000000001; };
+		F414B4FC122E4699B9123953 = { isa = PBXBuildFile; fileRef = 235E3DC1BAAC47D39ADFF6C4; };
+		89C07FFAF249460999E82E24 = { isa = PBXBuildFile; fileRef = 84E4089183604C4BBA294C39; };
+		67876FA58F1D41E681FDC800 = { isa = PBXBuildFile; fileRef = 50143A3B1455441997F08A9C; };
+		1F85EA4769D347B38961482C = { isa = PBXBuildFile; fileRef = 56DC1C316FBE42EF8AFFD554; };
+		97EAE6F7231C4FA1A63372AA = { isa = PBXBuildFile; fileRef = 39CF4A3E31E94C3CAEFE731E; settings = { ATTRIBUTES = (RemoveHeadersOnCopy, CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,11 +112,13 @@
 		};
 		5BD6AF67699246CEB9FAD40C = {isa = PBXContainerItemProxy; containerPortal = 908AFC611A6718AE0050EC0B; proxyType = 1; remoteGlobalIDString = AAEA442FE80D48608D3CB314; remoteInfo = "Tally Tangle Messages"; };
 		AD8000000000000000000002 = {isa = PBXContainerItemProxy; containerPortal = 908AFC611A6718AE0050EC0B; proxyType = 1; remoteGlobalIDString = AC5000000000000000000009; remoteInfo = "Tally Tangle Watch"; };
+		E3FFBDEBB5004DE595143454 = { isa = PBXContainerItemProxy; containerPortal = 908AFC611A6718AE0050EC0B; proxyType = 1; remoteGlobalIDString = ECB0AA0B2EB444688E0AF49F; remoteInfo = TallyTangleTopShelf; };
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		ECC1171EE0A144C8857528A0 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (91D19DB636D14EEA93D1BE3C); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0; };
 		AD8000000000000000000003 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = "$(CONTENTS_FOLDER_PATH)/Watch"; dstSubfolderSpec = 16; files = (AD8000000000000000000001); name = "Embed Watch Content"; runOnlyForDeploymentPostprocessing = 0; };
+		D435E322374A4CFFAF411F35 = { isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (97EAE6F7231C4FA1A63372AA, ); name = "Embed Top Shelf Extension"; runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -174,6 +181,13 @@
 		F077205C4DA34F089AA45721 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Messages/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		8FFCB8FEE2A742298E867781 /* MountainFonster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tally Tangle/MountainFonster.swift"; sourceTree = SOURCE_ROOT; };
 		AF3000000000000000000001 /* MountainFuzzyPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tally Tangle/MountainFuzzyPortrait.swift"; sourceTree = SOURCE_ROOT; };
+		0BF1A86C20244CBAB7DD098C = { isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		235E3DC1BAAC47D39ADFF6C4 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentProvider.swift; sourceTree = "<group>"; };
+		84E4089183604C4BBA294C39 = { isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "shelf-item-1.jpg"; sourceTree = "<group>"; };
+		50143A3B1455441997F08A9C = { isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "shelf-item-2.jpg"; sourceTree = "<group>"; };
+		56DC1C316FBE42EF8AFFD554 = { isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "shelf-item-3.jpg"; sourceTree = "<group>"; };
+		1BC0C6338D614629A489C098 = { isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TV/TopShelfHostInfo.plist"; sourceTree = SOURCE_ROOT; };
+		39CF4A3E31E94C3CAEFE731E = { isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TallyTangleTopShelf.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,7 +268,10 @@
 		};
 		908AFC601A6718AE0050EC0B = {
 			isa = PBXGroup;
-			children = (AD9000000000000000000003, BF126CF9A80443BA82872C31, ACA28E16E86F4A5883D954BF, 2B76FDE8510140AD9FFB7479, 5FA96690DF744B39A451D591, 3BD04EC23E624FC4B7F11927, D57F8242A8A74593A736258B,
+			children = (
+				5B97A3B563364F4AB8C50B49,
+				1BC0C6338D614629A489C098,
+AD9000000000000000000003, BF126CF9A80443BA82872C31, ACA28E16E86F4A5883D954BF, 2B76FDE8510140AD9FFB7479, 5FA96690DF744B39A451D591, 3BD04EC23E624FC4B7F11927, D57F8242A8A74593A736258B,
 				AC5000000000000000000004 /* MountainWatchApp.swift */,
 				AC5000000000000000000010 /* WatchMatch.swift */,
 				AC5000000000000000000011 /* WatchAssets.xcassets */,
@@ -273,7 +290,9 @@
 		};
 		908AFC6A1A6718AE0050EC0B /* Products */ = {
 			isa = PBXGroup;
-			children = (BB4290820ECF4804A3B40671,
+			children = (
+				39CF4A3E31E94C3CAEFE731E,
+BB4290820ECF4804A3B40671,
 				AC5000000000000000000007 /* Tally Tangle Watch.app */,
 				AC4000000000000000000007 /* Tally Tangle Vision.app */,
 				AC3000000000000000000007 /* Tally Tangle Mac.app */,
@@ -329,6 +348,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		5B97A3B563364F4AB8C50B49 = { isa = PBXGroup; children = (235E3DC1BAAC47D39ADFF6C4, 0BF1A86C20244CBAB7DD098C, 84E4089183604C4BBA294C39, 50143A3B1455441997F08A9C, 56DC1C316FBE42EF8AFFD554, ); name = TallyTangleTopShelf; path = TVShelf; sourceTree = SOURCE_ROOT; };
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -401,6 +421,7 @@
 			productType = "com.apple.product-type.application";
 		};
 		AAEA442FE80D48608D3CB314 = {isa = PBXNativeTarget; buildConfigurationList = 052FE32B8C974B13AAAC70B2; buildPhases = (583155B068674EFFB42AFEE0, A98D1D0B4FF14D189CD634E1, C0228B29EF724117B4D59264); buildRules = (); dependencies = (); name = "Tally Tangle Messages"; productName = "Tally Tangle Messages"; productReference = BB4290820ECF4804A3B40671; productType = "com.apple.product-type.app-extension.messages"; };
+		ECB0AA0B2EB444688E0AF49F = { isa = PBXNativeTarget; buildConfigurationList = 9D90819904F04018B86E918F; buildPhases = (FEB7FBF1F3054781938079E7, 59029175AAD34297A38BE43D, ); buildRules = (); dependencies = (); name = TallyTangleTopShelf; productName = TallyTangleTopShelf; productReference = 39CF4A3E31E94C3CAEFE731E; productType = "com.apple.product-type.app-extension"; };
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -488,7 +509,9 @@
 			productRefGroup = 908AFC6A1A6718AE0050EC0B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			targets = (AAEA442FE80D48608D3CB314,
+			targets = (
+				ECB0AA0B2EB444688E0AF49F,
+AAEA442FE80D48608D3CB314,
 				AC5000000000000000000009 /* Tally Tangle Watch */,
 				AC4000000000000000000009 /* Tally Tangle Vision */,
 				AC3000000000000000000009 /* Tally Tangle Mac */,
@@ -525,6 +548,7 @@
 		AC400000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AE1000000000000000000004, AE100000000000000000000A, AC4000000000000000000005, AC4000000000000000000006, AC400000000000000000000F); runOnlyForDeploymentPostprocessing = 0; };
 		AC500000000000000000000C = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AE1000000000000000000005, AE100000000000000000000B, AC5000000000000000000005, AC5000000000000000000006, AC5000000000000000000012); runOnlyForDeploymentPostprocessing = 0; };
 		C0228B29EF724117B4D59264 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AE1000000000000000000006, AE100000000000000000000C, 8009B09B90B94BF49E02ACC2, F2D94E1C5C564DF994449D99); runOnlyForDeploymentPostprocessing = 0; };
+		59029175AAD34297A38BE43D = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (89C07FFAF249460999E82E24, 67876FA58F1D41E681FDC800, 1F85EA4769D347B38961482C, ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -562,6 +586,7 @@
 		AC400000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AB16F9906C4246858EB4240B, AF3000000000000000000004, 4640D79C31FC4736A16DB2F8, 9B8697A4A5AD4B0CAA7B052F, F4E168B8F08F4AAEBD1B28BD, 862C8A5F11BD41939D78D8FC, 2B003EECA7FD48E190287A80, AC6000000000000000000004, AC4000000000000000000001, AC4000000000000000000002, AC4000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
 		AC500000000000000000000B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AD9000000000000000000002, AD9000000000000000000004, AC6000000000000000000005, AC5000000000000000000001, AC5000000000000000000002, AC5000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
 		583155B068674EFFB42AFEE0 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (F153471B6A0A4AE9893F5F66, AF3000000000000000000005, 8F57ED9290084093B0B650AD, 9B975F648F3C4260B2190A56, DF7AFACEC47A4D05BF048775, C8029FB6EF2740FFAAF9C17A, ADC7ED325385431B85191815, 8FBB174260EC48C89132D707); runOnlyForDeploymentPostprocessing = 0; };
+		FEB7FBF1F3054781938079E7 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (F414B4FC122E4699B9123953, ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -572,6 +597,7 @@
 		};
 		3034A6558BF94DCCA0477888 = {isa = PBXTargetDependency; target = AAEA442FE80D48608D3CB314; targetProxy = 5BD6AF67699246CEB9FAD40C; };
 		AD8000000000000000000004 = {isa = PBXTargetDependency; target = AC5000000000000000000009; targetProxy = AD8000000000000000000002; };
+		46F9F33A013D45FC828EA6BF = { isa = PBXTargetDependency; target = ECB0AA0B2EB444688E0AF49F; targetProxy = E3FFBDEBB5004DE595143454; };
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -921,6 +947,8 @@
 		};
 		C851F65DE85D44F58F6105FB = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TALLYTANGLE_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.3; CURRENT_PROJECT_VERSION = 2026111803; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Debug; };
 		C02982FAFB6341A1BAB73262 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TALLYTANGLE_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.3; CURRENT_PROJECT_VERSION = 2026111803; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Release; };
+		85DC9CE0B33F4015AF77DB9E = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_BUNDLE_IDENTIFIER = com.nathanfennel.RacetoDogMountain.TopShelf; PRODUCT_NAME = TallyTangleTopShelf; INFOPLIST_FILE = "TVShelf/Info.plist"; GENERATE_INFOPLIST_FILE = YES; APPLICATION_EXTENSION_API_ONLY = YES; ENABLE_DEBUG_DYLIB = NO; SKIP_INSTALL = YES; TARGETED_DEVICE_FAMILY = 3; SDKROOT = appletvos; TVOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; CODE_SIGN_STYLE = Automatic; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks", ); DEVELOPMENT_TEAM = EJLR2RPSV2; CURRENT_PROJECT_VERSION = 2026111802; MARKETING_VERSION = 2.3; }; name = Release; };
+		E80E878F28C749DD96413B10 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_BUNDLE_IDENTIFIER = com.nathanfennel.RacetoDogMountain.TopShelf; PRODUCT_NAME = TallyTangleTopShelf; INFOPLIST_FILE = "TVShelf/Info.plist"; GENERATE_INFOPLIST_FILE = YES; APPLICATION_EXTENSION_API_ONLY = YES; ENABLE_DEBUG_DYLIB = NO; SKIP_INSTALL = YES; TARGETED_DEVICE_FAMILY = 3; SDKROOT = appletvos; TVOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; CODE_SIGN_STYLE = Automatic; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks", ); DEVELOPMENT_TEAM = EJLR2RPSV2; CURRENT_PROJECT_VERSION = 2026111802; MARKETING_VERSION = 2.3; }; name = Debug; };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -955,6 +983,7 @@
 		AC400000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC400000000000000000000D, AC400000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		AC500000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (AC500000000000000000000D, AC500000000000000000000E); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 		052FE32B8C974B13AAAC70B2 = {isa = XCConfigurationList; buildConfigurations = (C851F65DE85D44F58F6105FB, C02982FAFB6341A1BAB73262); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		9D90819904F04018B86E918F = { isa = XCConfigurationList; buildConfigurations = (85DC9CE0B33F4015AF77DB9E, E80E878F28C749DD96413B10, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
@@ -1011,6 +1040,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B9E0397E8AE3AF83FBD3FA0F /* Build configuration list for PBXNativeTarget "Tally Tangle TV" */;
 			buildPhases = (
+				D435E322374A4CFFAF411F35,
 				1D521D78485DC88AA74D77C8 /* Sources */,
 				E4899653C88266897E79037F /* Frameworks */,
 				1864DD76C27BD1922F5E5491 /* Resources */,
@@ -1018,6 +1048,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				46F9F33A013D45FC828EA6BF,
 			);
 			name = "Tally Tangle TV";
 			productName = "Tally Tangle TV";
@@ -1028,6 +1059,7 @@
 		6DA3C67E5CF81890B5FDC778 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				INFOPLIST_FILE = TV/TopShelfHostInfo.plist;
 				ASSETCATALOG_COMPILER_APPICON_NAME = TVIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1051,6 +1083,7 @@
 		8C39FD2FD2B4C8D7BC3D6676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				INFOPLIST_FILE = TV/TopShelfHostInfo.plist;
 				ASSETCATALOG_COMPILER_APPICON_NAME = TVIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
