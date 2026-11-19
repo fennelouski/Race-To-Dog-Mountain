@@ -1,0 +1,590 @@
+[
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ar",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "bn",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ar",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ca",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "bn",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "zh-Hans",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "zh-Hant",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ca",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "hr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "zh-Hans",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "cs",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "zh-Hant",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "da",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "hr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "nl",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "cs",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "en-AU",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "en-CA",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "da",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "en-GB",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "fi",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "nl",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "en-AU",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "fr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "en-CA",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "fr-CA",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "en-GB",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "fi",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "fr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "fr-CA",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "de",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "de",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "el",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "el",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "gu",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "gu",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "he",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "he",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "hi",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "hi",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "hu",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "id",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "hu",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "it",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ja",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "id",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "kn",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ko",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "it",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ja",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ms",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ml",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "kn",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "mr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "nb",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ko",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ms",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ml",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "mr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "nb",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "or",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "or",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pl",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pt-BR",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pl",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pt-PT",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pa",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pt-BR",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ro",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pt-PT",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ru",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pa",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "sk",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "sl",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ro",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "es-MX",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "es-ES",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ru",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "sv",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "sk",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ta",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "sl",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "te",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "es-MX",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "th",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "es-ES",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "sv",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ta",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "te",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "th",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "tr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "tr",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "uk",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "uk",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ur",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ur",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "vi",
+    "reloaded": true,
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "vi",
+    "reloaded": true,
+    "fieldsMatch": true
+  }
+]

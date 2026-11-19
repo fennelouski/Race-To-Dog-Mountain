@@ -1,0 +1,343 @@
+- banner "App Store Connect":
+  - heading "App Store Connect" [level=1]:
+    - link "App Store Connect":
+      - /url: /
+  - navigation "Global":
+    - list:
+      - link "Apps":
+        - /url: /apps
+      - link "Xcode Cloud":
+        - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/xcode-cloud
+      - link "Trends":
+        - /url: /trends
+      - link "Reports":
+        - /url: /itc/payments_and_financial_reports
+      - link "Business":
+        - /url: /business
+      - link "Users and Access":
+        - /url: /access/users
+  - button "Nathan Fennel Nathan Fennel Account name menu":
+    - generic: Nathan Fennel
+    - generic: Nathan Fennel
+- button "Apps menu, Tally Tangle, selected":
+  - generic "Tally Tangle":
+    - img "Tally Tangle"
+  - generic: Tally Tangle
+- navigation "Apps":
+  - list:
+    - link "Distribution":
+      - /url: /apps/971329310/distribution
+    - link "Analytics":
+      - /url: /apps/971329310/analytics
+    - link "TestFlight":
+      - /url: /teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight
+- main:
+  - navigation "Distribution":
+    - list:
+      - heading "iOS App" [level=2]
+      - list:
+        - link "2.3 Ready for Review":
+          - /url: /apps/971329310/distribution/ios/version/inflight
+          - text: 2.3 Ready for Review
+        - link "2.0 Ready for Distribution":
+          - /url: /apps/971329310/distribution/ios/version/deliverable
+          - text: 2.0 Ready for Distribution
+      - heading "macOS App" [level=2]
+      - list:
+        - link "2.3 Ready for Review":
+          - /url: /apps/971329310/distribution/macos/version/inflight
+          - text: 2.3 Ready for Review
+        - link "2.2 Ready for Distribution":
+          - /url: /apps/971329310/distribution/macos/version/deliverable
+          - text: 2.2 Ready for Distribution
+      - heading "tvOS App" [level=2]
+      - list:
+        - link "2.3 Ready for Review":
+          - /url: /apps/971329310/distribution/tvos/version/inflight
+          - text: 2.3 Ready for Review
+      - heading "visionOS App" [level=2]
+      - list:
+        - link "2.3 Ready for Review":
+          - /url: /apps/971329310/distribution/visionos/version/inflight
+          - text: 2.3 Ready for Review
+        - link "2.1 Ready for Distribution":
+          - /url: /apps/971329310/distribution/visionos/version/deliverable
+          - text: 2.1 Ready for Distribution
+      - separator
+      - heading "General" [level=2]
+      - list:
+        - link "App Information":
+          - /url: /apps/971329310/distribution/info
+          - generic: App Information
+        - link "App Compliance New":
+          - /url: /apps/971329310/distribution/compliance
+          - generic: App Compliance
+          - paragraph: New
+        - link "App Review":
+          - /url: /apps/971329310/distribution/reviewsubmissions
+          - generic: App Review
+        - link "History":
+          - /url: /apps/971329310/distribution/activity/ios/versions
+          - generic: History
+      - separator
+      - heading "App Store" [level=2]
+      - heading "Trust & Safety" [level=3]
+      - list:
+        - link "App Privacy":
+          - /url: /apps/971329310/distribution/privacy
+          - generic: App Privacy
+        - link "App Accessibility":
+          - /url: /apps/971329310/distribution/accessibility
+          - generic: App Accessibility
+        - link "Ratings and Reviews":
+          - /url: /apps/971329310/distribution/ratings/ios
+          - generic: Ratings and Reviews
+      - heading "Growth & Marketing" [level=3]
+      - list:
+        - link "In-App Events":
+          - /url: /apps/971329310/distribution/events
+          - generic: In-App Events
+        - link "Custom Product Pages":
+          - /url: /apps/971329310/distribution/productpages
+          - generic: Custom Product Pages
+        - link "Asset Library":
+          - /url: /apps/971329310/distribution/asset-library
+          - generic: Asset Library
+        - link "Product Page Optimization":
+          - /url: /apps/971329310/distribution/optimization
+          - generic: Product Page Optimization
+        - link "Promo Codes":
+          - /url: /apps/971329310/distribution/promo_codes/generate
+          - generic: Promo Codes
+        - link "Game Center":
+          - /url: /apps/971329310/distribution/gamecenter
+          - generic: Game Center
+      - heading "Monetization" [level=3]
+      - list:
+        - link "Pricing and Availability":
+          - /url: /apps/971329310/distribution/pricing
+          - generic: Pricing and Availability
+        - link "In-App Purchases":
+          - /url: /apps/971329310/distribution/iaps
+          - generic: In-App Purchases
+        - link "Subscriptions New":
+          - /url: /apps/971329310/distribution/subscriptions
+          - generic: Subscriptions
+          - paragraph: New
+      - heading "Featuring" [level=3]
+      - list:
+        - link "Nominations":
+          - /url: /apps/971329310/distribution/nominations
+          - generic: Nominations
+  - heading "iOS App Version 2.3" [level=2]
+  - button "Save" [disabled]
+  - separator
+  - paragraph: Security Assessment Required for China Mainland Distribution
+  - paragraph: To distribute on the App Store in China mainland, provide proof of a completed Security Assessment and a report. Existing apps must comply by Jan 31, 2027; new apps should submit immediately.
+  - paragraph:
+    - link "Go to App Compliance":
+      - /url: /apps/971329310/distribution/compliance
+  - button:
+  - paragraph: AIGC Services Declaration Required for China Mainland Distribution
+  - paragraph: To distribute on the App Store in China mainland, submit an AI-generated or synthetic content (AIGC) services declaration and filing information. Existing apps must comply by Jan 31, 2027; new apps should submit immediately.
+  - paragraph:
+    - link "Go to App Compliance":
+      - /url: /apps/971329310/distribution/compliance
+  - button:
+  - heading "Product Page Information" [level=3]
+  - button "English (U.S.)":
+    - text: English (U.S.)
+  - button "?"
+  - paragraph:
+    - text: The assets and metadata below help customers discover your app and engage with it on your product page and in search results.
+    - link "Learn more...":
+      - /url: https://developer.apple.com/app-store/asset-best-practices/
+  - paragraph: New Ways to Market Apps
+  - paragraph: Elevate your app's product page with a custom header and refine how your app appears in App Store search results. You can now also upload app previews and screenshots for iPhone Duo, adding support for the latest device.
+  - button:
+  - tablist:
+    - tab "Header and Search Results" [selected]
+    - tab "App Previews and Screenshots"
+  - tabpanel "Header and Search Results":
+    - paragraph:
+      - text: Customize your app's product page and how it appears in App Store search results using creative assets. Preview how they'll look to make sure key elements stay in view across all orientations.
+      - link "See best practices":
+        - /url: https://developer.apple.com/app-store/asset-best-practices/
+    - button "DropZone" [disabled]
+    - tablist:
+      - tab "Header" [selected]:
+        - generic: Header
+      - tab "Search Results":
+        - generic: Search Results
+    - button "Preview":
+      - generic: Preview
+    - tabpanel "Header":
+      - paragraph: Loading...
+  - generic: Promotional Text
+  - button "More information": "?"
+  - textbox "Promotional Text": One number. So many possibilities. Take the points, shape the next turn, and find your next challenge.
+  - status "Characters remaining": "68"
+  - separator
+  - generic: Description
+  - button "More information": "?"
+  - textbox "Description": Pick a number. Outsmart your rival. Choose a number from the highlighted row or column, take its points, and set your rival’s next line. Think ahead and finish with the higher score. Practice against 18 named computer rivals. Choose a board from 4 × 4 to 14 × 14 and find the challenge that suits you. Keep several local games ready to continue, customize your players, replay a computer move, and search your saved games. Finished games can share their real move history as a GIF, or share the final board when an older save has no move history. Optional Game Center races use Apple’s two-player turn-based matchmaker and require Game Center sign-in and internet. The Messages extension prepares a 4 × 4 board bubble for a conversation with one friend; you choose when to send it. The Apple Watch edition runs solo 4 × 4 games independently. Its optional friend-game inbox uses a paired iPhone and Game Center. Local progress stays on each device. No ads or in-app purchases. Solo and local two-player games work offline.
+  - status "Characters remaining": 2,972
+  - generic: What's New in This Version
+  - button "More information": "?"
+  - textbox "What's New in This Version": A refreshed living garden, 18 computer rivals, customizable players, replay, searchable saved games, and adaptive layouts for iPhone Duo.
+  - status "Characters remaining": 3,863
+  - generic: Keywords
+  - button "More information": "?"
+  - textbox "Keywords": numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle
+  - status "Characters remaining": "12"
+  - generic: Support URL
+  - button "More information": "?"
+  - textbox "Support URL": https://nathanfennel.com/contact
+  - generic: Marketing URL
+  - button "More information": "?"
+  - textbox "Marketing URL"
+  - generic: Version
+  - button "More information": "?"
+  - textbox "Version": "2.3"
+  - generic: Copyright
+  - button "More information": "?"
+  - textbox "Copyright": 2026 Nathan Fennel
+  - status "Characters remaining": "182"
+  - generic: Routing App Coverage File
+  - button "More information": "?"
+  - button "Choose File"
+  - generic: Choose File
+  - separator
+  - button "App Clip":
+    - text: App Clip
+  - heading "iMessage App" [level=3]:
+    - button "iMessage App":
+      - text: iMessage App
+  - button "More information": "?"
+  - heading "Build" [level=3]
+  - table:
+    - rowgroup:
+      - row "Build Version Has App Clip":
+        - columnheader "Build":
+          - generic: Build
+        - columnheader "Version":
+          - generic: Version
+        - columnheader "Has App Clip":
+          - generic: Has App Clip
+    - rowgroup:
+      - row "App Icon 2026111803 2.3 No":
+        - cell "App Icon 2026111803":
+          - link "App Icon":
+            - /url: /apps/971329310/testflight/ios/739fdeb4-a273-4833-bdcd-0cfc5f45977a/metadata
+            - generic "App Icon":
+              - img "App Icon"
+          - link "2026111803":
+            - /url: /apps/971329310/testflight/ios/739fdeb4-a273-4833-bdcd-0cfc5f45977a/metadata
+        - cell "2.3":
+          - generic: "2.3"
+        - cell "No":
+          - paragraph: "No"
+  - paragraph: Included Assets
+  - button "App Icon":
+    - generic "App Icon":
+      - img "App Icon"
+  - paragraph: App Icon
+  - button "App Icon":
+    - generic "App Icon":
+      - img "App Icon"
+  - paragraph: Apple Watch
+  - button "App Icon":
+    - generic "App Icon":
+      - img "App Icon"
+  - paragraph: iMessage
+  - progressbar
+  - text: Game Center
+  - progressbar
+  - heading "Multiplayer Compatibility" [level=3]
+  - grid:
+    - row "App Name Type Earliest Compatible Version":
+      - columnheader "App Name"
+      - columnheader "Type"
+      - columnheader "Earliest Compatible Version"
+    - rowgroup "grid":
+      - row "icon Tally Tangle iOS App 2.3":
+        - row "icon Tally Tangle iOS App 2.3":
+          - gridcell "icon Tally Tangle":
+            - img "icon"
+            - generic: Tally Tangle
+          - gridcell "iOS App":
+            - generic: iOS App
+          - gridcell "2.3":
+            - generic: "2.3"
+  - separator
+  - heading "App Review Information" [level=3]
+  - generic: Sign-In Information
+  - button "More information": "?"
+  - paragraph: Provide a user name and password so we can sign in to your app. We’ll need this to complete your app review.
+  - checkbox "Sign-in required"
+  - generic: Sign-in required
+  - generic: Contact Information
+  - button "More information": "?"
+  - textbox "First name": Nathan
+  - textbox "Last name": Fennel
+  - textbox "Phone number": [redacted]
+  - textbox "Email": [redacted]
+  - generic: Notes
+  - button "More information": "?"
+  - paragraph:
+    - text: Chinese law requires apps with news, religious, book, and magazine content to have relevant permits in order to be available on the App Store in China mainland. If applicable, enter information about your permits below.
+    - link "Learn More":
+      - /url: https://developer.apple.com/help/app-store-connect/reference/app-information/app-and-compliance-information#compliance-information
+  - textbox "Notes": Version 2.3 build 2026111803. Solo and pass-and-play require no app account or internet. Optional friend games use the system Game Center account. The Messages extension prepares a 4 × 4 game bubble; the user taps Send. Watch friend games use the paired iPhone. Two-account Game Center delivery and physical-device comfort have not been verified.
+  - status "Characters remaining": 3,654
+  - generic: Attachment
+  - button "More information": "?"
+  - button "Choose File (Optional)"
+  - generic: Choose File (Optional)
+  - separator
+  - heading "App Store Version Release" [level=3]
+  - paragraph: To make your app available on the App Store, you can automatically release it after it’s been approved by App Review. You can also manually release it on the App Store at a later date.
+  - radio "Manually release this version"
+  - generic: Manually release this version
+  - radio "Automatically release this version" [checked]
+  - generic: Automatically release this version
+  - radio "Automatically release this version after App Review, no earlier than"
+  - generic: Automatically release this version after App Review, no earlier than
+  - paragraph: Your local date and time.
+  - textbox "Automatically release this version after App Review, no earlier than" [disabled]: Nov 18, 2026 10:00 AM
+  - separator
+  - heading "Phased Release for App Store Automatic Updates" [level=3]
+  - paragraph:
+    - text: Phased release for automatic updates lets you gradually release this update over a 7-day period to users who have turned on automatic updates from the App Store. Keep in mind that this version will still be available to all users as a manual update from the App Store. You can pause the phased release for up to 30 days or release this update to all users at any time.
+    - link "Learn More":
+      - /url: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
+  - radio "Release update to all users immediately" [checked]
+  - generic: Release update to all users immediately
+  - radio "Release update over 7-day period using phased release"
+  - generic: Release update over 7-day period using phased release
+  - separator
+  - heading "Reset iOS App Store Summary Rating Edit" [level=3]:
+    - text: Reset iOS App Store Summary Rating
+    - button "Edit"
+  - paragraph:
+    - text: You can reset your app’s App Store summary rating for all countries or regions when you release this version. Keep in mind that once this version is released, you won’t be able to restore the rating. Your app’s existing customer reviews will still appear on the App Store.
+    - link "View Ratings and Reviews":
+      - /url: /apps/971329310/distribution/ratings/ios
+  - radio "Keep existing rating" [checked] [disabled]
+  - generic: Keep existing rating
+  - radio "Reset rating when this version is released" [disabled]
+  - generic: Reset rating when this version is released
+- contentinfo:
+  - list:
+    - link "App Store Connect":
+      - /url: /apps
+  - list:
+    - listitem: Copyright © 2026 Apple Inc. All rights reserved. |
+    - link "Terms of Service":
+      - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+    - text: "|"
+    - link "Privacy Policy":
+      - /url: https://www.apple.com/legal/privacy
+    - text: "|"
+    - link "Contact Us":
+      - /url: /contact-us

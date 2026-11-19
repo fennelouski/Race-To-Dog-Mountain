@@ -1,22 +1,42 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "CFBundleDisplayName" : {
-      "comment" : "App name on the Home Screen. Only Amharic keeps the original name.",
-      "extractionState" : "manual",
-      "localizations" : {
-        "am" : { "stringUnit" : { "state" : "translated", "value" : "Race to Dog Mountain" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tally Tangle" } }
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleDisplayName": {
+      "comment": "Tally Tangle brand name, retained across all languages.",
+      "extractionState": "manual",
+      "localizations": {
+        "am": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tally Tangle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tally Tangle"
+          }
+        }
       }
     },
-    "CFBundleName" : {
-      "comment" : "App bundle name. Only Amharic keeps the original name.",
-      "extractionState" : "manual",
-      "localizations" : {
-        "am" : { "stringUnit" : { "state" : "translated", "value" : "Race to Dog Mountain" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tally Tangle" } }
+    "CFBundleName": {
+      "comment": "Tally Tangle brand name, retained across all languages.",
+      "extractionState": "manual",
+      "localizations": {
+        "am": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tally Tangle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tally Tangle"
+          }
+        }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

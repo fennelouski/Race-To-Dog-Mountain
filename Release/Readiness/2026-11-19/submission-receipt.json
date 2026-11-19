@@ -1,0 +1,30 @@
+{
+  "appId": "971329310",
+  "version": "2.3",
+  "date": "2026-11-19",
+  "timezone": "Europe/Amsterdam",
+  "iOS": {
+    "build": "2026111803",
+    "status": "Waiting for Review",
+    "submissionId": "0a1d2793-dbd6-44b9-aad8-a196c55fd11d",
+    "evidence": "ios-submitted.jpg"
+  },
+  "macOS": {
+    "build": "2026111802",
+    "status": "Waiting for Review",
+    "submissionId": "ae9feaae-eed6-4032-9340-65eefe3f2501",
+    "evidence": "macos-submitted.jpg"
+  },
+  "visionOS": {
+    "build": "2026111802",
+    "status": "Waiting for Review",
+    "submissionId": "04dae191-a714-4f08-babd-d5e29ad9b6a0",
+    "evidence": "visionos-submitted.jpg"
+  },
+  "tvOS": {
+    "status": "Ready for Review",
+    "submittedThisTurn": false
+  },
+  "allRequestedSubmissionsAccepted": true,
+  "finalEvidence": "submitted-platforms.jpg"
+}

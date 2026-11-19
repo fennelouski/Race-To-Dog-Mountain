@@ -1,0 +1,98 @@
+{
+  "requestedPlatforms": [
+    "iPhone",
+    "iPhone Duo",
+    "iPad",
+    "macOS",
+    "visionOS",
+    "tvOS"
+  ],
+  "primaryCaptureMinimumMet": true,
+  "nativeCaptureCount": 300,
+  "marketingImageCount": 100,
+  "marketingCounts": {
+    "ipad-13": 10,
+    "iphone-6.3": 10,
+    "iphone-6.5": 10,
+    "iphone-6.9": 10,
+    "iphone-duo-closed": 10,
+    "iphone-duo-open-landscape": 10,
+    "iphone-duo-open-portrait": 10,
+    "mac": 10,
+    "tvos": 10,
+    "vision-pro": 10
+  },
+  "mediaHashesDimensionsAndOpaqueRGBVerified": true,
+  "pdf": "output/pdf/Tally-Tangle-App-Store-Preview.pdf",
+  "pdfPages": 164,
+  "pdfSHA256": "8fdf1d94b85c5e8743f6b99be8299de002b6486781f80956678982c419f950c5",
+  "archivesPrepared": 4,
+  "version": "2.3",
+  "translatedUILanguagesAudited": 51,
+  "translatableKeysPerLanguage": 428,
+  "limitations": [
+    "Three blank frames from the additional medium-iPhone set were excluded; that bonus set contains 27 native captures.",
+    "Live book/laptop Duo pose verification remains blocked by unresponsive simulator tools. Fold-aware changes compile and are archived.",
+    "Store screenshot captions remain English; translated locales inherit the primary marketing galleries.",
+    "Structural localization checks are complete; native-speaker review and rendered accessibility/RTL checks are not certified.",
+    "Physical-device comfort, two-account Game Center delivery and live Messages delivery remain unverified."
+  ],
+  "storeReviewSummary": "iOS, macOS and visionOS 2.3 submitted November 19, 2026 and Waiting for Review. tvOS remains Ready for Review.",
+  "storeBuildSummary": "iOS: 2.3 (2026111803). macOS, visionOS and tvOS: 2.3 (2026111802). All uploads validated.",
+  "appStoreConnectAudit": "Release/Readiness/2026-11-18/upload-and-staging-status.json",
+  "appStoreConnect": {
+    "appId": "971329310",
+    "iOS": {
+      "version": "2.3",
+      "build": "2026111803",
+      "status": "Waiting for Review",
+      "storeLocaleCount": 50,
+      "submissionId": "0a1d2793-dbd6-44b9-aad8-a196c55fd11d",
+      "submittedDate": "2026-11-19"
+    },
+    "macOS": {
+      "version": "2.3",
+      "build": "2026111802",
+      "status": "Waiting for Review",
+      "storeLocaleCount": 50,
+      "submissionId": "ae9feaae-eed6-4032-9340-65eefe3f2501",
+      "submittedDate": "2026-11-19"
+    },
+    "tvOS": {
+      "version": "2.3",
+      "build": "2026111802",
+      "status": "Ready for Review",
+      "storeLocaleCount": 50
+    },
+    "visionOS": {
+      "version": "2.3",
+      "build": "2026111802",
+      "status": "Waiting for Review",
+      "storeLocaleCount": 50,
+      "submissionId": "04dae191-a714-4f08-babd-d5e29ad9b6a0",
+      "submittedDate": "2026-11-19"
+    }
+  },
+  "builds": {
+    "iOS": "2026111803",
+    "macOS": "2026111802",
+    "visionOS": "2026111802",
+    "tvOS": "2026111802"
+  },
+  "storeLocalesPerPlatform": 50,
+  "allRequestedReleasesReadyToSubmit": true,
+  "discoveryAssets": {
+    "header": "Release/Marketing/Discovery/header.png",
+    "searchResults": "Release/Marketing/Discovery/search-results.png",
+    "uploadStatus": "Uploaded and assigned; iOS 2.3 draft validated as Ready for Review.",
+    "previousReleaseStatusesRetained": true,
+    "previewsVerified": [
+      "iPhone header",
+      "iPhone search results",
+      "iPad header",
+      "Arabic iPad header inherited from primary locale"
+    ],
+    "evidence": "Release/Readiness/2026-11-18/header-device-preview.jpg"
+  },
+  "latestSubmissionReceipt": "Release/Readiness/2026-11-19/submission-receipt.json"
+}

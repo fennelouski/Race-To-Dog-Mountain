@@ -181,7 +181,7 @@ private struct MountainMessageCard: View {
             HStack(spacing: 36) {
                 VStack(alignment: .leading, spacing: 20) {
                     Image(systemName: "leaf.fill").font(.system(size: 48)).foregroundStyle(MountainStyle.gold)
-                    Text("Tally\nTangle").font(.custom("Georgia-Bold", size: 44))
+                    Text(verbatim: "Tally\nTangle").font(.custom("Georgia-Bold", size: 44))
                     Text("\(challenge.game.scores[0]) : \(challenge.game.scores[1])").font(.title.bold()).monospacedDigit()
                 }
                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(48), spacing: 6), count: challenge.size), spacing: 6) {

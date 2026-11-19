@@ -1,0 +1,2008 @@
+{
+  "pdf": "output/pdf/Tally-Tangle-App-Store-Preview.pdf",
+  "pages": 164,
+  "nativeCaptures": 300,
+  "marketingImages": 100,
+  "assets": [
+    {
+      "page": 4,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/01-every-choice.png"
+    },
+    {
+      "page": 5,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/02-first-tangle.png"
+    },
+    {
+      "page": 6,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/03-your-rival.png"
+    },
+    {
+      "page": 7,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/04-together.png"
+    },
+    {
+      "page": 8,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/05-think-ahead.png"
+    },
+    {
+      "page": 9,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/06-the-finish.png"
+    },
+    {
+      "page": 10,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/07-replay.png"
+    },
+    {
+      "page": 11,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/08-more-to-explore.png"
+    },
+    {
+      "page": 12,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/09-your-game.png"
+    },
+    {
+      "page": 13,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.3/10-step-inside.png"
+    },
+    {
+      "page": 14,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/01.png"
+    },
+    {
+      "page": 14,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/02.png"
+    },
+    {
+      "page": 14,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/03.png"
+    },
+    {
+      "page": 14,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/04.png"
+    },
+    {
+      "page": 14,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/05.png"
+    },
+    {
+      "page": 14,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/06.png"
+    },
+    {
+      "page": 15,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/08.png"
+    },
+    {
+      "page": 15,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/09.png"
+    },
+    {
+      "page": 15,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/10.png"
+    },
+    {
+      "page": 15,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/11.png"
+    },
+    {
+      "page": 15,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/13.png"
+    },
+    {
+      "page": 15,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/14.png"
+    },
+    {
+      "page": 16,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/15.png"
+    },
+    {
+      "page": 16,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/16.png"
+    },
+    {
+      "page": 16,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/17.png"
+    },
+    {
+      "page": 16,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/18.png"
+    },
+    {
+      "page": 16,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/19.png"
+    },
+    {
+      "page": 16,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/20.png"
+    },
+    {
+      "page": 17,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/21.png"
+    },
+    {
+      "page": 17,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/22.png"
+    },
+    {
+      "page": 17,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/23.png"
+    },
+    {
+      "page": 17,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/24.png"
+    },
+    {
+      "page": 17,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/25.png"
+    },
+    {
+      "page": 17,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/26.png"
+    },
+    {
+      "page": 18,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/27.png"
+    },
+    {
+      "page": 18,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/28.png"
+    },
+    {
+      "page": 18,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.3/29.png"
+    },
+    {
+      "page": 20,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/01-every-choice.png"
+    },
+    {
+      "page": 21,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/02-first-tangle.png"
+    },
+    {
+      "page": 22,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/03-your-rival.png"
+    },
+    {
+      "page": 23,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/04-together.png"
+    },
+    {
+      "page": 24,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/05-think-ahead.png"
+    },
+    {
+      "page": 25,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/06-the-finish.png"
+    },
+    {
+      "page": 26,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/07-replay.png"
+    },
+    {
+      "page": 27,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/08-more-to-explore.png"
+    },
+    {
+      "page": 28,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/09-your-game.png"
+    },
+    {
+      "page": 29,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.9/10-step-inside.png"
+    },
+    {
+      "page": 30,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/01.png"
+    },
+    {
+      "page": 30,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/02.png"
+    },
+    {
+      "page": 30,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/03.png"
+    },
+    {
+      "page": 30,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/04.png"
+    },
+    {
+      "page": 30,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/05.png"
+    },
+    {
+      "page": 30,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/06.png"
+    },
+    {
+      "page": 31,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/07.png"
+    },
+    {
+      "page": 31,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/08.png"
+    },
+    {
+      "page": 31,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/09.png"
+    },
+    {
+      "page": 31,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/10.png"
+    },
+    {
+      "page": 31,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/11.png"
+    },
+    {
+      "page": 31,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/12.png"
+    },
+    {
+      "page": 32,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/13.png"
+    },
+    {
+      "page": 32,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/14.png"
+    },
+    {
+      "page": 32,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/15.png"
+    },
+    {
+      "page": 32,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/16.png"
+    },
+    {
+      "page": 32,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/17.png"
+    },
+    {
+      "page": 32,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/18.png"
+    },
+    {
+      "page": 33,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/19.png"
+    },
+    {
+      "page": 33,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/20.png"
+    },
+    {
+      "page": 33,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/21.png"
+    },
+    {
+      "page": 33,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/22.png"
+    },
+    {
+      "page": 33,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/23.png"
+    },
+    {
+      "page": 33,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/24.png"
+    },
+    {
+      "page": 34,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/25.png"
+    },
+    {
+      "page": 34,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/26.png"
+    },
+    {
+      "page": 34,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/27.png"
+    },
+    {
+      "page": 34,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/28.png"
+    },
+    {
+      "page": 34,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/29.png"
+    },
+    {
+      "page": 34,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/30.png"
+    },
+    {
+      "page": 35,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/31.png"
+    },
+    {
+      "page": 35,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/32.png"
+    },
+    {
+      "page": 35,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.9/33.png"
+    },
+    {
+      "page": 37,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/01-every-choice.png"
+    },
+    {
+      "page": 38,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/02-first-tangle.png"
+    },
+    {
+      "page": 39,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/03-your-rival.png"
+    },
+    {
+      "page": 40,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/04-together.png"
+    },
+    {
+      "page": 41,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/05-think-ahead.png"
+    },
+    {
+      "page": 42,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/06-the-finish.png"
+    },
+    {
+      "page": 43,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/07-replay.png"
+    },
+    {
+      "page": 44,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/08-more-to-explore.png"
+    },
+    {
+      "page": 45,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/09-your-game.png"
+    },
+    {
+      "page": 46,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-6.5/10-step-inside.png"
+    },
+    {
+      "page": 47,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/01.png"
+    },
+    {
+      "page": 47,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/02.png"
+    },
+    {
+      "page": 47,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/03.png"
+    },
+    {
+      "page": 47,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/04.png"
+    },
+    {
+      "page": 47,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/05.png"
+    },
+    {
+      "page": 47,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/06.png"
+    },
+    {
+      "page": 48,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/07.png"
+    },
+    {
+      "page": 48,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/08.png"
+    },
+    {
+      "page": 48,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/09.png"
+    },
+    {
+      "page": 48,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/10.png"
+    },
+    {
+      "page": 48,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/11.png"
+    },
+    {
+      "page": 48,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/12.png"
+    },
+    {
+      "page": 49,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/13.png"
+    },
+    {
+      "page": 49,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/14.png"
+    },
+    {
+      "page": 49,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/15.png"
+    },
+    {
+      "page": 49,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/16.png"
+    },
+    {
+      "page": 49,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/17.png"
+    },
+    {
+      "page": 49,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/18.png"
+    },
+    {
+      "page": 50,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/19.png"
+    },
+    {
+      "page": 50,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/20.png"
+    },
+    {
+      "page": 50,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/21.png"
+    },
+    {
+      "page": 50,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/22.png"
+    },
+    {
+      "page": 50,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/23.png"
+    },
+    {
+      "page": 50,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/24.png"
+    },
+    {
+      "page": 51,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/25.png"
+    },
+    {
+      "page": 51,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/26.png"
+    },
+    {
+      "page": 51,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/27.png"
+    },
+    {
+      "page": 51,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/28.png"
+    },
+    {
+      "page": 51,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/29.png"
+    },
+    {
+      "page": 51,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-6.5/30.png"
+    },
+    {
+      "page": 53,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/01-every-choice.png"
+    },
+    {
+      "page": 54,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/02-first-tangle.png"
+    },
+    {
+      "page": 55,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/03-your-rival.png"
+    },
+    {
+      "page": 56,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/04-together.png"
+    },
+    {
+      "page": 57,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/05-think-ahead.png"
+    },
+    {
+      "page": 58,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/06-the-finish.png"
+    },
+    {
+      "page": 59,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/07-replay.png"
+    },
+    {
+      "page": 60,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/08-more-to-explore.png"
+    },
+    {
+      "page": 61,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/09-your-game.png"
+    },
+    {
+      "page": 62,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-closed/10-step-inside.png"
+    },
+    {
+      "page": 63,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/01.png"
+    },
+    {
+      "page": 63,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/02.png"
+    },
+    {
+      "page": 63,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/03.png"
+    },
+    {
+      "page": 63,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/04.png"
+    },
+    {
+      "page": 63,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/05.png"
+    },
+    {
+      "page": 63,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/06.png"
+    },
+    {
+      "page": 64,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/07.png"
+    },
+    {
+      "page": 64,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/08.png"
+    },
+    {
+      "page": 64,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/09.png"
+    },
+    {
+      "page": 64,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/10.png"
+    },
+    {
+      "page": 64,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/11.png"
+    },
+    {
+      "page": 64,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/12.png"
+    },
+    {
+      "page": 65,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/13.png"
+    },
+    {
+      "page": 65,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/14.png"
+    },
+    {
+      "page": 65,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/15.png"
+    },
+    {
+      "page": 65,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/16.png"
+    },
+    {
+      "page": 65,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/17.png"
+    },
+    {
+      "page": 65,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/18.png"
+    },
+    {
+      "page": 66,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/19.png"
+    },
+    {
+      "page": 66,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/20.png"
+    },
+    {
+      "page": 66,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/21.png"
+    },
+    {
+      "page": 66,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/22.png"
+    },
+    {
+      "page": 66,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/23.png"
+    },
+    {
+      "page": 66,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/24.png"
+    },
+    {
+      "page": 67,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/25.png"
+    },
+    {
+      "page": 67,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/26.png"
+    },
+    {
+      "page": 67,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/27.png"
+    },
+    {
+      "page": 67,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/28.png"
+    },
+    {
+      "page": 67,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/29.png"
+    },
+    {
+      "page": 67,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-closed/30.png"
+    },
+    {
+      "page": 69,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/01-every-choice.png"
+    },
+    {
+      "page": 70,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/02-first-tangle.png"
+    },
+    {
+      "page": 71,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/03-your-rival.png"
+    },
+    {
+      "page": 72,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/04-together.png"
+    },
+    {
+      "page": 73,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/05-think-ahead.png"
+    },
+    {
+      "page": 74,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/06-the-finish.png"
+    },
+    {
+      "page": 75,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/07-replay.png"
+    },
+    {
+      "page": 76,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/08-more-to-explore.png"
+    },
+    {
+      "page": 77,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/09-your-game.png"
+    },
+    {
+      "page": 78,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-portrait/10-step-inside.png"
+    },
+    {
+      "page": 79,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/01.png"
+    },
+    {
+      "page": 79,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/02.png"
+    },
+    {
+      "page": 79,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/03.png"
+    },
+    {
+      "page": 79,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/04.png"
+    },
+    {
+      "page": 79,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/05.png"
+    },
+    {
+      "page": 79,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/06.png"
+    },
+    {
+      "page": 80,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/07.png"
+    },
+    {
+      "page": 80,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/08.png"
+    },
+    {
+      "page": 80,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/09.png"
+    },
+    {
+      "page": 80,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/10.png"
+    },
+    {
+      "page": 80,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/11.png"
+    },
+    {
+      "page": 80,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/12.png"
+    },
+    {
+      "page": 81,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/13.png"
+    },
+    {
+      "page": 81,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/14.png"
+    },
+    {
+      "page": 81,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/15.png"
+    },
+    {
+      "page": 81,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/16.png"
+    },
+    {
+      "page": 81,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/17.png"
+    },
+    {
+      "page": 81,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/18.png"
+    },
+    {
+      "page": 82,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/19.png"
+    },
+    {
+      "page": 82,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/20.png"
+    },
+    {
+      "page": 82,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/21.png"
+    },
+    {
+      "page": 82,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/22.png"
+    },
+    {
+      "page": 82,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/23.png"
+    },
+    {
+      "page": 82,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/24.png"
+    },
+    {
+      "page": 83,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/25.png"
+    },
+    {
+      "page": 83,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/26.png"
+    },
+    {
+      "page": 83,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/27.png"
+    },
+    {
+      "page": 83,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/28.png"
+    },
+    {
+      "page": 83,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/29.png"
+    },
+    {
+      "page": 83,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/30.png"
+    },
+    {
+      "page": 85,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/01-every-choice.png"
+    },
+    {
+      "page": 86,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/02-first-tangle.png"
+    },
+    {
+      "page": 87,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/03-your-rival.png"
+    },
+    {
+      "page": 88,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/04-together.png"
+    },
+    {
+      "page": 89,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/05-think-ahead.png"
+    },
+    {
+      "page": 90,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/06-the-finish.png"
+    },
+    {
+      "page": 91,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/07-replay.png"
+    },
+    {
+      "page": 92,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/08-more-to-explore.png"
+    },
+    {
+      "page": 93,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/09-your-game.png"
+    },
+    {
+      "page": 94,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/iphone-duo-open-landscape/10-step-inside.png"
+    },
+    {
+      "page": 95,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/01.png"
+    },
+    {
+      "page": 95,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/02.png"
+    },
+    {
+      "page": 95,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/03.png"
+    },
+    {
+      "page": 95,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/04.png"
+    },
+    {
+      "page": 95,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/05.png"
+    },
+    {
+      "page": 95,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/06.png"
+    },
+    {
+      "page": 96,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/07.png"
+    },
+    {
+      "page": 96,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/08.png"
+    },
+    {
+      "page": 96,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/09.png"
+    },
+    {
+      "page": 96,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/10.png"
+    },
+    {
+      "page": 96,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/11.png"
+    },
+    {
+      "page": 96,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/12.png"
+    },
+    {
+      "page": 97,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/13.png"
+    },
+    {
+      "page": 97,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/14.png"
+    },
+    {
+      "page": 97,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/15.png"
+    },
+    {
+      "page": 97,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/16.png"
+    },
+    {
+      "page": 97,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/17.png"
+    },
+    {
+      "page": 97,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/18.png"
+    },
+    {
+      "page": 98,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/19.png"
+    },
+    {
+      "page": 98,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/20.png"
+    },
+    {
+      "page": 98,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/21.png"
+    },
+    {
+      "page": 98,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/22.png"
+    },
+    {
+      "page": 98,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/23.png"
+    },
+    {
+      "page": 98,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/24.png"
+    },
+    {
+      "page": 99,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/25.png"
+    },
+    {
+      "page": 99,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/26.png"
+    },
+    {
+      "page": 99,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/27.png"
+    },
+    {
+      "page": 99,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/28.png"
+    },
+    {
+      "page": 99,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/29.png"
+    },
+    {
+      "page": 99,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/30.png"
+    },
+    {
+      "page": 101,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/01-every-choice.png"
+    },
+    {
+      "page": 102,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/02-first-tangle.png"
+    },
+    {
+      "page": 103,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/03-your-rival.png"
+    },
+    {
+      "page": 104,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/04-together.png"
+    },
+    {
+      "page": 105,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/05-think-ahead.png"
+    },
+    {
+      "page": 106,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/06-the-finish.png"
+    },
+    {
+      "page": 107,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/07-replay.png"
+    },
+    {
+      "page": 108,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/08-more-to-explore.png"
+    },
+    {
+      "page": 109,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/09-your-game.png"
+    },
+    {
+      "page": 110,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/ipad-13/10-step-inside.png"
+    },
+    {
+      "page": 111,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/01.png"
+    },
+    {
+      "page": 111,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/02.png"
+    },
+    {
+      "page": 111,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/03.png"
+    },
+    {
+      "page": 111,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/04.png"
+    },
+    {
+      "page": 111,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/05.png"
+    },
+    {
+      "page": 111,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/06.png"
+    },
+    {
+      "page": 112,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/07.png"
+    },
+    {
+      "page": 112,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/08.png"
+    },
+    {
+      "page": 112,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/09.png"
+    },
+    {
+      "page": 112,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/10.png"
+    },
+    {
+      "page": 112,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/11.png"
+    },
+    {
+      "page": 112,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/12.png"
+    },
+    {
+      "page": 113,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/13.png"
+    },
+    {
+      "page": 113,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/14.png"
+    },
+    {
+      "page": 113,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/15.png"
+    },
+    {
+      "page": 113,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/16.png"
+    },
+    {
+      "page": 113,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/17.png"
+    },
+    {
+      "page": 113,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/18.png"
+    },
+    {
+      "page": 114,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/19.png"
+    },
+    {
+      "page": 114,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/20.png"
+    },
+    {
+      "page": 114,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/21.png"
+    },
+    {
+      "page": 114,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/22.png"
+    },
+    {
+      "page": 114,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/23.png"
+    },
+    {
+      "page": 114,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/24.png"
+    },
+    {
+      "page": 115,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/25.png"
+    },
+    {
+      "page": 115,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/26.png"
+    },
+    {
+      "page": 115,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/27.png"
+    },
+    {
+      "page": 115,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/28.png"
+    },
+    {
+      "page": 115,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/29.png"
+    },
+    {
+      "page": 115,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/ipad-13/30.png"
+    },
+    {
+      "page": 117,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/01-every-choice.png"
+    },
+    {
+      "page": 118,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/02-first-tangle.png"
+    },
+    {
+      "page": 119,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/03-your-rival.png"
+    },
+    {
+      "page": 120,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/04-together.png"
+    },
+    {
+      "page": 121,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/05-think-ahead.png"
+    },
+    {
+      "page": 122,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/06-the-finish.png"
+    },
+    {
+      "page": 123,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/07-replay.png"
+    },
+    {
+      "page": 124,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/08-more-to-explore.png"
+    },
+    {
+      "page": 125,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/09-your-game.png"
+    },
+    {
+      "page": 126,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/mac/10-step-inside.png"
+    },
+    {
+      "page": 127,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/01.png"
+    },
+    {
+      "page": 127,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/02.png"
+    },
+    {
+      "page": 127,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/03.png"
+    },
+    {
+      "page": 127,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/04.png"
+    },
+    {
+      "page": 127,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/05.png"
+    },
+    {
+      "page": 127,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/06.png"
+    },
+    {
+      "page": 128,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/07.png"
+    },
+    {
+      "page": 128,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/08.png"
+    },
+    {
+      "page": 128,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/09.png"
+    },
+    {
+      "page": 128,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/10.png"
+    },
+    {
+      "page": 128,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/11.png"
+    },
+    {
+      "page": 128,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/12.png"
+    },
+    {
+      "page": 129,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/13.png"
+    },
+    {
+      "page": 129,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/14.png"
+    },
+    {
+      "page": 129,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/15.png"
+    },
+    {
+      "page": 129,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/16.png"
+    },
+    {
+      "page": 129,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/17.png"
+    },
+    {
+      "page": 129,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/18.png"
+    },
+    {
+      "page": 130,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/19.png"
+    },
+    {
+      "page": 130,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/20.png"
+    },
+    {
+      "page": 130,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/21.png"
+    },
+    {
+      "page": 130,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/22.png"
+    },
+    {
+      "page": 130,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/23.png"
+    },
+    {
+      "page": 130,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/24.png"
+    },
+    {
+      "page": 131,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/25.png"
+    },
+    {
+      "page": 131,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/26.png"
+    },
+    {
+      "page": 131,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/27.png"
+    },
+    {
+      "page": 131,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/28.png"
+    },
+    {
+      "page": 131,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/29.png"
+    },
+    {
+      "page": 131,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/mac/30.png"
+    },
+    {
+      "page": 133,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/01-every-choice.png"
+    },
+    {
+      "page": 134,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/02-first-tangle.png"
+    },
+    {
+      "page": 135,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/03-your-rival.png"
+    },
+    {
+      "page": 136,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/04-together.png"
+    },
+    {
+      "page": 137,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/05-think-ahead.png"
+    },
+    {
+      "page": 138,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/06-the-finish.png"
+    },
+    {
+      "page": 139,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/07-replay.png"
+    },
+    {
+      "page": 140,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/08-more-to-explore.png"
+    },
+    {
+      "page": 141,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/09-your-game.png"
+    },
+    {
+      "page": 142,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/vision-pro/10-step-inside.png"
+    },
+    {
+      "page": 143,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/01.png"
+    },
+    {
+      "page": 143,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/02.png"
+    },
+    {
+      "page": 143,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/03.png"
+    },
+    {
+      "page": 143,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/04.png"
+    },
+    {
+      "page": 143,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/05.png"
+    },
+    {
+      "page": 143,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/06.png"
+    },
+    {
+      "page": 144,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/07.png"
+    },
+    {
+      "page": 144,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/08.png"
+    },
+    {
+      "page": 144,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/09.png"
+    },
+    {
+      "page": 144,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/10.png"
+    },
+    {
+      "page": 144,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/11.png"
+    },
+    {
+      "page": 144,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/12.png"
+    },
+    {
+      "page": 145,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/13.png"
+    },
+    {
+      "page": 145,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/14.png"
+    },
+    {
+      "page": 145,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/15.png"
+    },
+    {
+      "page": 145,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/16.png"
+    },
+    {
+      "page": 145,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/17.png"
+    },
+    {
+      "page": 145,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/18.png"
+    },
+    {
+      "page": 146,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/19.png"
+    },
+    {
+      "page": 146,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/20.png"
+    },
+    {
+      "page": 146,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/21.png"
+    },
+    {
+      "page": 146,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/22.png"
+    },
+    {
+      "page": 146,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/23.png"
+    },
+    {
+      "page": 146,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/24.png"
+    },
+    {
+      "page": 147,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/25.png"
+    },
+    {
+      "page": 147,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/26.png"
+    },
+    {
+      "page": 147,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/27.png"
+    },
+    {
+      "page": 147,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/28.png"
+    },
+    {
+      "page": 147,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/29.png"
+    },
+    {
+      "page": 147,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/vision-pro/30.png"
+    },
+    {
+      "page": 149,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/01-every-choice.png"
+    },
+    {
+      "page": 150,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/02-first-tangle.png"
+    },
+    {
+      "page": 151,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/03-your-rival.png"
+    },
+    {
+      "page": 152,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/04-together.png"
+    },
+    {
+      "page": 153,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/05-think-ahead.png"
+    },
+    {
+      "page": 154,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/06-the-finish.png"
+    },
+    {
+      "page": 155,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/07-replay.png"
+    },
+    {
+      "page": 156,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/08-more-to-explore.png"
+    },
+    {
+      "page": 157,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/09-your-game.png"
+    },
+    {
+      "page": 158,
+      "type": "marketing",
+      "file": "Release/Marketing/AppStore/tvos/10-step-inside.png"
+    },
+    {
+      "page": 159,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/01.png"
+    },
+    {
+      "page": 159,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/02.png"
+    },
+    {
+      "page": 159,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/03.png"
+    },
+    {
+      "page": 159,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/04.png"
+    },
+    {
+      "page": 159,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/05.png"
+    },
+    {
+      "page": 159,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/06.png"
+    },
+    {
+      "page": 160,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/07.png"
+    },
+    {
+      "page": 160,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/08.png"
+    },
+    {
+      "page": 160,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/09.png"
+    },
+    {
+      "page": 160,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/10.png"
+    },
+    {
+      "page": 160,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/11.png"
+    },
+    {
+      "page": 160,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/12.png"
+    },
+    {
+      "page": 161,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/13.png"
+    },
+    {
+      "page": 161,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/14.png"
+    },
+    {
+      "page": 161,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/15.png"
+    },
+    {
+      "page": 161,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/16.png"
+    },
+    {
+      "page": 161,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/17.png"
+    },
+    {
+      "page": 161,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/18.png"
+    },
+    {
+      "page": 162,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/19.png"
+    },
+    {
+      "page": 162,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/20.png"
+    },
+    {
+      "page": 162,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/21.png"
+    },
+    {
+      "page": 162,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/22.png"
+    },
+    {
+      "page": 162,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/23.png"
+    },
+    {
+      "page": 162,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/24.png"
+    },
+    {
+      "page": 163,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/25.png"
+    },
+    {
+      "page": 163,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/26.png"
+    },
+    {
+      "page": 163,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/27.png"
+    },
+    {
+      "page": 163,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/28.png"
+    },
+    {
+      "page": 163,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/29.png"
+    },
+    {
+      "page": 163,
+      "type": "native",
+      "file": "Release/Marketing/Screenshots/tvos/30.png"
+    }
+  ]
+}

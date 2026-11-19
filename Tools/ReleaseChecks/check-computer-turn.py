@@ -50,6 +50,7 @@ struct HumanSelection { let id: Int }
     var replaying = false
     var gameHelp = false
     var gameSettings = false
+    var isFindingGame = false
     var recorded = false
     var rolesChanged = false
     var swapping = false
@@ -95,6 +96,7 @@ BODY
     var replaying = false
     var gameHelp = false
     var gameSettings = false
+    var isFindingGame = false
     var customizing: HumanSelection?
     var feedback: [Int] = []
     func presentPendingResult() {
@@ -190,6 +192,13 @@ RESOLUTION_BODY
         require(settings.game.moves == 0, "Settings allowed pending AI move")
         settings.gameSettings = false; settings.restartIfNeeded(); await settings.task?.value
         require(settings.game.moves == 1, "Closing Settings did not resume once")
+        let finding = Turns(); finding.computerStarted = true; finding.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(50))
+        finding.isFindingGame = true; finding.restartIfNeeded()
+        try await Task.sleep(for: .milliseconds(850))
+        require(finding.game.moves == 0, "Find Game allowed a pending AI move")
+        finding.isFindingGame = false; finding.restartIfNeeded(); await finding.task?.value
+        require(finding.game.moves == 1, "Closing Find Game did not resume once")
         let scene = Turns()
         scene.computerStarted = true; scene.restartIfNeeded()
         try await Task.sleep(for: .milliseconds(50))

@@ -1,0 +1,20 @@
+{
+  "appId": "971329310",
+  "version": "2.3",
+  "platform": "iOS / iPadOS",
+  "header": "header.png",
+  "searchResults": "search-results.png",
+  "assigned": true,
+  "reviewStatus": "Ready for Review",
+  "draft": "Started by Nathan Fennel Today at 1:04 PM",
+  "itemReadyToSubmit": true,
+  "build": "2026111803",
+  "finalSubmissionPerformed": false,
+  "otherPlatformsReadyForReview": true,
+  "evidence": [
+    "header-device-preview.jpg",
+    "search-results-device-preview.jpg",
+    "header-ipad-preview.jpg",
+    "header-arabic-preview.jpg"
+  ]
+}

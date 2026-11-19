@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-19",
+  "checks": {
+    "releaseSuite": "passed",
+    "tvOSDebugDeviceBuild": "passed (unsigned generic-device build)",
+    "localization": "51 translated languages, 428 keys, no issues after build extraction",
+    "nativeMedia": "300 captures, no required-family issues",
+    "stagedWhitespace": "passed",
+    "projectSyntax": "passed"
+  },
+  "postSubmissionFix": "tvOS accessibility labels reuse the existing localized integer-format key; numeric board-size labels avoid creating untranslated catalog entries.",
+  "logs": [
+    "build/release-20261117/final-main-release-checks.log",
+    "build/release-20261117/final-tv-build.log",
+    "build/release-20261117/final-media-checks.log"
+  ]
+}

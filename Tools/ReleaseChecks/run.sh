@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+python3 Tools/ReleaseChecks/check-localizations.py
 output=$(mktemp -d)
 trap 'rm -rf "$output"' EXIT
 xcrun swiftc -parse-as-library -D TALLYTANGLE_CHECKS "Tally Tangle/MountainGame.swift" -o "$output/check"

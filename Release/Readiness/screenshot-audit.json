@@ -1,0 +1,2179 @@
+{
+  "families": [
+    {
+      "family": "iphone-6.3",
+      "count": 27,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/01.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "f30beda7e30ce956c34bf429dd3c06f42a54ff84a680a45425dd34af0d50828e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/02.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "7be150bad6888a706ec33f60775f8c3947a2df478129d2e31168baddd0e6e75d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/03.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "cd869e1082bfe240e3f0845a7af323e66fcecb700dfa46e9c9e571e6da833a38"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/04.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "43e19f3560d1bbcd057471b255c4258b8d7dcbf119de4ed41fbcb54ec0fc6cf6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/05.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "d5a5e252c97d7b3140d3fe98e07f4c227150effde44318de71b7237e1b3efb45"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/06.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "540b77b6eb04cae5be1ed1a4dfe0e8605bd41df03b1afcf613f6aaad10c4e923"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/08.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "75f574642ec679e472405f8c3ef4baf92f9f1c89834b823bd7c1a4eff84e298c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/09.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "7eba83881355d3776e9c3935284b84fa32d69e5cae985d959bd70f3f00c91cdb"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/10.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "c40e3ea2aff652ab2037c8930085dc66b404d594c40ebd7b0d95fd1552949f16"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/11.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "4b485c821082dd57842b06f63959e1f28185a7c31d1120b742f7a8ca47d91eb4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/13.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "0fae04184ea388bdfa2482bbad8d9d90607a1b4ab8d2e9d1cb05d7b3f7a17a3b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/14.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "ddecb66ca5432354c210d944866f79bf97934e983611f5e6d54665c1e06d757d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/15.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "ef74257e364b6334c8fac65d81d4b259123f7c35a064b061b5f3cc00e8c656f7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/16.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "69fde6b588e940c310c719493a191eaea7a8eb6b1c47406e5b0130b561758bf3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/17.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "8a1bed00fa84bbcff9136a39f5d14d6ef2f8ec2cecd1668f047977b1c7bcf7bf"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/18.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "001bf7ae9df57f35f8c094752d877b5537ea7b3c0f8917abb9b032813b0f9a71"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/19.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "b446e834a4f77a878554648e78561085e87da98396d9bd2ead0f06fe9c8e049c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/20.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "3d72d3e182429f049e5c7cccce43b4c618167f47818d3d435906d2eb1bb3c6cc"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/21.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "4c835fbee61ba65a4f4b432af2ac66765a61ef5a8221ecb5d8d68372861c36b6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/22.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "4ead68e2c3b22ec1e6b66611a4135ec8353e1ceb7cdc50c262cfa0593d893a6b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/23.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "a28a20b04c2586ff6f921600badb70bf59908769bfc8cd5a0c4ba086718a323f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/24.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "1a660eab2aa386b29bf573589e60140bd2be805495bf671730b3693d19ead651"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/25.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "95f822264a5f442191adcc989d9272ed7e7d8f20f7fff73287670cab1c51d2d8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/26.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "ca85bc9a659ffd7d2dde49da6f0a47bcca0dc64aff6a46bb831a1269b5a247ed"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/27.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "2514e20b2d756cf06b41d4b7df680e1f4afe27ebc8975719e161aeaecd971813"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/28.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "ce0c77b07068fb87ab7f658fd9bc1a41d983daa67554807b77bea887312e5534"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.3/29.png",
+          "width": 1206,
+          "height": 2622,
+          "mode": "RGBA",
+          "sha256": "cae7cf993ea60b2bec0091ddac05934376034bee1cf9780566f59fcf0817ba53"
+        }
+      ]
+    },
+    {
+      "family": "iphone-6.5",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/01.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "9cb0dcd55ac7052e1062f98ef8f1d953de9289cab5f0c90bf6375fee27fa8053"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/02.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "81fc6ff479b80c37010ae77c4fc0a5c96291ceb4c92f966585c6da03388e6c11"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/03.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "10aba2a515de5c0233a43eaea1cd3e8f74806d55e56c92181fed3b095822dfb9"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/04.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "8d4fd7da921ab0fb93143671f0eb28d197a52ba10231f48ac6b07f1884b9de45"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/05.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "b0b0633fd53fb56c49a4160cd17def7fac7a1c7f179eb2795b982f01e8314d79"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/06.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "9c9027f8f807a50af2caf2efc67306f61974833c0c49e93a2d0343b9e423300a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/07.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "1d47c514d35a15ae78a0cba79e6a2631cb59d81973231f47d3af2c9285a3d8b6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/08.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "00046041d2c609250fd0450092a506419281d8a12615383d2554914eba2c1305"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/09.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "393459a1d3cb5f6d475597fbfc1c75d8b7d0482cd498fbfb07b5d50568e935a8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/10.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "0529540a58c49e12c48f9cc7e1c1af2a989893bb7f04e1f9fa22ac904006e092"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/11.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "dd128b1521786b78b784a5ec4e1e15e20d72c5240a2445525e0f4a6c69b6b17a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/12.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "3b9b3a827230e2c502890f6b17ecd31588879951cf795bbe4a0bb6a5cc5633b6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/13.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "c848edf3acd21610e60c65e698acd4447373401d92701f6dd8810efa63fb61aa"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/14.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "70f5765f5d4ce369d0c3161aaa639e09ddba65267bfa7efd4b3439887e001318"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/15.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "8159d6160ebff1e5df848c09e5ba173441b12e61748d295a87eff7431019d9d6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/16.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "48875c49218bbde10adc1df161211486f5e862366094e9850a1cb1712fb4c624"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/17.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "8aadbd50132387e4ccd0d60bb52f59c5635c23f21e11341f713ce477e74094d2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/18.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "876bfdf8f0388f0bf4f2a0b9148bd83ac49c5b936fdb6ec62f62d16e9bc345b9"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/19.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "8b5827006cd26880c654ffd934690af36ccb94f645069132c37b5d25e6602ac2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/20.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "f40077ab78d1ff5f6ad76d841f6eb06ebb7d6ddf5795fffe034e325507e5d60b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/21.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "35a3bae6b342f6c4723d26bb49a890f95a849570c4ce279f8aa376946cd1d7e8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/22.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "58b13f44f75e596b90648b9b8699f4be28d6ae2e15ab51b47486c0cf90f3ffa0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/23.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "3d63c73699de20120636e7e87c160b306d662b3ed036459506a1bf442ea01188"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/24.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "09ad88efe4809e59663776833e735783abd8863fe56f09fb56d8d50d1414c487"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/25.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "27616b86d3feb6219c53940479a23f5541d55f0280f1283b40936a119842bb1f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/26.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "0533cc57b90f05ea61457928c1126780b2025285002ef4939bbb949fb5af9551"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/27.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "e7a70cf15ff2545b1369e7ec56f43fe9c264dc64cc024f4e41d20c020070759d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/28.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "8bb728367df9f963d6b67b76aefe9bcde3dbc924b0a11eb667dcb800fc44a3b2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/29.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "b44bf906e05983c2175d5556137bff821d2e7d37714f15a915cdadda61dd92f4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.5/30.png",
+          "width": 1242,
+          "height": 2688,
+          "mode": "RGBA",
+          "sha256": "5c1f9699d06e31fe5effa730b5370fbe84898b9c0a6005144979cb05c311ca5a"
+        }
+      ]
+    },
+    {
+      "family": "iphone-6.9",
+      "count": 33,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/01.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "5022b4243eab96db91ec5fe86fb149fbcff5f17f90e313bad20b300fab4edb38"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/02.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "5958b1cf5a47892e3728576ded9db16c38f6ceb397927dae1783b9bd0e49bcdd"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/03.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "a372bed206c6c213c7d6f79eec6926e590a58c18a44215f1d36a68a64838c0ae"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/04.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "939af418b8163a58add56417100cbece353ed887c89ba643599756d01b24ca45"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/05.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "21554adba73ef236957aed41abaff33204c7543229c7b1cccd33eb888ce05043"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/06.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "56a553fe56883cec7a6e6183bc42025e53c89fb1a3050c9b60ee6f283b33d734"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/07.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "c628e55ac087a82cb914fa928f5bb907c3a623dffb20e96537650e454e3847c9"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/08.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "a09fe2de54bd1c363ce1f564d63863fa890d0e2f43eb0fb35009b01bc9554133"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/09.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "91ba9a9f538ebe56d3a2ff68a0c133563bea6ee2984b63ef11c088791ec36daf"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/10.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "fb150bb9261f6149cf47b7e4c5dec6dff3206fc341b4837ceb9438a0056f0295"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/11.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "11cf7659e771e1c96b88f1daf8654533291d2b86631960c9e1aa80c1f2bb1622"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/12.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "e04e5ccea5363f0bc45d9f08762601616997bdbdf18cdfcc225cb9f243504729"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/13.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "e144ca7a704fd498fc6873483a5a4ce5d63230a36a672810e30bde58ea323095"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/14.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "64b503dcd9405fafd666bdaf1c0ea1a3b79fe78dcae25ee07a8c631faa84acd3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/15.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "1016105954c505475ac04ba7ff2382a00844cdbbcd77858024934079697b14f5"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/16.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "75971728aed4825e02960a88c51823b4d8c2b6bdd5b54f3211cdbe89a1d5abe7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/17.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "6aea9fa7822fd29a865606fd89aac3a8a90637e9e1c6179ea096515677b58127"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/18.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "5befba4a8fcd20a2fc5f20c9cc2b0a7d9ec23bbd47bf7c2e0107c6d0ba671a2a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/19.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "c2ded703c1582ea16ea7e0dfad2bf93ff4da83da5f9bf59cbc910119d4d1c658"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/20.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "656e597fc2462a7f1827bfce3e40cfa803f6f5f3db858068cf4e1cf9436416e0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/21.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "fdc24ed1427172956a6a35504deeba4da9d7fd53284abe8727c3c03a59a3932c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/22.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "c1d7507c4649a863e94e9e639c3858a86c9c8d45d71059489410fe929f6cd4cd"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/23.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "70f1dcc57eda05b3a7f73e9c0cc685047b45815c42db6bbe3a348561a7db0ce4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/24.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "0aed9d7e562ca054bc872ca8f10c2905f18356023efe1b74f4e6520174b2409f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/25.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "55feee6e86de51279d0325d765061cfba138432251f801771480f3d992a765ce"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/26.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "8d5f20ed4ae90d6fc0b8c2856a4abc62e73696da7319a03d6cd20afa3935ae61"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/27.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "f1b6d2888647e316576f401c496f300e1cfbb882a6ae7ba44fc1cbc7009a2167"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/28.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "a3b38cb899c2bcb2d7dca0313a7c097d8ed0dc15c9769ad91f76077130fd58b8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/29.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "e735227a05ced3c7542577c4c0f518680f39b1a144f34907366354cba0fbb61f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/30.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "64b0382a8be78cec095f9e94d9b1581ab20966df0cc9e55fe493315ec03918c8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/31.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "b9593254774e03d8b33b6399d26c1b3074ccb8f82a6dcf241d7ae06bec985fbd"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/32.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "47fac42e84ce87f105174b34a81f369b91cdf63e2a88273f349e1d8662dcc3ce"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-6.9/33.png",
+          "width": 1320,
+          "height": 2868,
+          "mode": "RGBA",
+          "sha256": "7408c914647b41d9fabbf46300815f21fb81a01aeb6b542ff4d66a66e5cbe16e"
+        }
+      ]
+    },
+    {
+      "family": "iphone-duo-closed",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/01.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "fa6bffbe9a3d0bd3d9e472941c2f41f8464588c83322a86fd99b932985ef939f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/02.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "4b5b0931e778826e780c7a2282c05700fcdf56699492912827cb5ad016fb5d2f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/03.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "fee261f230a30ed2b6007571687b6909ae95f50f3494d94b481dbe2e64282005"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/04.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "a2db7412a39cb58e53d3c8fc2b7a6991ce49b29b4de5bc8bc52dd22a9b49e01c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/05.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "481077926bda6891fa1573c73cc4f88f7a442d3a1be706be28797f532e431ae2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/06.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "5860587f5424786fd025626eb708ffc14bf479e00467a4a4a4a05244b4665bd8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/07.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "5321c9237b0407549326715393fd146c239ba03ad1b7f4f5f4022c5adde71189"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/08.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "36f75b303e2e4eba709ad5c7af0e22df956d338aed49b03c654e9ff27a0e9750"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/09.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "dce69bb248f819ac5b843ede46aa6644a300f7fcf02b42e73ebb2ce66840ea18"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/10.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "a77cf6f51f6f484405e124ee315225482ec4621f2b8abbaca942f87b70307865"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/11.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "4533867d9e6410ff156054d14086ebd8dcb3f3bc635f30a6f3bf7b77901450dd"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/12.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "d298a6b54279f5da5df7f39792e3ea796eff859a56349e7b5af64fda8efe1054"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/13.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "774b5e37facfb87029df15163e564eee3e28faf8a6ae863ac672a58583b1f2c0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/14.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "ac492034645bc06737780980a2821212d301b5778468245b937de2a71cc988ac"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/15.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "cde360b88e19374cdb6b3599d0d1cd60b54e065c628d346bc2e0d1e7a8871edb"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/16.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "67d12b44b09aa710e79d9dab4b051a4d8490e859788e22c7245576fd375630eb"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/17.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "5fb85ce7e0ea61e7d00fcee22797fa3222f9ec0fb5d42955bb2a8b8322c6767e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/18.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "ff949e6368f8fe0ceb4c3a1c2040bc2c2f6645e57fd42baacd010893b04a9b9a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/19.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "994d7da1d3ef930ee44c1d529efa0ced166771a0fb92be4e3e8b85ad0b93b006"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/20.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "cb2cc2e56a982e627d71510d9cf99b3e51eead1e616338273b58fef60720985b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/21.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "83e628db9c2ac09ea47f468d38edd0feffeb374674673b3830298fc122602508"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/22.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "3f7aa41ac00080cb6155d2e252ab0936c828befd0e872e059957c20c7691f151"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/23.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "83cc3edafec1dc172a4b0ae50a71775aadd963ae04173465a44ef48d2562341c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/24.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "e3e0be57fc390d256a517f76b37f9a77dc7daa74f45f5d296b3ca51ecc6892e0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/25.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "e70ca904e25f9a45f3999368b3a9749330f09922fdb60f61e66508e1464e92bc"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/26.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "f38cebc5d6f97ac78bddd597f75a42dc2feb5cd520262373705c42aecdb69c76"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/27.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "ab59a1244d4fbcf5542fcef7288cc74886380d506f4cb50448f03e6ddbb40e5b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/28.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "f8e2ae52e9e20b2d4b44787349c2b9ee5d9102d5d6dc562b2965b29b15bdaf86"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/29.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "2b6739959e41edffedf0867d47fb5ae4e06cec04fb36903c38c94ad7aa6f1475"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-closed/30.png",
+          "width": 1398,
+          "height": 2034,
+          "mode": "RGBA",
+          "sha256": "79913a1247a17df31a014740eeb3cdd8ae0de4dbad1620f907304f3633af947d"
+        }
+      ]
+    },
+    {
+      "family": "iphone-duo-open-landscape",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/01.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "f5a457f13d0dc37f3b7e6754cffdb5a2f940cbe56d83c696274534143d8231b1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/02.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "8401403a6809390c7e4b458ced825af49a10e2771b8afa79aaf08278ed42c435"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/03.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "017121d1ba3bc7b443043ba6757a081227100ba6ae8638de88f732960b3d693d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/04.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "347b0ab98603f83e37e073a927c3ca7b8f98a6a3705c1ab67017a822730290e3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/05.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "bfcfc3e5048f4179646cf6611501a5a16e50a01e3e0947a6f65fcab9cf055a35"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/06.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "ec48f1de1597db26526ccbbd55bc622924dd08315c108355d31b6755c2e0a65b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/07.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "90a1f57af848bcb6c356aa00c056285716126818ecdb91b52f6e706d9aa927f4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/08.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "9de0514bf1b9b3b94a52878c35681497f2e13b7496f08fd0c985c6f6e8b1c222"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/09.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "aae5de2edb9cde158b9ce91b182e42757e8850f4afa49dd469d00ab1aa870c4f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/10.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "59c4f8e7d482497a5a2518196b00bdd1395b63e6d9fe62a43ca355125072676e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/11.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "f19cb8925749ed0b0510c4d9abc1c23892d32ba24eb524ff33f6a79cc4cc2feb"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/12.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "7550a4ad77293ce415ae81d0c89573f466f7596721903954650460a9672b3d26"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/13.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "1596e8414cd842ace2f8fa9f54d44d5c2639735c6bfe234b81afa7e458adeb66"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/14.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "35a5c306a46ad19aa36ba3b734156e599a7d7bbb48ab44dca463789c556b4e63"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/15.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "c7615c2273c08fabd7f8dc9775a641f99c1c7b7f376f4aeeb46b08414dcb8e8b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/16.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "1a292760b86bae5d8c03df087ed11f3012bc9628123e67a68866a03e529e3ac5"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/17.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "e1fadff6b40ffd44ed81be35fa33bf68b602dab91121095e655d1ea0bc72d92d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/18.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "6d6b5a0893db791e30acdc0acf7ec4fa6630b79dbfb2c9773c9ddf2251ca6f25"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/19.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "b0358158f66bb6f4af510c14216e27b3cba8f5632e1e2f3ee28b08531fe81ea6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/20.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "868f697f675a4d57e646917d93087df0a5178fe85605c9f01d61e939c8034fae"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/21.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "b4b9f477b92afba19b5ed977d53c4c6bdf3cd7dcad059601d5395babf33f58d0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/22.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "fb3093f31b13eeed190b2d3c3606a4ac2e3853b952650acedf75ead3ad58eb7e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/23.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "d5558ec5c855a77388fb27f646043cc6ade4459efb2afc60a981938adec4b0e0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/24.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "8dc4ee0ce7d8cda1c32b552848108db0ee28ff707fb7715f0a58bd204febf5e2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/25.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "36fd51bcf750603afbcfe339bdae8e1efbbd025436fed6517145ff9972478019"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/26.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "2a7fc2dff91ab8b6aa72a6d03c33523cc136bb031d33a2cbc5bee84bc5440394"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/27.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "daae340f829ebaf3a462d5dca54a9d61c6340af31de922cdfc880da5236f1e0e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/28.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "2acedcbda6090ecde58e4b94930c2086fd45b6f3d8e4ea08f68426429e889bc0"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/29.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "b2ee2360322a32c819e0a46dbc45632b5fb7318ec13be739028201671a40c0f8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-landscape/30.png",
+          "width": 2853,
+          "height": 2007,
+          "mode": "RGBA",
+          "sha256": "7fd98ff6e142d03adf2f725dea82da0186a814c6dc052604555dbd21c13adab4"
+        }
+      ]
+    },
+    {
+      "family": "iphone-duo-open-portrait",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/01.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "42cc7d67f3ce4b983caafb7bf130b5458da1a2dab910ba70ec0ccba15d361fae"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/02.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "707882637beae5d02245cd40ab5de6d1aa6e46f38eb4806c264736207233b671"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/03.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "8bdb53215cdc7abc8485a02807b0678c7ac8e33ec905938391d6c7a25c4b44a5"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/04.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "4051c55a033e046b8c8fff2b49dad033e70812a6842863c9a3758e6afee3041d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/05.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "7f35e256b48d2f933d383da0e1c58ed64b6e450460a22a30e3e2f54478810a41"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/06.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "09b54081c33581984efc960706a26a2a73d18049c7af492d1a7e9caf3c778b1c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/07.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "e6346b73854137185d2751f841b6fdb1866de97909728ebf54719547aad17b09"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/08.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "3e68e4ff585e34ca2766a34cca5d0140e2e9bd5795bbbd5e71ac673f3f4dd993"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/09.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "8f11628c802e17a26dab9bf0d2858f5ca03856d9cbe0bbbf4ba7819cb2891490"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/10.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "f8613e4fde62d0657d69d8b57050a3212ca12301ab05e0b80e5db52c538c4e73"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/11.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "edbf2b5497b24d35f067e3555bfc7fdc8365aca079243f595094643372c46592"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/12.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "9aa60b36aac46fb564ea0227ed46b07a4af55b5fc47210e3a58005e4d56788f9"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/13.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "46f3050fc484f3feb8b9f51315ce23a1cbe1ed7ffc8b98a595171ff44422cac1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/14.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "8603acb4321453dda79bf116ad0849f1c2208147d7e45d72fd88a8bd36603e4d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/15.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "5ff4ec1626659f113455cb0b024129ddb0853f7f34adf109aae709b4c407401f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/16.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "487ba4c960188aa8cf01667bb778d916ac2b40eba8638795e97108abce1aff4d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/17.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "9cb820ca62e99013cbd5d8c83077de29eea1ee9282a5c778c29e63b92e8ec579"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/18.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "f8b107257d1d2dc328cece5d4f5d9ffdfb3dde36e4bea43585fc8c38c78d11a6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/19.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "f2c8f148b0b37023f0b6054b0b401c06b28bef7305b4594515de84f5396390b8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/20.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "3fd2e66fa3cd70e3ed74c6d8ed3ff26bc48efeefef7fa2526c462f4abacaae7f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/21.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "f898373c8408cfd35602400e041e7178b3a0474a1709837cadd1280812bc9807"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/22.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "0cc9c8b190d8bfb1a4f2f67f5ffa930fafb23fe092ef75bf1276ff3ea64e0796"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/23.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "46773735a293856259660eab10fd328db3e93ee901141a5c20cabc4aef9148b1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/24.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "a00be25244c4b0ddc761f9a52576e88cdc906781baf53f864ed1272178aaa191"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/25.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "d9d04b80e3a9a59e688f3c13f8acee5b80ddefc7bbcda94b5dbac716156af875"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/26.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "b2a07987af733b9598e198ddcc103f166dc8280b67d4449a06b0bd684ad28610"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/27.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "90bd7de0bfe455f2ba1c8c511ba50070a174ae8716d8752f880018898807bca3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/28.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "932323578f5497d329afd00e9cad193c5c4681489128082722d3307a292a6d37"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/29.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "a6d2bc7191eb037879c120bd66edca78ed7d7b1d020307defb33b67aaf7ccc5f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/iphone-duo-open-portrait/30.png",
+          "width": 2007,
+          "height": 2853,
+          "mode": "RGBA",
+          "sha256": "0d97173be82813f34c0e115efc52f83d38d74e5b1b42d54df81b1529ef080f95"
+        }
+      ]
+    },
+    {
+      "family": "ipad-13",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/01.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "fa396bd204c7d61a86a392646e78c12fe88dbb210bfe71969f04021bc08fb4a3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/02.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "97718da90d471270c96580dd6cb22dba3170d29abf9c31ed7aa59b4fa6917298"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/03.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "987ff7a3f6e5ef8355b6096e2dc138df821ce90ca53f4f10a686ba95d6fa473f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/04.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "33b4f8d09749b738a1e174498a0cfbf32ec2bed5f44d1c8fc516eed1c61cbb2a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/05.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "a8cf2f872c7974ef0842c5c118f0d11b675f01ae0e32304c37bca87d99f092ce"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/06.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "2dfe66d0f43936ca0afa4b9de1e4b2d31fc9325d8d47e9e3d30642a5f6f3fd51"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/07.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "ca3ce7fc4ab16d69210a2f218575a92acbf88285671f335032cd2b2b14eaf66a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/08.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "06982e923376ec776bfb887b567127d602d23fa442482f20cf84269771db1b94"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/09.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "c897fc7854c75132a5960d2f9048ed7621e8064b6c671eb907568a12535e6585"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/10.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "bdd962dca9d806b5b32734da9b67a5b2ce373bd6ce37eb8d90a66e21e54df6c7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/11.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "9095a9240bb263dd7772d5a757dd98426cf30efa4aa4415b7205ea2315bee659"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/12.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "869ca91576579a27d887d9b49c9c090c37eb8023d2800c248dba50c84815dfa6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/13.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "9da51c87d2b2b3f9c2a4c690f36e863388b7e08201d8023dce8f03f3c15fd62c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/14.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "eaf6f882914a37c8d7f78cd2267e72f20e8cd2ded97fe357352c818f891c4bc7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/15.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "7abd9cee9a515a3bf24abfaea11937b3ad8907b8e87564b50a6266eb65130e43"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/16.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "8488185497790864914b87d3e743ed24b50f234aa00c51483157565cd3d563fa"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/17.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "6d621dadd74da0807e0744b0829cbb146befcdf1283e39c52b239aec09fbf331"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/18.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "6db222e3277890c50f913892263ae9c790b09c5f77e6cfbae2af4582ff978ef4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/19.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "afd642fda153cbf62f14ebd68404a81132c8816b1fb3e3c210a290e563644288"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/20.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "d202da76f007337ec40a0284414c2a54c78e13c4d111b1d75ab6226552b3d822"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/21.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "566aa71f82622f0d9bd9a4c98bbb3f0dbeaf72bafca99f99eaca887d6b9c1861"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/22.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "af1a5000593ec43235ff08eda59a48c7c7ae69b1755762c3c60b48b89752a8e7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/23.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "e9b3f2d90c4a88c8a1c5d0573333776dca485648d94c5dab5a114817dcceee4f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/24.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "a646f3671f55ff7934b72c37628e5853cd59f6dba4ec65efc1a83c79523f747e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/25.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "cdb2bf8eb1842cd54b16e92c436df96e53e655ad0b85a02259a46652ff92f119"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/26.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "a224cb1613142f2130163c3a36933a077f5569338c3583792544d1241219f22f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/27.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "4353ee3d05f23000373cecbba580a94f06817228e940997bb875050b71f53866"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/28.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "d05e69545123be95ccd52eafd4646c34a83bf6d457815255e0614ae8ad4d7e06"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/29.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "daba4df30de6f86bf5cb6399100b638622fd69c72511666a6d4ee4cb06592d11"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/ipad-13/30.png",
+          "width": 2064,
+          "height": 2752,
+          "mode": "RGBA",
+          "sha256": "8d5f2b34dc32c675b3c899e317cd1f39da979d49ee2607b09a59b23ea1e5f206"
+        }
+      ]
+    },
+    {
+      "family": "mac",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/mac/01.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "107b26df18688a0b1973866027b169adb2b5e04bd041551f2dd1fdc2d08231a3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/02.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "49ec7e9d5640e76c44847e78cc55e2dae2a6d12092895ae7660547417dcce6bc"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/03.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "0f16b625e845db646fa26ddb8433927a70634ccc67059dd7d503a8ae54530d55"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/04.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "1debdb14a40ee93d42a6e7a5e3cc0340a7f4893dd87d6bc475d706174deef65a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/05.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "a1937d2b9e8b3c347f3511d0b055e57a0863a9ddaf6abf5f2bc66af3bfbea46e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/06.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "713409faac04cf0fe43198917460aaa6545bd8560576ce914812422eedb356dc"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/07.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "6ae1b749daa6d259072b1ada16730825e0df6633ebaa5b728baba3572386dcd2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/08.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "65c4fa1bb8047fc7579213dcd9a6c7146b614583559e291d129a94810307224f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/09.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "fe3e1c0ac7bdaa781dfd36192301d73e60f3c3cc0c7c8c7574eb1e65fbc92008"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/10.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "7f5f64da57993fdf8063a9949ef38e63d1b63afd684ac4fab6f499bbb9058f16"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/11.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "b8dc17bcfc958644e6e57a838903eeaad1c75e03b6c1974addb0def2c32b5750"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/12.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "a6def05da43ef95a521f54bfcfb1197e4b7bba149f14e03d7ff3864ddff163f1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/13.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "6233219b406677c26ea0d9cbc7a39b82c2ca1a1d64eefe93b9a4c2408dcd1100"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/14.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "b15cac35e7d39fa2121b32ca060a8a87e7b652009ab822b764a60c012bfe02f7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/15.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "cd53d6be7ac3830e45a17966d7396b8f2fefa6ae6559814241e31cf95e0186ac"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/16.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "d6036340139f8dc32856ef0864c71401733844c37b0e59dbf8a6c7408bef8743"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/17.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "9687fd7c0aa0d6903c6109486326f3c531812367664c9486ed57c6debf307894"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/18.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "f4c9a76a1e962c49b4bdef462f39ac3e5873c3fa464027087fa1ca6f274ff99e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/19.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "dd5eae0a5c05d0c4ad761a5e56130f13430e18f44dd5a21ad29ea5738ada517e"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/20.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "ae5f6a2166b0480f144d1075698caf2a67e46b70578c4337690f736fc113ed80"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/21.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "29ccd48551d42a2f0d2cd5d02da03d54c4329e537d4d94cad5f67809bef63e71"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/22.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "a5cfa501fb97876680c4ac58d9f44fad2dcb5d23dbb3947b0c23cb0cee73f8da"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/23.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "c6182545d3da1601c138969ceccda739a4ff38c138ef287a73dabe44002083ab"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/24.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "a8dedfe05bf6f67dfb403c765369f6b0a9f8273bc4df9434a1114f3a470ee2dd"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/25.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "ff0770573768f8bfca8665364250ec1422660dee64fcbbb2ae41c2372f969e3b"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/26.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "155f44b88c1551c0803ee5e63c272563457be0fa37b7b0cf09d9790f65f86dcb"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/27.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "d7bca56d2c04287a93c5a27a2f0dcaf9fa34d32f79781e0736c8273d20fabe83"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/28.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "8f2f0a8f74f76d69513f3ff337005a73e27f7368a4df56afe14e94e5c26d774f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/29.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "32782c5e2852d8ab4f46901e0b457a5e9b9cecc36f10c0507d3ac1cf66795470"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/mac/30.png",
+          "width": 2560,
+          "height": 1600,
+          "mode": "RGBA",
+          "sha256": "1d8be1aa85d883153ffab468765fd06c1cb42a519ca58cf0582addd616326bff"
+        }
+      ]
+    },
+    {
+      "family": "vision-pro",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/01.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "f4623cf063d2f206b16dfd8fc78136c5b599929050b06133d0b4a91e1231dc44"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/02.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "f5447e205caffc86397ee243df4cf6b2070f98b84e6297c7b0faa0feeae58a10"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/03.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "6b87c1ba7a96e39b871fbdbcbfb9ea756579cd69131fa28e94015efe1d984206"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/04.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "27aeeba70fdf7b1d918dbc6f4811f39ca1255b03f0b00e4cf17473a50fcac70f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/05.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "9ba65932e1b719867a527f095b641699d7689c085df98211f6eca19d7b15c3a3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/06.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "bbe03fd88d01b851f9860e5b71fe2c2f7d7c9e32c3f42ef7e7ef32c61d2be2a1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/07.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "986d7fea2e5cecb894e3c1c152347e057b89c7041cd62dfc12b800b6091af4d8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/08.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "4f9087f26f6753156402091ba7137980b07da0fe1e435f69eab13c31a124a14c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/09.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "cded28489cc7dffe3245324ac85e44d3e0fed06d9176fb3b4fe912efd0cea020"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/10.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "5d9e524ef4d21befaac0dcb7c2cfd0f034a576325852719b9ca5d21139f399a1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/11.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "71a30813c930a0e28673faca845e6e8e974eb2191fee2eb2a8e34862d51f388f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/12.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "935adadb19ffa3e76a0d546fdc6654e8b0318007f38cba425f5b65aed957b65a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/13.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "74cec10bc51ca5c38d2f221fca711b2634f783c8ff757350fb69be8eac1094e5"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/14.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "24773a8aa9445c042ba581e5ae7dab80f8c906bffa45e3c406f20d60781535bd"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/15.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "43e27da0b8717eee60edab9b0acb06bc56b4aea7a916b3967336c7488881fb1f"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/16.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "ad5d891e4f24a2d1700ea03ec6564117efde251d475835535a216fd338cb3f0a"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/17.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "7f716b7bff34e922e8db322e7b69ee99ff6bca082d6631786adcb3535f6fdce9"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/18.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "ab35e73f5280f9880ccf5b01790cef9c37df6f25c48d76cddbf421ef34f6f105"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/19.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "6cb38523f4e6d92e19757b5abc96b773471a24807c9b4fc46289306e21a7f2a4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/20.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "ab4f7195062e902da911fda059b68930f5675f2bac27c074c2a97084459f15c7"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/21.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "df2505852b1c4214e10eefe856cf8a7d3b196872d41c554260e4119411fa34b3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/22.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "39908def20d50db28f682e680692149c735c8555961dea7a3a8282d98ee3a19d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/23.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "7ba3618bc07bcdd0da63202c57c89f80d43224fe76d18362c97002ed8c6469ff"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/24.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "d95afb36eb910280827c5ae18b4308151119aa9ef48e551c3688ca227ff040d8"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/25.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "6133f5d57e02376419d29551b8df5f7b5865a5c7cf3c4e64b0a5999694238189"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/26.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "ddc7829af139dc07a01abe4966c7e7621265c5cc1d97da77ddc66fbc0129fa23"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/27.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "df13667fdb9b21029ba63f65ee9a649f6df603b2f6aef2692c2eaa2de7a7aa13"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/28.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "f0a5c7aa2e1cf5900879291fd02e9385e294668a8e4cf66a06b796f4ef70b6f2"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/29.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "153a1753cd9e9c382803ccb6134a591aaf29da788280e256baa2caee78dc9d11"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/vision-pro/30.png",
+          "width": 3840,
+          "height": 2160,
+          "mode": "RGBA",
+          "sha256": "fc66d04bb3b62c09e581d7f58cc64455e96ecc1d4a2a4428c7e3c63ee120aafc"
+        }
+      ]
+    },
+    {
+      "family": "tvos",
+      "count": 30,
+      "files": [
+        {
+          "file": "Release/Marketing/Screenshots/tvos/01.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "7a403c458f80e1a2314c6536820c06e66b750db37fe16b7b39b5427cfb7d2308"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/02.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "7a2effdb926bb83275a4b9751a8f06b4d6c564d36d6e886cb99baf48d3895482"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/03.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "af5d8a1998041be568a59dd078dde8f1419523f13c5638865809d20cbec43cca"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/04.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "a6da48904983d695f220060a16b93c7f14d0a4b4b4476883e84cf259a7f5eb08"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/05.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "67bfd9db04b3b9ab78af6889c07a9460ca30911d97922e526a1b586c4001b9e5"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/06.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "48ddb6ffafd40fe0d9fad1a884276c12a1fc3328f591dc492fb9fc50a6bc55c3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/07.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "352c2ec4e3c8af01568a53ec09ad8369d94c82d99f144cc04d07fa294ea8d524"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/08.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "058205a35bbe9a3d31c9937e5093362dc658a5637798359809ff3d3ef080c814"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/09.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "7a0ffbcf82df9fc5980b9f839f758911580496f9da84963df6122ecac44a3f99"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/10.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "4990c3e8f6f3dae35d07cab9c19ce086910cdedd529f12abd62b13b42c73e196"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/11.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "c341e912e32f8433d7119a405bf194ee85a7e49df45194c2b9b8a390863035f9"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/12.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "8f6af01f7192fb29b4446b2fb9defcdbac33afaa3e22e264607d76e48a0e3e15"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/13.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "44ac50eda7b76172bcd02fc74acdcf03acafda22048e2664dfd1cee634491624"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/14.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "6a1c126ae4384560e59ac678c8f71a2b1fe8a8157f23dc8d61edea39630b97f3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/15.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "4e938302698144a8f7e829914ad698cf53d5e8f55912f09330337be65494919d"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/16.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "a169908bf41765bd98b486288126c401cb9e406bed725bbf89c8f336c3a27afa"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/17.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "d35ade485ede1b7671a5fb7a97c2470fa84776947f279501c8e3188f33cbbdf3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/18.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "5d50c604496bb837cda9aa986ee191deefa47cc2e33be79db1f7ef1642404208"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/19.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "2c8c29b58be1acdf6c3b93e2529b5dc22d9f6e0b2471a3e38e0ad8922ed9a7e3"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/20.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "fc7d4c989114712a315afafd5419f81cfa5d779bc20776b56f30b92fda0c2b54"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/21.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "238499e6f517d022d3b98a633b6e28d6a24634587b1d000582fb6cd287572852"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/22.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "8ba112b76e7ace42de8759fe2c90e5e21e853d8b86555c2f99e783b86f23f738"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/23.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "b368f66e24128549289fb2e1d4ab415f4aaaaa70134e27b5c335feb5629ac11c"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/24.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "d6869c0ddcc04a88d11f904bbed75f82abb18d8feb57bcdef6f6e927f3ba82b6"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/25.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "9bde7a248be422e548bb0d535fc5684107b63f8e63bc4bfad1eea6b3ca7b0503"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/26.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "0c099157d2f819a87d1ff190b7fbd21ea4bedf62d27c6945389f03b040a145b4"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/27.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "27325f902aafa30ae54599961e127d843521ce1b3729ad4387855e19c8b2a9c1"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/28.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "9f426b48f692bb76c42dc1722af9a0621726515b1828c240089dd90a755964cb"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/29.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "84a4ad7ecc5925bd0442810241a43a40cb28c0be83667e18a2f8de0f59d2adef"
+        },
+        {
+          "file": "Release/Marketing/Screenshots/tvos/30.png",
+          "width": 1920,
+          "height": 1080,
+          "mode": "RGBA",
+          "sha256": "2e3d364ecf0afa5d8a08a26d78eae0366df3bcd78ac29fff7903b5d7d2116592"
+        }
+      ]
+    }
+  ],
+  "issues": [],
+  "additionalIncompleteFamilies": [
+    {
+      "family": "iphone-6.3",
+      "issue": "missing scenes",
+      "scenes": [
+        "07.png",
+        "12.png",
+        "30.png"
+      ]
+    }
+  ],
+  "nativeCaptureCount": 300,
+  "passed": true,
+  "allDisplayVariantsComplete": false
+}

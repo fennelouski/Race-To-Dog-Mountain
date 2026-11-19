@@ -1,0 +1,1477 @@
+[
+  {
+    "platform": "iOS",
+    "locale": "bn",
+    "descriptionMatches": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ar",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "hr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "cs",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "da",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "nl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "en-AU",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "en-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "en-GB",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "fi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "fr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "de",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "el",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "gu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "he",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "hi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "hu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "id",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "it",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ja",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "kn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ko",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ms",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ml",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "mr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "nb",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "or",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pa",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ro",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ru",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "sk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "sl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "es-MX",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "es-ES",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "sv",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ta",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "te",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "th",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "tr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "uk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ur",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "vi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ar",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "bn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "hr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "cs",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "da",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "nl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "en-AU",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "en-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "en-GB",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "fi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "fr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "de",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "el",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "gu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "he",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "hi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "hu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "id",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "it",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ja",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "kn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ko",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ms",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ml",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "mr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "nb",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "or",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pa",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ro",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ru",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "sk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "sl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "es-MX",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "es-ES",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "sv",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ta",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "te",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "th",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ar",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "bn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "tr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "uk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ur",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "vi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ar",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "bn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "hr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "cs",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "da",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "nl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "en-AU",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "en-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "en-GB",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "fi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "fr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "de",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "el",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "gu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "he",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "hi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "hu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "id",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "it",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "zh-Hans",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "zh-Hant",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "hr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "cs",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "da",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ja",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "kn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ko",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ms",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ml",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ar",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "mr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "nb",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "or",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pa",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ro",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "nl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "bn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "en-AU",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ar",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ru",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "en-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "zh-Hans",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "en-GB",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "bn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "sk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "zh-Hant",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "sl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ca",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "es-MX",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "hr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "fi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "es-ES",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "fr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "cs",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "fr-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "sv",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "da",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "hr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "de",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "el",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ta",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "nl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "cs",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "gu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "en-AU",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "te",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "da",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "he",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "en-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "th",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "nl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "hi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "en-GB",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "hu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "tr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "fi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "id",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "en-AU",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "it",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "fr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "uk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ja",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "fr-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "en-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ur",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "en-GB",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "vi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "kn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "de",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ko",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "el",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "fi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ms",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "gu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "he",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ml",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "fr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "mr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "hi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "nb",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "de",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "or",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "hu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "el",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pt-BR",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "id",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pt-PT",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "gu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "it",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "pa",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ja",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ro",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "he",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "kn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "hi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ru",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ko",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "sk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "hu",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ms",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "sl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "es-MX",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ml",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "id",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "es-ES",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "mr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "nb",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "sv",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "it",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ja",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "or",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ta",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "kn",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "te",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "th",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pt-BR",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "tr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ko",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pt-PT",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "uk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "pa",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "ur",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ms",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedInfo",
+    "locale": "vi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ml",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ro",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ru",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "mr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "sk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "nb",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "sl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "es-MX",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "or",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "es-ES",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "sv",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ta",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "te",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "th",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pa",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ro",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "tr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ru",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "uk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "ur",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "sk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "sharedPrivacy",
+    "locale": "vi",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "sl",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "es-MX",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "es-ES",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "sv",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ta",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "te",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "th",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "tr",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "uk",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ur",
+    "fieldsMatch": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "vi",
+    "fieldsMatch": true
+  }
+]

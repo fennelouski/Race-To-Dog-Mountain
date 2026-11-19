@@ -1,0 +1,38 @@
+[
+  {
+    "platform": "iOS",
+    "resource": "build/release-20261117/Tally-iOS-watch-gc.xcarchive/Products/Applications/Tally Tangle.app/am.lproj/Localizable.strings",
+    "keys": 428,
+    "play": "ይጫወቱ"
+  },
+  {
+    "platform": "iOS",
+    "resource": "build/release-20261117/Tally-iOS-watch-gc.xcarchive/Products/Applications/Tally Tangle.app/Watch/Tally Tangle Watch.app/am.lproj/Localizable.strings",
+    "keys": 428,
+    "play": "ይጫወቱ"
+  },
+  {
+    "platform": "iOS",
+    "resource": "build/release-20261117/Tally-iOS-watch-gc.xcarchive/Products/Applications/Tally Tangle.app/PlugIns/Tally Tangle Messages.appex/am.lproj/Localizable.strings",
+    "keys": 428,
+    "play": "ይጫወቱ"
+  },
+  {
+    "platform": "Mac",
+    "resource": "build/release-20261117/Tally-Mac-localized.xcarchive/Products/Applications/Tally Tangle Mac.app/Contents/Resources/am.lproj/Localizable.strings",
+    "keys": 428,
+    "play": "ይጫወቱ"
+  },
+  {
+    "platform": "Vision",
+    "resource": "build/release-20261117/Tally-Vision-localized.xcarchive/Products/Applications/Tally Tangle Vision.app/am.lproj/Localizable.strings",
+    "keys": 428,
+    "play": "ይጫወቱ"
+  },
+  {
+    "platform": "TV",
+    "resource": "build/release-20261117/Tally-TV-localized.xcarchive/Products/Applications/Tally Tangle TV.app/am.lproj/Localizable.strings",
+    "keys": 428,
+    "play": "ይጫወቱ"
+  }
+]

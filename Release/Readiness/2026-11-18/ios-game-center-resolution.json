@@ -1,0 +1,7 @@
+{
+  "version": "2.3",
+  "build": "2026111803",
+  "status": "Ready for Review",
+  "visibleItemReadyToSubmit": true,
+  "fix": "Watch companion now carries com.apple.developer.game-center and links GameKit; automatic Xcode signing and upload succeeded."
+}

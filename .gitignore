@@ -24,3 +24,9 @@ xcuserdata/
 
 # Local audit evidence (already-tracked history stays tracked)
 app-store-audit/
+
+# Python verification caches
+__pycache__/
+
+# Temporary render proofs
+/tmp/

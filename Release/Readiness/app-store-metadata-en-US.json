@@ -1,0 +1,81 @@
+{
+  "status": "Saved in App Store Connect; all four release drafts are Ready for Review.",
+  "preserveExistingContactPrivacyAgeRatingAndAvailability": true,
+  "localizedStoreMetadataAudit": "50 store locales per platform; 49 additional translations reload-verified against app-store-metadata-localized.json.",
+  "platforms": {
+    "iOS": {
+      "description": "Pick a number. Outsmart your rival.\n\nChoose a number from the highlighted row or column, take its points, and set your rival’s next line. Think ahead and finish with the higher score.\n\nPractice against 18 named computer rivals. Choose a board from 4 × 4 to 14 × 14 and find the challenge that suits you.\n\nKeep several local games ready to continue, customize your players, replay a computer move, and search your saved games. Finished games can share their real move history as a GIF, or share the final board when an older save has no move history.\n\nOptional Game Center races use Apple’s two-player turn-based matchmaker and require Game Center sign-in and internet. The Messages extension prepares a 4 × 4 board bubble for a conversation with one friend; you choose when to send it.\n\nThe Apple Watch edition runs solo 4 × 4 games independently. Its optional friend-game inbox uses a paired iPhone and Game Center. Local progress stays on each device.\n\nNo ads or in-app purchases. Solo and local two-player games work offline.",
+      "whatsNew": "A refreshed living garden, 18 computer rivals, customizable players, replay, searchable saved games, and adaptive layouts for iPhone Duo.",
+      "screenshots": [
+        "iphone-6.3",
+        "iphone-6.9",
+        "iphone-6.5",
+        "iphone-duo-closed",
+        "iphone-duo-open-portrait",
+        "iphone-duo-open-landscape",
+        "ipad-13"
+      ],
+      "reviewNotes": "Version 2.3 build 2026111803. Solo and pass-and-play require no app account or internet. Optional friend games use the system Game Center account. The Messages extension prepares a 4 × 4 game bubble; the user taps Send. Watch friend games use the paired iPhone. Two-account Game Center delivery and physical-device comfort have not been verified.",
+      "gameCenterEnabled": true,
+      "version": "2.3",
+      "build": "2026111803",
+      "locale": "en-US",
+      "supportUrl": "https://nathanfennel.com/contact",
+      "copyright": "2026 Nathan Fennel",
+      "keywords": "numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle",
+      "promotionalText": "One number. So many possibilities. Take the points, shape the next turn, and find your next challenge.",
+      "signInRequired": false
+    },
+    "macOS": {
+      "description": "Pick a number. Outsmart your rival.\n\nChoose a number from the highlighted row or column, take its points, and set your rival’s next line. Think ahead and finish with the higher score.\n\nPractice against 18 named computer rivals. Choose a board from 4 × 4 to 14 × 14 and find the challenge that suits you.\n\nKeep several local games ready to continue, customize your players, replay a computer move, and search your saved games. Finished games can share their real move history as a GIF, or share the final board when an older save has no move history.\n\nUse keyboard shortcuts for New Game, Find Game, Replay, and player options. Resize the window to fit your workspace.\n\nOptional Game Center races use Apple’s two-player turn-based matchmaker and require Game Center sign-in and internet.\n\nNo ads or in-app purchases. Solo and local two-player games work offline.",
+      "whatsNew": "A refreshed living garden, 18 computer rivals, customizable players, replay, and searchable saved games. Command-F opens Find Game.",
+      "screenshots": [
+        "mac"
+      ],
+      "reviewNotes": "Version 2.3 build 2026111802. Native macOS app. Local games require no app account or internet. Optional Game Center races use the system account. Command-F opens Find Game; Command-N starts a new game. Two-account Game Center delivery has not been verified. Includes complete Amharic interface resources.",
+      "gameCenterEnabled": true,
+      "version": "2.3",
+      "build": "2026111802",
+      "locale": "en-US",
+      "supportUrl": "https://nathanfennel.com/contact",
+      "copyright": "2026 Nathan Fennel",
+      "keywords": "numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle",
+      "promotionalText": "One number. So many possibilities. Take the points, shape the next turn, and find your next challenge.",
+      "signInRequired": false
+    },
+    "visionOS": {
+      "description": "Pick a number. Outsmart your rival.\n\nChoose a number from the highlighted row or column, take its points, and set your rival’s next line. Think ahead and finish with the higher score.\n\nPractice against 18 named computer rivals. Choose a board from 4 × 4 to 14 × 14 and find the challenge that suits you.\n\nTally Tangle brings number strategy to a resizable floating window on Apple Vision Pro. Keep several local games ready to continue, customize your players, replay a computer move, and search saved games. Animated scenery respects Reduce Motion.\n\nOptional Game Center races require Game Center sign-in and internet. No immersive environment, camera or room permissions are required.\n\nNo ads or in-app purchases. Solo and local two-player games work offline.",
+      "whatsNew": "A refreshed living garden, 18 computer rivals, customizable players, replay, and searchable saved games.",
+      "screenshots": [
+        "vision-pro"
+      ],
+      "reviewNotes": "Version 2.3 build 2026111802. Native visionOS app with a resizable floating window and no immersive space or camera/room permissions. Play starts a local game; player options change the rival and board. Local play needs no app account. Optional Game Center races use the system account. Physical-headset comfort and two-account Game Center delivery have not been verified.",
+      "gameCenterEnabled": true,
+      "version": "2.3",
+      "build": "2026111802",
+      "locale": "en-US",
+      "supportUrl": "https://nathanfennel.com/contact",
+      "copyright": "2026 Nathan Fennel",
+      "keywords": "numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle",
+      "promotionalText": "One number. So many possibilities. Take the points, shape the next turn, and find your next challenge.",
+      "signInRequired": false
+    },
+    "tvOS": {
+      "description": "Pick a number. Outsmart your rival.\n\nChoose a number from the highlighted row or column, take its points, and set your rival’s next line. Think ahead and finish with the higher score.\n\nPractice against 18 named computer rivals. Choose a board from 4 × 4 to 14 × 14 and find the challenge that suits you.\n\nBring the tangle to the big screen. Use your Apple TV remote to choose legal numbers, play against the computer, or take turns with a friend in the same room.\n\nContinue saved local progress and review the moves in a replay. Choose the next game’s board size and rival from player options.\n\nThe Apple TV edition supports local play. It does not include Game Center races, Messages games, or progress syncing between devices.\n\nNo ads or in-app purchases. Solo and local two-player games work offline.",
+      "whatsNew": "Tally Tangle arrives on Apple TV with remote-focused number strategy, 18 computer rivals, local two-player games, saved progress, and replay.",
+      "screenshots": [
+        "tvos"
+      ],
+      "reviewNotes": "Version 2.3 build 2026111802. Native tvOS app. Use Play for a solo game. Player options enable Pass & Play, choose one of 18 rivals, and select a 4 × 4 to 14 × 14 board. Focus a highlighted legal number and select it. Back opens the leave confirmation during play; at home, Back returns to the system. Replay pauses live computer turns. Local play requires no account or internet. This edition does not offer Game Center or Messages.",
+      "gameCenterEnabled": false,
+      "version": "2.3",
+      "build": "2026111802",
+      "locale": "en-US",
+      "supportUrl": "https://nathanfennel.com/contact",
+      "copyright": "2026 Nathan Fennel",
+      "keywords": "numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle",
+      "promotionalText": "One number. So many possibilities. Take the points, shape the next turn, and find your next challenge.",
+      "signInRequired": false
+    }
+  }
+}

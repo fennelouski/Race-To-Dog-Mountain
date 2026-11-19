@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-18",
+  "uploadStatus": "Uploaded and assigned to iOS 2.3. Final review draft validated as Item Ready to Submit.",
+  "specification": "https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications",
+  "method": "Editable SVG composition with a proportionally scaled crop of a real 6x6 gameplay board and shipped rival portraits. No invented game state, English caption, device frame, price, or download claim.",
+  "sources": [
+    {
+      "file": "Release/Marketing/Screenshots/mac/04.png",
+      "sha256": "1debdb14a40ee93d42a6e7a5e3cc0340a7f4893dd87d6bc475d706174deef65a"
+    },
+    {
+      "file": "Tally Tangle/Images.xcassets/Opponent1.imageset/portrait.png",
+      "sha256": "c38c568a76b3f8e7741b619fdd0d79ee2d8230543026f810739603310655911d"
+    },
+    {
+      "file": "Tally Tangle/Images.xcassets/Opponent16.imageset/portrait.png",
+      "sha256": "e2d40f95f3f2b4cc87febd48fd8b0be5e561839cf64bb73155da7f069de9d902"
+    }
+  ],
+  "assets": [
+    {
+      "file": "header.png",
+      "width": 3840,
+      "height": 1646,
+      "artSafeArea": [
+        1097,
+        493,
+        1646,
+        661
+      ],
+      "criticalArtBounds": [
+        1176,
+        504,
+        1488,
+        638
+      ],
+      "sha256": "1e2d97031f7886e1d2334a425fc048bbe9e623ed9e11ab80c1eb69498e94f5d1",
+      "hasAlpha": false
+    },
+    {
+      "file": "search-results.png",
+      "width": 3840,
+      "height": 2560,
+      "artSafeArea": [
+        836,
+        765,
+        2168,
+        1030
+      ],
+      "criticalArtBounds": [
+        876,
+        791,
+        2088,
+        978
+      ],
+      "sha256": "bbd53137dfc4d10e306048214b3a6d4a81cfb2a78e0ba7a2acff01b3dfd59169",
+      "hasAlpha": false
+    }
+  ],
+  "safeAreaBoundsVerified": true,
+  "visualReview": "Both preview exports inspected; no clipping, no captions requiring translation.",
+  "devicePreviewsVerified": [
+    "iPhone header",
+    "iPhone search results",
+    "iPad header",
+    "Arabic iPad header inherited from primary locale"
+  ],
+  "reviewStatus": "Ready for Review",
+  "finalSubmissionPerformed": false
+}

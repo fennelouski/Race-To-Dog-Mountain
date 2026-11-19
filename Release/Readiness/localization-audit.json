@@ -1,0 +1,169 @@
+{
+  "sourceLanguage": "en",
+  "translatedLanguageCount": 51,
+  "catalogKeyCount": 439,
+  "translatableKeyCount": 428,
+  "coverage": {
+    "am": {
+      "translated": 428
+    },
+    "ar": {
+      "translated": 428
+    },
+    "bg": {
+      "translated": 428
+    },
+    "bn": {
+      "translated": 428
+    },
+    "ca": {
+      "translated": 428
+    },
+    "cs": {
+      "translated": 428
+    },
+    "da": {
+      "translated": 428
+    },
+    "de": {
+      "translated": 428
+    },
+    "el": {
+      "translated": 428
+    },
+    "es": {
+      "translated": 428
+    },
+    "es-419": {
+      "translated": 428
+    },
+    "fi": {
+      "translated": 428
+    },
+    "fr": {
+      "translated": 428
+    },
+    "fr-CA": {
+      "translated": 428
+    },
+    "gu": {
+      "translated": 428
+    },
+    "he": {
+      "translated": 428
+    },
+    "hi": {
+      "translated": 428
+    },
+    "hr": {
+      "translated": 428
+    },
+    "hu": {
+      "translated": 428
+    },
+    "id": {
+      "translated": 428
+    },
+    "it": {
+      "translated": 428
+    },
+    "ja": {
+      "translated": 428
+    },
+    "kk": {
+      "translated": 428
+    },
+    "kn": {
+      "translated": 428
+    },
+    "ko": {
+      "translated": 428
+    },
+    "lt": {
+      "translated": 428
+    },
+    "ml": {
+      "translated": 428
+    },
+    "mr": {
+      "translated": 428
+    },
+    "ms": {
+      "translated": 428
+    },
+    "nb": {
+      "translated": 428
+    },
+    "nl": {
+      "translated": 428
+    },
+    "or": {
+      "translated": 428
+    },
+    "pa": {
+      "translated": 428
+    },
+    "pl": {
+      "translated": 428
+    },
+    "pt-BR": {
+      "translated": 428
+    },
+    "pt-PT": {
+      "translated": 428
+    },
+    "ro": {
+      "translated": 428
+    },
+    "ru": {
+      "translated": 428
+    },
+    "sk": {
+      "translated": 428
+    },
+    "sl": {
+      "translated": 428
+    },
+    "sv": {
+      "translated": 428
+    },
+    "ta": {
+      "translated": 428
+    },
+    "te": {
+      "translated": 428
+    },
+    "th": {
+      "translated": 428
+    },
+    "tr": {
+      "translated": 428
+    },
+    "uk": {
+      "translated": 428
+    },
+    "ur": {
+      "translated": 428
+    },
+    "vi": {
+      "translated": 428
+    },
+    "zh-HK": {
+      "translated": 428
+    },
+    "zh-Hans": {
+      "translated": 428
+    },
+    "zh-Hant": {
+      "translated": 428
+    }
+  },
+  "issues": [],
+  "uncataloguedLiteralUI": [],
+  "scopeNotes": [
+    "English is the source language. Regional variants use the closest supported language through Foundation fallback.",
+    "InfoPlist.xcstrings preserves the Tally Tangle brand across languages; UI coverage is verified independently.",
+    "Structural checks do not establish linguistic quality or rendered RTL, large-text, or physical-device usability.",
+    "App Store metadata is audited separately against app-store-metadata-localized.json and saved Connect fields. Shared primary-language marketing images are reused unless a locale has custom media."
+  ]
+}

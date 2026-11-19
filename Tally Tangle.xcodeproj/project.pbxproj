@@ -266,6 +266,8 @@
 				908AFC6B1A6718AE0050EC0B /* Tally Tangle */,
 				908AFC881A6718AE0050EC0B /* Tally TangleTests */,
 				908AFC6A1A6718AE0050EC0B /* Products */,
+				D7F3045C1C178FF391592F98,
+				BB515AC49581F0ABE43C3E39,
 			);
 			sourceTree = "<group>";
 		};
@@ -277,6 +279,7 @@
 				AC3000000000000000000007 /* Tally Tangle Mac.app */,
 				908AFC691A6718AE0050EC0B /* Tally Tangle.app */,
 				908AFC851A6718AE0050EC0B /* Tally TangleTests.xctest */,
+				43E832535CC404A9303669BF,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -409,7 +412,7 @@
 				TargetAttributes = {
 					908AFC681A6718AE0050EC0B = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 94E25AA8V5;
+						DevelopmentTeam = EJLR2RPSV2;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;
@@ -491,6 +494,7 @@
 				AC3000000000000000000009 /* Tally Tangle Mac */,
 				908AFC681A6718AE0050EC0B /* Tally Tangle */,
 				908AFC841A6718AE0050EC0B /* Tally TangleTests */,
+				63CD5F8A1A055EC1AB05FE92,
 			);
 		};
 /* End PBXProject section */
@@ -686,8 +690,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111803;
 			};
 			name = Debug;
 		};
@@ -708,8 +712,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111803;
 			};
 			name = Release;
 		};
@@ -764,8 +768,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111802;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -792,8 +796,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111802;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -818,8 +822,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				XROS_DEPLOYMENT_TARGET = 2.0;
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111802;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -844,8 +848,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				XROS_DEPLOYMENT_TARGET = 2.0;
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111802;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -859,6 +863,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = WatchIcon;
+				CODE_SIGN_ENTITLEMENTS = "Tally Tangle/GameCenter.entitlements";
+				OTHER_LDFLAGS = "$(inherited) -framework GameKit";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -872,8 +878,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111803;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -887,6 +893,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = WatchIcon;
+				CODE_SIGN_ENTITLEMENTS = "Tally Tangle/GameCenter.entitlements";
+				OTHER_LDFLAGS = "$(inherited) -framework GameKit";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EJLR2RPSV2;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -900,8 +908,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-				MARKETING_VERSION = 2.1;
-				CURRENT_PROJECT_VERSION = 8;
+				MARKETING_VERSION = 2.3;
+				CURRENT_PROJECT_VERSION = 2026111803;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -911,8 +919,8 @@
 			};
 			name = Release;
 		};
-		C851F65DE85D44F58F6105FB = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TALLYTANGLE_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 8; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Debug; };
-		C02982FAFB6341A1BAB73262 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TALLYTANGLE_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.1; CURRENT_PROJECT_VERSION = 8; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Release; };
+		C851F65DE85D44F58F6105FB = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TALLYTANGLE_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.3; CURRENT_PROJECT_VERSION = 2026111803; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Debug; };
+		C02982FAFB6341A1BAB73262 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = MessagesIcon; APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = EJLR2RPSV2; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO; INFOPLIST_FILE = "Messages/Info.plist"; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = "com.nathanfennel.RacetoDogMountain.messages"; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SKIP_INSTALL = YES; SWIFT_VERSION = 5.0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TALLYTANGLE_MESSAGES"; TARGETED_DEVICE_FAMILY = "1,2"; MARKETING_VERSION = 2.3; CURRENT_PROJECT_VERSION = 2026111803; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";}; name = Release; };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -961,6 +969,148 @@
 			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
+
+/* App Store television target */
+		04F45D849EB7D26325D2EF58 /* TVAssets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = TVAssets.xcassets; sourceTree = "<group>"; };
+		056383B5E1D8C2111CFFD094 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				3C51C73A6459DFA9B5BCE19A /* Foundation.framework */,
+			);
+			name = tvOS;
+			sourceTree = "<group>";
+		};
+		1864DD76C27BD1922F5E5491 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41CC649BF7FC60EDE33A90BB /* TVAssets.xcassets in Resources */,
+				47EFE6D711208FDD0467FFD6 /* Localizable.xcstrings in Resources */,
+				FC99B5B593091A96EA04701D /* InfoPlist.xcstrings in Resources */,
+				3D203A116DDCF4DF2D0F587E /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D521D78485DC88AA74D77C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				427E9E467BC350A794DFFBDD /* MountainTVApp.swift in Sources */,
+				AE7C33E07819737CA9EEE8FF /* MountainGame.swift in Sources */,
+				D1A0BD7008307A968A23281E /* MountainScenery.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3C51C73A6459DFA9B5BCE19A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3D203A116DDCF4DF2D0F587E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E4D891425EC6463A9F92ADBC /* PrivacyInfo.xcprivacy */; };
+		41CC649BF7FC60EDE33A90BB /* TVAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04F45D849EB7D26325D2EF58 /* TVAssets.xcassets */; };
+		427E9E467BC350A794DFFBDD /* MountainTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C485AC76BE63D81E41D940B7 /* MountainTVApp.swift */; };
+		43E832535CC404A9303669BF /* Tally Tangle TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tally Tangle TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47EFE6D711208FDD0467FFD6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AE1000000000000000000001 /* Localizable.xcstrings */; };
+		63CD5F8A1A055EC1AB05FE92 /* Tally Tangle TV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9E0397E8AE3AF83FBD3FA0F /* Build configuration list for PBXNativeTarget "Tally Tangle TV" */;
+			buildPhases = (
+				1D521D78485DC88AA74D77C8 /* Sources */,
+				E4899653C88266897E79037F /* Frameworks */,
+				1864DD76C27BD1922F5E5491 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Tally Tangle TV";
+			productName = "Tally Tangle TV";
+			productReference = 43E832535CC404A9303669BF /* Tally Tangle TV.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6CA28BAEECCBF850C68D36A1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C51C73A6459DFA9B5BCE19A /* Foundation.framework */; };
+		6DA3C67E5CF81890B5FDC778 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = TVIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026111802;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tally Tangle";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nathanfennel.RacetoDogMountain;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		8C39FD2FD2B4C8D7BC3D6676 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = TVIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026111802;
+				DEVELOPMENT_TEAM = EJLR2RPSV2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tally Tangle";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nathanfennel.RacetoDogMountain;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE7C33E07819737CA9EEE8FF /* MountainGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02609270000000000000001 /* MountainGame.swift */; };
+		B9E0397E8AE3AF83FBD3FA0F /* Build configuration list for PBXNativeTarget "Tally Tangle TV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C39FD2FD2B4C8D7BC3D6676 /* Release */,
+				6DA3C67E5CF81890B5FDC778 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB515AC49581F0ABE43C3E39 /* TV */ = {
+			isa = PBXGroup;
+			children = (
+				C485AC76BE63D81E41D940B7 /* MountainTVApp.swift */,
+				04F45D849EB7D26325D2EF58 /* TVAssets.xcassets */,
+			);
+			name = TV;
+			path = TV;
+			sourceTree = "<group>";
+		};
+		C485AC76BE63D81E41D940B7 /* MountainTVApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MountainTVApp.swift; sourceTree = "<group>"; };
+		D1A0BD7008307A968A23281E /* MountainScenery.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6000000000000000000001 /* MountainScenery.swift */; };
+		D7F3045C1C178FF391592F98 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				056383B5E1D8C2111CFFD094 /* tvOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4899653C88266897E79037F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CA28BAEECCBF850C68D36A1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC99B5B593091A96EA04701D /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AE1000000000000000000007 /* InfoPlist.xcstrings */; };
 	};
 	rootObject = 908AFC611A6718AE0050EC0B /* Project object */;
 }

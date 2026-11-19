@@ -1,5 +1,39 @@
 # Tally Tangle release
 
+## Submitted for App Store review, 2026-11-19
+
+iOS 2.3 (2026111803), macOS 2.3 (2026111802), and visionOS 2.3 (2026111802) were submitted through App Store Connect. All three show **Waiting for Review**. tvOS remains **Ready for Review** and was not submitted in this action. Receipts, submission IDs, and confirmation screenshots are in `Readiness/2026-11-19/`. Earlier readiness reports below describe the prior staging state.
+
+## App Store Connect completion, 2026-11-18
+
+All four version 2.3 releases are **Ready for Review**, with **Item Ready to Submit** shown in their draft submissions. The final Submit for Review action has not been performed. iOS uses build **2026111803**; macOS, visionOS and tvOS use **2026111802**. Uploads and automatic distribution signing succeeded through Xcode. Final status evidence is in `Readiness/2026-11-18/all-platforms-ready.jpg` and each platform's `*-ready-final` files.
+
+Dedicated header (3840 × 1646) and search-results (3840 × 2560) images are uploaded and assigned to iOS 2.3. Device previews passed on iPhone and iPad; Arabic inherits the primary artwork. The artwork-inclusive iOS draft was revalidated as Ready for Review at 13:04 on November 18. Exports and editable sources are in `Marketing/Discovery/`.
+
+The iOS Game Center blocker was resolved by enabling the Game Center entitlement and linking GameKit on the Watch companion, whose friend games use the paired iPhone. The main app retains Game Center. tvOS Game Center remains off because this edition provides local play only.
+
+All 50 available App Store locales are populated for every platform. The 49 additional locale entries per platform, all shared names/subtitles, and all additional Apple TV privacy entries were checked after reload against the prepared copy. The in-app catalog contains 428 translatable keys in 51 translated languages, including complete Amharic resources. Structural and placeholder checks pass; this is not native-speaker or rendered RTL/accessibility certification.
+
+Marketing galleries contain ten images each for medium iPhone, large Dynamic Island iPhone, large Face ID iPhone, iPhone Duo, iPad 13-inch, Mac, Apple Vision Pro and Apple TV. Duo mixes closed, open portrait and open landscape poses. Existing Watch and Messages screenshots are retained. Translated store pages inherit the primary English-caption marketing images.
+
+The preview PDF at `output/pdf/Tally-Tangle-App-Store-Preview.pdf` contains 300 native captures and 100 marketing images across 164 pages. Every requested platform has at least 30 native captures. The bonus medium-iPhone set has 27; three blank frames were excluded. Live Duo book/laptop poses, physical comfort, two-account Game Center delivery and live Messages delivery remain unverified and are not claimed by the evidence. The localized Mac archive includes matching universal dSYMs.
+
+Current archives are `Tally-iOS-watch-gc.xcarchive` and `Tally-{Mac,Vision,TV}-localized.xcarchive` under `build/release-20261117/`. `python3 Tools/ReleaseChecks/verify-archives.py` validates current builds, strict signatures, Game Center packaging, compiled Amharic strings and TV shelf assets. Earlier sections below are historical records and are superseded by this completion report.
+
+## App Store preparation, 2026-11-17
+
+App Store Connect work is paused at the owner's request while the service is unavailable. The local preview is `output/pdf/Tally-Tangle-App-Store-Preview.pdf`. It contains 300 valid native captures and 100 marketing compositions, including additional iPhone sizes and Duo outer/open portrait/open landscape sets. Every requested platform has at least 30 captures. The additional medium iPhone set has 27 valid captures; three blank simulator frames were excluded and retained under `build/release-20261117/excluded-captures/`.
+
+Store PNGs and editable SVGs are in `Release/Marketing/AppStore/`; `manifest.json` records dimensions, exact copy and capture hashes. Rebuild them with `Tools/Screenshots/render-marketing.mjs`. Build the PDF with `Tools/Screenshots/make-preview-pdf.py` using Python with Pillow and ReportLab. Original native PNGs remain in `Release/Marketing/Screenshots/`.
+
+A new native `Tally Tangle TV` target provides remote-focused solo and local two-player games, 18 computer rivals, 4-14 boards, saved progress and replay. Its layered icons include 2x images and both Top Shelf variants. The first TV upload was rejected for missing wide Top Shelf metadata and a 2x icon background; those packaging omissions are corrected in the prepared archive. No replacement upload was attempted after the owner paused Connect work.
+
+All four signed archives are version 2.3, build 2026111703, at `build/release-20261117/Tally-{iOS,Mac,Vision,TV}-ready.xcarchive`. Strict signature checks passed. `Release/Readiness/archive-audit.json` records binaries, compiled locales, symbols and packaging checks. Once Connect work resumes, `Tools/ReleaseChecks/upload-prepared.sh` uses Xcode's signed-in account and automatic distribution signing. The earlier visionOS build 2026111701 uploaded successfully before the outage; it is superseded by the local prepared build. Processing, build selection, final store metadata/localizations, media uploads, Messages media requirements and submission validation still need verification in Connect.
+
+The localization audit covers 428 translatable keys in 50 translated UI languages. Eight missing Find Game/search/external-display keys were completed in all 50 languages. Literal UI keys and format placeholders pass. The historical Amharic app-name override remains; the rest of that locale falls back to English and is not a complete Amharic UI translation. This audit does not certify linguistic quality or store metadata translations.
+
+The full release-check suite passes. Capture relaunches now terminate and launch separately to avoid the tvOS Home-screen race. Active Duo divisions use a system split arrangement for the board and score controls; home controls stay in one usable pane. These changes compile and are included in the prepared archives. Final live book/laptop-pose verification remains pending because Device Hub and simulator commands became unresponsive; no unverified pose images are included in the preview. Physical-device comfort, accessibility operation, two-account Game Center delivery and live Messages delivery remain runtime checks.
+
 ## Marketing screenshots, 2026-11-12
 
 Debug builds have a showcase mode: `-MountainUITests -MountainTestSession <uuid> -MountainMarketingCapture -MountainShowcase <1–30>` opens one of 30 prepared scenes in a private store (home and title growth, games from 4 × 4 to 14 × 14 against several rivals, pass and play, computer versus computer, finishes, settings, history, the guide, replay and player editors). Every board comes from real AI moves on a seeded deal. `bash Tools/Screenshots/capture-mac.sh <folder>` captures the Mac set at 2560 × 1600; `bash Tools/Screenshots/capture-sim.sh <udid> <app> <bundle id> <folder>` captures a simulator set (iPhone 6.9" 1320 × 2868, iPhone 6.5" 1242 × 2688 on iOS 18.6, iPad 13" 2064 × 2752, Apple Vision Pro 3840 × 2160). iPhone Duo has two App Store screenshot sizes: the outer display at 1398 × 2034 (`DISPLAY_ID=1`, in `iphone-duo-closed/`) and the inner display at 2007 × 2853 (`DISPLAY_ID=3`, for `iphone-duo-open/`). The inner set is not captured yet: the simulator must first be opened in Device Hub, and `simctl` has no command for that. The iOS simulator build needs the iOS 27 scene-accessory calls stubbed on the 26.5 SDK. Captures are in `Release/Marketing/Screenshots/`, one folder per device size.

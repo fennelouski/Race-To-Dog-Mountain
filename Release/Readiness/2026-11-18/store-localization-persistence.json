@@ -1,0 +1,1178 @@
+[
+  {
+    "platform": "tvOS",
+    "locale": "ar",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ar",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ar",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ar",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "bn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "bn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ca",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "bn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "bn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ca",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ca",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ca",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "zh-Hans",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "hr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "zh-Hant",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "cs",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "hr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "hr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "hr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "da",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "cs",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "cs",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "nl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "cs",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "da",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "da",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "en-AU",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "da",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "nl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "nl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "nl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "en-AU",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "en-AU",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "en-AU",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "en-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "en-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "en-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "en-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "en-GB",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "en-GB",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "en-GB",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "en-GB",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "fi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "fi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "fi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "fi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "fr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "fr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "fr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "fr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "fr-CA",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "de",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "de",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "de",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "de",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "el",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "el",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "el",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "el",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "gu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "gu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "gu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "gu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "he",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "he",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "he",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "he",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "hi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "hi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "hi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "hi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "hu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "hu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "hu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "hu",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "id",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "id",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "id",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "id",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "it",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "it",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "it",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "it",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ja",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ja",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ja",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ja",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "kn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "kn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "kn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "kn",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ko",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ko",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ko",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ko",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ms",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ms",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ms",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ms",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ml",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ml",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ml",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ml",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "mr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "mr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "mr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "mr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "nb",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "nb",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "nb",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "nb",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "or",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "or",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "or",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "or",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pt-BR",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pt-PT",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "pa",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "pa",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "pa",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "pa",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ro",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ro",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ro",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ro",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ru",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ru",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ru",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ru",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "sk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "sk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "sk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "sk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "sl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "sl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "sl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "sl",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "es-MX",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "es-MX",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "es-MX",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "es-MX",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "es-ES",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "es-ES",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "es-ES",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "es-ES",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "sv",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "sv",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "sv",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ta",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "sv",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ta",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ta",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "te",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "te",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ta",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "te",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "th",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "th",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "te",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "th",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "tr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "tr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "th",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "tr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "uk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "uk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "tr",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "uk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "ur",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "ur",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "uk",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "ur",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "macOS",
+    "locale": "vi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "ur",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "tvOS",
+    "locale": "vi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "visionOS",
+    "locale": "vi",
+    "fieldsMatch": true,
+    "reloaded": true
+  },
+  {
+    "platform": "iOS",
+    "locale": "vi",
+    "fieldsMatch": true,
+    "reloaded": true
+  }
+]

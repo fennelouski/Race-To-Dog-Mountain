@@ -1,0 +1,1357 @@
+{
+  "created": "2026-11-17",
+  "language": "en-US",
+  "method": "Editable SVG compositions with embedded authentic native captures. Screenshots are proportionally scaled, never repainted. Promotional efficacy is a creative hypothesis, not measured conversion evidence.",
+  "families": [
+    {
+      "family": "ipad-13",
+      "files": [
+        {
+          "file": "ipad-13/01-every-choice.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/ipad-13/04.png",
+          "sourceSHA256": "33b4f8d09749b738a1e174498a0cfbf32ec2bed5f44d1c8fc516eed1c61cbb2a",
+          "SHA256": "f37853d2111c20bc049cc24fa635a2994cbe5f43ca5545bda32475040d41283d"
+        },
+        {
+          "file": "ipad-13/02-first-tangle.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/ipad-13/05.png",
+          "sourceSHA256": "a8cf2f872c7974ef0842c5c118f0d11b675f01ae0e32304c37bca87d99f092ce",
+          "SHA256": "99b25e5aabe90a97fc9b51ac0d4a50df112ba15d14e8ffe1f3953173430979b3"
+        },
+        {
+          "file": "ipad-13/03-your-rival.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/ipad-13/06.png",
+          "sourceSHA256": "2dfe66d0f43936ca0afa4b9de1e4b2d31fc9325d8d47e9e3d30642a5f6f3fd51",
+          "SHA256": "358ab9c0794eacfef9470adc30c8eff63179ef35868b2e8b7705dbd86ce942f7"
+        },
+        {
+          "file": "ipad-13/04-together.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/ipad-13/09.png",
+          "sourceSHA256": "c897fc7854c75132a5960d2f9048ed7621e8064b6c671eb907568a12535e6585",
+          "SHA256": "1741697db3bc3476c42993e0456e199d7b183b866ee441bf5a4ec269884bc8ab"
+        },
+        {
+          "file": "ipad-13/05-think-ahead.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/ipad-13/10.png",
+          "sourceSHA256": "bdd962dca9d806b5b32734da9b67a5b2ce373bd6ce37eb8d90a66e21e54df6c7",
+          "SHA256": "6b264c99a77a52e968934188797aeb3f497b9875b7a9c735b81348282ba26f03"
+        },
+        {
+          "file": "ipad-13/06-the-finish.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/ipad-13/13.png",
+          "sourceSHA256": "9da51c87d2b2b3f9c2a4c690f36e863388b7e08201d8023dce8f03f3c15fd62c",
+          "SHA256": "dac4e11b7c5f064222b4c152e5d95556230cf7cf487998520eab2e12d45db79c"
+        },
+        {
+          "file": "ipad-13/07-replay.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/ipad-13/24.png",
+          "sourceSHA256": "a646f3671f55ff7934b72c37628e5853cd59f6dba4ec65efc1a83c79523f747e",
+          "SHA256": "c0cec02df99c863fd560e7a92ecb6894611e6f7e6ae6df09372c48e43248a927"
+        },
+        {
+          "file": "ipad-13/08-more-to-explore.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/ipad-13/27.png",
+          "sourceSHA256": "4353ee3d05f23000373cecbba580a94f06817228e940997bb875050b71f53866",
+          "SHA256": "b2961b61925d6e17f8327a7e0567ad7bdcf557706aa31ef955c5bcfd00679bf3"
+        },
+        {
+          "file": "ipad-13/09-your-game.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/ipad-13/18.png",
+          "sourceSHA256": "6db222e3277890c50f913892263ae9c790b09c5f77e6cfbae2af4582ff978ef4",
+          "SHA256": "f9557bd58ae1af96b00c0ca5025ae3d3c3a06be1040591737a20313d908b58e6"
+        },
+        {
+          "file": "ipad-13/10-step-inside.png",
+          "width": 2064,
+          "height": 2752,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/ipad-13/01.png",
+          "sourceSHA256": "fa396bd204c7d61a86a392646e78c12fe88dbb210bfe71969f04021bc08fb4a3",
+          "SHA256": "b8b5ce8c1fc3c782d17cba067f2db3ee0d888fe844b743f496e796af512b4bf4"
+        }
+      ]
+    },
+    {
+      "family": "iphone-6.3",
+      "files": [
+        {
+          "file": "iphone-6.3/01-every-choice.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/iphone-6.3/04.png",
+          "sourceSHA256": "43e19f3560d1bbcd057471b255c4258b8d7dcbf119de4ed41fbcb54ec0fc6cf6",
+          "SHA256": "cf07bda8d4cc0db6fc5543c562d5a5a9fcec798d770b009b018537186d4266de"
+        },
+        {
+          "file": "iphone-6.3/02-first-tangle.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/iphone-6.3/05.png",
+          "sourceSHA256": "d5a5e252c97d7b3140d3fe98e07f4c227150effde44318de71b7237e1b3efb45",
+          "SHA256": "77f18109133fd8a41aec08c83227f299303fbb427a30b6efce9045db987ca3ce"
+        },
+        {
+          "file": "iphone-6.3/03-your-rival.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/iphone-6.3/06.png",
+          "sourceSHA256": "540b77b6eb04cae5be1ed1a4dfe0e8605bd41df03b1afcf613f6aaad10c4e923",
+          "SHA256": "e1f3a6795da58bcfe12c2d665b4578ac3b2773b34417f1e1436126d005a48de5"
+        },
+        {
+          "file": "iphone-6.3/04-together.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/iphone-6.3/09.png",
+          "sourceSHA256": "7eba83881355d3776e9c3935284b84fa32d69e5cae985d959bd70f3f00c91cdb",
+          "SHA256": "ccb6c82a443e3b716baf4c744291f9e7c3e6a1d357441654134720727a829f06"
+        },
+        {
+          "file": "iphone-6.3/05-think-ahead.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/iphone-6.3/10.png",
+          "sourceSHA256": "c40e3ea2aff652ab2037c8930085dc66b404d594c40ebd7b0d95fd1552949f16",
+          "SHA256": "b01157f52c9d627d8003625e55e905608f3b006b53dbd3e59305eeb24b2ae26d"
+        },
+        {
+          "file": "iphone-6.3/06-the-finish.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/iphone-6.3/13.png",
+          "sourceSHA256": "0fae04184ea388bdfa2482bbad8d9d90607a1b4ab8d2e9d1cb05d7b3f7a17a3b",
+          "SHA256": "bcb6d2a5a13552dab551f7db3b9b546386e530de73746bc58da2677873325882"
+        },
+        {
+          "file": "iphone-6.3/07-replay.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/iphone-6.3/24.png",
+          "sourceSHA256": "1a660eab2aa386b29bf573589e60140bd2be805495bf671730b3693d19ead651",
+          "SHA256": "39e47997c7905057520ae2bf286b93948d40e73b8417ab9bd4289fc65c8765d9"
+        },
+        {
+          "file": "iphone-6.3/08-more-to-explore.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/iphone-6.3/27.png",
+          "sourceSHA256": "2514e20b2d756cf06b41d4b7df680e1f4afe27ebc8975719e161aeaecd971813",
+          "SHA256": "5fd0734a6a0b077c4f1d130952bcb933133b1e996c070189c1eba0e89b7bf815"
+        },
+        {
+          "file": "iphone-6.3/09-your-game.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/iphone-6.3/18.png",
+          "sourceSHA256": "001bf7ae9df57f35f8c094752d877b5537ea7b3c0f8917abb9b032813b0f9a71",
+          "SHA256": "bec34dcb836bc03e651ff94dfd5ffbee69373ad5449cfd77ee19ba831990b238"
+        },
+        {
+          "file": "iphone-6.3/10-step-inside.png",
+          "width": 1206,
+          "height": 2622,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/iphone-6.3/01.png",
+          "sourceSHA256": "f30beda7e30ce956c34bf429dd3c06f42a54ff84a680a45425dd34af0d50828e",
+          "SHA256": "01a80670832198ac124f30c6857dfd7cd00619a3000c3fe052dff710ec6a6453"
+        }
+      ]
+    },
+    {
+      "family": "iphone-6.5",
+      "files": [
+        {
+          "file": "iphone-6.5/01-every-choice.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/iphone-6.5/04.png",
+          "sourceSHA256": "8d4fd7da921ab0fb93143671f0eb28d197a52ba10231f48ac6b07f1884b9de45",
+          "SHA256": "848cae81083e6dc4619f5574f095cae7277e09c8f7e42704dbc89a0cc2b6ef76"
+        },
+        {
+          "file": "iphone-6.5/02-first-tangle.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/iphone-6.5/05.png",
+          "sourceSHA256": "b0b0633fd53fb56c49a4160cd17def7fac7a1c7f179eb2795b982f01e8314d79",
+          "SHA256": "2eb952a4dad792116039700987c505143f890396056eb32e431685c0108665d5"
+        },
+        {
+          "file": "iphone-6.5/03-your-rival.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/iphone-6.5/06.png",
+          "sourceSHA256": "9c9027f8f807a50af2caf2efc67306f61974833c0c49e93a2d0343b9e423300a",
+          "SHA256": "31f94d236ded276f96b79de4f033809c1a30e56b22e76852fe3ca74edd9e9b8e"
+        },
+        {
+          "file": "iphone-6.5/04-together.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/iphone-6.5/09.png",
+          "sourceSHA256": "393459a1d3cb5f6d475597fbfc1c75d8b7d0482cd498fbfb07b5d50568e935a8",
+          "SHA256": "5de0424175f154d6b0bbc9d6e8b69d2be7e056cc84199d79b5b7e049e9b3130c"
+        },
+        {
+          "file": "iphone-6.5/05-think-ahead.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/iphone-6.5/10.png",
+          "sourceSHA256": "0529540a58c49e12c48f9cc7e1c1af2a989893bb7f04e1f9fa22ac904006e092",
+          "SHA256": "f3069482224db4ad88bf2b8ea69a9156c56828090b1cf00ed383b530e2985361"
+        },
+        {
+          "file": "iphone-6.5/06-the-finish.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/iphone-6.5/13.png",
+          "sourceSHA256": "c848edf3acd21610e60c65e698acd4447373401d92701f6dd8810efa63fb61aa",
+          "SHA256": "fd551243750695c1ce2dcb90e5ac3e44e70423c0d29f4ab52695320ebe054933"
+        },
+        {
+          "file": "iphone-6.5/07-replay.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/iphone-6.5/24.png",
+          "sourceSHA256": "09ad88efe4809e59663776833e735783abd8863fe56f09fb56d8d50d1414c487",
+          "SHA256": "77a3836f28709901959461b03fd14cb0d70123dae575d9d5c4213c69cabc4e36"
+        },
+        {
+          "file": "iphone-6.5/08-more-to-explore.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/iphone-6.5/27.png",
+          "sourceSHA256": "e7a70cf15ff2545b1369e7ec56f43fe9c264dc64cc024f4e41d20c020070759d",
+          "SHA256": "4fb228c0f819bd17d9511625a4df8cf1bb3b8bcbc331e9893e90dd02a1347fbc"
+        },
+        {
+          "file": "iphone-6.5/09-your-game.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/iphone-6.5/18.png",
+          "sourceSHA256": "876bfdf8f0388f0bf4f2a0b9148bd83ac49c5b936fdb6ec62f62d16e9bc345b9",
+          "SHA256": "09c98e1949aeabec19f6aeb13453185a2e945fec2ed78de00c820447b9f9f66e"
+        },
+        {
+          "file": "iphone-6.5/10-step-inside.png",
+          "width": 1242,
+          "height": 2688,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/iphone-6.5/01.png",
+          "sourceSHA256": "9cb0dcd55ac7052e1062f98ef8f1d953de9289cab5f0c90bf6375fee27fa8053",
+          "SHA256": "ab5d35256c6a2427382fe0a6598616b756cdad61b580ab0e4adec3ba265e58c3"
+        }
+      ]
+    },
+    {
+      "family": "iphone-6.9",
+      "files": [
+        {
+          "file": "iphone-6.9/01-every-choice.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/iphone-6.9/04.png",
+          "sourceSHA256": "939af418b8163a58add56417100cbece353ed887c89ba643599756d01b24ca45",
+          "SHA256": "160124aca23de34032047ec2458df99691b7a2fd22c27b6c9fa7facffa64f8dc"
+        },
+        {
+          "file": "iphone-6.9/02-first-tangle.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/iphone-6.9/05.png",
+          "sourceSHA256": "21554adba73ef236957aed41abaff33204c7543229c7b1cccd33eb888ce05043",
+          "SHA256": "465300f7f183b74b60d0056c50b0addb300ef946cdd049e88da0bbdb8401e370"
+        },
+        {
+          "file": "iphone-6.9/03-your-rival.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/iphone-6.9/06.png",
+          "sourceSHA256": "56a553fe56883cec7a6e6183bc42025e53c89fb1a3050c9b60ee6f283b33d734",
+          "SHA256": "814805f462bbab87d78f32c9ebcf2ed0ac20687f19eccf4ac209e708c9e475da"
+        },
+        {
+          "file": "iphone-6.9/04-together.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/iphone-6.9/09.png",
+          "sourceSHA256": "91ba9a9f538ebe56d3a2ff68a0c133563bea6ee2984b63ef11c088791ec36daf",
+          "SHA256": "0730ae8a771cb534d496bff5b1a60b19012c44e3049729887cf1432bac00ace4"
+        },
+        {
+          "file": "iphone-6.9/05-think-ahead.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/iphone-6.9/10.png",
+          "sourceSHA256": "fb150bb9261f6149cf47b7e4c5dec6dff3206fc341b4837ceb9438a0056f0295",
+          "SHA256": "1cece334ae0a19efec231add624868e8a2dbbd5db44eb6bca3cdd89ed22c12e9"
+        },
+        {
+          "file": "iphone-6.9/06-the-finish.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/iphone-6.9/13.png",
+          "sourceSHA256": "e144ca7a704fd498fc6873483a5a4ce5d63230a36a672810e30bde58ea323095",
+          "SHA256": "15fdefaa4fea37ea3c4b1f95e24f88e6aa65d96b949d250cd57405e98170d35b"
+        },
+        {
+          "file": "iphone-6.9/07-replay.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/iphone-6.9/24.png",
+          "sourceSHA256": "0aed9d7e562ca054bc872ca8f10c2905f18356023efe1b74f4e6520174b2409f",
+          "SHA256": "4bab1d0b185afdefd4ecf3dd84df396dcbd4262e7a0c0cdcf020c00dba29836f"
+        },
+        {
+          "file": "iphone-6.9/08-more-to-explore.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/iphone-6.9/27.png",
+          "sourceSHA256": "f1b6d2888647e316576f401c496f300e1cfbb882a6ae7ba44fc1cbc7009a2167",
+          "SHA256": "f8ac8afef2a36a0fe9dcec18f900d93e07d68057f70abb68eaf256cb6b9bde5f"
+        },
+        {
+          "file": "iphone-6.9/09-your-game.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/iphone-6.9/18.png",
+          "sourceSHA256": "5befba4a8fcd20a2fc5f20c9cc2b0a7d9ec23bbd47bf7c2e0107c6d0ba671a2a",
+          "SHA256": "3d9ffa5c5ea414c3c52cb356c4de4691fe71affd883780de448447835c8eebaa"
+        },
+        {
+          "file": "iphone-6.9/10-step-inside.png",
+          "width": 1320,
+          "height": 2868,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/iphone-6.9/01.png",
+          "sourceSHA256": "5022b4243eab96db91ec5fe86fb149fbcff5f17f90e313bad20b300fab4edb38",
+          "SHA256": "dc778f307ca3004e5902258be2edd7543457dea9136b7afa33902b978931bf87"
+        }
+      ]
+    },
+    {
+      "family": "iphone-duo-closed",
+      "files": [
+        {
+          "file": "iphone-duo-closed/01-every-choice.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/iphone-duo-closed/04.png",
+          "sourceSHA256": "a2db7412a39cb58e53d3c8fc2b7a6991ce49b29b4de5bc8bc52dd22a9b49e01c",
+          "SHA256": "e6833ad2c6e9d5c5971ad6069b5afb212ebb2d6007a31ea7a3f6c1d5a360dcc6"
+        },
+        {
+          "file": "iphone-duo-closed/02-first-tangle.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/iphone-duo-closed/05.png",
+          "sourceSHA256": "481077926bda6891fa1573c73cc4f88f7a442d3a1be706be28797f532e431ae2",
+          "SHA256": "bef1c1ad47a7f9d92c1cb042e2c0447dfffe050b18a855c266e083b709ee9b0f"
+        },
+        {
+          "file": "iphone-duo-closed/03-your-rival.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/iphone-duo-closed/06.png",
+          "sourceSHA256": "5860587f5424786fd025626eb708ffc14bf479e00467a4a4a4a05244b4665bd8",
+          "SHA256": "c75ac743273a5e9d10e7e03bb9ba451b032a7b180682a4d7fd406ff8978b7af1"
+        },
+        {
+          "file": "iphone-duo-closed/04-together.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/iphone-duo-closed/09.png",
+          "sourceSHA256": "dce69bb248f819ac5b843ede46aa6644a300f7fcf02b42e73ebb2ce66840ea18",
+          "SHA256": "0c0e5ee2cd9bef1bc0e6bb80209032804381fbb79a676eb59f60e378d3ed73e7"
+        },
+        {
+          "file": "iphone-duo-closed/05-think-ahead.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/iphone-duo-closed/10.png",
+          "sourceSHA256": "a77cf6f51f6f484405e124ee315225482ec4621f2b8abbaca942f87b70307865",
+          "SHA256": "bbb37dace35b074d81e2494792f0fecb0c571ddd360852387547cedfc97f5f6a"
+        },
+        {
+          "file": "iphone-duo-closed/06-the-finish.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/iphone-duo-closed/13.png",
+          "sourceSHA256": "774b5e37facfb87029df15163e564eee3e28faf8a6ae863ac672a58583b1f2c0",
+          "SHA256": "2c8857408e7575e24ea30cf4daa24a7bff4b850057ed2ae3cf4d0848097e7582"
+        },
+        {
+          "file": "iphone-duo-closed/07-replay.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/iphone-duo-closed/24.png",
+          "sourceSHA256": "e3e0be57fc390d256a517f76b37f9a77dc7daa74f45f5d296b3ca51ecc6892e0",
+          "SHA256": "fe57b7c14dfa73b001fbec3dbeee1eacb0d05f2a367554bb71a6dbdc8e4637e4"
+        },
+        {
+          "file": "iphone-duo-closed/08-more-to-explore.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/iphone-duo-closed/27.png",
+          "sourceSHA256": "ab59a1244d4fbcf5542fcef7288cc74886380d506f4cb50448f03e6ddbb40e5b",
+          "SHA256": "0cc246e9f6aa34f70107998256dadc2f2472b7a00b092aa48a9e83406b05296e"
+        },
+        {
+          "file": "iphone-duo-closed/09-your-game.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/iphone-duo-closed/18.png",
+          "sourceSHA256": "ff949e6368f8fe0ceb4c3a1c2040bc2c2f6645e57fd42baacd010893b04a9b9a",
+          "SHA256": "2db2b99107492d230d4077c3a9ec9adc80ab3590323b820eaf1b32db9e60fcd6"
+        },
+        {
+          "file": "iphone-duo-closed/10-step-inside.png",
+          "width": 1398,
+          "height": 2034,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/iphone-duo-closed/01.png",
+          "sourceSHA256": "fa6bffbe9a3d0bd3d9e472941c2f41f8464588c83322a86fd99b932985ef939f",
+          "SHA256": "ef3c96b5f077936c79dc4e1ef0c130de525b3205f3afda8b796262703181f2c0"
+        }
+      ]
+    },
+    {
+      "family": "iphone-duo-open-landscape",
+      "files": [
+        {
+          "file": "iphone-duo-open-landscape/01-every-choice.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/04.png",
+          "sourceSHA256": "347b0ab98603f83e37e073a927c3ca7b8f98a6a3705c1ab67017a822730290e3",
+          "SHA256": "c5144f7794168ba53a6d6a403847710e25f50dbc6967ac60279d931c9924a86a"
+        },
+        {
+          "file": "iphone-duo-open-landscape/02-first-tangle.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/05.png",
+          "sourceSHA256": "bfcfc3e5048f4179646cf6611501a5a16e50a01e3e0947a6f65fcab9cf055a35",
+          "SHA256": "fcaaa6a4014196dacd930d4c85d928abea58cfde552e3e6dbeb999ed6f20f351"
+        },
+        {
+          "file": "iphone-duo-open-landscape/03-your-rival.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/06.png",
+          "sourceSHA256": "ec48f1de1597db26526ccbbd55bc622924dd08315c108355d31b6755c2e0a65b",
+          "SHA256": "fa7d3c7b36591e86206990eed37b0e5aaa6b62c937b2e34f261dbf400d25c1db"
+        },
+        {
+          "file": "iphone-duo-open-landscape/04-together.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/09.png",
+          "sourceSHA256": "aae5de2edb9cde158b9ce91b182e42757e8850f4afa49dd469d00ab1aa870c4f",
+          "SHA256": "c8e6695e4d4ddbaee06079921f75be15985bb80f047d3f02c730e9b170dec9e4"
+        },
+        {
+          "file": "iphone-duo-open-landscape/05-think-ahead.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/10.png",
+          "sourceSHA256": "59c4f8e7d482497a5a2518196b00bdd1395b63e6d9fe62a43ca355125072676e",
+          "SHA256": "cc3cffe5ebead1f46ccc2aa6e4e4841ca006db6de7ce39b4d28aad348129103c"
+        },
+        {
+          "file": "iphone-duo-open-landscape/06-the-finish.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/13.png",
+          "sourceSHA256": "1596e8414cd842ace2f8fa9f54d44d5c2639735c6bfe234b81afa7e458adeb66",
+          "SHA256": "a4bf68af75588f37438c62b3acf4e81805c71cdd0e9a1dcfe050df17c9425955"
+        },
+        {
+          "file": "iphone-duo-open-landscape/07-replay.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/24.png",
+          "sourceSHA256": "8dc4ee0ce7d8cda1c32b552848108db0ee28ff707fb7715f0a58bd204febf5e2",
+          "SHA256": "634455c32c4c97339db6085b59ea354713de8f977f746cda3936fa0dd1694a87"
+        },
+        {
+          "file": "iphone-duo-open-landscape/08-more-to-explore.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/27.png",
+          "sourceSHA256": "daae340f829ebaf3a462d5dca54a9d61c6340af31de922cdfc880da5236f1e0e",
+          "SHA256": "d3fbacb766d7ea8bf8ef4e72d627ceea8146c59677af911458849ab4bd0e77c8"
+        },
+        {
+          "file": "iphone-duo-open-landscape/09-your-game.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/18.png",
+          "sourceSHA256": "6d6b5a0893db791e30acdc0acf7ec4fa6630b79dbfb2c9773c9ddf2251ca6f25",
+          "SHA256": "66d38c2c2447f6d7ce9efdc7b44bd47452af160f07e4910bc828dc81a1088d37"
+        },
+        {
+          "file": "iphone-duo-open-landscape/10-step-inside.png",
+          "width": 2853,
+          "height": 2007,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/iphone-duo-open-landscape/01.png",
+          "sourceSHA256": "f5a457f13d0dc37f3b7e6754cffdb5a2f940cbe56d83c696274534143d8231b1",
+          "SHA256": "1e6b19a361047c1e064e49cf5e897bd88061808f8117447fa590d7ce15af5c9d"
+        }
+      ]
+    },
+    {
+      "family": "iphone-duo-open-portrait",
+      "files": [
+        {
+          "file": "iphone-duo-open-portrait/01-every-choice.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/04.png",
+          "sourceSHA256": "4051c55a033e046b8c8fff2b49dad033e70812a6842863c9a3758e6afee3041d",
+          "SHA256": "348da15d6246488d07154bbcea69fd22f4f6a06ebd6033559c275e2eef590e9c"
+        },
+        {
+          "file": "iphone-duo-open-portrait/02-first-tangle.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/05.png",
+          "sourceSHA256": "7f35e256b48d2f933d383da0e1c58ed64b6e450460a22a30e3e2f54478810a41",
+          "SHA256": "c8b99486288af3e4ac5a27f8909a95be8e0cf3ff838b48acb4290bab73e5517c"
+        },
+        {
+          "file": "iphone-duo-open-portrait/03-your-rival.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/06.png",
+          "sourceSHA256": "09b54081c33581984efc960706a26a2a73d18049c7af492d1a7e9caf3c778b1c",
+          "SHA256": "8d993333b14fe274a96d9e0925088d45e25e887f9bba459b2ab62fe903f9b0ef"
+        },
+        {
+          "file": "iphone-duo-open-portrait/04-together.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/09.png",
+          "sourceSHA256": "8f11628c802e17a26dab9bf0d2858f5ca03856d9cbe0bbbf4ba7819cb2891490",
+          "SHA256": "ed55a8496bea90098ac0b232057e32a6262209bc23436bfc7033f18e41cdf5e2"
+        },
+        {
+          "file": "iphone-duo-open-portrait/05-think-ahead.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/10.png",
+          "sourceSHA256": "f8613e4fde62d0657d69d8b57050a3212ca12301ab05e0b80e5db52c538c4e73",
+          "SHA256": "49f66e365e3ae0f40459a33a0118e9e9608b7183bbd31f85e1caee58430030c9"
+        },
+        {
+          "file": "iphone-duo-open-portrait/06-the-finish.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/13.png",
+          "sourceSHA256": "46f3050fc484f3feb8b9f51315ce23a1cbe1ed7ffc8b98a595171ff44422cac1",
+          "SHA256": "e2f05c401a6ff105492f39390b0280f2383da471d4ef12be046dae03187060f3"
+        },
+        {
+          "file": "iphone-duo-open-portrait/07-replay.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/24.png",
+          "sourceSHA256": "a00be25244c4b0ddc761f9a52576e88cdc906781baf53f864ed1272178aaa191",
+          "SHA256": "6718be07cffeba053d1cb74d0c19d9b48d8ba895c655586c639609153501c1d4"
+        },
+        {
+          "file": "iphone-duo-open-portrait/08-more-to-explore.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/27.png",
+          "sourceSHA256": "90bd7de0bfe455f2ba1c8c511ba50070a174ae8716d8752f880018898807bca3",
+          "SHA256": "1db264450091a050c8da1a052e1a5af0eab22a4c842ef439a06693149cd96727"
+        },
+        {
+          "file": "iphone-duo-open-portrait/09-your-game.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/18.png",
+          "sourceSHA256": "f8b107257d1d2dc328cece5d4f5d9ffdfb3dde36e4bea43585fc8c38c78d11a6",
+          "SHA256": "552425b0c02f4d5e54cc69d80391930549ad6d02ff805d449c2c5dc64a4e7b73"
+        },
+        {
+          "file": "iphone-duo-open-portrait/10-step-inside.png",
+          "width": 2007,
+          "height": 2853,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/iphone-duo-open-portrait/01.png",
+          "sourceSHA256": "42cc7d67f3ce4b983caafb7bf130b5458da1a2dab910ba70ec0ccba15d361fae",
+          "SHA256": "6123b2e845be157afdc7d07eb2f604228a28c0bf0e9c8a4524b78f4a05b8b0c8"
+        }
+      ]
+    },
+    {
+      "family": "mac",
+      "files": [
+        {
+          "file": "mac/01-every-choice.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/mac/04.png",
+          "sourceSHA256": "1debdb14a40ee93d42a6e7a5e3cc0340a7f4893dd87d6bc475d706174deef65a",
+          "SHA256": "0afadab095aa8e2e93631335649a57d2c4791b59d4da3d8061e2176c22c63e6c"
+        },
+        {
+          "file": "mac/02-first-tangle.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/mac/05.png",
+          "sourceSHA256": "a1937d2b9e8b3c347f3511d0b055e57a0863a9ddaf6abf5f2bc66af3bfbea46e",
+          "SHA256": "39c0a407f381b2bb3800bfcdf42cec201884224b1ec0f52c76f9789e707fb663"
+        },
+        {
+          "file": "mac/03-your-rival.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/mac/06.png",
+          "sourceSHA256": "713409faac04cf0fe43198917460aaa6545bd8560576ce914812422eedb356dc",
+          "SHA256": "87a68d4963cdce1a1ee5604a1eaa38e669122e8809146e002cf69aff2ff9053b"
+        },
+        {
+          "file": "mac/04-together.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/mac/09.png",
+          "sourceSHA256": "fe3e1c0ac7bdaa781dfd36192301d73e60f3c3cc0c7c8c7574eb1e65fbc92008",
+          "SHA256": "6000d1cd61f154d96598591b705d4e99ddda574c1cef69ac899ab71008a0bb75"
+        },
+        {
+          "file": "mac/05-think-ahead.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/mac/10.png",
+          "sourceSHA256": "7f5f64da57993fdf8063a9949ef38e63d1b63afd684ac4fab6f499bbb9058f16",
+          "SHA256": "0c94a5dcbbb95f4e8c29b04fa0b750193ce766fa632aeb35cc4ec02e4b9c0cd7"
+        },
+        {
+          "file": "mac/06-the-finish.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/mac/13.png",
+          "sourceSHA256": "6233219b406677c26ea0d9cbc7a39b82c2ca1a1d64eefe93b9a4c2408dcd1100",
+          "SHA256": "1944a3eb5d3afdb36fd06c05bf03504fce755f179d2e4cf03a33c10a40739807"
+        },
+        {
+          "file": "mac/07-replay.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/mac/24.png",
+          "sourceSHA256": "a8dedfe05bf6f67dfb403c765369f6b0a9f8273bc4df9434a1114f3a470ee2dd",
+          "SHA256": "6cf9a70d58dd7af8b6c4a97031e9d4dbb1a15476b9bd2b1bdb4d33a685e0989c"
+        },
+        {
+          "file": "mac/08-more-to-explore.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/mac/27.png",
+          "sourceSHA256": "d7bca56d2c04287a93c5a27a2f0dcaf9fa34d32f79781e0736c8273d20fabe83",
+          "SHA256": "8ed23b450585ee7e76116bd0fe546b1599cb22327550e5d1ece922bb7b77671a"
+        },
+        {
+          "file": "mac/09-your-game.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/mac/18.png",
+          "sourceSHA256": "f4c9a76a1e962c49b4bdef462f39ac3e5873c3fa464027087fa1ca6f274ff99e",
+          "SHA256": "c5e2c69faa335e69c66db4602aceaa15cd8096f2c9cfb27fafde19843917418d"
+        },
+        {
+          "file": "mac/10-step-inside.png",
+          "width": 2560,
+          "height": 1600,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/mac/01.png",
+          "sourceSHA256": "107b26df18688a0b1973866027b169adb2b5e04bd041551f2dd1fdc2d08231a3",
+          "SHA256": "2184e77ca5ee6c576f1e5dc779b485c1f0129eb242dd9786424c3ae9018394a5"
+        }
+      ]
+    },
+    {
+      "family": "tvos",
+      "files": [
+        {
+          "file": "tvos/01-every-choice.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/tvos/04.png",
+          "sourceSHA256": "a6da48904983d695f220060a16b93c7f14d0a4b4b4476883e84cf259a7f5eb08",
+          "SHA256": "5eb14d2caa293599ceb46b71c393542248ee84cfd768d3ce0d0e89fa845a30fe"
+        },
+        {
+          "file": "tvos/02-first-tangle.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/tvos/05.png",
+          "sourceSHA256": "67bfd9db04b3b9ab78af6889c07a9460ca30911d97922e526a1b586c4001b9e5",
+          "SHA256": "7537a1237c72fb679a93c85a651ff4dfefd067b799a930b8ac0829c56ac75dbd"
+        },
+        {
+          "file": "tvos/03-your-rival.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/tvos/06.png",
+          "sourceSHA256": "48ddb6ffafd40fe0d9fad1a884276c12a1fc3328f591dc492fb9fc50a6bc55c3",
+          "SHA256": "2ffbe4a1d81011e96d484a31f04b2de4c80ae4f9d8c24f7d56c6feaacaeaded6"
+        },
+        {
+          "file": "tvos/04-together.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/tvos/09.png",
+          "sourceSHA256": "7a0ffbcf82df9fc5980b9f839f758911580496f9da84963df6122ecac44a3f99",
+          "SHA256": "ea66876cc6b3b0c28edb449e6f5fb5a55f70c7c1c137ab984386e00126169257"
+        },
+        {
+          "file": "tvos/05-think-ahead.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/tvos/10.png",
+          "sourceSHA256": "4990c3e8f6f3dae35d07cab9c19ce086910cdedd529f12abd62b13b42c73e196",
+          "SHA256": "351a16d5fb2b1cfeb299851e65eb6dad41c5635a2ffc7db4eb82ce3b588e2ec2"
+        },
+        {
+          "file": "tvos/06-the-finish.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/tvos/13.png",
+          "sourceSHA256": "44ac50eda7b76172bcd02fc74acdcf03acafda22048e2664dfd1cee634491624",
+          "SHA256": "3ecc07175fce1809021b1d8c548dd3d7efc6ec82ba2c8b9b12ddec29491162b0"
+        },
+        {
+          "file": "tvos/07-replay.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/tvos/24.png",
+          "sourceSHA256": "d6869c0ddcc04a88d11f904bbed75f82abb18d8feb57bcdef6f6e927f3ba82b6",
+          "SHA256": "74df7f61a4b03e2848b3333c67888486d4a30ef4a7f95dc52144c2d65643fd26"
+        },
+        {
+          "file": "tvos/08-more-to-explore.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/tvos/27.png",
+          "sourceSHA256": "27325f902aafa30ae54599961e127d843521ce1b3729ad4387855e19c8b2a9c1",
+          "SHA256": "593de922a6b6548b5675534008fa17f38f3c3ad0ab61ab12a6472b535ee4dad1"
+        },
+        {
+          "file": "tvos/09-your-game.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/tvos/18.png",
+          "sourceSHA256": "5d50c604496bb837cda9aa986ee191deefa47cc2e33be79db1f7ef1642404208",
+          "SHA256": "6f59e8c535142e547e1f754683a7f7d5aa204a5c57be00353ac8998f25e209c9"
+        },
+        {
+          "file": "tvos/10-step-inside.png",
+          "width": 1920,
+          "height": 1080,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/tvos/01.png",
+          "sourceSHA256": "7a403c458f80e1a2314c6536820c06e66b750db37fe16b7b39b5427cfb7d2308",
+          "SHA256": "597ec8f3967bbdc13f42bc0bdcb245a2898b8b85516c62fea859515c3c7a74d7"
+        }
+      ]
+    },
+    {
+      "family": "vision-pro",
+      "files": [
+        {
+          "file": "vision-pro/01-every-choice.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "One number.",
+            "So many possibilities.",
+            "Take the points. Shape the next turn."
+          ],
+          "source": "Screenshots/vision-pro/04.png",
+          "sourceSHA256": "27aeeba70fdf7b1d918dbc6f4811f39ca1255b03f0b00e4cf17473a50fcac70f",
+          "SHA256": "a3c6523d6b92acea44485ccdd3c758924d9f6c6dd53a94d89e51bfecbe3e8aa3"
+        },
+        {
+          "file": "vision-pro/02-first-tangle.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "Small board.",
+            "Big decisions.",
+            "Find your rhythm, one move at a time."
+          ],
+          "source": "Screenshots/vision-pro/05.png",
+          "sourceSHA256": "9ba65932e1b719867a527f095b641699d7689c085df98211f6eca19d7b15c3a3",
+          "SHA256": "ebbc1ccb415dc59eabf14980f7a3345d26d3001653d5f0f0a46eda9c16c57511"
+        },
+        {
+          "file": "vision-pro/03-your-rival.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "Meet your",
+            "next challenge.",
+            "18 computer rivals. A level for every player."
+          ],
+          "source": "Screenshots/vision-pro/06.png",
+          "sourceSHA256": "bbe03fd88d01b851f9860e5b71fe2c2f7d7c9e32c3f42ef7e7ef32c61d2be2a1",
+          "SHA256": "03a22d34508c7576eafd5161da549f1670645c3c045b3b07ea847b274e885d40"
+        },
+        {
+          "file": "vision-pro/04-together.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "Your move.",
+            "Their next problem.",
+            "Two players. One very clever tangle."
+          ],
+          "source": "Screenshots/vision-pro/09.png",
+          "sourceSHA256": "cded28489cc7dffe3245324ac85e44d3e0fed06d9176fb3b4fe912efd0cea020",
+          "SHA256": "1e9a17163d2e14c3d25238d493ea89a678fc67f02e8b9710bb4925f15e63d5e0"
+        },
+        {
+          "file": "vision-pro/05-think-ahead.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "The biggest number",
+            "is only the beginning.",
+            "Choose the line your rival has to play."
+          ],
+          "source": "Screenshots/vision-pro/10.png",
+          "sourceSHA256": "5d9e524ef4d21befaac0dcb7c2cfd0f034a576325852719b9ca5d21139f399a1",
+          "SHA256": "fa70cf1ff2805c7bd2238075a27680a608fda132911f41ce06259aa21414a3a8"
+        },
+        {
+          "file": "vision-pro/06-the-finish.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "Make every",
+            "point count.",
+            "Plan a path to the higher score."
+          ],
+          "source": "Screenshots/vision-pro/13.png",
+          "sourceSHA256": "74cec10bc51ca5c38d2f221fca711b2634f783c8ff757350fb69be8eac1094e5",
+          "SHA256": "ccb806d2a05e8aec5743a8ccff513846c6eede72612eebd5b3146e19ff914718"
+        },
+        {
+          "file": "vision-pro/07-replay.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "See the move.",
+            "Find the idea.",
+            "Replay. Look closer. Try another route."
+          ],
+          "source": "Screenshots/vision-pro/24.png",
+          "sourceSHA256": "d95afb36eb910280827c5ae18b4308151119aa9ef48e551c3688ca227ff040d8",
+          "SHA256": "3dde77030c3c72e9a700ac2cf6376f4118c8ee0d52a45d44dd407b4aa4f42233"
+        },
+        {
+          "file": "vision-pro/08-more-to-explore.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "A bigger board.",
+            "A deeper tangle.",
+            "Choose your board. Grow your strategy."
+          ],
+          "source": "Screenshots/vision-pro/27.png",
+          "sourceSHA256": "df13667fdb9b21029ba63f65ee9a649f6df603b2f6aef2692c2eaa2de7a7aa13",
+          "SHA256": "f8cc1939ce300c169e6fd464b46065d2416db0885079b66f4aa5bea89624444d"
+        },
+        {
+          "file": "vision-pro/09-your-game.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "A little more",
+            "you.",
+            "Set up the next game your way."
+          ],
+          "source": "Screenshots/vision-pro/18.png",
+          "sourceSHA256": "ab35e73f5280f9880ccf5b01790cef9c37df6f25c48d76cddbf421ef34f6f105",
+          "SHA256": "b3b71f4bca664bdd3f870f60d4faa98679b84febf6d6407accffc281bfc7d97d"
+        },
+        {
+          "file": "vision-pro/10-step-inside.png",
+          "width": 3840,
+          "height": 2160,
+          "copy": [
+            "Welcome to",
+            "your next obsession.",
+            "A living garden of number strategy."
+          ],
+          "source": "Screenshots/vision-pro/01.png",
+          "sourceSHA256": "f4623cf063d2f206b16dfd8fc78136c5b599929050b06133d0b4a91e1231dc44",
+          "SHA256": "85d9ca295225cb12aadeaade4bb8b87f7b1e5268be5dbddecd834ef0b047ed18"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "build": "2026111801",
+  "version": "2.3",
+  "validated": true,
+  "gameCenterEntitlementTrue": true,
+  "url": "https://appstoreconnect.apple.com/teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight/ios/df8b1fad-2e6b-4f78-907c-38ac3a846ccb/metadata",
+  "submissionError": "You must add the com.apple.developer.game-center key in Xcode."
+}

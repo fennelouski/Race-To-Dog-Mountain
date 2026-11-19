@@ -1,0 +1,9 @@
+{
+  "reason": "Additional medium iPhone simulator produced blank frames. Excluded from delivery. The other iPhone display sets each contain at least 30 verified captures.",
+  "files": [
+    "Release/Marketing/Screenshots/iphone-6.3/07.png",
+    "Release/Marketing/Screenshots/iphone-6.3/12.png",
+    "Release/Marketing/Screenshots/iphone-6.3/30.png"
+  ],
+  "halfOpenDuoVerification": "Fold-aware layout compiled and archives passed. Live verification blocked by unresponsive simulator commands and Device Hub. No unverified pose captures are included."
+}

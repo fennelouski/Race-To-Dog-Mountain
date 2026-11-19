@@ -1,0 +1,312 @@
+Window: "App Store Connect", App: Google Chrome.
+0 standard window App Store Connect - Google Chrome - Nathan, URL: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/inflight, Secondary Actions: Raise
+	1 container App Store Connect - Google Chrome - Nathan, URL: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/inflight
+		2 container
+			3 toolbar
+				4 button Back
+				5 button (disabled) Forward
+				6 button Reload
+				7 container
+					8 pop up button View site information
+					9 text field (settable) Address and search bar, Value: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/inflight, Placeholder: Ask Google or type a URL
+					10 button Install App Store Connect
+					11 button Bookmark this tab
+				12 container
+					13 pop up button Send to Kindle
+Has access to this site
+					14 pop up button Open Claude
+Has access to this site
+					15 pop up button Extensions
+				16 button Nathan
+				17 pop up button Finish update
+			18 container
+				19 scroll area
+					20 HTML content App Store Connect, URL: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/inflight
+						21 container
+							22 container App Store Connect
+								23 container
+									24 heading App Store Connect, Value: 1
+										25 link App Store Connect, Value: appstoreconnect.apple.com/
+									26 container Global
+										27 content list
+											28 link Apps, Value: appstoreconnect.apple.com/apps
+											29 link Xcode Cloud, Value: appstoreconnect.apple.com/teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/xcode-cloud
+											30 link Trends, Value: appstoreconnect.apple.com/trends
+											31 link Reports, Value: appstoreconnect.apple.com/itc/payments_and_financial_reports
+											32 link Business, Value: appstoreconnect.apple.com/business
+											33 link Users and Access, Value: appstoreconnect.apple.com/access/users
+									34 button Nathan Fennel Nathan Fennel Account name menu
+							35 container
+							36 container
+								37 pop up button Apps menu, Tally Tangle, selected
+									38 container
+										39 image Tally Tangle
+										40 text Tally Tangle
+									41 image
+								42 container Apps
+									43 content list
+										44 link Distribution, Value: appstoreconnect.apple.com/apps/971329310/distribution
+										45 link Analytics, Value: appstoreconnect.apple.com/apps/971329310/analytics
+										46 link TestFlight, Value: appstoreconnect.apple.com/teams/69a6de85-2c3b-47e3-e053-5b8c7c11a4d1/apps/971329310/testflight
+							47 container
+								48 container
+									49 container Distribution
+										50 content list
+											51 container
+												52 heading iOS App, Value: 2
+													53 text iOS App
+												54 content list
+													55 link 2.3 Waiting for Review, Help: Waiting for Review, Value: appstoreconnect.apple.com/apps/971329310/distribution/ios/version/inflight
+													56 link 2.0 Ready for Distribution, Help: Ready for Distribution, Value: appstoreconnect.apple.com/apps/971329310/distribution/ios/version/deliverable
+												57 heading macOS App, Value: 2
+													58 text macOS App
+												59 content list
+													60 link 2.3 Waiting for Review, Help: Waiting for Review, Value: appstoreconnect.apple.com/apps/971329310/distribution/macos/version/inflight
+													61 link 2.2 Ready for Distribution, Help: Ready for Distribution, Value: appstoreconnect.apple.com/apps/971329310/distribution/macos/version/deliverable
+												62 heading tvOS App, Value: 2
+													63 text tvOS App
+												64 content list
+													65 link 2.3 Ready for Review, Help: Ready for Review, Value: appstoreconnect.apple.com/apps/971329310/distribution/tvos/version/inflight
+												66 heading visionOS App, Value: 2
+													67 text visionOS App
+												68 content list
+													69 link 2.3 Waiting for Review, Help: Waiting for Review, Value: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/inflight
+													70 link 2.1 Ready for Distribution, Help: Ready for Distribution, Value: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/deliverable
+											71 container
+												72 heading General, Value: 2
+													73 text General
+												74 content list
+													75 link App Information, Value: appstoreconnect.apple.com/apps/971329310/distribution/info
+													76 link App Compliance New, Value: appstoreconnect.apple.com/apps/971329310/distribution/compliance
+													77 link App Review, Value: appstoreconnect.apple.com/apps/971329310/distribution/reviewsubmissions
+													78 link History, Value: appstoreconnect.apple.com/apps/971329310/distribution/activity/ios/versions
+											79 container
+												80 heading App Store, Value: 2
+													81 text App Store
+												82 heading TRUST & SAFETY, Value: 3
+													83 text TRUST & SAFETY
+												84 content list
+													85 link App Privacy, Value: appstoreconnect.apple.com/apps/971329310/distribution/privacy
+													86 link App Accessibility, Value: appstoreconnect.apple.com/apps/971329310/distribution/accessibility
+													87 link Ratings and Reviews, Value: appstoreconnect.apple.com/apps/971329310/distribution/ratings/ios
+												88 heading GROWTH & MARKETING, Value: 3
+													89 text GROWTH & MARKETING
+												90 content list
+													91 link In-App Events, Value: appstoreconnect.apple.com/apps/971329310/distribution/events
+													92 link Custom Product Pages, Value: appstoreconnect.apple.com/apps/971329310/distribution/productpages
+													93 link Asset Library, Value: appstoreconnect.apple.com/apps/971329310/distribution/asset-library
+													94 link Product Page Optimization, Value: appstoreconnect.apple.com/apps/971329310/distribution/optimization
+													95 link Promo Codes, Value: appstoreconnect.apple.com/apps/971329310/distribution/promo_codes/generate
+													96 link Game Center, Value: appstoreconnect.apple.com/apps/971329310/distribution/gamecenter
+												97 heading MONETIZATION, Value: 3
+													98 text MONETIZATION
+												99 content list
+													100 link Pricing and Availability, Value: appstoreconnect.apple.com/apps/971329310/distribution/pricing
+													101 link In-App Purchases, Value: appstoreconnect.apple.com/apps/971329310/distribution/iaps
+													102 link Subscriptions New, Value: appstoreconnect.apple.com/apps/971329310/distribution/subscriptions
+												103 heading FEATURING, Value: 3
+													104 text FEATURING
+												105 content list
+													106 link Nominations, Value: appstoreconnect.apple.com/apps/971329310/distribution/nominations
+									107 heading visionOS App Version 2.3, Value: 2
+										108 text visionOS App Version 2.3
+									109 button (disabled) Save
+									110 image
+									111 container
+										112 text You can edit some information while your version is waiting for review. To submit a new build, you must  remove this version from review .
+									113 image
+									114 text Security Assessment Required for China Mainland Distribution
+									115 text To distribute on the App Store in China mainland, provide proof of a completed Security Assessment and a report. Existing apps must comply by Jan 31, 2027; new apps should submit immediately.
+									116 link Go to App Compliance, Value: appstoreconnect.apple.com/apps/971329310/distribution/compliance
+									117 button
+									118 image
+									119 text AIGC Services Declaration Required for China Mainland Distribution
+									120 text To distribute on the App Store in China mainland, submit an AI-generated or synthetic content (AIGC) services declaration and filing information. Existing apps must comply by Jan 31, 2027; new apps should submit immediately.
+									121 link Go to App Compliance, Value: appstoreconnect.apple.com/apps/971329310/distribution/compliance
+									122 button
+									123 heading Product Page Information, Value: 3
+										124 text Product Page Information
+									125 container
+										126 pop up button English (U.S.)
+											127 text English (U.S.)
+											128 image
+										129 button ?
+									130 text The assets and metadata below help customers discover your app and engage with it on your product page and in search results.
+									131 link Learn more..., Value: developer.apple.com/app-store/asset-best-practices/
+									132 text App Previews and Screenshots
+									133 link View All Sizes in Media Manager, Value: appstoreconnect.apple.com/apps/971329310/distribution/visionos/version/inflight/media-manager
+									134 text Use app previews and screenshots to visually communicate your app's user experience. Screenshots will automatically scale down to smaller device sizes unless you add specific app previews and screenshots for other device sizes and localizations. Screenshots must show your app in use or primarily depict your app's user experience.
+									135 link Learn more..., Value: developer.apple.com/app-store/asset-best-practices/#screenshots
+									136 button (disabled) DropZone
+									137 text Apple Vision Pro
+									138 content list
+										139 button Screenshot 01-every-choice.png
+										140 button Screenshot 02-first-tangle.png
+										141 button Screenshot 03-your-rival.png
+										142 button Screenshot 04-together.png
+										143 button Screenshot 05-think-ahead.png
+										144 button Screenshot 06-the-finish.png
+										145 button Screenshot 07-replay.png
+										146 button Screenshot 08-more-to-explore.png
+										147 button Screenshot 09-your-game.png
+										148 button Screenshot 10-step-inside.png
+									149 text Promotional Text
+									150 button More information
+									151 text entry area (settable) Promotional Text, Value: One number. So many possibilities. Take the points, shape the next turn, and find your next challenge.
+									152 container Characters remaining
+										153 text 68
+									154 text Description
+									155 button More information
+									156 text entry area (settable) Description, Value: Pick a number. Outsmart your rival.
+
+Choose a number from the highlighted row or column, take its points, and set your rival’s next line. Think ahead and finish with the higher score.
+
+Practice against 18 named computer rivals. Choose a board from 4 × 4 to 14 × 14 and find the challenge that suits you.
+
+Tally Tangle brings number strategy to a resizable floating window on Apple Vision Pro. Keep several local games ready to continue, customize your players, replay a computer move, and search saved games. Animated scenery respects Reduce Motion.
+
+Optional Game Center races require Game Center sign-in and internet. No immersive environment, camera or room permissions are required.
+
+No ads or in-app purchases. Solo and local two-player games work offline.
+									157 container Characters remaining
+										158 text 3,239
+									159 text What's New in This Version
+									160 button More information
+									161 text entry area (settable) What's New in This Version, Value: A refreshed living garden, 18 computer rivals, customizable players, replay, and searchable saved games.
+									162 container Characters remaining
+										163 text 3,896
+									164 text Keywords
+									165 button More information
+									166 text field (settable) Keywords, Value: numbers,strategy,turn-based,board,math,local,multiplayer,offline,classic,computer,puzzle
+									167 container Characters remaining
+										168 text 12
+									169 container
+										170 text Support URL
+										171 button More information
+									172 text field (settable) Support URL, Value: https://nathanfennel.com/contact
+									173 container
+										174 text Marketing URL
+										175 button More information
+									176 text field (settable) Marketing URL
+									177 container
+										178 text Version
+										179 button More information
+									180 text field (settable) Version, Value: 2.3
+									181 text Copyright
+									182 button More information
+									183 text field (settable) Copyright, Value: 2026 Nathan Fennel
+									184 container Characters remaining
+										185 text 182
+									186 heading App Motion Information, Value: 3
+										187 text App Motion Information
+									188 text Help users better understand if your app contains experiences with high or frequent motion.
+									189 link Learn More, Value: developer.apple.com/go/?id=app-motion-rating
+									190 text Contains High Motion
+									191 button Edit
+									192 text No
+									193 heading Build, Value: 3
+										194 text Build
+									195 table
+										196 row
+											197 column header
+												198 text BUILD
+											199 column header
+												200 text UPLOAD DATE
+										201 row
+											202 cell
+												203 link App Icon, Help: 2026111802, Value: appstoreconnect.apple.com/apps/971329310/testflight/visionos/94a0b063-42c2-4fd4-81f6-021f125f02af/metadata
+												204 link 2.3 (2026111802), Value: appstoreconnect.apple.com/apps/971329310/testflight/visionos/94a0b063-42c2-4fd4-81f6-021f125f02af/metadata
+											205 cell
+												206 text Nov 18, 2026 at 7:58 AM
+									207 text Included Assets
+									208 button App Icon
+									209 text App Icon
+									210 checkbox (disabled) Game Center, Value: 1
+									211 text Game Center
+									212 heading Multiplayer Compatibility, Value: 3
+										213 text Multiplayer Compatibility
+									214 table
+										215 row APP NAME TYPE EARLIEST COMPATIBLE VERSION
+											216 column header
+												217 text APP NAME
+											218 column header
+												219 text TYPE
+											220 column header
+												221 text EARLIEST COMPATIBLE VERSION
+										222 row
+											223 cell
+												224 container
+													225 Unlabeled image icon
+													226 text Tally Tangle
+											227 cell
+												228 text macOS App
+											229 cell
+												230 pop up button (disabled) 2.1
+											231 cell
+												232 container
+													233 Unlabeled image icon
+													234 text Tally Tangle
+											235 cell
+												236 text visionOS App
+											237 cell
+												238 pop up button (disabled) 2.1
+									239 heading App Review Information, Value: 3
+										240 text App Review Information
+									241 text Sign-In Information
+									242 button More information
+									243 text Provide a user name and password so we can sign in to your app. We’ll need this to complete your app review.
+									244 checkbox Sign-in required, Value: 0
+									245 text Contact Information
+									246 button More information
+									247 text field (settable) First name, Value: Nathan
+									248 text field (settable) Last name, Value: Fennel
+									249 text field (settable) Phone number, Value: [redacted]
+									250 text field (settable) Email, Value: [redacted]
+									251 text Notes
+									252 button More information
+									253 text entry area (settable) Notes, Value: Version 2.3 build 2026111802. Native visionOS app with a resizable floating window and no immersive space or camera/room permissions. Play starts a local game; player options change the rival and board. Local play needs no app account. Optional Game Center races use the system account. Physical-headset comfort and two-account Game Center delivery have not been verified.
+									254 container Characters remaining
+										255 text 3,628
+									256 text Attachment
+									257 button More information
+									258 button Choose File (Optional): No file chosen
+									259 container
+										260 text Choose File  (Optional)
+									261 heading App Store Version Release, Value: 3
+										262 text App Store Version Release
+									263 text To make your app available on the App Store, you can automatically release it after it’s been approved by App Review. You can also manually release it on the App Store at a later date.
+									264 radio button Manually release this version, Value: 0
+									265 radio button Automatically release this version, Value: 1
+									266 radio button Automatically release this version after App Review, no earlier than, Value: 0
+									267 text Your local date and time.
+									268 container
+										269 text field (disabled) Automatically release this version after App Review, no earlier than, Value: Nov 19, 2026 11:00 AM
+										270 text GMT+1
+									271 heading Phased Release for App Store Automatic Updates, Value: 3
+										272 text Phased Release for App Store Automatic Updates
+									273 text Phased release for automatic updates lets you gradually release this update over a 7-day period to users who have turned on automatic updates from the App Store. Keep in mind that this version will still be available to all users as a manual update from the App Store. You can pause the phased release for up to 30 days or release this update to all users at any time.
+									274 link Learn More, Value: developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
+									275 radio button Release update to all users immediately, Value: 1
+									276 radio button Release update over 7-day period using phased release, Value: 0
+									277 heading Reset visionOS Summary Rating Edit, Value: 3
+										278 text Reset visionOS Summary Rating
+										279 button Edit
+									280 text You can reset your app’s App Store summary rating for all countries or regions when you release this version. Keep in mind that once this version is released, you won’t be able to restore the rating. Your app’s existing customer reviews will still appear on the App Store.
+									281 link View Ratings and Reviews, Value: appstoreconnect.apple.com/apps/971329310/distribution/ratings/visionos
+									282 radio button (disabled) Keep existing rating, Value: 1
+									283 radio button (disabled) Reset rating when this version is released, Value: 0
+									284 container Draft Submissions
+										285 button Draft Submissions (2)
+							286 content list
+								287 link App Store Connect, Value: appstoreconnect.apple.com/apps
+							288 content list
+								289 container
+									290 text Copyright © 2026 Apple Inc. All rights reserved. |
+								291 container
+									292 link Terms of Service, Value: appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/wa/termsOfService
+									293 text |
+								294 container
+									295 link Privacy Policy, Value: apple.com/legal/privacy
+									296 text |
+								297 link Contact Us, Value: appstoreconnect.apple.com/contact-us
+			298

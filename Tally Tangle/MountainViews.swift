@@ -12,6 +12,24 @@ import AppKit
 import UIKit
 #endif
 
+/// Only an active system division displaces controls; flat displays keep the same layout.
+private enum MountainFoldLayout {
+    static func landingBounds(_ geometry: GeometryProxy) -> CGRect {
+        let bounds = CGRect(origin: .zero, size: geometry.size)
+#if os(iOS)
+        if #available(iOS 27.1, *),
+           let fold = geometry.reservedRegions(kind: .division).first(where: \.isActive) {
+            let region = fold.frame
+            let pane = region.width > region.height
+                ? CGRect(x: 0, y: region.maxY, width: bounds.width, height: bounds.height - region.maxY)
+                : CGRect(x: region.maxX, y: 0, width: bounds.width - region.maxX, height: bounds.height)
+            if pane.width > 160 && pane.height > 160 { return pane.insetBy(dx: 12, dy: 12) }
+        }
+#endif
+        return bounds
+    }
+}
+
 @MainActor private enum MountainPlatform {
     static var isActive: Bool {
 #if os(macOS)
@@ -200,15 +218,16 @@ struct MountainHome: View {
 
     private var landing: some View {
         GeometryReader { geometry in
-            let wide = geometry.size.width > 600
+            let pane = MountainFoldLayout.landingBounds(geometry)
+            let wide = pane.width > 600
             ZStack {
                 MountainScenery(active: !playing && !options && !rules, followsLocalTime: true, lush: true)
                     .overlay(MountainStyle.ink.opacity(0.45))
                 VStack(spacing: 12) {
                     // Holds the title's place; the vines that write it are drawn full screen below.
-                    let playSize = wide ? min(200, geometry.size.height * 0.2) : 168
+                    let playSize = wide ? min(200, pane.height * 0.2) : 168
                     // The title takes the room left after Play and the buttons, so nothing is ever pushed off screen.
-                    let titleWidth: CGFloat = wide ? min(560, geometry.size.width * 0.5) : 300
+                    let titleWidth: CGFloat = wide ? min(560, pane.width * 0.5) : 300
                     Color.clear.frame(maxWidth: titleWidth, maxHeight: titleWidth * MountainVineTitle.aspect)
                         .aspectRatio(1 / MountainVineTitle.aspect, contentMode: .fit)
                         .layoutPriority(1)
@@ -233,7 +252,8 @@ struct MountainHome: View {
                     }
                 }
                 .padding(.horizontal, 24).padding(.top, 36).padding(.bottom, 24)
-                .frame(maxWidth: 620).frame(maxWidth: .infinity)
+                .frame(maxWidth: 620).frame(width: pane.width, height: pane.height)
+                .position(x: pane.midX, y: pane.midY)
             }
             .overlayPreferenceValue(MountainTitleAnchor.self) { anchor in
                 GeometryReader { proxy in
@@ -733,11 +753,7 @@ private struct MountainGameView: View {
 #endif
                         .frame(maxWidth: 1268)
                         .frame(maxWidth: .infinity)
-                if fitted {
-                    content.frame(maxHeight: .infinity, alignment: .top).transition(.opacity)
-                } else {
-                    ScrollView { content }.scrollIndicators(.hidden).transition(.opacity)
-                }
+                positionedGame(geometry: geometry, fitted: fitted) { content }
                 if let column {
                     // Below the status bar and camera at the top of the column.
                     let height = min(380, geometry.size.height * 0.62)
@@ -836,6 +852,40 @@ private struct MountainGameView: View {
 #else
         width >= 650 && width > height
 #endif
+    }
+    @ViewBuilder private func positionedGame<Content: View>(geometry: GeometryProxy, fitted: Bool, @ViewBuilder content: () -> Content) -> some View {
+#if os(iOS)
+        if #available(iOS 27.1, *), geometry.reservedRegions(kind: .division).contains(where: \.isActive) {
+            ArrangementView {
+                ScrollView {
+                    VStack(spacing: 18) {
+                        header
+                        if finished { finishPanel; finishActions } else { scoreCards; matchControls }
+                    }.padding(20)
+                }
+            } secondary: {
+                GeometryReader { pane in
+                    ScrollView([.horizontal, .vertical]) {
+                        board(width: max(160, pane.size.width - 32), maxHeight: max(160, pane.size.height - 32))
+                            .padding(16)
+                    }.scrollIndicators(.hidden)
+                }
+            }
+            .arrangementViewStyle(.split)
+            .coordinateSpace(name: "mountain-game-content")
+        } else {
+            scrollingGame(fitted: fitted, content: content)
+        }
+#else
+        scrollingGame(fitted: fitted, content: content)
+#endif
+    }
+    @ViewBuilder private func scrollingGame<Content: View>(fitted: Bool, @ViewBuilder content: () -> Content) -> some View {
+        if fitted {
+            content().frame(maxHeight: .infinity, alignment: .top).transition(.opacity)
+        } else {
+            ScrollView { content() }.scrollIndicators(.hidden).transition(.opacity)
+        }
     }
     private var gameHorizontalPadding: CGFloat {
 #if os(visionOS)
