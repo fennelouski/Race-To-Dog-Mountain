@@ -532,6 +532,14 @@ struct MountainTutorial {
         step += 1
         return true
     }
+#if os(iOS) || TALLY_IOS_TUTORIAL_CHECK
+    /// Paging may demonstrate a new step, but revisiting never overwrites a chosen move.
+    @discardableResult mutating func advancePage() -> Bool {
+        if canGoForward { navigate(to: step + 1); return true }
+        guard !finished, let example = game.legalMoves.first else { return false }
+        return choose(example)
+    }
+#endif
     mutating func navigate(to page: Int) {
         guard (0..<states.count).contains(page) else { return }
         step = page

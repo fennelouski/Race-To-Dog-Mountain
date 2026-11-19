@@ -22,7 +22,7 @@ xcrun swiftc -parse-as-library -D DEBUG -target "$(uname -m)-apple-macos14.0" "T
 "$output/native-finish-check" -MountainUITests -MountainTestSession "$(uuidgen)"
 python3 Tools/ReleaseChecks/check-pinned-layout.py
 
-xcrun swiftc -parse-as-library "Tally Tangle/MountainGame.swift" "Tally Tangle/MountainMatches.swift" Tools/ReleaseChecks/experience-check.swift -o "$output/experience-check"
+xcrun swiftc -parse-as-library -D TALLY_IOS_TUTORIAL_CHECK "Tally Tangle/MountainGame.swift" "Tally Tangle/MountainMatches.swift" Tools/ReleaseChecks/experience-check.swift -o "$output/experience-check"
 "$output/experience-check"
 
 xcrun swiftc -parse-as-library "Tally Tangle/MountainGame.swift" "Tally Tangle/MountainFonster.swift" "Tally Tangle/MountainFuzzyPortrait.swift" "Tally Tangle/MountainScenery.swift" Tools/ReleaseChecks/avatar-photo-check.swift -o "$output/avatar-photo-check"

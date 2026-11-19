@@ -542,27 +542,45 @@ private struct MountainRules: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage("animationsEnabled", store: MountainExperience.defaults) private var animationsEnabled = true
+#if os(iOS)
+    @Environment(\.layoutDirection) private var layoutDirection
+    private var titles: [String] {
+        let row = String(localized: "Row \(lesson.game.row + 1) highlighted")
+        let column = String(localized: "Column \(lesson.game.column + 1) highlighted")
+        return [row, column, row, column, String(localized: "Ready to tangle")]
+    }
+    private let details = [
+        String(localized: "Sets the next player's column"),
+        String(localized: "Sets the next player's row"),
+        String(localized: "Sets the next player's column"),
+        String(localized: "Sets the next player's row"),
+        String(localized: "When the next player has no moves, the higher score wins.")
+    ]
+#else
     private let titles = [String(localized: "Follow the gold row"), String(localized: "Now try the mint column"), String(localized: "Think one move ahead"), String(localized: "Leave a good path"), String(localized: "Ready to tangle")]
     private let details = [String(localized: "Tap a gold number. It adds to your score."), String(localized: "Your choice set this column. Tap a mint number."), String(localized: "Pick a gold number. Notice which column you leave."), String(localized: "Take a mint number. Used tiles stay empty."), String(localized: "When the next player has no moves, the higher score wins.")]
+#endif
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
                 ScrollView {
                     VStack(spacing: 16) {
-                        MountainReservedText(lines: typeSize.isAccessibilitySize ? 4 : 2) { Text(titles[lesson.step]).id(lesson.step).transition(pageTransition) }
+                        legacySwipeRegion(
+                            MountainReservedText(lines: typeSize.isAccessibilitySize ? 4 : 2) { Text(titles[lesson.step]).id(lesson.step).transition(pageTransition) }
                             .font(.title2.bold()).multilineTextAlignment(.center)
                             .accessibilityAddTraits(.isHeader).accessibilityIdentifier("tutorial-heading")
                             .animation(pageAnimation, value: lesson.step)
-                            .contentShape(Rectangle()).gesture(pageSwipe)
+                        )
                         HStack(spacing: 16) { score(0); score(1) }
                         MountainBoard(game: lesson.game, availableWidth: boardSide(geometry.size), fitAllSizes: true,
                                       interactive: !lesson.finished, lastMove: lesson.lastMove,
                                       lastPoints: lesson.lastPoints) { choose($0) }
                             .accessibilityIdentifier("tutorial-board")
-                        MountainReservedText(lines: typeSize.isAccessibilitySize ? 9 : 3) { Text(details[lesson.step]).id(lesson.step).transition(pageTransition) }
+                        legacySwipeRegion(
+                            MountainReservedText(lines: typeSize.isAccessibilitySize ? 9 : detailLines) { Text(details[lesson.step]).id(lesson.step).transition(pageTransition) }
                             .font(.body).multilineTextAlignment(.center)
                             .animation(pageAnimation, value: lesson.step)
-                            .contentShape(Rectangle()).gesture(pageSwipe)
+                        )
                         HStack(spacing: 16) {
                             Button { navigate(lesson.step - 1) } label: { Image(systemName: "chevron.left").frame(width: 44, height: 44) }
                                 .disabled(lesson.step == 0).accessibilityLabel("Previous step").accessibilityIdentifier("tutorial-back")
@@ -572,15 +590,26 @@ private struct MountainRules: View {
                                 }
                             }.frame(maxWidth: .infinity).accessibilityElement(children: .ignore)
                                 .accessibilityLabel("Step \(lesson.step + 1) of \(MountainTutorial.lastStep + 1)")
-                            Button { navigate(lesson.step + 1) } label: { Image(systemName: "chevron.right").frame(width: 44, height: 44) }
-                                .disabled(!lesson.canGoForward).accessibilityLabel("Next completed step").accessibilityIdentifier("tutorial-next")
+                            Button(action: nextPage) { Image(systemName: "chevron.right").frame(width: 44, height: 44) }
+                                .disabled(!nextPageEnabled).accessibilityLabel(nextPageLabel).accessibilityIdentifier("tutorial-next")
                         }
+#if os(iOS)
+                        if !lesson.finished {
+                            Image(systemName: "hand.draw")
+                                .font(.footnote).foregroundStyle(MountainStyle.cream.opacity(0.72))
+                                .accessibilityHidden(true)
+                        }
+#endif
                         Button(action: onPlay) { Text("Play").frame(maxWidth: .infinity) }
                             .buttonStyle(MountainButton(prominent: true))
                             .opacity(lesson.finished ? 1 : 0).disabled(!lesson.finished).accessibilityHidden(!lesson.finished)
                             .accessibilityIdentifier("tutorial-finish")
                     }.padding(16).frame(maxWidth: 520).frame(maxWidth: .infinity)
                 }.scrollIndicators(.hidden)
+#if os(iOS)
+                    // Observe horizontal drags on the whole guide without taking over tile taps or vertical scrolling.
+                    .simultaneousGesture(pageSwipe)
+#endif
                     .overlayPreferenceValue(MountainMoveAnchors.self) { anchors in
                         MountainMoveEffects(events: $feedback, anchors: anchors, reduceMotion: reduceMotion || !animationsEnabled)
                     }
@@ -604,8 +633,52 @@ private struct MountainRules: View {
     private var pageSwipe: some Gesture {
         DragGesture(minimumDistance: 35).onEnded { value in
             guard abs(value.translation.width) > abs(value.translation.height) else { return }
+#if os(iOS)
+            guard abs(value.translation.width) >= 44,
+                  abs(value.translation.width) > abs(value.translation.height) * 1.35 else { return }
+            let isForward = layoutDirection == .rightToLeft ? value.translation.width > 0 : value.translation.width < 0
+            if isForward { nextPage() }
+            else if lesson.step > 0 { navigate(lesson.step - 1) }
+#else
             navigate(lesson.step + (value.translation.width < 0 ? 1 : -1))
+#endif
         }
+    }
+    @ViewBuilder private func legacySwipeRegion<Content: View>(_ content: Content) -> some View {
+#if os(iOS)
+        content
+#else
+        content.contentShape(Rectangle()).gesture(pageSwipe)
+#endif
+    }
+    private var detailLines: Int {
+#if os(iOS)
+        5
+#else
+        3
+#endif
+    }
+    private var nextPageEnabled: Bool {
+#if os(iOS)
+        !lesson.finished
+#else
+        lesson.canGoForward
+#endif
+    }
+    private var nextPageLabel: Text {
+#if os(iOS)
+        Text("Step \(min(lesson.step + 2, MountainTutorial.lastStep + 1)) of \(MountainTutorial.lastStep + 1)")
+#else
+        Text("Next completed step")
+#endif
+    }
+    private func nextPage() {
+#if os(iOS)
+        feedback.removeAll()
+        lesson.advancePage()
+#else
+        navigate(lesson.step + 1)
+#endif
     }
     private func boardSide(_ size: CGSize) -> CGFloat { min(max(176, size.height * 0.44), min(400, size.width - 32)) }
     private func navigate(_ step: Int) { feedback.removeAll(); lesson.navigate(to: step) }

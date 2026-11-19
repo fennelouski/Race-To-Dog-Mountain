@@ -15,6 +15,24 @@ import Foundation
         lesson.navigate(to: 1); precondition(lesson.choose(lesson.game.legalMoves.last!))
         precondition(lesson.step == 2 && !lesson.canGoForward, "Changing an earlier choice must invalidate later steps")
         lesson.navigate(to: 4); precondition(lesson.step == 2)
+#if TALLY_IOS_TUTORIAL_CHECK
+        var paging = MountainTutorial()
+        paging.navigate(to: -1); precondition(paging.step == 0)
+        let choice = paging.game.legalMoves.last!
+        precondition(choice != paging.game.legalMoves.first!)
+        precondition(paging.choose(choice))
+        let chosenScores = paging.game.scores
+        paging.navigate(to: 0)
+        precondition(paging.advancePage() && paging.lastMove == choice && paging.game.scores == chosenScores)
+        for step in 2...MountainTutorial.lastStep {
+            let expected = paging.game.legalMoves.first!
+            precondition(paging.advancePage() && paging.step == step && paging.lastMove == expected && paging.game.isValid)
+        }
+        precondition(!paging.advancePage() && paging.finished)
+        paging.navigate(to: 3)
+        let newBranch = paging.game.legalMoves.last!
+        precondition(paging.choose(newBranch) && paging.finished && paging.lastMove == newBranch)
+#endif
         var pass = SavedMountainGame(size: 4, names: ["A", "B"], computers: [false,false], difficulty: .level1, adjustment: 0)
         precondition(!pass.hasScore && pass.category == .passAndPlay)
         pass.game.play(pass.game.legalMoves[0]); precondition(pass.hasScore)
